@@ -1,0 +1,15 @@
+@use "bootstrap" as *;
+@use "bootstrap-icons/font/bootstrap-icons" as *;
+@use "datatables.net-bs5/css/dataTables.bootstrap5.css";
+.navbar {
+  transition: box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
+}
+
+.navbar.scrolled {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar {
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.85) !important;
+}

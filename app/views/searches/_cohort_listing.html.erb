@@ -1,0 +1,51 @@
+<div class="d-flex align-items-center gap-2 mt-0 mb-2">
+  <h5 class="text-primary mb-0">Search Result -</h5>
+
+  <%= link_to download_file_searches_path(file_name: @file_name),
+              class: "d-inline-flex align-items-center" do %>&nbsp; Download
+    <i class="bi bi-download"></i>
+  <% end %>
+</div>
+
+<div data-controller="datatable">
+  <table data-datatable-target="table" class="table table-striped">
+      <thead>
+        <tr>
+          <th style="text-align:center">Student</th>
+          <th style="text-align:center">Student Email </th>
+          <th style="text-align:center">UID </th>
+          <th style="text-align:center">Current Cohort</th>
+          <th style="text-align:center">Previous Cohort</th>
+          <th style="text-align:center">Program Status</th>
+          <th style="text-align:center">Matriculated Date</th>
+          <th style="text-align:center">New Comp</th>
+          <th style="text-align:center">NetAccess</th>
+          <th style="text-align:center">Former Name</th>
+          <th style="text-align:center">Specialty Interests</th>
+        </tr>
+      </thead>
+      <% results.each do |result| %>
+        <tr>
+          <td style="text-align:center"> <%= link_to result.full_name, searches_path(search: result.email), target: :blank %></td>
+          <td style="text-align:center"> <%= result.email %></td>
+          <% if ['chungp', 'fruhwirt', 'dunnbri', 'schneibe'].include? Current.user.username %>
+            <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
+          <% else %>
+            <td style="text-align:center"> <%= result.sid.to_s  %></td>
+          <% end %>
+          <td style="text-align:center"> <%= result.permission_group.title.to_s %></td>
+          <td style="text-align:center"> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
+          <td style="text-align:center"> <%= result.spec_program %></td>
+          <% if !result.matriculated_date.nil? %>
+            <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
+          <% else %>
+            <td></td>
+          <% end %>
+          <td style="text-align:center"> <%= result.new_competency? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
+          <td style="text-align:center"> <%= result.is_ldap? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
+          <td style="text-align:center"> <%= result.former_name %></td>
+          <td style="text-align:center"> <%= result.career_interest.join(", ") %></td>
+        </tr>
+      <% end %>
+  </table>
+</div>
