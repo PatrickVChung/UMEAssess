@@ -6,11 +6,16 @@
   </div>
 <% end %>
 
-<div class="card shadow-sm mx-auto mt-5" style="max-width: 400px;">
+<div class="card shadow-sm mx-auto mt-5" style="max-width: 600px;">
   <div class="card-body">
-    <h3 class="card-title text-center mb-4">UMEAssess Login</h3>
+    <h3 class="card-title text-center mb-4">
+      <%= image_tag "redei_login.png",
+                          alt: "Logo",
+                          size: "500x300",
+                          class: "me-2" %>
+    </h3>
 
-    <%= form_with url: session_path do |form| %>
+    <%= form_with url: session_path, data: { turbo: false }  do |form| %>
       <div class="mb-3">
         <%= form.label :username, "OHSU Username", class: "form-label" %>
         <%= form.text_field :username,

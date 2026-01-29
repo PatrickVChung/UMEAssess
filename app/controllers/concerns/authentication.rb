@@ -23,6 +23,49 @@ module Authentication
 
     def resume_session
       Current.session ||= find_session_by_cookie
+
+      return unless Current.session
+      return terminate_session if Current.session.expired?
+
+      Current.session.refresh!
+      Current.user = Current.session.user
+    end
+
+    # def start_new_session_for(user)
+    #   # Destroy old sessions for this device
+    #   old = Session.find_by(id: cookies.signed[:session_id])
+    #   old&.destroy
+    #
+    #   user.sessions.create!(
+    #     user_agent: request.user_agent,
+    #     ip_address: request.remote_ip
+    #   ).tap do |session|
+    #     Current.session = session
+    #     cookies.signed.permanent[:session_id] = {
+    #       value: session.id,
+    #       httponly: true,
+    #       same_site: :lax,
+    #       secure: Rails.env.production?
+    #     }
+    #   end
+    # end
+
+    def start_new_session_for(user, remember_me: false)
+      session = user.sessions.create!(
+        user_agent: request.user_agent,
+        ip_address: request.remote_ip,
+        remember_token: remember_me ? SecureRandom.hex(32) : nil
+      )
+
+      Current.session = session
+
+      cookies.signed[:session_id] = {
+        value: session.id,
+        httponly: true,
+        same_site: :lax,
+        secure: Rails.env.production?,
+        expires: remember_me ? 6.months.from_now : nil
+      }
     end
 
     def find_session_by_cookie

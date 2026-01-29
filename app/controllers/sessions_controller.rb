@@ -6,6 +6,11 @@ class SessionsController < ApplicationController
   def new
   end
 
+  def index
+    @sessions = Current.user.sessions.active.order(last_seen_at: :desc)
+  end
+
+
   def create
     username = params[:username]
     password = params[:password]
@@ -35,7 +40,7 @@ class SessionsController < ApplicationController
       )
 
 
-      start_new_session_for user
+      start_new_session_for(user, false)
       redirect_to root_path, notice: "Logged in via OHSU LDAP."
 
     else
@@ -43,8 +48,16 @@ class SessionsController < ApplicationController
     end
   end
 
+  # def destroy
+  #   session = Current.user.sessions.find(params[:id])
+  #   session.destroy
+  #   redirect_to new_session_path, notice: "Successfully logged out."
+  # end
+
   def destroy
     terminate_session
-    redirect_to new_session_path, notice: "Successfully logged out."
+    redirect_to new_session_path, notice: "You have been logged out."
   end
+
+
 end
