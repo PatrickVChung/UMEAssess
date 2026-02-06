@@ -1,3 +1,15 @@
-<div id="search-results">
-  <%= render partial: "results" %>
-</div>
+<!-- <div id="search-results">
+  <%#= render partial: "results" %>
+</div> -->
+
+<turbo-frame id="results">
+  <% if !params[:search].nil? and (params[:search].include? "Med" or params[:search] == 'PhD') %>
+    <%= render partial: 'cohort_listing', locals: {results: @users} %>
+  <% elsif !params[:search].nil? and (params[:search].include? "ohsu.edu" )    %>
+    <%= render "homes/student_profile", welcome_msg: "Student: #{@user.display_name}", user: @user %>
+  <% elsif @users.count == 1  %>
+    <%= render "homes/student_profile", welcome_msg: "Student: #{@users.first.display_name}", user: @users.first %>
+  <% else %>
+      <%= render "results", users: @users %>
+  <% end %>
+</turbo-frame>

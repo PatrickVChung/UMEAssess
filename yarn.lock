@@ -469,6 +469,7 @@ __metadata:
     datatables.net: "npm:^2.3.6"
     datatables.net-bs5: "npm:^2.3.6"
     esbuild: "npm:^0.27.2"
+    highcharts: "npm:^12.5.0"
     nodemon: "npm:^3.1.11"
     postcss: "npm:^8.5.6"
     postcss-cli: "npm:^11.0.1"
@@ -951,6 +952,21 @@ __metadata:
   version: 3.0.0
   resolution: "has-flag@npm:3.0.0"
   checksum: 10c0/1c6c83b14b8b1b3c25b0727b8ba3e3b647f99e9e6e13eb7322107261de07a4c1be56fc0d45678fc376e09772a3a1642ccdaf8fc69bdf123b6c086598397ce473
+  languageName: node
+  linkType: hard
+
+"highcharts@npm:^12.5.0":
+  version: 12.5.0
+  resolution: "highcharts@npm:12.5.0"
+  peerDependencies:
+    jspdf: ^3.0.0
+    svg2pdf.js: ^2.6.0
+  peerDependenciesMeta:
+    jspdf:
+      optional: true
+    svg2pdf.js:
+      optional: true
+  checksum: 10c0/92d3964139ff35f183e1f95910aafa09304afa2486b92d30320e25ffe0d7df81688784f05523021186603987bd1a0aee7c4f0928259a74f893cf17370a0da089
   languageName: node
   linkType: hard
 

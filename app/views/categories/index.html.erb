@@ -1,0 +1,58 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Categories</h1>
+    <%= link_to "Add New Category", new_category_path,
+                data: { turbo_frame: "new_category_row" },
+                class: "btn btn-primary" %>
+  </div>
+
+  <%= turbo_frame_tag "new_category_row" %>>
+
+  <div id="categories_list">
+    <%= render @categories %>
+  </div>
+</div>
+
+<%= form_with url: update_all_categories_path, method: :patch do |f| %>
+  <%= turbo_frame_tag "categories_list" do %>
+    <div class="accordion" id="categoryAccordion">
+      <% @categories.each do |category| %>
+        <div class="accordion-item" data-controller="accordion-checker">
+
+          <h2 class="accordion-header" data-accordion-checker-target="header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-<%= category.id %>">
+              <%= category.name %>
+            </button>
+          </h2>
+
+          <div id="collapse-<%= category.id %>"
+               class="accordion-collapse collapse"
+               data-accordion-checker-target="collapse"
+               data-bs-parent="#categoryAccordion">
+            <div class="accordion-body">
+              <div class="row">
+                <% category.sub_categories.each do |sub| %>
+                  <div class="col-md-4 mb-2">
+                    <div class="form-check">
+                      <%= check_box_tag "sub_category_ids[]", sub.id, sub.selected?,
+                          id: dom_id(sub),
+                          class: "form-check-input",
+                          data: { action: "change->accordion-checker#refresh" } %>
+                      <%= label_tag dom_id(sub), sub.name, class: "form-check-label" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <%= f.submit "Save Selections", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+<% end %>

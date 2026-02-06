@@ -15,7 +15,7 @@
                           class: "me-2" %>
     </h3>
 
-    <%= form_with url: session_path, data: { turbo: false }  do |form| %>
+    <%= form_with url: session_path, method: :post, data: { turbo: false }  do |form| %>
       <div class="mb-3">
         <%= form.label :username, "OHSU Username", class: "form-label" %>
         <%= form.text_field :username,
@@ -36,7 +36,7 @@
       </div>
 
       <div class="d-grid">
-        <%= form.submit "Sign in with LDAP", class: "btn btn-primary" %>
+        <%= form.submit "Sign in with LDAP", class: "btn btn-primary", name: "commit" %>
       </div>
     <% end %>
   </div>

@@ -1,0 +1,83 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <h4>Upload Documents</h4>
+    </div>
+
+    <div class="card-body">
+      <%= form_with model: artifact, data: { controller: "artifact-form" } do |f| %>
+
+        <% if f.object.errors.any? %>
+          <div class="alert alert-danger">
+            <ul>
+              <% f.object.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <% unless ["student", "coach"].include?(Current.user.coaching_type) %>
+          <div class="row mb-3">
+            <%= f.label :cohort, class: "col-sm-2 col-form-label" %>
+            <div class="col-sm-4">
+              <%= select_tag :permission_group_id,
+                    options_for_select(@student_groups.map { |s| [s.title, s.id] }, params[:permission_group_id]),
+                    prompt: "Please Select Cohort",
+                    class: "form-select",
+                    data: { action: "change->artifact-form#loadStudents" } %>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <%= f.label :student, class: "col-sm-2 col-form-label" %>
+            <div class="col-sm-4">
+              <%= select_tag :user_id,
+                    options_for_select(@cohort_students.map { |s| [s.full_name, s.id] }, params[:user_id]),
+                    prompt: "Please Select a Student",
+                    class: "form-select",
+                    data: { artifact_form_target: "studentSelect" } %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="row mb-3">
+          <%= f.label :category_id, "Category", class: "col-sm-2 col-form-label" %>
+          <div class="col-sm-4">
+            <%= f.collection_select :category_id,
+                  Category.all.order(:name),
+                  :id,
+                  :name,
+                  { include_blank: "---" },
+                  class: "form-select",
+                  data: { action: "change->artifact-form#loadSubcategories" } %>
+          </div>
+        </div>
+
+
+        <div class="row mb-3">
+          <%= f.label :sub_category_id, "Sub-category", class: "col-sm-2 col-form-label" %>
+          <div class="col-sm-4">
+            <%= f.select :sub_category_id,
+                  [],
+                  { include_blank: "---" },
+                  class: "form-select",
+                  data: { artifact_form_target: "subcategorySelect" } %>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <%= f.label :documents, "Documents", class: "col-sm-2 col-form-label" %>
+          <div class="col-sm-4">
+            <%= f.drag_and_drop_file_field :documents, "Drag & Drop documents here!", class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <%= f.submit "Upload Document(s)", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

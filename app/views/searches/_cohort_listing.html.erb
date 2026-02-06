@@ -26,25 +26,25 @@
       </thead>
       <% results.each do |result| %>
         <tr>
-          <td style="text-align:center"> <%= link_to result.full_name, searches_path(search: result.email), target: :blank %></td>
-          <td style="text-align:center"> <%= result.email %></td>
+          <td class="text-center"><%= link_to result.full_name, searches_path(search: result.email), target: :blank %></td>
+          <td class="text-center"><%= result.email %></td>
           <% if ['chungp', 'fruhwirt', 'dunnbri', 'schneibe'].include? Current.user.username %>
-            <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
+            <td class="text-center"><%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
           <% else %>
-            <td style="text-align:center"> <%= result.sid.to_s  %></td>
+            <td class="text-center"><%= result.sid.to_s  %></td>
           <% end %>
-          <td style="text-align:center"> <%= result.permission_group.title.to_s %></td>
-          <td style="text-align:center"> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
-          <td style="text-align:center"> <%= result.spec_program %></td>
+          <td class="text-center"><%= result.permission_group.title.to_s %></td>
+          <td class="text-center"><%= hf_get_permission_title(result.prev_permission_group_id) %></td>
+          <td class="text-center"><%= result.spec_program %></td>
           <% if !result.matriculated_date.nil? %>
-            <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
+            <td class="text-center"><%= result.matriculated_date.strftime("%F") %></td>
           <% else %>
             <td></td>
           <% end %>
-          <td style="text-align:center"> <%= result.new_competency? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
-          <td style="text-align:center"> <%= result.is_ldap? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
-          <td style="text-align:center"> <%= result.former_name %></td>
-          <td style="text-align:center"> <%= result.career_interest.join(", ") %></td>
+          <td class="text-center"><%= result.new_competency? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
+          <td class="text-center"><%= result.is_ldap? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
+          <td class="text-center"><%= result.former_name %></td>
+          <td class="text-center"><%= result.career_interest.join(", ") %></td>
         </tr>
       <% end %>
   </table>

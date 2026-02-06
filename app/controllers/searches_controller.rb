@@ -18,9 +18,8 @@ class SearchesController < ApplicationController
       @results = @help
     elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
-    elsif params[:search].include? "@"
-      @results = User.where(email: params[:search]).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :is_ldap, :former_name, :career_interest).order(:full_name)
+    elsif params[:search].include? "ohsu.edu"
+      @user = User.find_by(email: params[:search])
     elsif params[:search] == 'PhD' or params[:search] == 'MPH' or params[:search] == 'MCR' #current_user.spec_program == "PhD"
       @results = User.where(permission_group_id: 7 ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
                 :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :uuid, :new_competency, :is_ldap, :former_name, :career_interest).order(:full_name)
@@ -34,10 +33,8 @@ class SearchesController < ApplicationController
       permission_group = PermissionGroup.where("title like ?", @parameter)
       if !permission_group.empty?
         #joins_query = "inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like " + "#{@parameter}" + " order by users.full_name"
-        @results = User.where(permission_group_id: permission_group.first.id ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
-                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :is_ldap, :former_name, :career_interest).order(:full_name)
-
-        @file_name = hf_create_download_file(@results, params[:search])
+        @users = User.where(permission_group_id: permission_group.first.id ).order(:full_name)
+        @file_name = hf_create_download_file(@users, params[:search])
       else
         @result = nil
       end
@@ -50,36 +47,16 @@ class SearchesController < ApplicationController
                   :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date,:new_competency, :former_name, :career_interest).order(:full_name)
       else
           @parameter = params[:search].strip.downcase + "%"
-          @students = User.all
-          @results = @students.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-                    :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :former_name, :career_interest).order(:full_name)
-          if @results.blank?
-          @results = "<h5>Record NOT found for #{params[:search]}!!</h5>"
-        end
+          @users = User.all
+          @users = @users.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).order(:full_name)
       end
     else
       redirect_to(root_path, alert: "No records found for #{params[:search]}")
-      # @student_year = hf_student_year(params[:search])
-      # @class_comp = Competency.order('student_name').where(student_year: @student_year).page(params[:page])
-      # if @class_comp.empty?
-      #   redirect_to(root_path, alert: "No records found for #{params[:search]}")
-      # else
-      #   @class_mean_exist = true
-      #   @clinical_sid = hf_dataset_sid(params[:search])
-      # end
     end
-    if @results.blank?
-      redirect_to(root_path, alert: "No records found for #{params[:search]}")
-    end
-
     respond_to do |format|
         format.html # Normal initial load
         format.turbo_stream # Optional: for more complex UI updates
     end
-
-    # respond_to do |format|
-    #   format.html
-    # end
 
   end
 

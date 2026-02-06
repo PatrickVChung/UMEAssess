@@ -1,0 +1,14 @@
+<p>HOME INDEX LOADED</p>
+<%= "current user: #{Current.user&.full_name} " %>
+
+<% if Current.user&.coaching_type == 'dean' %>
+  <%= render partial: "dean_profile" %>
+<% elsif Current.user %>
+  <%= render partial: "student_profile",
+             locals: {
+               welcome_msg: "Welcome back, #{Current.user.display_name}!",
+               user: Current.user
+             } %>
+<% else %>
+  <!-- Optional: public landing content -->
+<% end %>

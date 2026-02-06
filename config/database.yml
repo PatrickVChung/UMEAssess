@@ -10,7 +10,7 @@ default: &default
 development:
   primary:
     <<: *default
-    database: umeassess_development
+    database: ume_assess_development
   # secondary:
   #   <<: *default
   #   database: redei_development

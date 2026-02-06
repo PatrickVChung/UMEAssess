@@ -37,41 +37,31 @@
         REDEI V8
       <% end %>
         <div class="navbar-nav ms-auto">
-          <% if authenticated? %>
+          <% if Current.user %>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
                 </li>
-                <!-- <li class="nav-item">
-                  <%#= link_to "File Upload", new_upload_path, class: "nav-link #{'active' if current_page?(new_upload_path)}" %>
-                </li> -->
             </ul>
 
             <span class="nav-link text-light">Welcome, <%= Current.user.display_name %>!</span>
-            <!-- Search form -->
+
             <% if Current.user.coaching_type == 'dean' %>
               <%= form_with url: searches_path, method: :get, class: "d-flex me-3", local: true,
-                    data: {
-                        controller: "search",
-                        turbo_frame: "users_list",
-                        action: "input->search#submit"
-                      } do |form| %>
+                    data: { turbo_frame: "results"
+                } do |form| %>
                 <%= form.label :search, "Student/Cohort Search", class: "form-control" %>
                 <%= form.text_field :search,
                       class: "form-control form-control-sm me-2",
                       placeholder: "Search Student LastName…" %>
               <% end %>
             <% end %>
-            <!-- File Upload link -->
-            <%#= button_to "File Upload",
-                  new_upload_path,
-                  class: "btn btn-primary btn-sm sm-2" %>
 
-                  <%= button_to "Logout",
-                      session_path,
-                      method: :delete,
-                      data: { turbo: false },
-                      class: "dropdown-item" %>
+            <%= button_to "Logout",
+                session_path,
+                method: :delete,
+                data: { turbo: false },
+                class: "dropdown-item" %>
           <% else %>
             <%= link_to "Login", new_session_path, class: "nav-link" %>
           <% end %>

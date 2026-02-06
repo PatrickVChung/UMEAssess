@@ -2,6 +2,7 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
+    before_action :resume_session
     before_action :require_authentication
     helper_method :authenticated?
   end
@@ -12,84 +13,74 @@ module Authentication
     end
   end
 
-  private
-    def authenticated?
-      resume_session
-    end
+  def authenticated?
+    Current.user.present?
+  end
 
-    def require_authentication
-      resume_session || request_authentication
-    end
+  def require_authentication
+    puts "DEBUG: Checking auth. Current.user is: #{Current.user.inspect}"
+    return if Current.user
+    request_authentication
+  end
 
-    def resume_session
-      Current.session ||= find_session_by_cookie
+  def resume_session
+    # Let's see exactly what the JAR contains
+    raw_cookie = cookies[:ume_session_id]
+    signed_id = cookies.signed[:ume_session_id]
 
-      return unless Current.session
-      return terminate_session if Current.session.expired?
+    # Rails.logger.info "--- RESUME DIAGNOSTIC ---"
+    # Rails.logger.info "Raw Cookie Present: #{raw_cookie.present?}"
+    # Rails.logger.info "Signed ID decoded: #{signed_id.inspect}"
 
-      Current.session.refresh!
-      Current.user = Current.session.user
-    end
-
-    # def start_new_session_for(user)
-    #   # Destroy old sessions for this device
-    #   old = Session.find_by(id: cookies.signed[:session_id])
-    #   old&.destroy
-    #
-    #   user.sessions.create!(
-    #     user_agent: request.user_agent,
-    #     ip_address: request.remote_ip
-    #   ).tap do |session|
-    #     Current.session = session
-    #     cookies.signed.permanent[:session_id] = {
-    #       value: session.id,
-    #       httponly: true,
-    #       same_site: :lax,
-    #       secure: Rails.env.production?
-    #     }
-    #   end
-    # end
-
-    def start_new_session_for(user, remember_me: false)
-      session = user.sessions.create!(
-        user_agent: request.user_agent,
-        ip_address: request.remote_ip,
-        remember_token: remember_me ? SecureRandom.hex(32) : nil
-      )
-
+    if signed_id && session = Session.find_by(id: signed_id)
       Current.session = session
+      Current.user = session.user
+      session.refresh!
+      #Rails.logger.info "AUTH SUCCESS: User #{Current.user.id}"
+    else
+      Rails.logger.warn "AUTH FAILURE: No session found for Signed ID #{signed_id}"
+    end
+  end
 
-      cookies.signed[:session_id] = {
+  def start_new_session_for(user, remember_me: false)
+    session = user.sessions.create!(
+      user_agent: request.user_agent,
+      ip_address: request.remote_ip
+    )
+
+    cookies.signed.permanent[:ume_session_id] = {
         value: session.id,
         httponly: true,
-        same_site: :lax,
-        secure: Rails.env.production?,
-        expires: remember_me ? 6.months.from_now : nil
+        path: "/" # Crucial for overwriting old cookies
       }
-    end
+  end
 
-    def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
-    end
+  def find_session_by_cookie
+    # Let's see if it's signed or raw
+    s_id = cookies.signed[:ume_session_id]
+    r_id = cookies[:ume_session_id]
 
-    def request_authentication
-      session[:return_to_after_authenticating] = request.url
-      redirect_to new_session_path
-    end
+    # This WILL show up in your log
+    #Rails.logger.info "RESUME DEBUG: Signed ID: #{s_id.inspect} | Raw ID: #{r_id.inspect}"
 
-    def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
-    end
+    # Try to find it by whichever one is present
+    session_id = s_id || r_id
+    Session.find_by(id: session_id) if session_id.present?
+  end
 
-    def start_new_session_for(user)
-      user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
-        Current.session = session
-        cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
-      end
-    end
+  def request_authentication
+    session[:return_to_after_authenticating] = request.url
+    redirect_to new_session_path
+  end
 
-    def terminate_session
-      Current.session.destroy
-      cookies.delete(:session_id)
-    end
+  def after_authentication_url
+    session.delete(:return_to_after_authenticating) || root_url
+  end
+
+  def terminate_session
+    Current.session&.destroy
+    cookies.delete(:ume_session_id)
+    Current.session = nil
+    Current.user = nil
+  end
 end

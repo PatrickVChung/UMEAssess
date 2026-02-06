@@ -1,11 +1,12 @@
-// app/javascript/controllers/search_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  submit() {
+  static targets = []
+
+  submit(event) {
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      this.element.requestSubmit()
-    }, 300) // Wait 300ms after the user stops typing
+      this.element.querySelector("form").requestSubmit()
+    }, 250)
   }
 }

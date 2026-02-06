@@ -9,3 +9,6 @@ application.register("datatable", DatatableController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ArtifactFormController from "./artifact_form_controller"
+application.register("artifact-form", ArtifactFormController)

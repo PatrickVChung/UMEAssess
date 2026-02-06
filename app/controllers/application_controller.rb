@@ -1,44 +1,32 @@
 class ApplicationController < ActionController::Base
   include Authentication
-  before_action :set_current_user
-  before_action :check_session_timeout
-  before_action :update_last_seen_at
-
+  before_action :resume_session
+  before_action :require_authentication
+  # before_action :debug_cookie_arrival
+  protect_from_forgery with: :exception
 
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
-  def set_current_user
-    Current.user = User.find_by(id: session[:user_id])
-  end
-
+  # def debug_cookie_arrival
+  #   puts "=== COOKIE DEBUG START ==="
+  #   puts "RAW HTTP_COOKIE HEADER: #{request.headers['HTTP_COOKIE']}"
+  #   puts "PARSED COOKIES: #{cookies.to_h.keys}"
+  #   puts "SIGNED SESSION ID: #{cookies.signed[:ume_session_id]}"
+  #   puts "=== COOKIE DEBUG END ==="
+  # end
 
   private
 
-    def check_session_timeout
-      return unless session[:last_seen_at]
-
-      last_seen = Time.parse(session[:last_seen_at])
-
-      if Time.current - last_seen > 30.minutes
-        reset_session
-        redirect_to new_session_path, alert: "Your session has expired due to inactivity."
-      end
+    def require_authentication
+        return if Current.user
+        request_authentication
     end
 
-    def update_last_seen_at
-      session[:last_seen_at] = Time.current
-    end
-
-    def set_current_user
-      Current.user = authenticated? ? Current.user : nil
-    end
 
     def require_login
       redirect_to new_session_path unless session[:user_id]
     end
-
-
 
 end

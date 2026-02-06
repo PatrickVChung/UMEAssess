@@ -1,7 +1,11 @@
 class SessionsController < ApplicationController
-  allow_unauthenticated_access only: %i[new create]
+  allow_unauthenticated_access only: [:new, :create]
+  before_action :redirect_if_authenticated, only: [:new]
+
   rate_limit to: 10, within: 3.minutes, only: :create,
              with: -> { redirect_to new_session_url, alert: "Try again later." }
+
+  layout "public", only: [:new, :create]
 
   def new
   end
@@ -23,7 +27,7 @@ class SessionsController < ApplicationController
         last_sign_in_at: Time.current,
         last_sign_in_ip: request.remote_ip
       )
-      start_new_session_for user
+      start_new_session_for(user)
       redirect_to root_path, notice: "Logged in locally."
 
     # 2. LDAP authentication
@@ -40,7 +44,7 @@ class SessionsController < ApplicationController
       )
 
 
-      start_new_session_for(user, false)
+      start_new_session_for(user, remember_me: false)
       redirect_to root_path, notice: "Logged in via OHSU LDAP."
 
     else
@@ -57,6 +61,14 @@ class SessionsController < ApplicationController
   def destroy
     terminate_session
     redirect_to new_session_path, notice: "You have been logged out."
+  end
+
+  private
+
+  def redirect_if_authenticated
+    if Current.user
+      redirect_to root_path, notice: "You are already signed in."
+    end
   end
 
 
