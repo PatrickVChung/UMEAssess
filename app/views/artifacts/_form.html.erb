@@ -45,15 +45,16 @@
           <%= f.label :category_id, "Category", class: "col-sm-2 col-form-label" %>
           <div class="col-sm-4">
             <%= f.collection_select :category_id,
-                  Category.all.order(:name),
+                  @categories,
                   :id,
                   :name,
                   { include_blank: "---" },
+                  name: "title",
+                  prompt: "Please Select a Category",
                   class: "form-select",
                   data: { action: "change->artifact-form#loadSubcategories" } %>
           </div>
         </div>
-
 
         <div class="row mb-3">
           <%= f.label :sub_category_id, "Sub-category", class: "col-sm-2 col-form-label" %>
@@ -62,14 +63,17 @@
                   [],
                   { include_blank: "---" },
                   class: "form-select",
+                  name: "content",
+                  prompt: "Please Select a SubCategory",
                   data: { artifact_form_target: "subcategorySelect" } %>
           </div>
         </div>
 
-        <div class="row mb-3">
+        <div class="row mb-3" id="artifact_upload_container">
           <%= f.label :documents, "Documents", class: "col-sm-2 col-form-label" %>
           <div class="col-sm-4">
-            <%= f.drag_and_drop_file_field :documents, "Drag & Drop documents here!", class: "form-control" %>
+            <%= f.drag_and_drop_file_field :documents, "Drag & Drop documents here!", class: "form-control", id:  "drag-and-drop-file-field"%>
+
           </div>
         </div>
 

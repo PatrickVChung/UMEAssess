@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+import "bootstrap-icons/font/bootstrap-icons.css"
 
 const application = Application.start()
 

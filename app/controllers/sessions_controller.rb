@@ -45,6 +45,8 @@ class SessionsController < ApplicationController
 
 
       start_new_session_for(user, remember_me: false)
+      PurgeExpiredSessionsJob.perform_later # Fire and forget
+      
       redirect_to root_path, notice: "Logged in via OHSU LDAP."
 
     else

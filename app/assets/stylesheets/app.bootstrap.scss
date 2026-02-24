@@ -18,3 +18,17 @@
   background-color: #eafaea !important;
   border-bottom: 1px solid #d4edda; // Optional: adds a slightly darker green line at the bottom
 }
+
+.drag-and-drop-file-field,
+input[type="file"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 40px;
+  border: 2px solid red !important; /* Red border helps us find it */
+}
+
+.drag-and-drop-file-field--dragover {
+  border-color: #007bff;
+  background: #e7f1ff;
+}

@@ -66,3 +66,5 @@ gem "xsv"
 gem "activestorage-validator", "~> 0.1.0"
 gem "active_storage_drag_and_drop"
 
+
+gem "cancancan", "~> 3.6"

@@ -33,6 +33,7 @@ module Authentication
     # Rails.logger.info "Signed ID decoded: #{signed_id.inspect}"
 
     if signed_id && session = Session.find_by(id: signed_id)
+
       Current.session = session
       Current.user = session.user
       session.refresh!
@@ -48,10 +49,11 @@ module Authentication
       ip_address: request.remote_ip
     )
 
-    cookies.signed.permanent[:ume_session_id] = {
+    cookies.signed[:ume_session_id] = {
         value: session.id,
         httponly: true,
-        path: "/" # Crucial for overwriting old cookies
+        path: "/",
+        expires: 15.minutes # Crucial for overwriting old cookies
       }
   end
 
@@ -70,7 +72,7 @@ module Authentication
 
   def request_authentication
     session[:return_to_after_authenticating] = request.url
-    redirect_to new_session_path
+    redirect_to new_session_path, alert: "Your session has expired. Please log in again."
   end
 
   def after_authentication_url
@@ -83,4 +85,6 @@ module Authentication
     Current.session = nil
     Current.user = nil
   end
+
+
 end

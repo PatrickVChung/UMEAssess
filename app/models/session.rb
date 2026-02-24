@@ -6,17 +6,21 @@ class Session < ApplicationRecord
   scope :active, -> { where("expires_at > ?", Time.current) }
 
   def expired?
-    return true if expires_at.nil?
-    expires_at < Time.current
+    expires_at.nil? || expires_at < Time.current
   end
 
   def refresh!
-    update!(last_seen_at: Time.current)
+    update!(
+      last_seen_at: Time.current,
+      expires_at: 15.minutes.from_now
+      )
+    touch
   end
 
   private
 
   def set_expiration
-    self.expires_at ||= 2.weeks.from_now
+    self.expires_at ||= 15.minutes.from_now
+    self.last_seen_at ||= Time.current
   end
 end

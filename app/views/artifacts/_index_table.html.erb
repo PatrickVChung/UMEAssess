@@ -1,0 +1,103 @@
+
+  <div class="d-flex align-items-center gap-2 mb-2">
+    <h5>Your Artifacts</h5>
+    <%= link_to 'Upload Documents',
+                new_artifact_path(file_type: 'Regular'),
+                class: "btn btn-primary",
+                target: "_blank", rel: "noopener" %>
+  </div>
+
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Action</th>
+        <th>Documents</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% artifacts.each do |artifact| %>
+        <tr>
+          <td><%= artifact.title %></td>
+          <td><%= artifact.content %></td>
+          <td>
+            <% current_user = Current.user %>
+            <% if current_user.coaching_type != 'student' || !artifact.content.to_s.include?("Progress Board") %>
+              <%= link_to "Destroy Artifact",
+                          artifact,
+                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+            <% end %>
+
+            <% if current_user.coaching_type == 'admin' || (['nmai', 'fruhwirt'].include? current_user.username) %>
+              /
+              <%= link_to 'Move files', move_files_artifact_path(artifact) %>
+              /
+              <%= link_to 'Ultimate Method', ultimate_method_artifact_path(artifact) %>
+            <% end %>
+
+            <% if artifact.content.to_s.include?("Preceptor") && %w[dean admin].include?(current_user.coaching_type) %>
+              / <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact) %>
+            <% end %>
+
+            <% if artifact.content.to_s.include?("Formative Feedback") && %w[dean admin].include?(current_user.coaching_type) %>
+              / <%= link_to 'Process FormativeFeedback', process_formative_feedback_artifact_path(artifact) %>
+            <% end %>
+
+            <% if artifact.content.to_s.include?("Informatics Feedback") && %w[dean admin].include?(current_user.coaching_type) %>
+              / <%= link_to 'Process InformaticsFeedback', process_informatics_feedback_artifact_path(artifact) %>
+            <% end %>
+
+            <% if artifact.content.to_s.include?("Mock Step 1") && %w[dean admin].include?(current_user.coaching_type) %>
+              / <%= link_to 'Process USMLE Exam', process_usmle_exam_artifact_path(artifact) %>
+            <% end %>
+
+            <% if artifact.content.to_s.include?("Competency-Excel") && current_user.coaching_type == 'admin' %>
+              / <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank %>
+            <% end %>
+
+            <% if current_user.coaching_type == "dean" && artifact.content.to_s.include?("BLS-Excel") %>
+              / <%= link_to 'Process BLS', process_bls_excel_artifact_path(artifact), target: :_blank %>
+            <% end %>
+          </td>
+
+          <td>
+            <% if artifact.documents.any? %>
+              <% artifact.documents.each do |doc| %>
+                <div id="<%= dom_id(doc) %>" class="d-flex align-items-center gap-2 mb-2">
+                  <%= link_to doc.filename.to_s,
+                              rails_blob_path(doc, disposition: "attachment"),
+                              class: "text-black text-decoration-none",
+                              data: { turbo: false } %>
+
+                  <small class="text-muted">
+                    <%= link_to "View",
+                                rails_blob_path(doc, disposition: "inline"),
+                                target: "_blank",
+                                class: "link-primary",
+                                data: { turbo: false } %>
+                    |
+                    <%= link_to 'Download',
+                                rails_blob_path(doc, disposition: 'attachment'),
+                                target: "_blank",
+                                class: "link-primary",
+                                data: { turbo: false } %>
+
+                    <% if %w[admin dean].include?(Current.user.coaching_type) %>
+                      |
+                      <%= link_to "Purge Doc",
+                                  delete_document_artifact_path(artifact, document_id: doc.id),
+                                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                                  class: "text-danger" %>
+                    <% end %>
+                  </small>
+                </div>
+              <% end %>
+            <% else %>
+              <span class="text-muted">No documents</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
