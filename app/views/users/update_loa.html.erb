@@ -1,0 +1,72 @@
+<div class="card mx-auto shadow-sm" style="max-width: 800px;">
+  <div class="card-body">
+    <%= form_with(model: @user, url: save_update_loa_users_path(@user), method: :get, local: true) do |f| %>
+      <%# Hidden fields are fine, but ensure they are needed if the model object is passed %>
+      <%= f.hidden_field :sid %>
+      <%= f.hidden_field :uuid %>
+
+      <div class="row g-3"> <%# Bootstrap Grid for consistent spacing %>
+
+        <%# Header Logic %>
+        <div class="col-12 border-bottom pb-2 mb-3">
+          <% if @user.sid.nil? %>
+            <div class="mb-3">
+              <%= f.label :email, "Email (Disabled)", class: "form-label" %>
+              <%= f.email_field :email, disabled: true, class: "form-control bg-light" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :sid, "Student ID", class: "form-label" %>
+              <%= f.text_field :sid, class: "form-control border-primary" %>
+            </div>
+          <% else %>
+            <div class="mb-3">
+              <%= f.label :sid, "Student ID (Disabled)", class: "form-label" %>
+              <%= f.text_field :sid, disabled: true, class: "form-control", style: "background-color: #D8A7B1;" %>
+            </div>
+          <% end %>
+        </div>
+
+        <%# Main Inputs %>
+        <div class="mx-auto col-md-8">
+          <div class="mb-3">
+            <%= f.label :full_name, class: "form-label" %>
+            <%= f.text_field :full_name, class: "form-control bg-success-subtle" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :spec_program, "Special Program", class: "form-label" %>
+            <%= f.text_field :spec_program, class: "form-control bg-success-subtle" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :former_name, class: "form-label" %>
+            <%= f.text_field :former_name, class: "form-control bg-success-subtle" %>
+          </div>
+
+          <%# Select Menus - Fixed to use collection_select %>
+          <div class="mb-3">
+            <%= f.label :permission_group_id, "Current Cohort", class: "form-label" %>
+            <%= f.collection_select :permission_group_id, @permission_groups, :id, :title, { include_blank: true }, { class: "form-select bg-success-subtle" } %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :prev_permission_group_id, "Previous Cohort", class: "form-label" %>
+            <%= f.collection_select :prev_permission_group_id, @permission_groups, :id, :title, { include_blank: true }, { class: "form-select bg-success-subtle" } %>
+          </div>
+
+          <%# Checkbox Modernized %>
+          <div class="form-check form-switch mb-4">
+            <%= f.check_box :new_competency, class: "form-check-input", role: "switch" %>
+            <%= f.label :new_competency, "Is New Competency?", class: "form-check-label" %>
+          </div>
+        </div>
+
+        <div class="col-12 pt-3 border-top">
+          <%= f.submit "Save Changes", class: 'btn btn-success px-4' %>
+          <%= link_to "Cancel", :back, class: 'btn btn-outline-secondary ms-2' %>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+</div>

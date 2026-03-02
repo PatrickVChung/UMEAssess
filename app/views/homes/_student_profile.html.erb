@@ -38,10 +38,19 @@
                 <span class="text-secondary">Email</span>
                 <span class="fw-bold"><%= user.email %></span>
               </li>
+
+              <% if ['chungp', 'fruhwirt', 'dunnbri', 'schneibe', 'itot'].include? Current.user.username %>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  <span class="text-primary"> <%= link_to 'Student UID', update_loa_users_path(sid: user.sid), class: "nav-link blue-text", target: :_blank %></span>
+                  <span class="fw-bold"><%= user.sid %></span>
+                </li>
+              <% else %>
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                 <span class="text-secondary">Student UID</span>
                 <span class="fw-bold"><%= user.sid %></span>
               </li>
+              <% end %>
+
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                 <span class="text-secondary">Current Cohort</span>
                 <span class="fw-bold"><%= user.permission_group.title %></span>
@@ -63,9 +72,25 @@
                 <span class="fw-bold"><%= user.matriculated_date %></span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                <span class="text-secondary">Matriculated Date</span>
+                <span class="text-secondary">New Competency?</span>
                 <span class="fw-bold"><%= user.new_competency ? 'Yes' : 'No' %></span>
               </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <% bls_record = user.ume_bls %>
+                <% if !bls_record.nil? %>
+                   <% if bls_record.expiration_date.after? (Date.today) %>
+                      <span class="text-secondary">BLS ExpDate</span>
+                      <span class="fw-bold" style="color:green"><%= bls_record.expiration_date.strftime("%F") %></span>
+                   <% else %>
+                      <span class="text-secondary">BLS ExpDate</span>
+                      <span class="fw-bold" style="color:red"><%= bls_record.expiration_date.strftime("%F") %></span>
+                   <% end %>
+                <% else %>
+                    <span class="text-secondary">BLS ExpDate</span>
+                    <span class="fw-bold" style="color:red"><b>No BLS Data</b>/span>
+                <% end %>
+                </li>
+
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                 <span class="text-secondary">Specialties Interest</span>
                 <span class="fw-bold"><%= user.career_interest.flatten %></span>
@@ -81,25 +106,33 @@
             <h5 class="card-title text-muted"><i class="bi bi-rocket-takeoff me-2"></i>Quick Actions/View Datasets</h5>
           </div>
           <div class="card-body">
+            <ul classs="list-group">
               OASIS Access <br />
-              <%= link_to 'View Artifacts/Upload Documents', artifacts_path(user_id: user.id), data: { turbo: true }, target: "_blank" %><br />
+              <%= link_to 'View Artifacts/Upload Documents', artifacts_path(user_id: user.id), data: { turbo: true }, target: "_blank",
+                  class: 'list-group-item list-group-item-action' %><br />
               Clinical Datasets<br />
-              <strong>FoM Blocks </strong><br>
-              <% fom_block_array = [] %>
-              <%  hf_exists_in_FomExam(user.id).each do |block| %>
-                  <% cohort = block["cohort"] %>
-                  <% permission_group_id = block["permission_group_id"] %>
-                  <% course_code = block["course_code"] %>
-                  <% if !course_code.include? "DISABLED" %>
-                    <% session[:attach_id] = -1 %>
-                    <% hf_check_aes_key %>
-                    <% fom_block_array.push course_code %>
-                    <li><%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
-                            display_fom_fom_exams_path(permission_group_id: AES.encrypt(permission_group_id.to_s, session[:aes_key]), course_code: AES.encrypt(course_code, session[:aes_key] ), uuid: result.uuid), method: :get,  target: '_blank') %> </li>
-                  <% else %>
-                     <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
-                  <% end %>
-              <% end %>
+              <strong class="text-primary">FoM Blocks </strong><br>
+              <ul classs="list-group">
+                <% fom_block_array = [] %>
+                <%  hf_exists_in_FomExam(user.id).each do |block| %>
+                    <% cohort = block["cohort"] %>
+                    <% permission_group_id = block["permission_group_id"] %>
+                    <% course_code = block["course_code"] %>
+                    <% if !course_code.include? "DISABLED" %>
+                      <% session[:attach_id] = -1 %>
+                      <% hf_check_aes_key %>
+                      <% fom_block_array.push course_code %>
+                      <li><%= link_to("#{cohort}:Foundation of Medicine: #{course_code}".html_safe,
+                              display_fom_fom_exams_path(permission_group_id: AES.encrypt(permission_group_id.to_s, session[:aes_key]),
+                              course_code: AES.encrypt(course_code, session[:aes_key] ),
+                              uuid: user.uuid), method: :get,   data: { turbo: true },
+                              target: '_blank', class: 'list-group-item list-group-item-action') %> </li>
+                    <% else %>
+                       <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
+                    <% end %>
+                <% end %>
+              </ul>
+            </ul>
           </div>
         </div>
       </div>

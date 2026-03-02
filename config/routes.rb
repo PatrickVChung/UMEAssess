@@ -45,6 +45,29 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :fom_exams do
+    collection do
+      get 'list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+      get 'export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+      get 'process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+      get 'process_fom', controller: 'fom_exams', action: :index, to: 'fom_exams#process_fom'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
+      post 'send_alerts', controller: 'fom_exams', action: :send_alerts, to: 'fom_exams#send_alerts'
+      get 'send_alerts', controller: 'fom_exams', action: :send_alerts, to: 'fom_exams#send_alerts'
+      get 'display_fom', controller: 'fom_exams', action: :display_fom, to: 'fom_exams#display_fom'
+      get 'unsubscribe'
+
+    end
+  end
+  resources :users do
+    collection do
+        get "update_loa", action: :update_loa, to: "users#update_loa#"
+        get "save_update_loa", action: :save_update_loa, to: "users#save_update_loa"
+        get "update_career_interests", action: :update_career_interests, to: "users#update_career_interests"
+        get "save_career_interests", action: :save_career_interests, to: "users#save_career_interests"
+    end
+  end
+  
   resource :session, only: [:new, :create, :destroy]
 
   resources :passwords, param: :token

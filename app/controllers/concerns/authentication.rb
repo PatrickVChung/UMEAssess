@@ -53,7 +53,7 @@ module Authentication
         value: session.id,
         httponly: true,
         path: "/",
-        expires: 15.minutes # Crucial for overwriting old cookies
+        expires: 30.minutes # Crucial for overwriting old cookies
       }
   end
 

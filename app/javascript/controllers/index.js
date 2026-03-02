@@ -4,11 +4,23 @@
 
 import { application } from "./application"
 
+import AccordionCheckerController from "./accordion_checker_controller"
+application.register("accordion-checker", AccordionCheckerController)
+
+import ArtifactFormController from "./artifact_form_controller"
+application.register("artifact-form", ArtifactFormController)
+
 import DatatableController from "./datatable_controller"
 application.register("datatable", DatatableController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
-import ArtifactFormController from "./artifact_form_controller"
-application.register("artifact-form", ArtifactFormController)
+import HighchartsController from "./highcharts_controller"
+application.register("highcharts", HighchartsController)
+
+import NestFormController from "./nest_form_controller"
+application.register("nest-form", NestFormController)
+
+import SearchController from "./search_controller"
+application.register("search", SearchController)

@@ -12,7 +12,7 @@ class Session < ApplicationRecord
   def refresh!
     update!(
       last_seen_at: Time.current,
-      expires_at: 15.minutes.from_now
+      expires_at: 30.minutes.from_now
       )
     touch
   end
@@ -20,7 +20,7 @@ class Session < ApplicationRecord
   private
 
   def set_expiration
-    self.expires_at ||= 15.minutes.from_now
+    self.expires_at ||= 30.minutes.from_now
     self.last_seen_at ||= Time.current
   end
 end

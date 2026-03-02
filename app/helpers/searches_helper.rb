@@ -166,7 +166,7 @@ module SearchesHelper
     end
     blocks.each do |block|
       block_hash = {}
-      if current_user.dean_or_higher?
+      if Current.user.dean_or_higher?
         block_hash.store("course_code", block.course_code)
       elsif FomLabel.find_by(permission_group_id: block.permission_group_id, course_code: block.course_code).block_enabled
           block_hash.store("course_code", block.course_code)

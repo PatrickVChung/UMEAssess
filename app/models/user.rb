@@ -6,14 +6,17 @@ class User < ApplicationRecord
   normalizes :email, with: ->(e) { e.strip.downcase }
 
   has_many :artifacts, dependent: :destroy
+  has_many :fom_exams, dependent: :destroy, inverse_of: :user
+  has_many :med22_fom_exams, dependent: :destroy
+  has_many :med21_fom_exams, dependent: :destroy
+  has_many :fom_labels
+  has_many :formative_feedbacks, dependent: :destroy
+  has_one  :ume_bls, dependent: :destroy
   # serialize :roles, type: Array
 
   ROLES = {
     # can view assignments that they belong to
     participant: 0,
-
-    # Piecemeal permissions
-    # Commented these roles out on 11/18/2024
     can_dashboard: 1,
     # can_stats: 1,
     # can_reports: 1,
@@ -46,23 +49,31 @@ class User < ApplicationRecord
  end
 
  COACHING_ROLES = {
-   'dean': 30,
-   'coach': 20,
-   'student': 10
- }
+   'dean' => 30,
+   'coach' => 20,
+   'student' => 10
+ }.freeze
 
- # define "#{role}?" style getters for coaching system
- COACHING_ROLES.each do |role, val|
-   define_method("#{role.to_s}?") do
-     coaching_type == role.to_s
+ COACHING_ROLES.each do |role_name, importance_value|
+   # Define: dean?, coach?, student?
+   define_method("#{role_name}?") do
+     coaching_type == role_name
    end
 
-   define_method("#{role.to_s}_or_higher?") do
-     return true if admin_or_higher?
-     COACHING_ROLES[coaching_type.to_sym] >= val
+   # Define: dean_or_higher?, etc.
+   define_method("#{role_name}_or_higher?") do
+     # 1. Use the boolean check instead of the "or_higher" check to avoid recursion
+     return true if respond_to?(:admin?) && admin?
+
+     # 2. Safely fetch the current user's rank
+     current_rank = COACHING_ROLES[coaching_type] || 0
+     current_rank >= importance_value
    end
  end
 
+ def current_user
+   return Current.user
+ end
 
   def display_name
     last, first = full_name.split(", ").map(&:strip)

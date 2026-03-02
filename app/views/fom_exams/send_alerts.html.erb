@@ -1,0 +1,32 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <h5>FoM - Send Alerts</h5><hr>
+
+        <%# Use form_with and point data-turbo-frame to the ID below %>
+        <%= form_with url: send_alerts_fom_exams_path, method: :get,
+                      data: { turbo_frame: "alerts_results" } do |f| %>
+          <div style="display: inline-block">
+            <%= label_tag :uniq_cohort, "Cohort", class: "control-label" %>
+            <%= select_tag :uniq_cohort,
+                options_for_select(@permission_groups.map{|g| [g.title, g.id]}, params[:uniq_cohort]),
+                class: "form-select",
+                style: "max-width:250px; display: inline-block",
+                prompt: "Please Select a Cohort" %>
+
+            <%= f.submit 'Submit', class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+
+<turbo-frame id="alerts_results">
+  <div class="d-flex justify-content-center w-100">
+    <%= render "fom_exams/send_alerts_list", user_ids: @user_ids, cohort_ids: @cohort_ids %>
+  </div>
+</turbo-frame>

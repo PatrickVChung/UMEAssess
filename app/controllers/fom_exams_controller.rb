@@ -1,7 +1,6 @@
 class FomExamsController < ApplicationController
-  layout 'full_width_csl'
   protect_from_forgery prepend: true, with: :exception
-  before_action :authenticate_user!, :get_tso_emails, :set_resources
+  before_action  :get_tso_emails, :set_resources
 
   include FomExamsHelper
   include ArtifactsHelper
@@ -57,6 +56,7 @@ class FomExamsController < ApplicationController
   end
 
   def send_alerts
+
     if params[:uniq_cohort].present?
       @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
       course_code = FomExam.where(permission_group_id: params[:uniq_cohort]).select(:course_code).order(:course_code).distinct.pluck(:course_code).last
@@ -64,44 +64,48 @@ class FomExamsController < ApplicationController
       #@cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:full_name).pluck(:id)
       @user_ids = @tso_ids
 
-    elsif params[:email_message].present? # from ajax  call here
-        email_message = JSON.parse(params[:email_message])
-        uniq_cohort = email_message.select{|e| e if e["uniq_cohort"]}.first["uniq_cohort"]
-        @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).order(:full_name).pluck(:id)
+    elsif params[:body_message].present? # from ajax  call here
 
-        @email_ids = email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
-        @from = email_message.select{|e| e if e["from"]}.first["from"]
-        @subject = email_message.select{|e| e if e["subject"]}.first["subject"]
-        body_message = email_message.select{|e| e if e["body_message"]}.first["body_message"]
+        uniq_cohort = params[:uniq_cohort]
+        @dean_users = User.where(subscribed: true, coaching_type: 'dean').order(:id)
 
-        user_ids = @email_ids.map{|x| x["user_id"]}
-        user_ids = user_ids + @cohort_ids
-
-        user_ids.each do |id|
-          if id != 'checkAll'
-            user = User.find(id.to_i)
+        @from = params[:from]
+        @subject = params[:subject]
+        body_message = params[:body_message]
+        total_count = 0
+        total_count += @dean_users.count
+        @dean_users.each do |user|
             hello = "Hello " + user.full_name.split(", ").last + ",<br /><br />"
             @body_message = hello + body_message
-            ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver
+            ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_later
+        end
+
+        if (params[:checkAll].present? && params[:checkAll] == "checkAll")
+          @users = User.where(permission_group_id: uniq_cohort, subscribed: true).order(:full_name)
+          @users.each do |user|
+              hello = "Hello " + user.full_name.split(", ").last + ",<br /><br />"
+              @body_message = hello + body_message
+              ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_later
+
           end
+          total_count += @users.count
         end
 
         hello = "Hello " + @tso_emails.first["TSO1"]["name"].split(", ").last + ",<br /><br />"
         @body_message = hello + body_message
-        ActionMailer::Base.mail(from: @from, to: @tso_emails.first["TSO1"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.first["TSO1"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_later
 
         hello = "Hello " + @tso_emails.second["TSO2"]["name"].split(", ").last + ",<br /><br />"
         @body_message = hello + body_message
-        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["TSO2"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["TSO2"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_later
 
-        flash[:send_alert] = "You have sent out #{user_ids.count} emails!"
+        total_count += 2
+
+        flash[:send_alert] = "You have sent out #{total_count.to_s} emails!"
+
     end
 
-    respond_to do |format|
-      format.js {render action: 'send_alerts', status: 200}
-      format.html
-    end
+
   end
 
   def unsubscribe
@@ -124,14 +128,13 @@ class FomExamsController < ApplicationController
 
   def display_fom
 
-    if params[:uuid].present?  and params[:course_code].present? #current_user.admin_or_higher?
-      if params[:uuid] == current_user.uuid or current_user.coaching_type == 'dean' or
-        current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
+    if params[:uuid].present?  and params[:course_code].present? #Current.user.admin_or_higher?
+      if params[:uuid] == Current.user.uuid or Current.user.coaching_type == 'dean' or
+        Current.user.coaching_type == 'coach' or Current.user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
        aes_key = session[:aes_key]
        @course_code = AES.decrypt(params[:course_code], aes_key) #session[:course_code]  #params[:course_code]
        permission_group_id = AES.decrypt(params[:permission_group_id], aes_key).to_i ## from Search function, required for cohort jumpers.
-
 
        student  = User.find_by(uuid: params[:uuid])
        @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
@@ -152,10 +155,10 @@ class FomExamsController < ApplicationController
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
-       if ['dean', 'admin'].include? current_user.coaching_type
+       if ['dean', 'admin'].include? Current.user.coaching_type
          block_enabled = true ## always visible
          @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
-       elsif current_user.coaching_type == 'student'
+       elsif Current.user.coaching_type == 'student'
          block_enabled = FomLabel.find_by(course_code: @course_code, permission_group_id: permission_group_id).block_enabled
          if block_enabled
            @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
@@ -189,10 +192,6 @@ class FomExamsController < ApplicationController
      else
        @comp_keys = ' **** You NOT AUTHORIZED to view this account! ***'
      end
-    end
-
-    respond_to do |format|
-      format.html
     end
 
   end

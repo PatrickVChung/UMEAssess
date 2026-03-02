@@ -5,7 +5,7 @@ gem "rails", "~> 8.0.4"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use Postgres DB  as the database for Active Record
-gem "pg" 
+gem "pg"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
@@ -51,6 +51,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem "letter_opener"
 end
 
 group :development do
@@ -65,6 +66,5 @@ gem "csv_hasher"
 gem "xsv"
 gem "activestorage-validator", "~> 0.1.0"
 gem "active_storage_drag_and_drop"
-
-
 gem "cancancan", "~> 3.6"
+gem "aes"

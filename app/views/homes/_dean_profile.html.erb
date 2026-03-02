@@ -66,14 +66,30 @@
             <h5 class="card-title text-muted"><i class="bi bi-rocket-takeoff me-2"></i>Quick Actions/View Datasets</h5>
           </div>
           <div class="card-body d-grid gap-2">
-            OASIS Access <br />
-            <%= link_to 'View Artifacts/Upload Documents', artifacts_path, data: { turbo: true }, target: "_blank" %><br />
-            Medhub <br>
-            Course Catalog <br>
-            Process FoM <br>
-            EG Review <br>
-            Report <br>
-            WBA Graph/Report <br>
+            <ul classs="list-group">
+              <%= link_to 'View Artifacts/Upload Documents', artifacts_path, data: { turbo: true }, target: "_blank",
+                  class: 'list-group-item list-group-item-action text-primary' %>
+
+                  <% if Current.user.can_process_fom? and Current.user.coaching_type != 'student'%>
+                  <strong>Process FoM Exams File </strong>
+                    <ul classs="list-group">
+                      <li><%= link_to 'Process FoM', process_fom_fom_exams_path(uuid: Current.user.uuid), target: '_blank',
+                              class: 'list-group-item list-group-item-action text-primary' %></li>
+                      <li><%= link_to 'Bulk Delete', bulk_remove_artifacts_path, target: '_blank',
+                              class: 'list-group-item list-group-item-action text-primary' %></li>
+                      <li><%= link_to 'Send out Alerts', send_alerts_fom_exams_path(), method: 'post',
+                              class: 'list-group-item list-group-item-action text-primary', target: :_blank %></li>
+
+                    </ul>
+                  <% end %>
+
+              OASIS Access <br />
+              Medhub <br>
+              Course Catalog <br>
+              EG Review <br>
+              Report <br>
+              WBA Graph/Report <br>
+            </ul>
 
 
             <button class="btn btn-outline-secondary d-flex align-items-center justify-content-between">

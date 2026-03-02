@@ -59,6 +59,15 @@
             <% if current_user.coaching_type == "dean" && artifact.content.to_s.include?("BLS-Excel") %>
               / <%= link_to 'Process BLS', process_bls_excel_artifact_path(artifact), target: :_blank %>
             <% end %>
+
+            <% if current_user.can_process_fom? and current_user.coaching_type != 'student'%>
+              <% if artifact.content.to_s.include? "Excel"  %>
+                <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank  %>
+              <% elsif artifact.content == "FoM Tab Delimited File"   %>
+                / <%= link_to 'Process FoM File', process_csv_fom_exams_path(attach_id: artifact.documents.first), class: 'text-danger' %>
+              <% end %>
+            <% end %>
+
           </td>
 
           <td>
