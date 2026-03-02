@@ -64,7 +64,7 @@ gem "dotenv-rails", groups: [:development, :test]
 gem "csv"
 gem "csv_hasher"
 gem "xsv"
-gem "activestorage-validator", "~> 0.1.0"
+gem "activestorage-validator", "~> 0.5.0"
 gem "active_storage_drag_and_drop"
 gem "cancancan", "~> 3.6"
 gem "aes"
