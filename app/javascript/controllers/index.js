@@ -10,14 +10,32 @@ application.register("accordion-checker", AccordionCheckerController)
 import ArtifactFormController from "./artifact_form_controller"
 application.register("artifact-form", ArtifactFormController)
 
+import AutosubmitController from "./autosubmit_controller"
+application.register("autosubmit", AutosubmitController)
+
+import ContextMenuController from "./context_menu_controller"
+application.register("context-menu", ContextMenuController)
+
 import DatatableController from "./datatable_controller"
 application.register("datatable", DatatableController)
+
+import DraggableController from "./draggable_controller"
+application.register("draggable", DraggableController)
+
+import EpaReviewFormLogicController from "./epa_review_form_logic_controller"
+application.register("epa-review-form-logic", EpaReviewFormLogicController)
+
+import FormSubmissionController from "./form_submission_controller"
+application.register("form-submission", FormSubmissionController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
 import HighchartsController from "./highcharts_controller"
 application.register("highcharts", HighchartsController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
 
 import NestFormController from "./nest_form_controller"
 application.register("nest-form", NestFormController)

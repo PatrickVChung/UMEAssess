@@ -1,0 +1,5 @@
+
+<% #= turbo_stream.update "epa_masters" do %>
+  <% #= render partial: "epa_masters/list", locals: { epa_masters: @epa_masters } %>
+  <% #= render "epa_masters_table", epa_masters: @epa_masters %>
+<% #end %>

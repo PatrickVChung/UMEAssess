@@ -12,7 +12,14 @@ class User < ApplicationRecord
   has_many :fom_labels
   has_many :formative_feedbacks, dependent: :destroy
   has_one  :ume_bls, dependent: :destroy
+  has_many :epa_masters, dependent: :destroy, inverse_of: :user
   # serialize :roles, type: Array
+  has_many :epas, dependent: :destroy
+  has_many :competencies, dependent: :destroy, inverse_of: :user
+  has_many :new_competencies, dependent: :destroy, inverse_of: :user
+
+  has_many :preceptor_evals, dependent: :destroy
+  has_many :preceptor_assesses, dependent: :destroy
 
   ROLES = {
     # can view assignments that they belong to

@@ -1,0 +1,100 @@
+<div class="modal-body">
+    <!-- Nav tabs -->
+    <ul id="EGReviewTabs" class="nav nav-pills mb-3" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="eg-review-tab" data-bs-toggle="tab" data-bs-target="#EGReviewTab" type="button" role="tab" aria-controls="EGReviewTab" aria-selected="true">
+            <b>EG Review</b>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="evidence-tab" data-bs-toggle="tab" data-bs-target="#EvidenceTab" type="button" role="tab" aria-controls="EvidenceTab" aria-selected="false">
+            <b>Evidence</b>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#SummaryTab" type="button" role="tab" aria-controls="SummaryTab" aria-selected="false">
+            <b>Other</b>
+          </button>
+        </li>
+      </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+        <div id="EGReviewTab" class="tab-pane fade active show" role="tabpanel" >
+          <% if !@reviewable.nil? %>
+              <% if @reviewable.epa_reviews.count > 0  %>
+                 <%= render partial: "epa_reviews/list_reviewable" %>
+              <% end %>
+          <% end %>
+
+          <%= body %>
+
+        </div>
+        <div id="EvidenceTab" class="tab-pane fade" role="tabpanel" aria-labelledby="evidence-tab">
+          <% if @percent_complete.keys.first.include? 'epa' %>
+            <% epa_idx = @epa_review_epa.downcase %>
+          <% else %>
+            <% epa_idx = @epa_review_epa.split("EPA").second.to_i %>
+          <% end %>
+
+          <div class="row">
+            <div class="col-sm-4">
+                <div class="card-body">
+                  <div id='WbaInfo'> <%= render partial: "epa_reviews/wba_info",
+                                                locals: {epa: @epa_review_epa,
+                                                  wba: @wba["#{@epa_review_epa}"],
+                                                  qa_percent: @percent_complete[epa_idx]} %></div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <% #wba_clinical_assessor_pie = hf_series_data_student("Clinical Assessor", @user_id, true) %>
+                  <% #if !wba_clinical_assessor_pie.nil? %>
+                    <% #= high_chart("wba_clinical_assessor_pie_graph", wba_clinical_assessor_pie) %>
+                  <% #end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+            <%= render partial: "epa_reviews/narrative_comments",
+                locals: {clinical_data: @clinical_data,
+                         comp: @comp,
+                         preceptor_data: @preceptorship_data,
+                         csl_data: @csl_data,
+                         epa_code: @epa_review_epa } %>
+
+           </div>
+         </div>
+         <div class="card">
+           <div class="card-body">
+             <%= render partial: 'wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
+           </div>
+         </div>
+        </div>
+
+        <div id="SummaryTab" class="tab-pane fade" role="tabpanel" >
+          <div class="card">
+            <div class="card-body">
+              <%= render partial: "competencies/collapsible_wba_details" %>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+                <% #wba_epa_student = hf_series_data_student("EPA", @user_id, false) %>
+                <% #if !wba_epa_student.nil? %>
+                   <% #= high_chart("wba_epa_student_graph", wba_epa_student) %>
+                <% #end %>
+                <br />
+                <% #wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @user_id, false) %>
+                <% #if !wba_clinical_assessor.nil? %>
+                  <% #= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+                <% #end %>
+            </div>
+          </div>
+        </div>
+
+    </div>
+</div>

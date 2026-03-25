@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <%= form_tag(eg_badged_epa_masters_path, method: "get", id: 'eg_badged_form') do %>
+        <%# Use 'row' and 'align-items-center' to keep label and select on one line %>
+        <div class="row g-3 align-items-center">
+
+          <div class="col-auto">
+            <label for="cohort" class="col-form-label fw-bold">Cohort</label>
+          </div>
+
+          <div class="col-auto">
+            <%= select_tag :cohort,
+                  options_for_select(@permission_groups.sort.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
+                  include_blank: '--',
+                  prompt: "Please Select Cohort",
+                  onchange: "this.form.submit();",
+                  class: "form-select",
+                  id: "cohort" %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <% if @epa_badged_count.present? %>
+      <%= render partial: 'detail_eg_badged' %>
+    <% end %>
+  </div>
+</div>

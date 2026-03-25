@@ -1,0 +1,8 @@
+
+<div class="container-fluid">
+  <%= render "filters" %>
+  <% if @epa_masters.present? %>
+    <%= render "epa_masters_table", epa_masters: @epa_masters %>
+  <% end %>
+
+</div>

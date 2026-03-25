@@ -67,7 +67,49 @@ Rails.application.routes.draw do
         get "save_career_interests", action: :save_career_interests, to: "users#save_career_interests"
     end
   end
-  
+  resources :badging_dates
+  resources :eg_members
+  resources :new_competencies do
+    collection  do
+      get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'new_competencies', to: 'new_competencies#download_file'
+    end
+  end
+
+  resources :fix_eg_members, only: :index do
+    collection do
+      get  :process_eg_file
+      get  :reviewer_update
+      get  :eg_assignment
+      get  :download_file
+    end
+  end
+
+  resources :epa_reviews do
+    collection do
+      post 'local_storage'
+      get 'unbadged', action: :unbadged
+    end
+  end
+
+  resources :epa_masters do
+    collection  do
+      get 'search_student'
+      get 'eg_mismatch', action: :eg_report, controller: 'epa_masters', to: 'epa_masters#eg_mismatch'
+      get 'eg_badged', action: :eg_report, controller: 'epa_masters', to: 'epa_masters#eg_badged'
+      get 'epa_qa', controller: 'epa_masters', to: 'epa_masters#epa_qa'
+      get 'wba_epa', action: :wba_epa, controller: 'epa_masters', to: 'epa_masters#wba_epa'
+      get 'wba_clinical', action: :wba_clinical, controller: 'epa_masters', to: 'epa_masters#wba_clinical'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters', to: 'epa_masters#download_file'
+      get 'badged_graph', action: :badged_graph, controller: 'epa_masters', to: 'epa_masters#badged_graph'
+      get 'wba_epa_graph', action: :wba_epa_graph, controller: 'epa_masters', to: 'epa_masters#wba_epa_graph'
+      get 'average_wba_epa', action: :average_wba_epa, controller: 'epa_masters', to: 'epa_masters#average_wba_epa'
+      get 'query_ai', action: :query_ai, controller: 'epa_masters', to: 'epa_masters#query_ai'
+
+    end
+  end
+
+
   resource :session, only: [:new, :create, :destroy]
 
   resources :passwords, param: :token

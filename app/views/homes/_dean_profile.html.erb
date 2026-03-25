@@ -82,11 +82,46 @@
 
                     </ul>
                   <% end %>
+                  <% if Current.user &&
+                        ['admin', 'dean'].include?(Current.user.coaching_type) &&
+                        Current.user.spec_program != 'Wellness' %>
+
+                    <class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle"
+                         href="#"
+                         id="egReviewDropdown"
+                         role="button"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        <i class="bi bi-hospital" style="color:#E1191C"></i> EG Review
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="egReviewDropdown">
+                        <li><%= link_to 'EG-Review', epa_masters_path, class: "dropdown-item", target: "_blank" %></li>
+                        <li><%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: "eg_mismatch.txt"), target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'EPA-Q/A Report', epa_qa_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'WBA/EPA Report', wba_epa_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'Competency Report', competency_rpt_new_competencies_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'Average WBA/EPA By Dates Report', average_wba_epa_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'WBA/Clinical Assessor Report', wba_clinical_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'No of Badges by EPA Graph', badged_graph_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                        <li><%= link_to 'No of WBAs by EPA Graph', wba_epa_graph_epa_masters_path, target: "_blank", class: "dropdown-item" %></li>
+                      </ul>
+                  <% end %>
+
+                  <% if Current.user.can_process_eg_assignment? || Current.user.coaching_type == 'admin' %>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> EG Members'.html_safe, eg_members_path, target: "_blank", class: "dropdown-item" %></li>
+                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Fix EG Members'.html_safe, fix_eg_members_path, target: "_blank", class: "dropdown-item" %></li>
+                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> List EG Assignment'.html_safe, eg_assignment_fix_eg_members_path, target: "_blank", class: "dropdown-item" %></li>
+                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Badging Dates'.html_safe, badging_dates_path, target: "_blank", class: "dropdown-item" %></li>
+                    <li><hr class="dropdown-divider"></li>
+                  <% end %>
+
 
               OASIS Access <br />
               Medhub <br>
               Course Catalog <br>
-              EG Review <br>
               Report <br>
               WBA Graph/Report <br>
             </ul>

@@ -65,10 +65,8 @@ class FomExamsController < ApplicationController
       @user_ids = @tso_ids
 
     elsif params[:body_message].present? # from ajax  call here
-
         uniq_cohort = params[:uniq_cohort]
         @dean_users = User.where(subscribed: true, coaching_type: 'dean').order(:id)
-
         @from = params[:from]
         @subject = params[:subject]
         body_message = params[:body_message]
@@ -192,7 +190,8 @@ class FomExamsController < ApplicationController
      else
        @comp_keys = ' **** You NOT AUTHORIZED to view this account! ***'
      end
-    end
+   end
+
 
   end
 

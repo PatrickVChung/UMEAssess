@@ -1,0 +1,25 @@
+<div class="card mx-auto w-75">
+  <div class="card-body card-body-color-epa-review">
+    <%= form_with(model: epa_review, data: { action: "turbo:submit-end->modal#submitEnd" }) do |form| %>
+
+        <%= form.hidden_field :reviewable_id, id: "reviewable_id" %>
+        <%= form.hidden_field :reviewable_type, id: "reviewable_type"%>
+        <%= form.hidden_field :epa, id: "epa" %>
+
+        <%# Ensure this target is found %>
+        <%= form.hidden_field :metadata,
+                              id: "metadata_storage",
+                              data: { context_menu_target: "metadata" } %>
+
+        <input type="hidden" id="epaCount" name="epaCount" value="<%= @epa_count %>">
+
+        <% if Current.user.full_name == @epa_review.reviewer1 %>
+          <%= render "form_reviewer1", f: form %>
+        <% else %>
+          <%= render "form_reviewer2", f: form %>
+        <% end %>
+
+
+    <% end %>
+  </div>
+</div>

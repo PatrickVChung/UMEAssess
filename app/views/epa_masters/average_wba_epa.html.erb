@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <%= form_tag(average_wba_epa_epa_masters_path, remote: true, method: "get", id: 'average_wba_epa_form') do %>
+
+        <%# Main form row %>
+        <div class="row g-3 align-items-center">
+
+          <%# Start Date %>
+          <div class="col-auto">
+            <label for="StartDate" class="col-form-label fw-bold">Start Date:</label>
+          </div>
+          <div class="col-auto">
+            <input type="date" name="StartDate" id="StartDate"
+                   value="2019-01-01" min="2018-01-01" max="2030-12-31"
+                   class="form-control">
+          </div>
+
+          <%# End Date %>
+          <div class="col-auto">
+            <label for="EndDate" class="col-form-label fw-bold">End Date:</label>
+          </div>
+          <div class="col-auto">
+            <input type="date" name="EndDate" id="EndDate"
+                   value="<%= Date.today.strftime('%Y-%m-%d') %>"
+                   min="2018-01-01" max="2030-12-31"
+                   class="form-control">
+          </div>
+
+          <%# Cohort Select %>
+          <div class="col-auto">
+            <label for="permission_group_id" class="col-form-label fw-bold">Cohort:</label>
+          </div>
+          <div class="col-auto">
+            <%= select_tag :permission_group_id,
+                  options_from_collection_for_select(@permission_groups, "id", "title", params[:permission_group_id]),
+                  include_blank: '--',
+                  prompt: "Please Select a Cohort",
+                  onchange: "this.form.submit();",
+                  class: "form-select",
+                  id: "permission_group_id" %>
+          </div>
+
+          <%# Note/Warning Row %>
+          <div class="col-12 mt-2">
+            <small class="text-danger fw-bold">
+              * The above dates will be SELECTED for ALL WBAs! *
+            </small>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Results Section %>
+  <div class="mt-4">
+    <% if @level_epa_wbas_count_hash.present? %>
+      <%= render partial: 'detail_average_wba_epa', locals: {cohort: params[:cohort]} %>
+    <% end %>
+  </div>
+</div>

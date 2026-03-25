@@ -1,0 +1,3 @@
+class EgReason < ApplicationRecord
+
+end

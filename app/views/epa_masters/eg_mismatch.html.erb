@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <div class="card mb-4">
+    <div class="card-body card-body-color">
+      <%= form_tag(eg_mismatch_epa_masters_path, method: "get", id: 'eg_mismatch_form', class: "row g-3 align-items-center") do %>
+
+        <%# Cohort Section %>
+        <div class="col-auto d-flex align-items-center">
+          <label for="misMatchCohortId" class="fw-bold me-2 mb-0">Cohort</label>
+          <%= select_tag :cohort,
+                options_for_select(@permission_groups.sort.collect{|s| [s.title, s.id]}, selected: params[:cohort]),
+                include_blank: '--',
+                prompt: "Please Select a Cohort",
+                required: true,
+                id: "misMatchCohortId",
+                class: "form-select w-auto" %>
+        </div>
+
+        <%# EG Member Section %>
+        <div class="col-auto d-flex align-items-center">
+          <label for="misMatchEGMember" class="fw-bold me-2 mb-0">EG Member</label>
+          <%= select_tag :eg_member,
+                options_for_select(@uniq_eg_members, selected: params[:eg_member]),
+                include_blank: '--',
+                prompt: "Please Select an EG Member",
+                id: "misMatchEGMember",
+                class: "form-select w-auto" %>
+        </div>
+
+        <%# Submit Button %>
+        <div class="col-auto">
+          <%= submit_tag "Go", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+
+  <%# Results Section %>
+  <% if @epa_masters.present? && @epa_masters != "No Mismatch" %>
+    <div id="eg_mismatch">
+      <%= render partial: 'detail_eg_mismatch' %>
+    </div>
+  <% elsif @epa_masters == "No Mismatch" %>
+    <h3 class="text-muted mt-3"><%= @epa_masters %></h3>
+  <% end %>
+</div>

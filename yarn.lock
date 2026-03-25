@@ -470,6 +470,9 @@ __metadata:
     datatables.net-bs5: "npm:^2.3.6"
     esbuild: "npm:^0.27.2"
     highcharts: "npm:^12.5.0"
+    jquery: "npm:^4.0.0"
+    jquery-contextmenu: "npm:^2.10.1"
+    jquery-ui-dist: "npm:^1.13.3"
     nodemon: "npm:^3.1.11"
     postcss: "npm:^8.5.6"
     postcss-cli: "npm:^11.0.1"
@@ -1080,10 +1083,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery@npm:>=1.7":
+"jquery-contextmenu@npm:^2.10.1":
+  version: 2.10.1
+  resolution: "jquery-contextmenu@npm:2.10.1"
+  dependencies:
+    jquery: "npm:^3.5.0"
+  peerDependencies:
+    jquery: ">=1.8.2"
+  checksum: 10c0/ca624fe38d8e02a532260dec1c305080d148819efc20b4c33864942b2fc8dbc21d913a90c3e178eb23b95f2fb470bdebdc7579c7031a956bd625753eaea76f2d
+  languageName: node
+  linkType: hard
+
+"jquery-ui-dist@npm:^1.13.3":
+  version: 1.13.3
+  resolution: "jquery-ui-dist@npm:1.13.3"
+  dependencies:
+    jquery: "npm:>=1.8.0 <4.0.0"
+  checksum: 10c0/d282511e137c6aaf9aac8a33bd06eec5b2e9882c3ceac8b8b59608f808880720238471311cdd34ceaf1557ba2cd7ce31cb4461e56099b54eb07551a53b4ac913
+  languageName: node
+  linkType: hard
+
+"jquery@npm:>=1.7, jquery@npm:^4.0.0":
   version: 4.0.0
   resolution: "jquery@npm:4.0.0"
   checksum: 10c0/06d8d0f51121af5a691f8b59c74823157bb5b60eea915b30eaa920d6c0ffd91e60ba81e9b97bd8203f331f9dd8d0ec9a4b010935ea314bdd2f15453c29bc780b
+  languageName: node
+  linkType: hard
+
+"jquery@npm:>=1.8.0 <4.0.0, jquery@npm:^3.5.0":
+  version: 3.7.1
+  resolution: "jquery@npm:3.7.1"
+  checksum: 10c0/808cfbfb758438560224bf26e17fcd5afc7419170230c810dd11f5c1792e2263e2970cca8d659eb84fcd9acc301edb6d310096e450277d54be4f57071b0c82d9
   languageName: node
   linkType: hard
 
