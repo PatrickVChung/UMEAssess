@@ -14,7 +14,9 @@
            data-action="mousedown->draggable#startDrag">
 
         <h5 class="modal-title"><%= title.html_safe %></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <button type="button" class="btn-close" data-action="click->modal#close" aria-label="Close"></button>
+
       </div>
 
       <% if local_assigns[:create_tabs] %>

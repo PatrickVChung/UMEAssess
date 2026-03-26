@@ -1,47 +1,75 @@
-<tr>
-  <td><%= epa_master.epa %></td>
-  <% if epa_master.badged? %>
-    <td><%= image_tag ("epa/#{epa_master.epa}.png"), size: "100x80", class: "img-responsive" , data: {imagezoom: "true" } %> <br />
-        Award Date: <b><%= hf_format_date(epa_master.status_date) %></b><br />
-        Expiration date: <b><%= hf_format_date(epa_master.expiration_date) %></b>
-    </td>
-  <% else %>
-    <td><%= image_tag ("epa/#{epa_master.epa}.png"), size: "100x80", class: "opacity-50" %></td>
-  <% end %>
+<%# app/views/epa_masters/_epa_masters_row.html.erb %>
+<tr class="align-middle">
+  <!-- EPA Column -->
+  <td class="fw-bold text-primary" style="font-size: 1.1rem;">
+    <%= epa_master.epa %>
+  </td>
 
+  <!-- Status / Image Column -->
   <td>
-    <table>
-        <% epa_master.epa_reviews.each do |review| %>
-        <tr>
-          <td><h5><span>
-              <% str_html1, str_html2 = hf_redact_text(review, Current.user) %>
-              <%= str_html1.blank? ? '' : (str_html1.to_s + ' | ').html_safe %>
-              <%= str_html2.to_s.html_safe %> &nbsp;&nbsp;
-              </span>
-
-              <% if epa_master.badged? %>
-                <%= link_to '-View', edit_epa_review_path(id: review.id, format: :turbo_stream),  class: "btn btn-primary"  %> &nbsp;&nbsp;
-                    <%= link_to 'Unbadged', unbadged_epa_reviews_path(id: review.id), {controller: 'epa_reviews', action: :unbadged }%>
-              <% else %>
-
-                  <% if !str_html1.empty? and !str_html2.empty? %>
-                    <%= link_to '-Add', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
-                        'data-bs-target' => '#mymodal-epa-review', class: "fa fa-plus"}%> &nbsp;&nbsp;
-                  <% end %>
-
-                  <%= link_to '-Review', edit_epa_review_path(id: review.id, format: :turbo_stream), class: "btn btn-primary" %> &nbsp;&nbsp;
-                  <%= link_to '-Delete', epa_review_path(id: review.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_review fa fa-trash' %>
-              <% end %>
-              </h5>
-            </td>
-          </tr>
-        <% end %>
-      </table>
-      <% if epa_master.epa_reviews.blank? %>
-        <h5>
-          <%= link_to 'Review', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
-             'data-bs-target' => '#mymodal-epa-review', class: "fa fa-plus"} %>
-        </h5>
+    <div class="d-flex align-items-start gap-3">
+      <% if epa_master.badged? %>
+        <%= image_tag "epa/#{epa_master.epa}.png", class: "rounded border shadow-sm", style: "width: 100px; height: auto;", data: { imagezoom: "true" } %>
+        <div class="small">
+          <div class="text-success fw-bold"><i class="bi bi-patch-check-fill"></i> Awarded</div>
+          <div class="text-muted">Award: <strong><%= hf_format_date(epa_master.status_date) %></strong></div>
+          <div class="text-danger-emphasis">Exp: <strong><%= hf_format_date(epa_master.expiration_date) %></strong></div>
+        </div>
+      <% else %>
+        <%= image_tag "epa/#{epa_master.epa}.png", class: "opacity-25 grayscale", style: "width: 100px; height: auto; filter: grayscale(100%);" %>
+        <div class="small text-muted italic">No Badge</div>
       <% end %>
-    </td>
+    </div>
+  </td>
+
+  <!-- Entrustment Reviews Column -->
+  <td>
+    <div class="list-group list-group-flush bg-transparent">
+      <% epa_master.epa_reviews.each do |review| %>
+        <div class="list-group-item bg-transparent px-0 py-2 border-bottom-0">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+            <div class="flex-grow-1">
+              <% str_html1, str_html2 = hf_redact_text(review, Current.user) %>
+              <span class="fw-semibold text-secondary">
+                <%= (str_html1.to_s + ' | ').html_safe if str_html1.present? %>
+                <%= str_html2.to_s.html_safe %>
+              </span>
+            </div>
+
+            <div class="btn-group btn-group-sm shadow-sm" role="group">
+              <% if epa_master.badged? %>
+                <%= link_to epa_review_path(review, format: :turbo_stream), data: { turbo_prefetch: false }, class: "btn btn-outline-primary" do %>
+                  <i class="bi bi-eye"></i> View
+                <% end %>
+                <%= link_to 'Unbadge', unbadged_epa_reviews_path(id: review.id), class: "btn btn-outline-secondary" %>
+              <% else %>
+                <% if str_html1.present? && str_html2.present? %>
+                  <%= link_to new_epa_review_path(epa_master_id: epa_master.id), class: "btn btn-outline-success" do %>
+                    <i class="bi bi-plus-lg"></i> Add
+                  <% end %>
+                <% end %>
+
+                <%= link_to edit_epa_review_path(review, format: :turbo_stream), data: { turbo_prefetch: false }, class: "btn btn-outline-primary" do %>
+                  <i class="bi bi-pencil"></i> Review
+                <% end %>
+
+                <%= link_to epa_review_path(review),
+                            data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                            class: "btn btn-outline-danger" do %>
+                  <i class="bi bi-trash"></i>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if epa_master.epa_reviews.blank? %>
+        <%= link_to new_epa_review_path(epa_master_id: epa_master.id), class: "btn btn-sm btn-light border text-primary" do %>
+          <i class="bi bi-plus-circle"></i> Start Initial Review
+        <% end %>
+      <% end %>
+    </div>
+  </td>
 </tr>

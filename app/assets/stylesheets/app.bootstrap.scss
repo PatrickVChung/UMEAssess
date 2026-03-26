@@ -41,10 +41,31 @@ input[type="file"] {
 }
 
 .dropdown-menu {
-  max-height: 80vh; /* Don't ever let the menu be taller than 80% of the screen */
+  max-height: 90vh; /* Don't ever let the menu be taller than 80% of the screen */
   overflow-y: auto;  /* Add a scrollbar if the items exceed max-height */
 }
 
 .form-label {
     margin-bottom: 0.0rem;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Style the spinner element */
+.spinner-border-sm {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 0.2em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin .75s linear infinite;
+  vertical-align: text-bottom;
+  margin-right: 5px;
+}
+
+/* Hide it by default, show it when button is disabled */
+button[disabled] .spinner-border-sm {
+  display: inline-block;
 }

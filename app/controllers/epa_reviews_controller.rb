@@ -20,6 +20,22 @@ class EpaReviewsController < ApplicationController
 
   # GET /epa_reviews/1
   def show
+      @epa_review = EpaReview.find(params[:id])
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            "modal-container",
+            partial: "shared/modal",
+            locals: {
+              title: "Badge Information: #{@epa_review.epa}",
+              body: render_to_string(partial: "epa_reviews/show", locals: { epa_review: @epa_review }),
+              size: "modal-lg",
+              style: "max-width: 75%"
+            }
+          )
+        end
+        format.html # optional fallback
+      end
   end
 
   def local_storage
@@ -99,7 +115,8 @@ class EpaReviewsController < ApplicationController
           locals: {
             title: "EPA Review",
             body: render_to_string(partial: "epa_reviews/form", locals: { epa_review: @epa_review }),
-            size: "modal-lg"
+            size: "modal-lg",
+            style: "max-width: 100%"
           }
         )
       end
@@ -131,19 +148,38 @@ class EpaReviewsController < ApplicationController
   end
   # PATCH/PUT /epa_reviews/1
   def update
-puts "========================================"
-puts params.inspect
+    # puts "========================================"
+    # puts params.inspect
 
     @epa_review = EpaReview.find(params[:id])
 
     if @epa_review.update(epa_review_params)
       # Trigger your background/side logic
-      EpaReview.update_epa_master(
+      user_id = EpaReview.update_epa_master(
         @epa_review.reviewable_id,
         @epa_review.epa,
         @epa_review.badge_decision1,
         @epa_review.badge_decision2
       )
+
+      if params[:epa_review][:metadata].present? && user_id.present?
+        epa_comments = JSON.parse(params[:epa_review][:metadata])
+        full_name = Current.user.full_name
+        epa_comments.each do |key, value|
+          epa_review = User.find_by(id: user_id).epa_masters.find_by(epa: key).epa_reviews.first
+          if epa_review.present? && epa_review.reviewer1 == full_name
+              new_comments = epa_review.general_comments1.to_s + "\n" + value
+              epa_review.updatte!(general_comments1: new_comments)
+          else
+              new_comments = epa_review.general_comments2.to_s + "\n" + value
+              epa_review.update!(general_comments2: value)
+
+              byebug
+
+          end
+        end
+
+      end
 
       respond_to do |format|
         # status: :see_other is crucial for Turbo to perform a full page redirect

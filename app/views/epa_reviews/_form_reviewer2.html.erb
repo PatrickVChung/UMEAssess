@@ -66,7 +66,12 @@
 
 
     <div class="form-actions">
-      <%= f.submit "Save Changes", class: "btn btn-primary center-block", id: "SubmitReview2" %>
+      <%= f.submit "Update Review",
+            class: "btn btn-primary",
+            data: {
+              disable_with: "<i class='fa fa-spinner fa-spin'></i> Updating..."
+            } %>
+      <%#= f.submit "Save Changes", class: "btn btn-primary center-block", id: "SubmitReview2" %>
     </div>
 
 

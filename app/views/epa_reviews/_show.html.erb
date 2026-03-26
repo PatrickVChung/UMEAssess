@@ -1,0 +1,76 @@
+
+<%# app/views/epa_reviews/_show.html.erb %>
+<div class="container-fluid p-0">
+  <div class="row g-3">
+
+    <%# Reviewer 1 Card %>
+    <div class="col-md-6">
+      <div class="card h-100 border-primary shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+          <h6 class="mb-0">Reviewer 1</h6>
+          <small><%= epa_review.review_date1&.strftime("%m/%d/%Y") %></small>
+        </div>
+        <div class="card-body">
+          <p><strong>Reviewer:</strong> <%= epa_review.reviewer1 %></p>
+          <p><strong>Decision:</strong>
+            <span class="badge <%= epa_review.badge_decision1 == 'Badge' ? 'bg-success' : 'bg-warning text-dark' %>">
+              <%= epa_review.badge_decision1 %>
+            </span>
+          </p>
+          <hr>
+          <div class="mb-2"><strong>Reason:</strong> <small class="text-muted"><%= epa_review.reason1 %></small></div>
+          <div class="mb-2"><strong>Trust Level:</strong> <%= epa_review.trust1 %></div>
+          <div class="mb-2"><strong>Evidence:</strong> <%= epa_review.evidence1 %></div>
+          <div class="mt-3">
+            <strong>General Comments:</strong>
+            <div class="p-2 bg-light border rounded small"><%= epa_review.general_comments1.gsub("\n", "<br />").html_safe %></div>
+          </div>
+          <div class="mt-2 text-info">
+            <strong>Student Comments:</strong>
+            <div class="small"><%= epa_review.student_comments1 %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Reviewer 2 Card %>
+    <div class="col-md-6">
+      <div class="card h-100 border-secondary shadow-sm">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between">
+          <h6 class="mb-0">Reviewer 2</h6>
+          <small><%= epa_review.review_date2&.strftime("%m/%d/%Y") %></small>
+        </div>
+        <div class="card-body">
+          <p><strong>Reviewer:</strong> <%= epa_review.reviewer2 %></p>
+          <p><strong>Decision:</strong>
+            <span class="badge <%= epa_review.badge_decision2 == 'Badge' ? 'bg-success' : 'bg-warning text-dark' %>">
+              <%= epa_review.badge_decision2 %>
+            </span>
+          </p>
+          <hr>
+          <div class="mb-2"><strong>Reason:</strong> <small class="text-muted"><%= epa_review.reason2 %></small></div>
+          <div class="mb-2"><strong>Trust Level:</strong> <%= epa_review.trust2 %></div>
+          <div class="mb-2"><strong>Evidence:</strong> <%= epa_review.evidence2 %></div>
+          <div class="mt-3">
+            <strong>General Comments:</strong>
+            <div class="p-2 bg-light border rounded small"><%= epa_review.general_comments2.gsub("\n", "<br />").html_safe  %></div>
+          </div>
+          <div class="mt-2 text-info">
+            <strong>Student Comments:</strong>
+            <div class="small"><%= epa_review.student_comments2 %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <%# Footer metadata %>
+  <div class="row mt-3">
+    <div class="col text-center text-muted small">
+      <hr>
+      EPA ID: <%= epa_review.epa %> |
+      Last Updated: <b><%= epa_review.updated_at.strftime("%B %d, %Y at %I:%M %p") %></b>
+    </div>
+  </div>
+</div>

@@ -1,57 +1,57 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="modal"
 export default class extends Controller {
-  static targets = ["dialog"]
-
   connect() {
-    this._ensureBootstrap()
-    // Initialize Bootstrap Modal on root element
-    this.modal = new window.bootstrap.Modal(this.element, {
-      backdrop: "static",  // optional: prevent accidental click-away close
-      keyboard: true
-    })
+    // 1. Ensure Bootstrap is available
+    if (!window.bootstrap?.Modal) return this._ensureBootstrap()
 
-    // Show immediately when inserted via Turbo Stream
+    // 2. Initialize with unique instance check
+    this.modal = new window.bootstrap.Modal(this.element)
     this.modal.show()
 
-    // Ensure proper lifecycle with Turbo caching
-    document.addEventListener("turbo:before-cache", this._beforeCache)
+    // 3. Bind listeners correctly
     this.element.addEventListener("hidden.bs.modal", this._onHidden)
   }
 
   disconnect() {
-    document.removeEventListener("turbo:before-cache", this._beforeCache)
+    // IMPORTANT: If we just dispose(), the backdrop might stay if the
+    // animation hasn't finished. We force hide, then dispose.
+    if (this.modal) {
+      this.modal.hide()
+      // Use a timeout or check if shown to prevent "dispose while animating" errors
+      setTimeout(() => {
+        this.modal?.dispose()
+      }, 300)
+    }
     this.element.removeEventListener("hidden.bs.modal", this._onHidden)
-    try { this.modal?.dispose() } catch(e) {}
   }
 
-  // Close programmatically from actions or stream invokes
   close() {
-    try { this.modal?.hide() } catch(e) {}
-  }
-
-  // Private
-  _beforeCache = () => {
-    try { this.modal?.hide() } catch(e) {}
+    this.modal?.hide()
   }
 
   _onHidden = () => {
-    // Optional: let the server also remove the container via stream
-    // but we also defensively clear client-side
-    const container = document.getElementById("modal-container")
-    if (container) container.innerHTML = ""
-  }
+    // Clean up the body classes (important for Bootstrap 5.3)
+    document.body.classList.remove('modal-open')
+    const backdrop = document.querySelector('.modal-backdrop')
+    if (backdrop) backdrop.remove()
 
-  _ensureBootstrap() {
-    if (!window.bootstrap?.Modal) {
-      console.error("Bootstrap Modal not found. Did you import bootstrap in application.js?")
+    // Clear the container content but KEEP the container div itself
+    const container = document.getElementById("modal-container")
+    if (container) {
+      container.innerHTML = ""
     }
   }
-  // High-value: Hide modal when a Turbo submit is successful
+
   submitEnd(event) {
     if (event.detail.success) {
       this.close()
+      // OPTION A: Full page reload (simplest)
+      window.location.reload()       
     }
+  }
+
+  _ensureBootstrap() {
+    console.error("Bootstrap Modal not found. Check application.js imports.")
   }
 }

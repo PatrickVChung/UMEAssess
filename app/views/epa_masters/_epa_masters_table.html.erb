@@ -1,39 +1,57 @@
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div id="epa_masters">
+      <% program = @user&.spec_program %>
 
+      <!-- Header Section -->
+      <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 border-bottom pb-3">
+        <div>
+          <h3 class="mb-0 text-dark">
+            Badging EPAs <small class="text-muted">— <%= @full_name %></small>
+          </h3>
 
-  <div class="card">
-    <div class="card-body">
-        <div id="epa_masters">
-          <% program = @user&.spec_program %>
-          <% if program.to_s.include?("Paused badging") %>
-            <h3 style="display: inline-block">Badging EPAs - <%= @full_name.to_s %></h3>
-            <h5 style="display: inline-block;color:#FC6C85">
-              &nbsp;&nbsp;[Student Status: <%= program %>]
-            </h5>
-          <% else %>
-            <h3 style="display: inline-block">Badging EPAs - <%= @full_name.to_s %></h3>
-            <h5 style="display: inline-block">
-              &nbsp;&nbsp;[Student Status: <%= program.presence || "N/A" %>]
-              &nbsp;&nbsp;<%= link_to 'Query AI',
-                query_ai_epa_masters_path(full_name: @full_name, user_id: @user&.id),
-                class: "btn btn-primary", target: :_blank %>
-            </h5>
-          <% end %>
-          <table class="responsive nowrap table table-hover" id="epa_masters">
-            <thead>
-              <tr>
-                <th data-data="epa">EPA</th>
-                <th data-data="status">Status</th>
-                <th data-data="EntrustmentReviews">Entrustment Reviews</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% epa_masters.each do |epa_master| %>
-                <%= render partial: "epa_masters/epa_masters_row",
-                           locals: { epa_master: epa_master } %>
-              <% end %>
-            </tbody>
-          </table>
+          <div class="mt-2">
+            <% if program.to_s.include?("Paused badging") %>
+              <span class="badge rounded-pill bg-danger-subtle text-danger border border-danger">
+                Status: <%= program %>
+              </span>
+            <% else %>
+              <span class="badge rounded-pill bg-info-subtle text-info-emphasis border border-info">
+                Status: <%= program.presence || "N/A" %>
+              </span>
+            <% end %>
+          </div>
         </div>
 
+        <% unless program.to_s.include?("Paused badging") %>
+          <div class="mt-2 mt-md-0">
+            <%= link_to query_ai_epa_masters_path(full_name: @full_name, user_id: @user&.id),
+                        class: "btn btn-outline-primary d-flex align-items-center gap-2",
+                        target: :_blank do %>
+              <i class="bi bi-robot"></i> Query AI
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-responsive">
+        <table class="table table-hover align-middle" id="epa_masters_table">
+          <thead class="table-light">
+            <tr>
+              <th class="fw-bold text-uppercase small py-3" style="width: 15%">EPA</th>
+              <th class="fw-bold text-uppercase small py-3" style="width: 20%">Status</th>
+              <th class="fw-bold text-uppercase small py-3">Entrustment Reviews</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% epa_masters.each do |epa_master| %>
+              <%= render partial: "epa_masters/epa_masters_row",
+                         locals: { epa_master: epa_master } %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+</div>

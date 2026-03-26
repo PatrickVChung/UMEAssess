@@ -9,6 +9,17 @@
           </div>
         </h5>
         <div id="collapseOne" class="card-body collapse" data-parent="#accordion" >
+          <div data-controller="context-menu"
+               data-action="click@window->context-menu#closeMenu"
+               data-context-menu-epa-value="<%= @epa_review.epa %>"
+               data-context-menu-current-user-value="<%= Current.user.full_name %>"
+               class="position-relative">
+
+            <%# 2. The Menu Target (Needs to be here once) %>
+            <div data-context-menu-target="menu"
+                 class="dropdown-menu shadow"
+                 style="display: none; z-index: 1050;">
+            </div>
                 <table class="table table-responsive-sm">
                   <thead>
                     <tr>
@@ -65,8 +76,11 @@
                             <% if final_grade == 'NP' %>
                                <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></td>
                             <% else %>
-                              <td><span id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
-                                <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
+                              <td data-action="contextmenu->context-menu#show"
+                                        data-context-menu-course-name-value="<%= cd["course_name"] %>">
+                                        <span id="course_name<%= i %>">
+                                          <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %>
+                                        </span></td>
                             <% end %>
                             <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
 
@@ -75,6 +89,7 @@
                     <% end %>
                   <% end %>
                 </table>
+          </div>
         </div>
 
 
@@ -91,14 +106,12 @@
           <div data-controller="context-menu"
                data-action="click@window->context-menu#closeMenu"
                data-context-menu-epa-value="<%= @epa_review.epa %>"
+               data-context-menu-current-user-value="<%= Current.user.full_name %>"
                class="position-relative">
-
-            <%# 2. The Menu Target (Needs to be here once) %>
-            <div data-context-menu-target="menu"
-                 class="dropdown-menu shadow"
-                 style="display: none; z-index: 1050;">
-            </div>
-
+               <div data-context-menu-target="menu"
+                    class="dropdown-menu shadow"
+                    style="display: none; z-index: 1050;">
+               </div>
             <table class="table table-responsive-sm">
               <thead>
                 <tr>
@@ -115,13 +128,17 @@
                         <td><%= pd["PreceptorName"] %></td>
                         <td><%= pd["SubmitDate"] %></td>
                         <td><%= pd["Grade"] %></td>
-                        <td data-action="contextmenu->context-menu#show"><%= hf_highlight(pd["Comment"], epa_code) %></td>
+                        <td data-action="contextmenu->context-menu#show"
+                            data-context-menu-course-name-value="Preceptorship">
+                            <%= hf_highlight(pd["Comment"], epa_code) %>
+                        </td>
                      <% else %>
                          <td><%= pd["preceptor_name"] %></td>
                          <td><%= pd["submit_date"] %></td>
                          <td><%= pd["grade"] %></td>
-                           <td >
-                               <span data-action="contextmenu->context-menu#show" id="<%= epa_code %>" data-course-name="[Preceptorship]"><%= hf_highlight(pd["overall_performance"], epa_code) %></span>
+                           <td data-action="contextmenu->context-menu#show"
+                             data-context-menu-course-name-value="Preceptorship">
+                               <span id="<%= epa_code %>"><%= hf_highlight(pd["overall_performance"], epa_code) %></span>
                             </td>
 
                       <% end %>
