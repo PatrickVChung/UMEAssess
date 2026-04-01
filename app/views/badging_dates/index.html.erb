@@ -1,0 +1,57 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 mb-0">Badging Dates</h1>
+    <%= link_to new_badging_date_path, class: "btn btn-primary shadow-sm" do %>
+      <i class="bi bi-plus-lg"></i> New Badging Date
+    <% end %>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" id="dttb-badging_dates" data-sort="true" data-source="<%= url_for(format: :json)%>">
+          <thead class="table-light">
+            <tr>
+              <th data-data="permission_group_id">Permission Group</th>
+              <th data-data="release_date">Release Date</th>
+              <th data-data="last_review_end_date">Last Review</th>
+              <th data-data="next_review_end_date">Next Review</th>
+              <th data-data="created_at">Created</th>
+              <th data-data="updated_at">Updated</th>
+              <th data-data="url" data-orderable="false" data-searchable="false" class="text-end px-4" width="180px">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @badging_dates.each do |badge| %>
+              <tr>
+                <td class="fw-bold text-primary">
+                  <%# Optimization: Use association or helper here if possible %>
+                  <%= "#{badge.permission_group_id} - #{PermissionGroup.find_by(id: badge.permission_group_id)&.title}" %>
+                </td>
+                <td><%= badge.release_date&.strftime("%m/%d/%Y") %></td>
+                <td><%= badge.last_review_end_date&.strftime("%m/%d/%Y") %></td>
+                <td><%= badge.next_review_end_date&.strftime("%m/%d/%Y") %></td>
+                <td class="text-muted small"><%= badge.created_at.strftime("%m/%d/%Y") %></td>
+                <td class="text-muted small"><%= badge.updated_at.strftime("%m/%d/%Y") %></td>
+                <td class="text-end px-4">
+                  <div class="btn-group btn-group-sm">
+                    <%= link_to 'Show', badge, class: "btn btn-outline-secondary" %>
+                    <%= link_to 'Edit', edit_badging_date_path(badge), class: "btn btn-outline-primary" %>
+
+                    <%# Rails 8 / Turbo Delete Pattern %>
+                    <%= link_to 'Destroy', badge,
+                                class: "btn btn-outline-danger",
+                                data: {
+                                  turbo_method: :delete,
+                                  turbo_confirm: 'Are you sure?'
+                                } %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

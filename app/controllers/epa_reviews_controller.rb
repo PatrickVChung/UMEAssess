@@ -127,6 +127,7 @@ class EpaReviewsController < ApplicationController
 
   # GET /epa_reviews/1/edit
   def edit
+    @user_id = EpaMaster.find_by(id: @epa_review.reviewable_id).user_id
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(

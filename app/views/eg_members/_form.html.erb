@@ -1,0 +1,44 @@
+
+  <%= form_with(model: @eg_member, class: "needs-validation") do |f| %>
+    <%# Error Handling %>
+    <% if @eg_member.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Please fix the following errors:</h4>
+        <ul class="mb-0">
+          <% @eg_member.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-inputs">
+      <%# Text Inputs %>
+      <div class="mb-3">
+        <%= f.label :full_name, class: "form-label" %>
+        <%= f.text_field :full_name, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :eg_type, class: "form-label" %>
+        <%= f.select :eg_type, ["MD", "NON-MD"], {}, { class: "form-select" } %>
+      </div>
+
+      <%# Bootstrap 5.3 Checkbox %>
+      <div class="form-check mb-3">
+        <%= f.check_box :active, class: "form-check-input" %>
+        <%= f.label :active, class: "form-check-label" %>
+      </div>
+    </div>
+
+    <div class="form-actions mt-4">
+      <%= f.submit "Save Member", class: "btn btn-primary" %>
+      <%= link_to "Cancel", eg_members_path, class: "btn btn-outline-secondary" %>
+    </div>
+  <% end %>
+</div>

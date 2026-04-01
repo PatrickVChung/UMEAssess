@@ -354,25 +354,6 @@ class EpaMastersController < ApplicationController
     end
   end
 
-  def search_student
-    if params[:search]
-      @selected_user = nil
-      @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
-      if !@users.empty?
-        @epa_masters = @users.first.epa_masters.order(:id)
-        @full_name = @users.first.full_name
-        if @epa_masters.empty?
-          user_id = @users.first.id
-          create_epas user_id
-          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
-        end
-      end
-      respond_to do |format|
-        format.js { render partial: 'search-results'}
-      end
-    end
-  end
-
   def create_epas selected_user_id, email
     eg_full_name1, eg_full_name2 = hf_get_eg_members(@eg_cohorts, email)
 

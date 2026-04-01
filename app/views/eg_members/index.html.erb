@@ -1,0 +1,55 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">Eg Members</h1>
+    <%= link_to new_eg_member_path, class: "btn btn-primary" do %>
+      <i class="bi bi-plus-lg"></i> New Eg Member
+    <% end %>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0"> <%# p-0 removes padding so table edges hit the card border %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" id="dttb-eg_members" data-sort="true" data-source="<%= url_for(format: :json)%>">
+          <thead class="table-light">
+            <tr>
+              <th data-data="full_name">Full name</th>
+              <th data-data="email">Email</th>
+              <th data-data="eg_type">Eg type</th>
+              <th data-data="active" class="text-center">Active</th>
+              <th data-data="url" data-orderable="false" data-searchable="false" class="text-end px-4" width="150px">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @eg_members.each do |eg_member| %>
+              <tr>
+                <td><%= eg_member.full_name %></td>
+                <td><%= eg_member.email %></td>
+                <td><span class="badge text-bg-secondary"><%= eg_member.eg_type %></span></td>
+                <td class="text-center">
+                  <% if eg_member.active %>
+                    <span class="badge rounded-pill text-bg-success">Active</span>
+                  <% else %>
+                    <span class="badge rounded-pill text-bg-danger">Inactive</span>
+                  <% end %>
+                </td>
+                <td class="text-end px-4">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to 'Edit', edit_eg_member_path(eg_member), class: "btn btn-outline-primary" %>
+
+                    <%# Rails 8 / Turbo Delete Pattern %>
+                    <%= link_to 'Destroy', eg_member,
+                                class: "btn btn-outline-danger",
+                                data: {
+                                  turbo_method: :delete,
+                                  turbo_confirm: 'Are you sure?'
+                                } %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

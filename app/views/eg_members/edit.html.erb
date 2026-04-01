@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5>Editing eg member</h5>
+    </div>
+    <div class="card-body">
+        <%= render "form", eg_member: @eg_member %>
+        <br>
+    </div>
+  <div class="card-footer bg-white py-3">
+      <%= link_to "Back to EG Members", eg_member_path, class: "btn btn-primary" %>
+  </div>
+  </div>
+</div>

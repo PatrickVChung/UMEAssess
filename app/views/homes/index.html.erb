@@ -1,5 +1,5 @@
-<p>HOME INDEX LOADED</p>
-<%= "current user: #{Current.user&.full_name} " %>
+<!-- <p>HOME INDEX LOADED</p>
+<%#= "current user: #{Current.user&.full_name} " %> -->
 
 <% if Current.user&.coaching_type == 'dean' %>
   <%= render partial: "dean_profile" %>

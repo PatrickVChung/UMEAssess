@@ -1,37 +1,39 @@
-<div class="card">
-  <div class="card-body card-body-color">
-    <%= form_with url: epa_masters_path,
-                  method: :get,
-                  # 'row' makes the form a flex container
-                  # 'g-3' adds a nice gap between elements
-                  # 'align-items-center' keeps labels and selects vertically centered
-                  html: { class: "row g-3 align-items-center" },
-                  data: { controller: "autosubmit"} do |f| %>
+<div class="container mt-2">
+  <div class="card">
+    <div class="card-body card-body-color">
+      <%= form_with url: epa_masters_path,
+                    method: :get,
+                    # 'row' makes the form a flex container
+                    # 'g-3' adds a nice gap between elements
+                    # 'align-items-center' keeps labels and selects vertically centered
+                    html: { class: "row g-3 align-items-center" },
+                    data: { controller: "autosubmit"} do |f| %>
 
-      <div class="col-auto">
-        <%= label_tag :uniq_cohort, "Cohort:", class: "col-form-label" %>
-      </div>
-      <div class="col-auto">
-        <%= select_tag :uniq_cohort,
-              options_from_collection_for_select(@uniq_cohorts, "id", "title", params[:uniq_cohort]),
-              include_blank: "Please Select a Cohort",
-              class: "form-select", # BS5 uses form-select for dropdowns
-              data: { action: "change->autosubmit#submit" } %>
-      </div>
-
-      <% if @eg_cohorts.present? %>
         <div class="col-auto">
-          <%= label_tag :email, "Student:", class: "col-form-label" %>
+          <%= label_tag :uniq_cohort, "Cohort:", class: "col-form-label fw-bold" %>
         </div>
         <div class="col-auto">
-          <%= select_tag :email,
-                options_for_select(@eg_cohorts.map { |s| [s["full_name"], s["email"]] }, params[:email]),
-                include_blank: "Please Select a Student",
-                class: "form-select",
+          <%= select_tag :uniq_cohort,
+                options_from_collection_for_select(@uniq_cohorts, "id", "title", params[:uniq_cohort]),
+                include_blank: "Please Select a Cohort",
+                class: "form-select", # BS5 uses form-select for dropdowns
                 data: { action: "change->autosubmit#submit" } %>
         </div>
-      <% end %>
 
-    <% end %>
+        <% if @eg_cohorts.present? %>
+          <div class="col-auto">
+            <%= label_tag :email, "Student:", class: "col-form-label fw-bold" %>
+          </div>
+          <div class="col-auto">
+            <%= select_tag :email,
+                  options_for_select(@eg_cohorts.map { |s| [s["full_name"], s["email"]] }, params[:email]),
+                  include_blank: "Please Select a Student",
+                  class: "form-select",
+                  data: { action: "change->autosubmit#submit" } %>
+          </div>
+        <% end %>
+
+      <% end %>
+    </div>
   </div>
-</div>
+  </div>

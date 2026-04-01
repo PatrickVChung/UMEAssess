@@ -1,33 +1,30 @@
-<div class="container" >
-  <br /> <br />
+<br />
+<div class="container mt-4" >
     <div class="card">
       <div class="card-body">
-        <%= form_tag(wba_epa_epa_masters_path, remote: true, method: "get", id: 'wba_epa_form') do %>
-          <div class="form-group navbar-form navbar-left">
-            <label for="start">
-                 Start Date:
-             </label>
+        <%= form_tag(wba_epa_epa_masters_path, method: "get", id: 'wba_epa_form', class: "row g-3 align-items-center") do %>
 
+          <div class="d-flex align-items-center">
+             <label for="start" class="me-2 fw-bold">StartDate:</label>
              <input type="date" name="StartDate"
                  placeholder="dd-mm-yyyy" value="01-01-2020"
-                 min="1997-01-01" max="2030-12-31">
+                 min="1997-01-01" max="2030-12-31"  class="form-control w-auto">
 
-             <label for="End">
-                   End Date:
-             </label>
-
-             <input type="date" name="EndDate"
+              <label for="End" class="me-2 fw-bold">EndDate:</label>
+              <input type="date" name="EndDate"
                  placeholder="dd-mm-yyyy" value="02-18-2022"
-                 min="1997-01-01" max="2030-12-31">
-             <b>Cohort </b> <%= select_tag :permission_group_id, options_from_collection_for_select(@permission_groups, "id", "title", selected: params[:permssion_group_id]), include_blank: '--',
-                prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+                 min="1997-01-01" max="2030-12-31"  class="form-control w-auto">
+
+              <label for="permission_group_id" class="me-2 fw-bold">Cohort:</label>
+              <%= select_tag :permission_group_id, options_from_collection_for_select(@permission_groups, "id", "title", selected: params[:permssion_group_id]), include_blank: '--',
+                prompt: "Please Select a Cohort", onchange: "this.form.submit();",  class: "form-control w-auto" %>
+          </div>
               <br />
 
-          </div>
+
         <% end %>
       </div>
     </div>
-
 
       <% if !@wba_epa_data.blank? %>
         <%= render partial: 'detail_wba_epa', locals: {cohort: params[:cohort]} %>

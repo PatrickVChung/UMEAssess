@@ -6,43 +6,60 @@ export default class extends Controller {
   static values = {
     series: Array,
     categories: Array,
-    title: String
+    title: String,
+    chartType: { type: String, default: 'column' },
+    yMax: { type: Number, default: 100 },
+    yTickInterval: { type: Number, default: 20 },  // Added yMax
+    yTitle: { type: String, default: 'Score (%)' } // Added yTitle
   }
 
   connect() {
-    this.chart = Highcharts.chart(this.element, {
-      chart: { type: 'column' },
+    const isPie = this.chartTypeValue === 'pie'
+
+    const options = {
+      chart: { type: this.chartTypeValue },
       title: { text: this.titleValue || 'Default Title' },
-      series: this.seriesValue, // This is your @series_data from Rails
-      xAxis: {
-              categories: this.categoriesValue,
-              labels: {
-                        style:  {
-                                    fontWeight: 'bold',
-                                    color: '#000000',
-                                    fontSize: '13px'
-                                }
-                          }
-            },
-      colors: ["#7EFF5E", "#6E92FF"],
-      yAxis: [
-               { min: 0,
-                 max: 100,
-                 tickInterval: 20,
-                 title: { text: "Score (%)", margin: 20,
-                          style: {
-                                   fontWeight: 'bold',
-                                   color: '#000000',
-                                   fontSize: '13px'
-                                }
-                        }
-               }
-             ]
-    })
+      series: this.seriesValue,
+      colors: ["#7EFF5E", "#6E92FF", "#FFD700", "#FF6347"], // Expanded color array
+
+      // Pie charts usually don't want axes
+      xAxis: isPie ? {} : {
+        categories: this.categoriesValue,
+        labels: {
+          style: { fontWeight: 'bold', color: '#000000', fontSize: '13px' }
+        }
+      },
+
+      yAxis: isPie ? [] : [{
+        min: 0,
+        max: this.yMaxValue,
+        tickInterval: 20,
+        title: {
+          text: this.yTitleValue,
+          margin: this.yTickIntervalValue,
+          style: { fontWeight: 'bold', color: '#000000', fontSize: '13px' }
+        }
+      }],
+
+      plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 25,
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
+            }
+        }
+      }
+    }
+    this.chart = Highcharts.chart(this.element, options)
   }
 
-  // If you are using Turbo Frames, ensure you destroy the chart on disconnect
   disconnect() {
-    this.chart.destroy()
+    if (this.chart) {
+      this.chart.destroy()
+    }
   }
 }

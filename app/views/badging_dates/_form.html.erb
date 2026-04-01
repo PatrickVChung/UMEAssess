@@ -1,0 +1,50 @@
+<div class="card shadow-sm">
+  <div class="card-body p-4">
+    <%= form_with(model: @badging_date, class: "needs-validation") do |f| %>
+
+      <%# Error Messages Handling %>
+      <% if @badging_date.errors.any? %>
+        <div class="alert alert-danger mb-4" role="alert">
+          <h6 class="alert-heading fw-bold">Please correct the following:</h6>
+          <ul class="mb-0 small">
+            <% @badging_date.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-inputs">
+        <%# Select Menu for Association %>
+        <div class="mb-3">
+          <%= f.label :permission_group_id, "Permission Group", class: "form-label" %>
+          <%= f.collection_select :permission_group_id, PermissionGroup.all, :id, :title,
+              { prompt: "Select a Group" },
+              { class: "form-select" } %>
+        </div>
+
+        <%# Date Inputs using modern Bootstrap classes %>
+        <div class="mb-3">
+          <%= f.label :release_date, class: "form-label" %>
+          <%= f.date_field :release_date, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :last_review_end_date, class: "form-label" %>
+          <%= f.date_field :last_review_end_date, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :next_review_end_date, class: "form-label" %>
+          <%= f.date_field :next_review_end_date, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="form-actions border-top pt-3 mt-4">
+        <%= f.submit "Save Badging Date", class: "btn btn-primary px-4" %>
+        <%= link_to "Cancel", badging_dates_path, class: "btn btn-link text-secondary" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

@@ -284,6 +284,42 @@ module EpaReviewsHelper
     return new_content
   end
 
+  def prep_data2(categories, data_series)
+    pie_data = []
+    mod_data_series = data_series.transpose
+    for i in 0..categories.length-1
+       hash_data = {}
+
+       if !data_series[i].nil?
+         hash_data.store(:name, categories[i])
+         hash_data.store(:y, mod_data_series[i].sum)
+       else
+       hash_data.store(:name, categories[i])
+        hash_data.store(:y, 0)
+       end
+       hash_data.store(:color, random_color)
+       pie_data.push hash_data
+
+     end
+
+     return pie_data
+
+  end
+
+
+
+  def hf_review_get_wbas(data_type, user_id)
+    if data_type == "Clinical Assessor"
+      clinical_assessor = Epa.distinct.pluck(:clinical_assessor).sort
+      clinical_assessor_hash = get_involvement_student(clinical_assessor, 'clinical_assessor', user_id)
+      if clinical_assessor_hash.values.flatten.sum != 0
+        categories = clinical_assessor_hash.keys
+        data_series = clinical_assessor_hash.values.transpose
+        pie_series = prep_data(categories, data_series)
+        return pie_series
+      end
+    end
+  end
   # def hf_highlight(text, epa_code)
   #   if epa_code == "N/A"
   #     return text

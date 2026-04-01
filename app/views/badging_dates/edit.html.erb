@@ -1,0 +1,15 @@
+
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5>Editing badging date</h5>
+    </div>
+      <%= render "form", badging_date: @badging_date %>
+
+      <div class="card-footer bg-white py-3">
+        <%= link_to "Show this badging date", @badging_date %> |
+        <%= link_to "Back to badging dates", badging_dates_path %>
+      </div>
+  </div>
+
+</div>

@@ -109,6 +109,25 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :eg_members
+
+  resources :fix_eg_members, only: :index do
+    collection do
+      get  :process_eg_file
+      get  :reviewer_update
+      get  :eg_assignment
+      get  :download_file
+    end
+  end
+
+  resources :badging_dates
+
+  resources :new_competencies do
+    collection  do
+      get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'new_competencies', to: 'new_competencies#download_file'
+    end
+  end  
 
   resource :session, only: [:new, :create, :destroy]
 

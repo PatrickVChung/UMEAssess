@@ -69,3 +69,5 @@ gem "active_storage_drag_and_drop"
 gem "cancancan", "~> 3.6"
 gem "aes"
 gem "administrate"
+gem "lazy_high_charts"
+

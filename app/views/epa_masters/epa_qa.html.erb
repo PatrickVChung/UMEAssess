@@ -2,11 +2,16 @@
  <br /><br />
     <div class="card">
       <div class="card-body">
-        <%= form_tag(epa_qa_epa_masters_path, method: "get", id: 'epa_qa_form') do %>
-          <div class="form-group navbar-form navbar-left">
-            <b>Cohort </b> <%= select_tag :permission_group_id, options_from_collection_for_select(@permission_groups, "id", "title", selected: params[:permission_group_id]), include_blank: '--',
-               prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+
+          <%= form_tag(epa_qa_epa_masters_path, method: "get", id: 'epa_qa_form') do %>
+          <div class="d-flex align-items-center">
+            <label for="inputTextbox"  class="me-2">Cohort:</label>
+
+              <%= select_tag :permission_group_id, options_from_collection_for_select(@permission_groups, "id", "title", selected: params[:permission_group_id]), include_blank: '--',
+                 prompt: "Please Select a Cohort", onchange: "this.form.submit();", class: "form-control w-auto" %>
+
           </div>
+        </div>
       </div>
 
     </div>

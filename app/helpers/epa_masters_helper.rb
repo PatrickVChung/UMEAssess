@@ -669,6 +669,17 @@ module EpaMastersHelper
   #   end
   #   return new_order
   # end
+  def hf_create_wba_epa_graph_series(all_cohort_wba_epa_data)
+    categories = hf_epa_codes_new
+    title =  "Number of WBAs by EPA" + '<br ><b>' + "(Level 4 Only)" + '</b>'
+    series = []
+    all_cohort_wba_epa_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
+      if all_cohort_wba_epa_data["#{key}"].values.sum != 0 and !all_cohort_wba_epa_data["#{key}"].empty?
+        series.push(name: key, yAxis: 0, data: reorder_epas_new(all_cohort_wba_epa_data["#{key}"]).values)
+      end
+    end
+    return title, series, categories
+  end
 
   def hf_wba_epa_graph(all_cohort_wba_epa_data)
 
@@ -688,7 +699,7 @@ module EpaMastersHelper
       )
       all_cohort_wba_epa_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
         if all_cohort_wba_epa_data["#{key}"].values.sum != 0 and !all_cohort_wba_epa_data["#{key}"].empty?
-          f.series(name: key, yAxis: 0, data: reorder_epas(all_cohort_wba_epa_data["#{key}"]).values)
+          f.series(name: key, yAxis: 0, data: reorder_epas_new(all_cohort_wba_epa_data["#{key}"]).values)
         end
       end
       pie_data = []
@@ -767,101 +778,16 @@ module EpaMastersHelper
 
   end
 
-  def hf_epa_badged_graph(all_cohort_epa_badged_data)
-    selected_categories = all_cohort_epa_badged_data["Med21"].keys
-    # epa_series = all_cohort_epa_badged_data["Med21"].values
-    # epa_series2 = all_cohort_epa_badged_data["Med22"].values
-    # epa_series3 = all_cohort_epa_badged_data["Med23"].values
-    # categories = []
-    # selected_categories.each do |category|
-    #   categories.push '<a href="#" data-toggle="tooltip" title="Some tooltip text!">' + category + '</a>'
-    # end
-
-    height = 600
-
-    title =  "Number of Badges by EPA" #+ '<br ><b>' + "(n = #{tot_count})" + '</b>'
-
-    chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: title)
-      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
-      f.xAxis(categories: selected_categories,
-        labels: {
-              style:  {
-                          fontWeight: 'bold',
-                          color: '#000000'
-                      }
-                }
-      )
-
-      all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
-        if all_cohort_epa_badged_data["#{key}"].values.sum != 0
-          f.series(type: 'column', name: key, yAxis: 0, data: all_cohort_epa_badged_data["#{key}"].values)
-        end
+  def hf_create_epa_badged_graph_series(all_cohort_epa_badged_data)
+    categories = all_cohort_epa_badged_data["Med26"].keys
+    title =  "Number of Badges by EPA"
+    series = []
+    all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
+      if all_cohort_epa_badged_data["#{key}"].values.sum != 0
+        series.push(type: 'column', name: key, yAxis: 0, data: all_cohort_epa_badged_data["#{key}"].values)
       end
-
-      pie_data = []
-      all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
-        if all_cohort_epa_badged_data["#{key}"].values.sum != 0
-          series_data = {}
-          series_data.store('name', key)
-          series_data.store('y', all_cohort_epa_badged_data["#{key}"].values.sum )
-          pie_data.push series_data
-        end
-      end
-
-      f.series(type: 'pie',
-              data: pie_data,
-              center: [300,100], size: 150, showInLegend: false
-
-      )
-
-      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-      # f.colors(['#4572A7',
-      #           '#AA4643',
-      #           '#89A54E',
-      #           '#80699B',
-      #           '#3D96AE',
-      #           '#DB843D',
-      #           '#92A8CD',
-      #           '#A47D7C',
-      #           '#B5CA92'
-      #           ])
-
-      f.yAxis [
-         { tickInterval: 50,
-           title: {text: "<b>No of Badges Awarded</b>", margin: 20}
-         }
-      ]
-      f.plot_options(
-        pie: {
-            dataLabels: {
-                enabled: true,
-                crop: false,
-                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
-            }
-        },
-        column: {
-            dataLabels: {
-                enabled: true,
-                crop: false,
-                overflow: 'none'
-            }
-        },
-        series: {
-          cursor: 'pointer'
-        }
-      )
-      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
-      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
-      f.chart({
-                defaultSeriesType: "column",
-                width: 1600, height: height,
-                plotBackgroundImage: ''
-              })
     end
-
-    return chart
-
+    return title, series, categories
   end
 
 end

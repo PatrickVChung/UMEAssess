@@ -1,0 +1,30 @@
+<br />
+<h4>Update EG Member(s) Module</h4>
+
+<div id="container-fluid">
+
+        <div class="card">
+          <div class="card-body card-body-color">
+            <div class="form-row">
+
+                    <%= form_with(url: reviewer_update_fix_eg_members_path, method: :get, html: { class: "row row-cols-lg-auto g-3 align-items-center" }) do |f| %>
+                     <label for="update_eg_member1" class="control-label">&nbsp;&nbsp;Update Reviewer1:&nbsp;</label>
+                     <%= select_tag :reviewer1, options_for_select(@reviewer1,  selected: params[:reviewer1]),
+                         prompt: "Please Select a Reviewer", class: 'form-control', style: "max-width:220px; display: inline-block"  %>
+                     <label for="update_eg_member2" class="control-label">&nbsp;&nbsp;Reviewer2:&nbsp;</label>
+                     <%= select_tag :reviewer2, options_for_select(@reviewer2, selected: params[:reviewer2]),
+                         prompt: "Please Select a Reviewer2", class: 'form-control', style: "max-width:220px; display: inline-block"  %>
+                      &nbsp;&nbsp;<input type="submit" value="Submit"  class="btn btn-primary"/>&nbsp;&nbsp;
+                      <%= link_to 'Back to <i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_path %>
+
+                <% end %>
+
+            </div>
+          </div>
+        </div>
+
+  </div>
+
+  <div id=list_eg_reviewer %>
+    <%= render partial: 'list_eg_review' %>
+  </div>

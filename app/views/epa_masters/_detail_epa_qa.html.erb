@@ -17,8 +17,13 @@
     <% @epa_qa_data.each do |qa| %>
       <tr>
         <% qa.each do |key, val| %>
-          <td> <%= val %> </td>
+          <%# Check if val is a number and less than 100 %>
+          <% is_low_score = val.is_a?(Numeric) && val < 100 %>
+          <td class="<%= 'text-danger fw-bold' if is_low_score %>">
+            <%= val %>
+          </td>
         <% end %>
+
       </tr>
     <% end %>
 

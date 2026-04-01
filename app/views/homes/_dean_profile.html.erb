@@ -93,7 +93,7 @@
                          role="button"
                          data-bs-toggle="dropdown"
                          aria-expanded="false">
-                        <i class="bi bi-hospital" style="color:#E1191C"></i> EG Review
+                        <i class="bi bi-hospital" style="color:blue"></i> EG Review
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="egReviewDropdown">
                         <li><%= link_to 'EG-Review', epa_masters_path, class: "dropdown-item", target: "_blank" %></li>
@@ -109,14 +109,36 @@
                       </ul>
                   <% end %>
 
-                  <% if Current.user.can_process_eg_assignment? || Current.user.coaching_type == 'admin' %>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> EG Members'.html_safe, eg_members_path, target: "_blank", class: "dropdown-item" %></li>
-                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Fix EG Members'.html_safe, fix_eg_members_path, target: "_blank", class: "dropdown-item" %></li>
-                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> List EG Assignment'.html_safe, eg_assignment_fix_eg_members_path, target: "_blank", class: "dropdown-item" %></li>
-                    <li><%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Badging Dates'.html_safe, badging_dates_path, target: "_blank", class: "dropdown-item" %></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <% if Current.user.can_process_eg_assignment? || Current.user.coaching_type == 'admin' %>
+                    <class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle"
+                         href="#"
+                         id="egMaintenanceDropdown"
+                         role="button"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        <i class="bi bi-wrench" style="color:#E1191C"></i> EG Maintenance
+                      </a>
+                    <ul class="dropdown-menu" aria-labelledby="egMaintenanceDropdown">
+                      <%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> EG Members'.html_safe, eg_members_path, target: "_blank", class: "dropdown-item" %>
+                      <%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Fix EG Members'.html_safe, fix_eg_members_path, target: "_blank", class: "dropdown-item" %>
+                      <%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> List EG Assignment'.html_safe, eg_assignment_fix_eg_members_path, target: "_blank", class: "dropdown-item" %>
+                      <%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Badging Dates'.html_safe, badging_dates_path, target: "_blank", class: "dropdown-item" %>
+                    </ul>
                   <% end %>
+                  <% if Current.user.coaching_type == 'dean' %>
+                    <class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle"
+                         href="#"
+                         id="OasisMaintenanceDropdown"
+                         role="button"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        <i class="bi bi-calendar" style="color:green"></i> Oasis Maintenance
+                      </a>
+                  <ul class="dropdown-menu" aria-labelledby="egMaintenanceDropdown">
+                  </ul>
+                <% end %>
 
 
               OASIS Access <br />

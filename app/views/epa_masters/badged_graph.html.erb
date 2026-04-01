@@ -1,27 +1,20 @@
-<br />
 <div class="row justify-content-center">
-      <div class="card" >
-         <div class="card-body">
-           <div class="d-flex justify-content-center align-items-center">
-              <% epa_badged_graph ||= hf_epa_badged_graph(@all_cohorts_badges) %>
-              <%= high_chart("epa_badged_graph", epa_badged_graph) %>
-            </div>
-            <br />
-            <div style="text-align:center">
-              <span>
-                <% hf_epa_codes.each do |epa| %>
-                  <a href="#" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_epa_comp_codes(epa) %>".html_safe><%= epa %> </a> &nbsp;&nbsp;
-                <% end %>
-              </span>
-              <hr>
-              <span>
-                <% hf_all_comp_codes.each do |comp| %>
-                  <a href="#" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_get_comp_def(comp) %>".html_safe><%= comp %> </a> &nbsp;
-                <% end %>
-              </span>
-           </div>
-         </div>
+  <div class="card" >
+     <div class="card-body">
+       <div class="d-flex justify-content-center align-items-center">
+          <% title, series_data, categories = hf_create_epa_badged_graph_series(@all_cohorts_badges) %>
+          <div data-controller="highcharts"
+               data-highcharts-series-value="<%= series_data.to_json %>"
+               data-highcharts-categories-value="<%= categories.to_json %>"
+               data-highcharts-title-value="<%= title %>"
+               data-highcharts-chart-type-value="column"
+               data-highcharts-y-title-value="# of Badges Awarded"
+               data-highcharts-y-max-value="160"
+               style="width:1200px; height:500px;">
+          </div>
+
+        </div>
+
       </div>
-
-
+  </div>
 </div>

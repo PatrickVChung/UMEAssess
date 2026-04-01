@@ -171,35 +171,40 @@ class EpaMaster < ApplicationRecord
     epa_badged_count = {}
     if permission_group_id.to_i >= 20  # >= Med26
       #new EPAs
-      count = in_data.collect{|val| val["Badge"]["EPA1A"]}.compact.count
+      count = in_data.collect{|val| val&.dig("Badge", "EPA1A")}.compact.count
       epa_badged_count.store("EPA1A", count)
 
-      count = in_data.collect{|val| val["Badge"]["EPA1B"]}.compact.count
+      count = in_data.collect{|val| val&.dig("Badge","EPA1B")}.compact.count
       epa_badged_count.store("EPA1B", count)
 
       for i in 2..11
         epa = "EPA#{i}"
-        count = in_data.collect{|val| val["Badge"]["#{epa}"]}.compact.count
+        count = in_data.collect{|val| val&.dig("Badge", epa) }.compact.count
         epa_badged_count.store("EPA#{i}", count)
       end
     else
-      for i in 1..13
-        epa = "EPA#{i}"
-        count = in_data.collect{|val| val["Badge"]["#{epa}"]}.compact.count
-        epa_badged_count.store("EPA#{i}", count)
+      if in_data.present?
+        (1..13).each do |i|
+          epa = "EPA#{i}"
+          # Safely extract the value even if 'Badge' or the EPA key is missing
+          count = in_data.collect { |val| val&.dig("Badge", epa) }.compact.count
+          epa_badged_count.store(epa, count)
+        end
       end
     end
+
     return epa_badged_count
   end
 
   def self.process_all_cohorts permission_groups
     epa_badged_cohorts_hash = {}
     permission_groups.sort.each do |permission_group|
-      epa_badged = get_epa_badged(permission_group.id)
-      epa_badged_count, student_epa_count = process_epa_badged epa_badged, permission_group.id
-      cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
-      epa_badged_cohorts_hash.store(cohort_title, epa_badged_count)
-
+      if permission_group.id >= 20  # only process Med26 and higher..
+        epa_badged = get_epa_badged_new(permission_group.id)
+        epa_badged_count, student_epa_count = process_epa_badged2 epa_badged, permission_group.id
+        cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
+        epa_badged_cohorts_hash.store(cohort_title, epa_badged_count)
+      end
     end
     return epa_badged_cohorts_hash
   end
@@ -207,17 +212,17 @@ class EpaMaster < ApplicationRecord
   def self.process_all_cohorts_wba_epa(permission_groups)
     wba_epa_cohorts_hash = {}
     permission_groups.sort.each do |permission_group|
-      cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
-        results = EpaMaster.execute_sql("select epa, count(epa) as tot_epa
-                                        from epas, users
-                                        where users.id = user_id and
-                                        involvement=4 and
-                                        users.permission_group_id = ?
-                                        group by epa
-                                        order by epa ", permission_group.id)
-
-
-      wba_epa_cohorts_hash.store(cohort_title, results.rows.to_h)
+      if permission_group.id >= 20  # only process Med26 and higher..
+          cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
+          results = EpaMaster.execute_sql("select epa, count(epa) as tot_epa
+                                          from epas, users
+                                          where users.id = user_id and
+                                          involvement=4 and
+                                          users.permission_group_id = ?
+                                          group by epa
+                                          order by epa ", permission_group.id)
+        wba_epa_cohorts_hash.store(cohort_title, results.rows.to_h)
+      end
     end
     return wba_epa_cohorts_hash
   end
