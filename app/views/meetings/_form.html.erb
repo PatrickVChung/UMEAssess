@@ -1,0 +1,151 @@
+<%# app/views/meetings/_form.html.erb %>
+<div class="side-panel-form">
+
+  <div class="accordion" id="meetingAccordion">
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrimary">
+          <span class="fw-bold" style="color: #4c0946;">Primary Reason for Appointment</span>
+        </button>
+      </h2>
+      <div id="collapsePrimary" class="accordion-collapse collapse show" data-bs-parent="#meetingAccordion">
+        <div class="accordion-body">
+          <%
+            # Logic to determine which options to show
+            select_options = case
+              when meeting.advisor_type.match?(/Career|ERAS/) then hf_career_primary_for_select
+              when meeting.advisor_type.match?(/Academic: Step 1/) then hf_academic_primary_step1_for_select
+              when meeting.advisor_type.match?(/Academic/) then hf_academic_primary_for_select
+              when meeting.advisor_type == 'Wellness' then hf_wellness_primary_for_select
+              when meeting.advisor_type == 'DEIB' then hf_diversity_navigator_for_select
+              when meeting.advisor_type == 'Assist Dean' then hf_assist_dean_for_select
+              else hf_meeting_tags_for_select
+            end
+          %>
+
+          <div class="checkbox-group">
+            <%= f.collection_check_boxes(:subject, select_options, :first, :first) do |b| %>
+              <div class="form-check">
+                <%= b.check_box(class: "form-check-input MyCheckBox") %>
+                <%= b.label(class: "form-check-label fw-bold") { b.text } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscussed">
+          <span class="fw-bold" style="color: #4c0946;"><%= meeting.advisor_type %> Advisor Discussed</span>
+        </button>
+      </h2>
+      <div id="collapseDiscussed" class="accordion-collapse collapse" data-bs-parent="#meetingAccordion">
+        <div class="accordion-body">
+          <%
+            advisor_subjects = case
+              when meeting.advisor_type.match?(/Career|ERAS/) then hf_career_advisor_discussed_for_select
+              when meeting.advisor_type.match?(/Academic/) then hf_academic_advisor_discussed_for_select
+              when meeting.advisor_type == 'Wellness' then hf_wellness_advisor_discussed_for_select
+              when meeting.advisor_type == 'DEIB' then hf_diversity_navigator_discussed_for_select
+              when meeting.advisor_type == 'Assist Dean' then hf_assist_dean_for_select
+            end
+          %>
+
+          <%= f.collection_check_boxes(:advisor_discussed, advisor_subjects, :first, :first) do |b| %>
+            <div class="form-check">
+              <%= b.check_box(class: "form-check-input") %>
+              <%= b.label(class: "form-check-label") { b.text } %>
+            </div>
+          <% end %>
+
+          <div class="mt-3">
+            <label class="small text-muted">Other Discussion Topics</label>
+            <% field_name = meeting.advisor_type.include?("Career") ? :career_discussed_other : :academic_discussed_other %>
+            <%= f.text_field field_name, class: "form-control form-control-sm" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if meeting.advisor_type != 'DEIB' %>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResources">
+            <span class="fw-bold" style="color: #4c0946;">Study Resources</span>
+          </button>
+        </h2>
+        <div id="collapseResources" class="accordion-collapse collapse" data-bs-parent="#meetingAccordion">
+          <div class="accordion-body">
+            <%= f.collection_check_boxes(:study_resources, hf_academic_study_resources_for_select, :first, :first) do |b| %>
+              <div class="form-check">
+                <%= b.check_box(class: "form-check-input") %>
+                <%= b.label(class: "form-check-label") { b.text } %>
+              </div>
+            <% end %>
+            <div class="mt-2">
+              <%= f.text_field :study_resources_other, class: "form-control form-control-sm", placeholder: "Other resources..." %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+
+  <% is_student = true if Current.user.coaching_type == 'student' %>
+
+  <div class="mt-3 p-0 bg-light rounded shadow-sm">
+    <h6 style="color: #4c0946;">Advisor Meeting Documentation</h6>
+    <%= f.text_area :advisor_notes,
+          rows: 4,
+          class: "form-control border-primary #{'bg-light' if is_student}",
+          readonly: is_student %>
+  </div>
+
+  <div class="mt-2 p-0 bg-light rounded shadow-sm">
+    <h6 style="color: #4c0946;">Student Notes</h6>
+    <%= f.text_area :notes, rows: 2, class: "form-control border-primary" %>
+  </div>
+
+  <div class="mt-2 row g-3">
+    <div class="col-6">
+      <%= f.label :m_status, "Meeting Status", class: "fw-bold small" %>
+      <% if is_student %>
+          <%# Show a disabled select for visual consistency %>
+          <%= f.select :m_status, ["Scheduled", "Completed", "Meeting Canceled", "Rescheduled", "No Show"], {},
+              class: "form-select bg-light",
+              disabled: true %>
+          <%# Include a hidden field so the existing value is preserved on save %>
+          <%= f.hidden_field :m_status %>
+        <% else %>
+          <%= f.select :m_status, ["Scheduled", "Completed", "Meeting Canceled", "Rescheduled", "No Show"], {},
+              class: "form-select" %>
+        <% end %>
+    </div>
+
+    <div class="col-6">
+      <label class="fw-bold small d-block">Advisor</label>
+      <div class="p-2 border rounded bg-white small"><%= hf_get_advisor_name(meeting.advisor_id) %></div>
+    </div>
+  </div>
+
+  <div class="p-3 border-top bg-white shadow-lg">
+    <div class="d-flex gap-2">
+      <%# Notice: I added form: 'meeting-form' to ensure the button works even if outside the tag %>
+      <button type="submit" form="meeting-form" class="btn btn-primary flex-grow-1 py-2 fw-bold" data-bs-dismiss="offcanvas">
+        Save Changes
+      </button>
+      <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="offcanvas">
+        Cancel
+      </button>
+    </div>
+  </div>
+  <div class="mt-2 border-top pt-0">
+    <%#= render partial: "specialties", locals: { meeting: meeting } %>
+    <%= render partial: "practice_test_scores", locals: { meeting: meeting } %>
+  </div>
+
+</div>

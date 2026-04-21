@@ -1,0 +1,24 @@
+
+<div class="container mt-3">
+  <%= render "layouts/flashes" %>
+</div>
+
+<table class="table table-responsive table-striped main-table table-auto" >
+  <thead>
+    <tr>
+      <th style="width: 100px;">Created At</th>
+      <th scope="col" style="width: 40%">Primary Reason</th>
+      <th scope="col">Status</th>
+      <th scope="col">Scheduled Apppointment</th>
+      <th score="col">Advisor</th>
+      <th score="col">Advisor Specialty</th>
+    </tr>
+  </thead>
+
+  <tbody id="meetings-table">
+    <% meetings.each do |meeting| %>
+      <%= render partial: "meetings/meeting_row", locals: { meeting: meeting } %>
+    <% end %>
+
+  </tbody>
+</table>

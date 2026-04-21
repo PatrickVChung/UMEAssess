@@ -1,0 +1,76 @@
+<%= form_with(model: @advisor, local: true) do |f| %>
+  <div class="card mx-auto shadow-sm" style="width: 75%;">
+    <div class="card-header bg-light">
+      <h5 class="mb-0"><%= @card_header %></h5>
+    </div>
+
+    <div class="card-body">
+      <div class="form-inputs">
+
+        <%# Advisor Type Select %>
+        <div class="row mb-3 align-items-center">
+          <%= f.label :advisor_type, class: "col-sm-2 col-form-label text-sm-end" %>
+          <div class="col-sm-6">
+            <%= f.select :advisor_type,
+                options_for_select(@advisor_types, @advisor.advisor_type),
+                { prompt: "Please Select an Advisor Type" },
+                { class: "form-select", required: true } %>
+          </div>
+        </div>
+
+        <%# Name Field %>
+        <div class="row mb-3 align-items-center">
+          <%= f.label :name, class: "col-sm-2 col-form-label text-sm-end" %>
+          <div class="col-sm-6">
+            <%= f.text_field :name, class: "form-control", placeholder: "Enter name" %>
+          </div>
+        </div>
+
+        <%# Email Field %>
+        <div class="row mb-3 align-items-center">
+          <%= f.label :email, class: "col-sm-2 col-form-label text-sm-end" %>
+          <div class="col-sm-6">
+            <%= f.email_field :email, class: "form-control", placeholder: "email@example.com" %>
+          </div>
+        </div>
+
+        <%# Status Select %>
+        <div class="row mb-3 align-items-center">
+          <%= f.label :status, class: "col-sm-2 col-form-label text-sm-end" %>
+          <div class="col-sm-6">
+            <%= f.select :status,
+                ["Active", "Inactive"],
+                {},
+                { class: "form-select" } %>
+          </div>
+        </div>
+
+        <%# Title Field %>
+        <div class="row mb-3 align-items-center">
+          <%= f.label :title, class: "col-sm-2 col-form-label text-sm-end" %>
+          <div class="col-sm-6">
+            <%= f.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+
+        <%# Specialty Field %>
+        <div class="row mb-3 align-items-center">
+          <%= f.label :specialty, class: "col-sm-2 col-form-label text-sm-end" %>
+          <div class="col-sm-6">
+            <%= f.text_field :specialty, class: "form-control" %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card-footer bg-transparent border-top-0 pb-4">
+      <div class="row">
+        <div class="col-sm-6 offset-sm-2">
+          <%= f.submit class: "btn btn-primary px-4" %>
+          <%= link_to "Cancel", advisors_path, class: "btn btn-outline-secondary ms-2" if defined?(advisors_path) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

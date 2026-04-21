@@ -1,0 +1,4 @@
+OASIS:
+    send_email: Yes
+    to_student: YES
+    to_advisor: YES 

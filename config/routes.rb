@@ -127,9 +127,51 @@ Rails.application.routes.draw do
       get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'
       get 'download_file', param: :file_name, action: :download_file,  controller: 'new_competencies', to: 'new_competencies#download_file'
     end
-  end  
+  end
+
+
+  resources :advisor_types do
+    member do
+      get :advisors
+      get :primary_reasons
+    end
+  end
+
+  resources :advisors do
+    member do
+      get :availabilities
+    end
+  end
+
+  resources :events do
+    collection do
+      get 'create_batch_appointments', action: :create_batch_appointments, controller: 'events', to: 'events#create_batch_appointments'
+      post 'save_batch_appointments'
+      get 'create_random_appointments', to: 'events#create_random_appointments'
+      get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
+      get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
+      get 'save_all_random', param: :appointments,  action: :save_all_random, controller: 'events', to: 'events#save_all_random'
+      get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
+      get 'resend_calendar_invite', action: :resend_calendar_invite, controller: 'events', to: 'events#resend_calendar_invite'
+      get 'resend_invite', action: :resend_invite, controller: 'events', to: 'events#resend_invite'
+      get 'batch_delete', action: :batch_delete, controller: 'events', to: 'events#batch_delete'
+      get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
+      get 'get_events_by_advisor', action: :get_events_by_advisor, controller: 'events', to: 'events#get_events_by_advisor'
+      post 'calendly_click', action: :calendly_click, controller: 'events', to: 'events#calendly_click'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'events', to: 'events#download_file'
+      get 'get_ics_files', param: :ics_file, controller: 'events', to: 'events#get_ics_files'
+      get 'purge_ics_files',  param: :ics_file, action: :purge_ics_files, to: 'events#purge_ics_files'
+    end
+  end
 
   resource :session, only: [:new, :create, :destroy]
 
   resources :passwords, param: :token
+
+  resources :meetings do
+    member do
+      get 'show_detail'
+      patch :cancel # Using PATCH because we are updating the record
+    end
+  end
 end

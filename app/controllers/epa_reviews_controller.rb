@@ -37,23 +37,6 @@ class EpaReviewsController < ApplicationController
         format.html # optional fallback
       end
   end
-
-  def local_storage
-    if params[:epa_json].present?
-      email = params[:epa_json]["0"]["email"]
-      user = User.find_by(email: email)
-
-      #load_eg_members(user)
-
-      EpaReview.load_epa(params[:epa_json], @eg_full_name1, @eg_full_name2)
-    end
-
-    respond_to do |format|
-      format.json #{ head :no_content }
-      #format.js { render action: 'Updated EPAs!', status: 200 }
-    end
-  end
-
   # GET /epa_reviews/new
   def new
     @epa_review = @reviewable.epa_reviews.new

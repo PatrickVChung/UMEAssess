@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_04_171627) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_14_141118) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -47,6 +47,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_04_171627) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "advisor_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_advisor_types_on_name", unique: true
+  end
+
   create_table "advisors", force: :cascade do |t|
     t.string "advisor_type"
     t.string "name"
@@ -58,6 +65,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_04_171627) do
     t.string "specialty"
     t.string "formal_name"
     t.text "brief_cv"
+    t.integer "advisor_type_id"
+    t.index ["advisor_type_id"], name: "index_advisors_on_advisor_type_id"
   end
 
   create_table "artifacts", force: :cascade do |t|

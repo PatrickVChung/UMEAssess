@@ -1,0 +1,48 @@
+<div class="card shadow-sm">
+  <div class="card-header bg-light">
+    <% if Current.user.coaching_type=='student' && params[:student_id].present? %>
+        <h5>Student Name: <%= Current.user.full_name %></h5>
+        <%= link_to "Create New Appointment", new_meeting_path, class: "btn btn-primary", data: { turbo_stream: true } %>
+    <% else %>
+      <%= form_with(url: meetings_path, method: :get, data: { turbo_frame: "meeting_details" }) do |f| %>
+        <div class="row align-items-center">
+          <%# Label and Select on the same line using Bootstrap Grid %>
+          <%= f.label :student_id, "Select Student", class: "col-auto col-form-label fw-bold" %>
+
+          <div class="col-md-6 col-lg-4">
+            <%= f.collection_select :student_id, @students, :uuid, :full_name,
+                {
+                  prompt: "Search for a student...",
+                  selected: params[:student_id]
+                },
+                {
+                  class: "form-control",
+                  onchange: "this.form.requestSubmit();",
+                  data: {
+                    controller: "tom-select",
+                    tom_select_options_value: { allowEmptyOption: true }
+                  }
+                }
+            %>
+          </div>
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <div id="meeting_details">
+      <% if @meetings %>
+        <% if Current.user.coaching_type != 'student' %>
+          <% if Advisor.find_by(email: Current.user.email).present? %>
+            <%= link_to "Create Retro-Appointment", new_meeting_path(user_id: @meetings.first.user_id), class: "btn btn-primary", data: { turbo_stream: true } %>
+          <% end %>
+        <% end %>
+        <%= render "meeting_list", meetings: @meetings %>
+      <% else %>
+        <p class="text-muted mb-0">Please select a student to view meeting history.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

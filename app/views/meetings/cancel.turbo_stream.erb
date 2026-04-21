@@ -1,0 +1,9 @@
+<%# 1. Update the row in the table %>
+<%= turbo_stream.replace "meetingId-#{@meeting.id}" do %>
+  <%= render partial: "meetings/meeting_row", locals: { meeting: @meeting } %>
+<% end %>
+
+<%# 2. Update the flash messages %>
+<%= turbo_stream.update "flash-container" do %>
+  <%= render "layouts/flashes" %>
+<% end %>

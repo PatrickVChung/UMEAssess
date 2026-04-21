@@ -1,0 +1,58 @@
+<!-- app/views/advisor_types/primary_reasons.html.erb -->
+<turbo-frame id="primary_reasons_frame">
+
+  <% advisor_type = @advisor_type.name %>
+
+  <% select_primary_reasons =
+      case
+      when advisor_type.match?(/Career|ERAS/)
+        hf_career_primary_for_select
+      when advisor_type.match?(/Academic: Step 1/)
+        hf_academic_primary_step1_for_select
+      when advisor_type.match?(/Academic/)
+        hf_academic_primary_for_select
+      when advisor_type == 'Wellness'
+        hf_wellness_primary_for_select
+      when advisor_type == 'DEIB'
+        hf_diversity_navigator_for_select
+      when advisor_type == 'Assist Dean'
+        hf_assist_dean_for_select
+      else
+        hf_meeting_tags_for_select
+      end
+  %>
+
+  <div class="card mb-1">
+    <div class="card-header fw-bold">Primary Reason(s)</div>
+    <div class="card-body custom-card-body">
+      <div class="row">
+        <%= collection_check_boxes(
+              :meeting,
+              :subject,
+              select_primary_reasons,
+              :first,
+              :first
+            ) do |b| %>
+          <div class="col-md-6 form-check">
+            <%= b.check_box class: 'form-check-input MyCheckBox' %>
+            <%= b.label class: 'form-check-label' %>
+          </div>
+        <% end %>
+        <% if advisor_type != "Wellness" %>
+          <hr>
+          <label class="fw-bold d-block mb-2">Study Resources:</label>
+          <div class="row">
+            <%= collection_check_boxes(:meeting, :study_resources, hf_academic_study_resources_for_select, :first, :first) do |b| %>
+              <div class="col-md-4 form-check">
+                <%= b.check_box(class: 'form-check-input') %>
+                <%= b.label(class: 'form-check-label') %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+
+</turbo-frame>

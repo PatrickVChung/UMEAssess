@@ -1,0 +1,62 @@
+<div class="container mt-2">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Advisors</h5>
+
+      <%= link_to "New Advisor", new_advisor_path, class: "btn btn-sm btn-primary" %>
+    </div>
+
+    <div class="card-body p-0">
+      <div data-controller="datatable">
+          <div class="table-responsive">
+            <table data-datatable-target="table"
+              class="table table-hover table-striped mb-0"
+              id="dttb-advisors"
+              data-sort="true"
+              data-source="<%= url_for(format: :json) %>"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th data-data="type">Type</th>
+                  <th data-data="name">Name</th>
+                  <th data-data="email">Email</th>
+                  <th data-data="status">Status</th>
+                  <th data-data="title">Title</th>
+                  <th data-data="Specialty">Specialty</th>
+
+                  <th
+                    data-data="url"
+                    data-orderable="false"
+                    data-searchable="false"
+                    class="text-end skip-export"
+                    style="width: 220px;"
+                  ></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% @advisors.sort_by(&:advisor_type).each do |advisor| %>
+                  <tr>
+                    <td><%= advisor.advisor_type %></td>
+                    <td><%= advisor.name %></td>
+                    <td><%= advisor.email %></td>
+                    <td><%= advisor.status %></td>
+                    <td><%= advisor.title %></td>
+                    <td><%= advisor.specialty %></td>
+
+                    <td class="text-end">
+                      <%= link_to "Edit", edit_advisor_path(advisor), class: "btn btn-sm btn-outline-primary" %>
+                      <%= link_to "Destroy", advisor,
+                                  method: :delete,
+                                  data: { confirm: "Are you sure?" },
+                                  class: "btn btn-sm btn-outline-danger" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

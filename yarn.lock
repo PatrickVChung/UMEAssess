@@ -258,6 +258,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@orchidjs/sifter@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@orchidjs/sifter@npm:1.1.0"
+  dependencies:
+    "@orchidjs/unicode-variants": "npm:^1.1.2"
+  checksum: 10c0/615f4c8f340c062d1a944ae88d7d745353e45d14d002c6966bc02ef44aca13c904942836f9ad89cbe2b5d8fa3b885c2b00b65be8d318cabc75f440949068ed6a
+  languageName: node
+  linkType: hard
+
+"@orchidjs/unicode-variants@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@orchidjs/unicode-variants@npm:1.1.2"
+  checksum: 10c0/7836e0766641d79a0337a2a8ca7f49051bb71e19e0e8fc64cdbafac4f2f718abd368b364ad79a9b13547a70e24cebb3cc4d71e75f22791ade8ba80654eb1323f
+  languageName: node
+  linkType: hard
+
 "@parcel/watcher-android-arm64@npm:2.5.6":
   version: 2.5.6
   resolution: "@parcel/watcher-android-arm64@npm:2.5.6"
@@ -469,6 +485,7 @@ __metadata:
     datatables.net: "npm:^2.3.6"
     datatables.net-bs5: "npm:^2.3.6"
     esbuild: "npm:^0.27.2"
+    flatpickr: "npm:^4.6.13"
     highcharts: "npm:^12.5.0"
     jquery: "npm:^4.0.0"
     jquery-contextmenu: "npm:^2.10.1"
@@ -477,6 +494,7 @@ __metadata:
     postcss: "npm:^8.5.6"
     postcss-cli: "npm:^11.0.1"
     sass: "npm:^1.97.3"
+    tom-select: "npm:^2.5.2"
   languageName: unknown
   linkType: soft
 
@@ -868,6 +886,13 @@ __metadata:
   dependencies:
     to-regex-range: "npm:^5.0.1"
   checksum: 10c0/b75b691bbe065472f38824f694c2f7449d7f5004aa950426a2c28f0306c60db9b880c0b0e4ed819997ffb882d1da02cfcfc819bddc94d71627f5269682edf018
+  languageName: node
+  linkType: hard
+
+"flatpickr@npm:^4.6.13":
+  version: 4.6.13
+  resolution: "flatpickr@npm:4.6.13"
+  checksum: 10c0/0e027e72a2ce1716840a8c0bf9094f48d2665dc3f3024bf9604810c5bd7dd94aa830b133c5b5cfc0c330fc88939f33b54c8714515957f9d194c3a3bb7f75a1e2
   languageName: node
   linkType: hard
 
@@ -1701,6 +1726,16 @@ __metadata:
   dependencies:
     is-number: "npm:^7.0.0"
   checksum: 10c0/487988b0a19c654ff3e1961b87f471702e708fa8a8dd02a298ef16da7206692e8552a0250e8b3e8759270f62e9d8314616f6da274734d3b558b1fc7b7724e892
+  languageName: node
+  linkType: hard
+
+"tom-select@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "tom-select@npm:2.5.2"
+  dependencies:
+    "@orchidjs/sifter": "npm:^1.1.0"
+    "@orchidjs/unicode-variants": "npm:^1.1.2"
+  checksum: 10c0/4522747956fbbd585473e55359e7e763bcfa9b3e16963e2e61d49241132fc6bf30fdceaa75c083b88c6f718fbb84f3d3291b1cdcc9d62fd2d8b1553693e24977
   languageName: node
   linkType: hard
 

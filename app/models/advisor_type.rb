@@ -1,0 +1,2 @@
+class AdvisorType < ApplicationRecord
+end

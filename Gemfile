@@ -70,4 +70,4 @@ gem "cancancan", "~> 3.6"
 gem "aes"
 gem "administrate"
 gem "lazy_high_charts"
-
+gem "icalendar"

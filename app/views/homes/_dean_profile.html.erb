@@ -1,4 +1,4 @@
-<div class="container py-4">
+<div class="container py-2">
 
     <div class="row mb-4">
       <div class="col-12">
@@ -126,6 +126,9 @@
                       <%= link_to '<i class="bi bi-wrench" style="color:#E1191C"></i> Badging Dates'.html_safe, badging_dates_path, target: "_blank", class: "dropdown-item" %>
                     </ul>
                   <% end %>
+
+                  <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Meeting'.html_safe, meetings_path, target: "_blank" %>
+
                   <% if Current.user.coaching_type == 'dean' %>
                     <class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle"
@@ -137,11 +140,18 @@
                         <i class="bi bi-calendar" style="color:green"></i> Oasis Maintenance
                       </a>
                   <ul class="dropdown-menu" aria-labelledby="egMaintenanceDropdown">
+                      <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> Advisors'.html_safe, advisors_path, target: "_blank", class: "dropdown-item" %>
+                      <%= link_to '<i class="bi bi-calendar" style="color:#E1191C"></i> Create Available Appointments'.html_safe,
+                            create_batch_appointments_events_path,
+                            target: "_blank", class: "dropdown-item" %>
+
+                      <%= link_to '<i class="bi bi-calendar" style="color:#E1191C"></i> Create Random Appointments'.html_safe, advisors_path, target: "_blank", class: "dropdown-item" %>
+
                   </ul>
                 <% end %>
 
 
-              OASIS Access <br />
+
               Medhub <br>
               Course Catalog <br>
               Report <br>

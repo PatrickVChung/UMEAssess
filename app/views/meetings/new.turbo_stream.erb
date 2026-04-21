@@ -1,0 +1,27 @@
+
+  <% if Advisor.find_by(email: Current.user.email).present? %>
+    <%= turbo_stream.replace "modal-container" do %>
+      <%= render partial: "shared/modal", locals: {
+            title: "Create Retro-Appointment Form",
+            size: "modal-lg",
+            style: "max-width: 60%",
+            body: render(partial: "meetings/new_advisor_form", locals: {
+            meeting: @meeting,
+            advisor_type: @advisor_type,
+            advisor_id: @advisor_id,
+            student: @student
+          })
+        } %>
+    <% end %>
+  <% elsif Current.user.coaching_type == 'student' %>
+    <%= turbo_stream.replace "modal-container" do %>
+      <%= render partial: "shared/modal", locals: {
+            title: "Create New Appointment Form",
+            size: "modal-lg",
+            style: "max-width: 60%",
+            body: render(partial: "new_student_form", locals: {
+                student: @student
+          })
+        } %>
+    <% end %>
+  <% end %>

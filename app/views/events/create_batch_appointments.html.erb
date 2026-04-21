@@ -1,0 +1,120 @@
+
+<div class="container mt-2">
+  <h4>Create Available Appointments</h4>
+  <div class="card">
+    <div class="card-body card-body-color">
+      <%= form_tag(create_batch_appointments_events_path, method: 'get', data: { turbo_frame: "detail_appointments" }) do %>
+
+        <div class="form-group">
+          <div class="row mb-0">
+            <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2 right-label" %>
+            <div class="col-sm-6">
+              <% if @advisor_types.count == 1 %>
+                <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types.first), include_blank: '---',
+                     required: true, class: "form-select"  %>
+              <% else %>
+                <%= select_tag :advisor_type,
+                      options_for_select(@advisor_types, selected: params[:advisor_type]),
+                      include_blank: '---',
+                      required: true,
+                      class: "form-select",
+                      # This triggers the form to submit to the server immediately
+                      onchange: "this.form.submit();" %>
+              <% end %>
+            </div>
+          </div>
+          <turbo-frame id="advisor_selection_frame">
+            <div class="row mb-0">
+              <%= label_tag :Advisor, nil, class: "control-label col-md-2 right-label" %>
+              <div class="col-sm-6">
+                <% if !@advisor_name.empty? %>
+                  <%= select_tag :advisor, options_for_select(@advisor_name, selected: @advisor_name), include_blank: "---" , required: true, class: "form-select"  %>
+                <% else %>
+                <%# Use @filtered_advisors if it exists, otherwise use all %>
+                      <% advisor_options = @filtered_advisors || @all_advisor_names %>
+                      <%= select_tag :advisor,
+                            options_for_select(advisor_options, selected: params[:advisor]),
+                            include_blank: "---",
+                            required: true,
+                            class: "form-select" %>
+                <% end %>
+              </div>
+            </div>
+          </turbo-frame>
+
+
+            <div class="row mb-0">
+              <%= label_tag "Time Slot by Mins", nil, class: "control-label col-md-2 right-label" %>
+              <div class="col-sm-6">
+                <%= select_tag :time_slot, options_for_select(["15", "30", "45", "60"], selected: '45'),  include_blank: "---", required: true, class: "form-select" %>
+              </div>
+            </div>
+
+            <div class="row mb-0">
+              <label class="control-label col-md-2 right-label"></label>
+              <div class="col-sm-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox", id="time_interval", name="time_interval">
+                  <label class="form-check-label" for="defaultCheck1">
+                    15 Mins Time Interval
+                  </label>
+                </div>
+                </div>
+              </div>
+
+            <div data-controller="flatpickr">
+              <div class="row mb-0">
+                  <label class="control-label col-md-2 right-label">Start Date <i class="fa fa-calendar"></i> </label>
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      id="fpStartDate1"
+                      name="fpStartDate1"
+                      class="form-control"
+                      data-flatpickr-target="startInput"
+                      data-action="change->flatpickr#updateEnd"
+                      placeholder="Select Start Date/Time..">
+                  </div>
+
+              </div>
+
+              <div class="row mb-0">
+                <label class="control-label col-md-2 right-label">End Date <i class="fa fa-calendar"></i></label>
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      id="fpEndDate1"
+                      name="fpEndDate1"
+                      class="form-control"
+                      data-flatpickr-target="endInput"
+                      placeholder="Select End Date/Time..">
+                  </div>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= label_tag "Weekly Recurrences", nil, class: "control-label col-md-2 right-label" %>
+              <div class="col-sm-6">
+                <%= select_tag "weekly_recurrences", options_for_select([*0..12]), class: "form-select" %>
+              </div>
+            </div>
+
+            <div class="row mb-0">
+              <div class="col-md-2">
+              </div>
+              <div class="col-sm-6">
+                <%= submit_tag "Preview", class: "btn btn-primary"%>
+              </div>
+            </div>
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div class="container mt-4">
+  <turbo-frame id="detail_appointments">
+    <%# The results will load here after you click "Preview" %>
+  </turbo-frame>
+</div>

@@ -1,0 +1,103 @@
+<%= turbo_frame_tag "remote_side_panel" do %>
+<div class="sticky-top bg-white border-bottom p-3 mb-3" style="z-index: 1020;">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="h5 mb-0 text-primary">Meeting Detail: #<%= @meeting.id %> (<%= @meeting.user.full_name %>)</h3>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+</div>
+  <div class="p-4">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+      <div>
+
+        <p class="text-muted mb-0">
+          <i class="bi bi-calendar-event"></i>
+          <%= @meeting.date.strftime("%B %d, %Y at %I:%M %p") %>
+        </p>
+      </div>
+      <span class="badge fs-6 p-2 mb-1 fw-normal <%= @meeting.m_status == 'Completed' ? 'bg-success' : 'bg-warning text-dark' %>">
+        <%= @meeting.m_status %>
+      </span>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="card border-0 bg-light">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted fw-bold small mb-3">Meeting Context</h6>
+            <div class="row">
+              <div class="col-sm-6 mb-3">
+                <label class="d-block small text-muted">Primary Reason</label>
+                <span class="fw-semibold"><%= hf_format_subjects(@meeting.subject) %></span>
+              </div>
+              <div class="col-sm-6 mb-3">
+                <label class="d-block small text-muted">Advisor Type</label>
+                <span><%= Advisor.find_by(id: @meeting.advisor_id).name %> : <%= @meeting.advisor_type %> (ID: <%= @meeting.advisor_id %>)</span>
+              </div>
+              <div class="col-12">
+                <label class="d-block small text-muted">Location / Method</label>
+                <span><%= @meeting.location %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <h6 class="text-uppercase text-muted fw-bold small mb-2">Discussion & Support</h6>
+        <div class="mb-3">
+          <label class="d-block small text-muted mb-1">Items Discussed</label>
+          <div class="d-flex flex-wrap gap-1">
+            <%# Filter out blanks and render as small tags %>
+            <% (@meeting.advisor_discussed || []).reject(&:blank?).each do |item| %>
+              <span class="badge bg-white text-dark border fw-bold fs-6 p-2 mb-1 fw-normal">
+                <%= item %>
+              </span>
+            <% end %>
+            <% if @meeting.academic_discussed_other.present? %>
+              <span class="badge bg-white text-dark border">Other: <%= @meeting.academic_discussed_other %></span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="d-block small text-muted mb-1">Study Resources Recommended</label>
+          <div class="d-flex flex-wrap gap-1">
+            <% (@meeting.study_resources || []).reject(&:blank?).each do |res| %>
+              <span class="badge bg-soft-primary text-primary border border-primary-subtle fw-bold fs-6 p-2 mb-1 fw-normal"><%= res %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <h6 class="text-uppercase text-muted fw-bold small mb-2">Advisor Clinical/Academic Notes</h6>
+        <div class="p-3 bg-white border rounded-3 shadow-sm" style="white-space: pre-wrap; min-height: 100px; font-size: 0.95rem;">
+          <%= @meeting.advisor_notes.presence || "No clinical notes provided." %>
+        </div>
+      </div>
+      <div class="col-12">
+        <h6 class="text-uppercase text-muted fw-bold small mb-2">Student Notes</h6>
+        <div class="p-3 bg-white border rounded-3 shadow-sm" style="white-space: pre-wrap; min-height: 100px; font-size: 0.95rem;">
+          <%= @meeting.notes.presence || "No clinical notes provided." %>
+        </div>
+      </div>
+
+      <% if @meeting.advisor_outcomes.any?(&:present?) %>
+        <div class="col-12">
+          <h6 class="text-uppercase text-muted fw-bold small mb-2">Planned Outcomes</h6>
+          <ul class="list-group list-group-flush">
+            <% @meeting.advisor_outcomes.reject(&:blank?).each do |outcome| %>
+              <li class="list-group-item bg-transparent px-0"><i class="bi bi-check2-circle text-success me-2"></i><%= outcome %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+    </div>
+
+    <div class="mt-5 pt-3 border-top d-flex justify-content-between align-items-center">
+      <span class="text-muted small">Record ID: #<%= @meeting.id %></span>
+      <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="offcanvas">Close</button>
+    </div>
+  </div>
+<% end %>

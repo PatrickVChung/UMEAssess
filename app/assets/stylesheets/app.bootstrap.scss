@@ -2,6 +2,7 @@
 @use "bootstrap-icons/font/bootstrap-icons" as *;
 @use "datatables.net-bs5/css/dataTables.bootstrap5.css";
 @use "jquery-contextmenu/dist/jquery.contextMenu.css";
+@use "tom-select/dist/css/tom-select.bootstrap5.css";
 
 .navbar {
   transition: box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
@@ -71,4 +72,42 @@ button[disabled] .spinner-border-sm {
 }
 .card-body-color {
  background-color: #201f712e;
+}
+.offcanvas {
+  z-index: 1055 !important;
+}
+.offcanvas-backdrop {
+  z-index: 1050 !important;
+}
+/* application.css */
+.offcanvas-wide {
+  width: 50% !important; /* Adjust this percentage to your liking (e.g., 600px or 50%) */
+}
+
+/* Mobile responsiveness: make it full width on small screens */
+@media (max-width: 576px) {
+  .offcanvas-wide {
+    width: 100% !important;
+  }
+}
+.offcanvas-body {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+/* Optional: Make the scrollbar look modern/thin */
+.offcanvas-body::-webkit-scrollbar {
+  width: 6px;
+}
+.offcanvas-body::-webkit-scrollbar-thumb {
+  background-color: #dee2e6;
+  border-radius: 10px;
+}
+
+turbo-frame#remote_side_panel {
+  display: block;
+  height: 100vh;
+  width: 100%;
+}
+.custom-card-body {
+  background-color: #b7d9ed; /* Your hex code */
 }

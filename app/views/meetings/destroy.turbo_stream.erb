@@ -1,0 +1,7 @@
+<%# This assumes your row <tr> has an id like "meeting_123" %>
+<%= turbo_stream.remove "meetingId-#{@meeting.id}" %>
+
+<%# Update the flash messages %>
+<%= turbo_stream.update "flash-container" do %>
+  <%= render "layouts/flashes" %>
+<% end %>

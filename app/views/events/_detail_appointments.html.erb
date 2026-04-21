@@ -1,0 +1,97 @@
+<turbo-frame id="detail_appointments">
+<% if appointments.present? %>
+  <%= form_with url: save_batch_appointments_events_path, method: :post, data: { turbo: false } do |f| %>
+    <table class="table table-hover" data-bs-toggle="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>
+            <input type="checkbox" id="check_all_box" checked> Check All
+          </th>
+        </tr>
+      </thead>
+      <body>
+          <% i = 0 %>
+          <% time_slot = @time_slot.to_i %>
+
+          <% appointments.each do |appointment| %>
+                <% i = i + 1 %>
+                <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
+                <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
+                <% temp_start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y %I:%M%p") %>
+                <% temp_end_date   = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y %I:%M%p") %>
+
+                <% if !@advisor_name.empty? %>
+                  <%# advisor_name = @advisors.collect{|a| a.name if a.name == advisor_name}.compact.first %>
+                  <% advisor_id = @advisors.collect{|a| a.id if a.name == advisor_name}.compact.first %>
+                <% else %>
+                  <% advisor_name = @advisors.collect{|a| a.name if a.name == advisor_name}.compact.first %>
+                  <% advisor_id =  @advisors.collect{|a| a.id if a.name == advisor_name}.compact.first %>
+                <% end %>
+
+              <tr>
+                <td><%= @advisor_type %></td>
+                <% if (@time_slot.to_i == 15) and ((advisor_name.to_s.include? 'Cantone') or (advisor_name.to_s.include? 'Schneider')) %>
+                  <td><%= "Step Delay Meetings - #{advisor_name}" %></td>
+                  <% temp_desc_type = "Step Delay Meetings - #{advisor_name}" %>
+                <% else %>
+                  <td><%= "#{@advisor_type} - #{advisor_name}" %></td>
+                  <% temp_desc_type = "#{@advisor_type} - #{advisor_name}" %>
+                <% end %>
+
+                <td><%= start_date  %></td>
+                <td><%= end_date %></td>
+                <%
+                     # Construct the string to be sent to the server
+                     # Format: "start|end|advisor_id|type"
+                     temp_type = @advisor_type
+                     temp_desc_type = "#{temp_type} - #{advisor_name}"
+                     value_string = "#{temp_start_date}|#{temp_end_date}|#{advisor_id}|#{temp_type}|#{temp_desc_type}"
+                  %>
+                <% if (@time_slot.to_i == 15) and ((advisor_name.include? 'Cantone') or (advisor_name.include? 'Schneider')) %>
+                  <td><%= label_tag do %>
+                      <%= check_box_tag "appointment_data[]", value_string, true, id: "checkbox#{i}", class: "appointment-checkbox" %>
+                      Save
+                    <% end %>
+                  </td>
+                <% else %>
+                  <% if @advisor_type.include? "Remediation" %>
+                        <% temp_type = 'Remed' %>
+                  <% elsif @advisor_type.include? "Step 1" %>
+                        <% temp_type = 'Step1' %>
+                  <% else %>
+                    <% temp_type = @advisor_type %>
+                  <% end %>
+                  <%
+                       # Construct the string to be sent to the server
+                       # Format: "start|end|advisor_id|type"
+                       value_string = "#{temp_start_date}|#{temp_end_date}|#{advisor_id}|#{temp_type}|#{temp_desc_type}"
+                    %>
+                    <td><%= label_tag do %>
+                        <%= check_box_tag "appointment_data[]", value_string, true, id: "checkbox#{i}", class: "appointment-checkbox" %>
+                        Save
+                      <% end %>
+                    </td>
+                <% end %>
+              </tr>
+          <% end %>
+      </body>
+    </table>
+    <%# 3. The Save All button is now a submit tag %>
+    <div class="actions mt-3">
+      <%= f.submit "Save All Checked Appointments", class: "btn btn-primary", id: "SaveAll" %>
+    </div>
+  <% end %>
+<% end %>
+
+<%# 4. Simple JS for "Check All" functionality %>
+  <script>
+    document.getElementById('check_all_box')?.addEventListener('change', function(e) {
+      document.querySelectorAll('.appointment-checkbox').forEach(cb => cb.checked = e.target.checked);
+    });
+  </script>
+
+</turbo-frame>

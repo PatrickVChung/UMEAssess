@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :preceptor_assesses, dependent: :destroy
 
   has_many :new_competencies, dependent: :destroy, inverse_of: :user
+  has_many :meetings, inverse_of: :user, dependent: :destroy
 
   ROLES = {
     # can view assignments that they belong to

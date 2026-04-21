@@ -1,0 +1,55 @@
+<tr id="meetingId-<%= meeting.id %>">
+  <td><%= meeting.created_at.strftime("%m/%d/%Y") %></td>
+  <td><%= hf_format_subjects(meeting.subject) %></td>
+  <td><%= meeting.m_status %></td>
+  <% schedule_dateTime = hf_get_start_time(meeting.event_id) %>
+  <td><%= schedule_dateTime == "N/A" ? "N/A" : schedule_dateTime.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
+  <td><%= hf_get_advisor(meeting.advisor_id) %></td>
+  <% advisor = Advisor.find(meeting.advisor_id) %>
+  <% if advisor.advisor_type.include? "Career" %>
+    <td><%= advisor.specialty %></td>
+  <% else %>
+    <td></td>
+  <% end %>
+
+  <td>
+    <div class="btn-group">
+      <%= link_to 'View',
+          show_detail_meeting_path(meeting),
+          class: "btn btn-success btn-sm",
+          data: { action: "click->side-panel#open" } %>
+
+      <%= link_to 'Edit',
+          edit_meeting_path(meeting),
+          class: "btn btn-outline-primary btn-sm",
+          data: { action: "click->side-panel#open" } %>
+    </div>
+  </td>
+  <% if schedule_dateTime != 'N/A' and Current.user.coaching_type == 'student' %>
+    <td><%= link_to 'Upload IPAS/IPPS', artifacts_path, target: '_blank', class: "btn btn-info"  %></td>
+  <% end %>
+  <% if schedule_dateTime != 'N/A' and schedule_dateTime.to_i > DateTime.now.to_i %>
+      <td>
+        <%= link_to "Cancel Appt",
+                cancel_meeting_path(meeting),
+                class: "btn btn-danger btn-sm",
+                data: {
+                  turbo_method: :patch,
+                  turbo_confirm: 'Are you sure you want to cancel this appointment? The time slot will be made available to others.'
+                } %>
+      </td>
+    <% end %>
+
+    <% if Current.user.coaching_type == 'dean' %>
+      <td>
+        <%= link_to meeting_path(meeting),
+            class: "btn btn-outline-danger btn-sm",
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "Permanently delete this meeting record? This cannot be undone."
+            } do %>
+          <i class="bi bi-trash"></i> Delete
+          <% end %>
+      </td>
+     <% end %>
+</tr>

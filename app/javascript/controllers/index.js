@@ -25,6 +25,9 @@ application.register("draggable", DraggableController)
 import EpaReviewFormLogicController from "./epa_review_form_logic_controller"
 application.register("epa-review-form-logic", EpaReviewFormLogicController)
 
+import FlatpickrController from "./flatpickr_controller"
+application.register("flatpickr", FlatpickrController)
+
 import FormSubmissionController from "./form_submission_controller"
 application.register("form-submission", FormSubmissionController)
 
@@ -34,6 +37,9 @@ application.register("hello", HelloController)
 import HighchartsController from "./highcharts_controller"
 application.register("highcharts", HighchartsController)
 
+import MeetingFormController from "./meeting_form_controller"
+application.register("meeting-form", MeetingFormController)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
@@ -42,3 +48,9 @@ application.register("nest-form", NestFormController)
 
 import SearchController from "./search_controller"
 application.register("search", SearchController)
+
+import SidePanelController from "./side_panel_controller"
+application.register("side-panel", SidePanelController)
+
+import TomSelectController from "./tom_select_controller"
+application.register("tom-select", TomSelectController)

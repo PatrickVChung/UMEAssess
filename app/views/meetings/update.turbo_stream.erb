@@ -1,0 +1,17 @@
+<%# 1. Update the row in the table %>
+<%= turbo_stream.replace "meetingId-#{@meeting.id}" do %>
+  <%= render partial: "meetings/meeting_row", locals: { meeting: @meeting } %>
+<% end %>
+
+<%# 2. Update the flash messages %>
+<%= turbo_stream.update "flash-container" do %>
+  <%= render "layouts/flashes" %>
+<% end %>
+
+<%# 2. Tell the Stimulus controller to close the panel %>
+<script>
+  // Find the body (where your controller lives) and call close
+  const controller = document.querySelector('[data-controller="side-panel"]')
+  const instance = Stimulus.getControllerForElementAndIdentifier(controller, "side-panel")
+  instance.close()
+</script>

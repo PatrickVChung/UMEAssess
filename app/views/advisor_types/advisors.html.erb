@@ -1,0 +1,15 @@
+<!-- app/views/advisor_types/advisors.html.erb -->
+<turbo-frame id="advisors_frame">
+  <div class="row mb-3 align-items-center">
+    <%= label_tag "meeting[advisor_id]", "Advisor", class: "col-sm-2 col-form-label text-sm-end"  %>
+    <div class="col-sm-6">
+      <%= select_tag "meeting[advisor_id]",
+            options_from_collection_for_select(@advisors, :id, :name),
+            prompt: "Select advisor",
+            class: "form-select",
+            data: {
+              action: "change->meeting-form#loadAvailability"
+            } %>
+    </div>
+  </div>
+</turbo-frame>

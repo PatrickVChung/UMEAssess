@@ -1,0 +1,13 @@
+<%# app/views/coaching/meetings/create.turbo_stream.erb %>
+<%# 1. insert the row in the table %>
+<%= turbo_stream.prepend "meetings-table" do %>
+  <%= render partial: "meetings/meeting_row", locals: { meeting: @meeting } %>
+<% end %>
+
+<%# 2. Clear the modal container %>
+<%= turbo_stream.update "modal-container", "" %>
+
+<%# 2. Update the flash messages %>
+<%= turbo_stream.update "flash-container" do %>
+  <%= render "layouts/flashes" %>
+<% end %>
