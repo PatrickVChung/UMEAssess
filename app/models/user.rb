@@ -24,6 +24,7 @@ class User < ApplicationRecord
   has_many :new_competencies, dependent: :destroy, inverse_of: :user
   has_many :meetings, inverse_of: :user, dependent: :destroy
 
+  has_many :events, inverse_of: :user, dependent: :destroy
   ROLES = {
     # can view assignments that they belong to
     participant: 0,
@@ -80,6 +81,7 @@ class User < ApplicationRecord
      current_rank >= importance_value
    end
  end
+
 
  def current_user
    return Current.user

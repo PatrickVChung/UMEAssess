@@ -10,26 +10,38 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    # advisor wants to see other advisor's appointment
-
     advisor = Advisor.find_by(email: Current.user.email)
-    if !advisor.nil?
-      @advisor_name = advisor.name
-      @events = Event.where('start_date > ? and advisor_id=? and user_id is null', DateTime.now, advisor.id)  #.order(start_date: :desc)
-    else
-      @events = Event.where('start_date > ? and user_id is null', DateTime.now)  #.order(start_date: :desc)
-    end
 
-    @events.each do |event|
-      if !event.user_id.nil?
-        full_name = User.find(event.user_id).full_name  #hf_full_name (event.id)
-        event.title = event.title + ' - ' + full_name
+    events =
+      if advisor.present?
+        Event.where(
+          'start_date > ? AND advisor_id = ? AND user_id IS NULL',
+          Date.current,
+          advisor.id
+        ).order(:start_date)
+      else
+        Event.where('start_date > ? AND user_id IS NULL', Date.current).order(:start_date)
       end
+    @events = events
+    events = events.map do |event|
+      title = event.title
+
+      if event.user_id.present?
+        full_name = User.find(event.advisor_id).full_name
+        title = "#{title} - #{full_name}"
+      end
+
+      {
+        id: event.id,
+        title: title,
+        start: event.start_date.utc.iso8601,
+        end:   event.end_date.utc.iso8601
+      }
     end
 
     respond_to do |format|
-      format.json
       format.html
+      format.json { render json: events }
     end
   end
 
@@ -121,26 +133,35 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
-    @advisor_types = Advisor.where(status: 'Active').pluck(:advisor_type).uniq
-    @advisor_types.sort!
-    @advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)
+    #@advisor_types = Advisor.where(status: 'Active').pluck(:advisor_type).uniq
+    @advisor_types = AdvisorType.order(:name)
+    @advisors ||= Advisor.where(status: 'Active').order(:name)
+    @advisor = Advisor.where(status: 'Active', emai: Current.user.email)
 
     # Logic to filter advisors
-    if params[:advisor_type].present?
+    if params[:advisor_type_id].present?
       # Replace this with your actual database query
-      @filtered_advisors = Advisor.where(status: 'Active', advisor_type: params[:advisor_type]).order(:name).pluck(:name)
+
+      @filtered_advisors = Advisor.where(
+        status: 'Active',
+        advisor_type_id: params[:advisor_type_id]
+      ).order(:name)
+
     end
 
     if params[:fpStartDate1].present?
       # 2. Capture parameters
-      @advisor_type = params[:advisor_type]
+      @advisor_type = params[:advisor_type_id]
       @advisor = params[:advisor]
+      @advisor_type_name = @advisor_types.find(params[:advisor_type_id]).name
+      @advisor_name = Advisor.find(params[:advisor]).name
+      @advisor_id = params[:advisor]
       @time_slot = params[:time_slot]
       @weekly_recurrences = params[:weekly_recurrences]
       @time_interval = params[:time_interval].present? ? params[:time_interval] : nil
 
       # 3. Store in session if needed for later
-      session[:advisor_type] = @advisor_type
+      session[:advisor_type] = AdvisorType.find(@advisor_type)
       session[:advisor] = @advisor
 
       # 4. Generate the preview
@@ -148,12 +169,12 @@ class EventsController < ApplicationController
         params[:fpStartDate1],
         params[:fpEndDate1],
         @time_slot,
-        @advisor_type,
+        AdvisorType.find(@advisor_type).name,
         @weekly_recurrences,
         @time_interval
       )
 
-      if params[:advisor_type].present?
+      if params[:advisor_type_id].present?
           respond_to do |format|
             # This handles the Turbo request specifically
             format.turbo_stream do
@@ -485,7 +506,7 @@ class EventsController < ApplicationController
     end
 
     def set_resources
-      @advisor_types = Advisor.where(status: 'Active').pluck(:advisor_type).uniq
+      # @advisor_types = Advisor.where(status: 'Active').pluck(:advisor_type).uniq
 
       # commented out Step1 Advising on 9/14/2023 - requested by Erika and AA
       # uncommented out Step1 Advising on 12/7/2023 - requested by Erika and AA
@@ -493,20 +514,20 @@ class EventsController < ApplicationController
      #@advisor_types.push 'Academic: Step 1 Advising'
     #@advisor_types.push 'Academic: Remediation Support' commented out on 5/23/2025
      #@advisor_types.push 'Career Advising: MS4 ERAS'
-     @advisor_types.sort!
 
-      @advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)
-      @advisor_name ||= @advisors.map{|n| n.name if n.email==Current.user.email}.compact
-      advisor_type ||= @advisors.map{|n| n.advisor_type if n.email==Current.user.email}.compact
 
-      @advisor = @advisors.map{|a| a if a.email==Current.user.email}.compact
-
-      if @advisor_name.empty?
-        @all_advisor_names = @advisors.map{|n| n.name}.compact
-      else
-        @advisor_types = @advisor_types.map{|a| a if a.include? advisor_type.first}.compact
-
-      end
+      #@advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)
+      @advisor_name = Advisor.find_by(email: Current.user.email)
+      # advisor_type ||= @advisors.map{|n| n.advisor_type if n.email==Current.user.email}.compact
+      #
+      # @advisor = @advisors.map{|a| a if a.email==Current.user.email}.compact
+      #
+      # if @advisor_name.empty?
+      #   @all_advisor_names = @advisors.map{|n| n.name}.compact
+      # else
+      #   @advisor_types = @advisor_types.map{|a| a if a.include? advisor_type.first}.compact
+      #
+      # end
 
     end
 

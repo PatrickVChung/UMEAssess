@@ -54,3 +54,12 @@ application.register("side-panel", SidePanelController)
 
 import TomSelectController from "./tom_select_controller"
 application.register("tom-select", TomSelectController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
+import CalendarController from "./calendar_controller"
+application.register("calendar", CalendarController)
+
+import MeetingFiltersController from "./meeting_filters_controller"
+application.register("meeting-filters", MeetingFiltersController)

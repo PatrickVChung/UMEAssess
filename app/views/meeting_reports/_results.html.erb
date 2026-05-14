@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between mb-2">
+  <strong><%= meetings.count %> meetings</strong>
+
+  <%= link_to "Export CSV",
+      meeting_reports_path(request.query_parameters.merge(format: :csv)),
+      class: "btn btn-sm btn-outline-primary" %>
+</div>
+<div data-controller="datatable">
+  <table data-datatable-target="table" id="MeetingsTable" class="table table-hover table-striped responsive" data-sort="true">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Meeting Date</th>
+        <th>Subject</th>
+        <th>Advisor</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% meetings.each do |meeting| %>
+        <tr>
+          <td><%= meeting.user.full_name %> - <%= meeting.user.permission_group.title[/\((.*?)\)/, 1] %></td>
+          <td><%= meeting.date.to_date %></td>
+          <td><%= meeting.subject %></td>
+          <td><%= meeting.advisor.name %></td>
+          <td><%= meeting.m_status %></td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

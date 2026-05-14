@@ -1,0 +1,31 @@
+<h5 class="mb-4">Meeting Report</h5>
+<hr>
+<div class="container-fluid">
+  <div class="row g-4">
+    <!-- Left column: Filters -->
+    <div class="col-lg-1 col-md-4">
+      <%= render "filters" %>
+    </div>
+    <!-- Right column: Results -->
+    <div class="col-lg-11 col-md-10">
+        <!-- Results -->
+        <turbo-frame id="meetings_results">
+          <% if params[:view_type] == 'summary' %>
+            <% if @summaries.present? %>
+              <%= render "summary_results", summaries: @summaries %>
+            <% end %>
+          <% else %>
+            <% if @meetings.present? %>
+              <%= render "results", meetings: @meetings %>
+            <% else %>
+              <div class="alert alert-info border-0 shadow-sm">
+                <i class="bi bi-info-circle me-2"></i> No meetings found matching your criteria.
+              </div>
+            <% end %>
+          <% end %>
+
+        </turbo-frame>
+    </div>
+
+  </div>
+</div>

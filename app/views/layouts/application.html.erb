@@ -45,7 +45,44 @@
               <% end %>
             <% end %>
 
-            <%= button_to "Logout", session_path, method: :delete, class: "dropdown-item" %>
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+
+
+              <i class="bi bi-person-circle me-1"></i>
+              <%= Current.user.display_name %>
+
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end">
+                <%# Admin link (admins only) %>
+                <% if Current.user.superadmin? %>
+                  <li>
+                    <%= link_to "Admin Dashboard",
+                        admin_root_path,
+                        class: "dropdown-item",
+                        data: { turbo: false },
+                        target: :_blank   %>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                <% end %>
+
+                <%# Logout %>
+                <li>
+                  <%= button_to "Logout",
+                      session_path,
+                      method: :delete,
+                      class: "dropdown-item",
+                      form: { data: { turbo: false } } %>
+                </li>
+              </ul>
+            </div>
+            ``
           <% else %>
             <%= link_to "Login", new_session_path, class: "nav-link" %>
           <% end %>

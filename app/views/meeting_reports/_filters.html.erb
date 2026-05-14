@@ -1,0 +1,109 @@
+<turbo-frame id="meeting_filters">
+  <div class="card shadow-sm">
+    <div class="card-header fw-semibold">
+      Meeting Filters
+    </div>
+
+    <div class="card-body">
+      <%= form_with url: meeting_reports_path,
+                    method: :get,
+                    data: { controller: "meeting-filters",
+                            turbo_frame: "meetings_results" },
+                    class: "vstack gap-3" do %>
+
+        <!-- Advisor Type -->
+        <div class="<%= 'filter-active' if active_filter?(:advisor_id) %>">
+          <label class="form-label fw-bold">Advisor Type</label>
+          <%= select_tag :advisor_type_id,
+              options_from_collection_for_select(
+                @advisor_types, :id, :name, params[:advisor_type_id] || @advisor_type_id
+              ),
+              include_blank: "All",
+              class: "form-select",
+              data: { action: "change->meeting-filters#loadAdvisors",
+                      turbo: false } %>
+        </div>
+
+        <!-- Advisor -->
+        <div class="<%= 'filter-active' if active_filter?(:advisor_id) %>" >
+          <label class="form-label fw-bold"">Advisor</label>
+          <%= select_tag :advisor_id,
+              options_from_collection_for_select(
+                @advisors,
+                :id,
+                :name,
+                params[:advisor_id] || @advisor_id
+              ),
+              include_blank: "All",
+              class: "form-select",
+              data: {
+                meeting_filters_target: "advisorSelect"
+              } %>
+        </div>
+
+        <!-- Cohort -->
+        <div>
+          <label class="form-label fw-bold"">Cohort</label>
+          <%= select_tag :cohort_id,
+              options_from_collection_for_select(
+                @cohorts, :id, :title, params[:cohort_id]
+              ),
+              include_blank: "All",
+              class: "form-select" %>
+        </div>
+
+        <!-- Status -->
+        <div>
+          <label class="form-label fw-bold"">Status</label>
+          <%= select_tag :m_status,
+              options_for_select(
+                ["Scheduled", "Completed", "Cancelled", "No Show", "Rescheduled"],
+                params[:m_status]
+              ),
+              include_blank: "All",
+              class: "form-select" %>
+        </div>
+
+        <!-- Date Range -->
+        <div class="mb-3 <%= 'filter-active' if params[:start_date].present? || params[:end_date].present? %>">
+          <label class="form-label fw-bold"">Start Date</label>
+          <%# Default to 2025-01-01 if no param exists %>
+          <%= date_field_tag :start_date,
+              (params[:start_date] || "2025-01-01"),
+              class: "form-control" %>
+        </div>
+
+        <div class="mb-3 <%= 'filter-active' if params[:start_date].present? || params[:end_date].present? %>">
+          <label class="form-label fw-bold">End Date</label>
+          <%# Default to Today's date in YYYY-MM-DD format %>
+          <%= date_field_tag :end_date,
+              (params[:end_date] || Date.current.to_s),
+              class: "form-control" %>
+        </div>
+
+
+        <div class="mb-3">
+          <label class="form-label d-block fw-bold"">View Type</label>
+
+          <div class="form-check form-check-inline">
+            <%= radio_button_tag :view_type, "detail", true, class: "form-check-input", id: "view_detail" %>
+            <%= label_tag :view_detail, "Detail", class: "form-check-label" %>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <%= radio_button_tag :view_type, "summary", false, class: "form-check-input", id: "view_summary" %>
+            <%= label_tag :view_summary, "Summary", class: "form-check-label" %>
+          </div>
+        </div>
+        <!-- Actions -->
+        <div class="d-grid gap-2 mt-3">
+          <%= submit_tag "Apply Filters", class: "btn btn-primary" %>
+          <%= link_to "Reset",
+              meeting_reports_path,
+              class: "btn btn-outline-secondary" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</turbo-frame>

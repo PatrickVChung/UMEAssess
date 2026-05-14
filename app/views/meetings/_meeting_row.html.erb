@@ -6,7 +6,7 @@
   <td><%= schedule_dateTime == "N/A" ? "N/A" : schedule_dateTime.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
   <td><%= hf_get_advisor(meeting.advisor_id) %></td>
   <% advisor = Advisor.find(meeting.advisor_id) %>
-  <% if advisor.advisor_type.include? "Career" %>
+  <% if advisor.advisor_type.name.include? "Career" %>
     <td><%= advisor.specialty %></td>
   <% else %>
     <td></td>

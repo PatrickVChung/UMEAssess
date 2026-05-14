@@ -1,8 +1,7 @@
 <div class="container py-2">
-
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-12">
-        <div class="card border-0 shadow-sm bg-primary-subtle text-black p-4 position-relative" style="border-radius: 15px;">
+        <div class="card border-0 shadow-sm bg-primary-subtle text-black p-2 position-relative" style="border-radius: 15px;">
           <div class="position-absolute top-0 end-0 p-3 opacity-75" style="font-size: 1rem;">
                 <i class="bi bi-clock-history me-1"></i>
                 Last login: <%= Current.user.last_sign_in_at&.strftime("%b %d %Y, %H:%M") || "First time!" %>
@@ -127,7 +126,24 @@
                     </ul>
                   <% end %>
 
-                  <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Meeting'.html_safe, meetings_path, target: "_blank" %>
+                  <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path, target: "_blank" %>
+
+                  <% if Current.user.coaching_type == 'dean' %>
+                    <class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle"
+                         href="#"
+                         id="OasisReportingDropdown"
+                         role="button"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        <i class="bi bi-file-bar-graph" style="color:purple"></i> Oasis Reporting/Listing
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="OasisReportingDropdown">
+                          <%= link_to '<i class="bi bi-calendar" style="color:purple"></i> Future Appointments'.html_safe, events_path, target: "_blank", class: "dropdown-item" %>
+                          <%= link_to '<i class="bi bi-calendar" style="color:purple"></i> Meeting Report'.html_safe, meeting_reports_path, target: "_blank", class: "dropdown-item" %>
+
+                      </ul>
+                  <% end %>
 
                   <% if Current.user.coaching_type == 'dean' %>
                     <class="nav-item dropdown">
@@ -149,19 +165,11 @@
 
                   </ul>
                 <% end %>
-
-
-
               Medhub <br>
               Course Catalog <br>
               Report <br>
               WBA Graph/Report <br>
             </ul>
-
-
-            <button class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
-              View Transcript <i class="bi bi-chevron-right"></i>
-            </button>
           </div>
         </div>
       </div>
@@ -169,26 +177,33 @@
 
   <!-- Lower Section -->
   <div class="row g-3">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-white">
-          <strong>Recent Activity</strong>
+          <strong>Recent Activity (<font color="purple">Past 2 Weeks Appointment(s)</font>)</strong>
         </div>
         <div class="card-body">
-          <p class="text-muted">No recent activity yet.</p>
+          <% if events.present? %>
+            <%= render partial: "homes/past_appts", locals: { events: events } %>
+          <% else %>
+            <p class="text-muted">No recent activity yet.</p>
+          <% end %>
         </div>
       </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-white">
-          <strong>Quick Actions</strong>
+          <strong>Quick Actions (<font color="purple">Scheduled Appointment(s)</font>)</strong>
         </div>
         <div class="card-body">
           <div class="d-grid gap-2">
-            <%#= link_to "Create Assessment", new_assessment_path, class: "btn btn-primary" %>
-            <%#= link_to "Manage Users", users_path, class: "btn btn-outline-secondary" %>
+            <% if event_schedules.present? %>
+              <%= render partial: "homes/appt_schedule", locals: { event_schedules: event_schedules } %>
+            <% else %>
+              <p class="text-muted">No Appointments Found! </p>
+            <% end %>
           </div>
         </div>
       </div>

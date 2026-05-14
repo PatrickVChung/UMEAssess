@@ -1,0 +1,36 @@
+
+     <% if event_schedules.present? %>
+        <table class="table table-hover"  >
+          <tr>
+            <% if Current.user.coaching_type == 'dean' %>
+                <th data-data="student">Student</th>
+            <% else %>
+                <th data-data="advisor">Advisor</th>
+            <% end %>
+            <th data-data="start_date">Start date</th>
+            <th data-data="end_date">End date</th>
+          </tr>
+          <% event_schedules.sort_by(&:start_date).each do |event| %>
+            <tr>
+              <% user = User.find(event.user_id) %>
+              <% if Current.user.coaching_type == 'dean' %>
+                <% if !user.nil? %>
+                    <td><%= link_to(user.full_name, meetings_path(student_id: user.uuid), target: '_blank') %></td>
+                    <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                <% end %>
+              <% else %>
+                  <% advisor = event.description.split(" - ").second %>
+                  <% if !user.nil? %>
+                    <td><%= link_to(advisor, meetings_path(student_id: user.uuid), target: '_blank') %></td>
+                    <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <% end %>
+              <% end %>
+
+            </tr>
+          <% end %>
+        </table>
+    <% else %>
+        <h4> *** No Appointments Found! *** </h4>
+    <% end %>

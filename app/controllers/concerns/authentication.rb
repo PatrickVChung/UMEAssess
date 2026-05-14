@@ -24,24 +24,39 @@ module Authentication
   end
 
   def resume_session
-    # Let's see exactly what the JAR contains
-    raw_cookie = cookies[:ume_session_id]
-    signed_id = cookies.signed[:ume_session_id]
-
-    # Rails.logger.info "--- RESUME DIAGNOSTIC ---"
-    # Rails.logger.info "Raw Cookie Present: #{raw_cookie.present?}"
-    # Rails.logger.info "Signed ID decoded: #{signed_id.inspect}"
-
-    if signed_id && session = Session.find_by(id: signed_id)
-
+  # Use the signed cookie to find the session
+  if signed_id = cookies.signed[:ume_session_id]
+    if session = Session.find_by(id: signed_id)
       Current.session = session
       Current.user = session.user
       session.refresh!
-      #Rails.logger.info "AUTH SUCCESS: User #{Current.user.id}"
     else
-      Rails.logger.warn "AUTH FAILURE: No session found for Signed ID #{signed_id}"
+      # Cookie exists but record is gone from DB
+      cookies.delete(:ume_session_id)
+      Current.user = nil
     end
   end
+end
+
+  # def resume_session
+  #   # Let's see exactly what the JAR contains
+  #   raw_cookie = cookies[:ume_session_id]
+  #   signed_id = cookies.signed[:ume_session_id]
+  #
+  #   # Rails.logger.info "--- RESUME DIAGNOSTIC ---"
+  #   # Rails.logger.info "Raw Cookie Present: #{raw_cookie.present?}"
+  #   # Rails.logger.info "Signed ID decoded: #{signed_id.inspect}"
+  #
+  #   if signed_id && session = Session.find_by(id: signed_id)
+  #
+  #     Current.session = session
+  #     Current.user = session.user
+  #     session.refresh!
+  #     #Rails.logger.info "AUTH SUCCESS: User #{Current.user.id}"
+  #   else
+  #     Rails.logger.warn "AUTH FAILURE: No session found for Signed ID #{signed_id}"
+  #   end
+  # end
 
   def start_new_session_for(user, remember_me: false)
     session = user.sessions.create!(

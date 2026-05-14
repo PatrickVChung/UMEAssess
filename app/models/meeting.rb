@@ -11,6 +11,56 @@ class Meeting < ApplicationRecord
   after_initialize :set_default_values
     #:set_default_values_for_meeting
 
+      belongs_to :advisor
+
+      scope :by_advisor_type, ->(advisor_type_id) {
+              joins(advisor: :advisor_type)
+                .where(advisor_types: { id: advisor_type_id }) if advisor_type_id.present?
+            }
+
+      scope :by_advisor_type_summary, ->(advisor_type_id) {
+        return if advisor_type_id.blank?
+        ids =
+          if advisor_type_id.to_i == 1 # acadamic & academic/student affairs
+            advisor_type_id = [1,2]
+          elsif advisor_type_id.to_i == 4 # career & career/student affairs
+            advisor_type_id = [4,5]
+          else
+            advisor_type_id = [advisor_type_id]
+          end
+
+        joins(advisor: :advisor_type)
+          .where(advisor_types: { id: ids })
+      }
+
+      scope :by_advisor, ->(advisor_id) {
+        where(advisor_id:) if advisor_id.present?
+      }
+
+
+      scope :by_cohort, ->(cohort_id) {
+        joins(:user)
+          .where(users: { permission_group_id: cohort_id }) if cohort_id.present?
+      }
+
+
+      scope :by_status, ->(m_status) {
+        where(m_status:) if m_status.present?
+      }
+
+      scope :between_dates, ->(start_date, end_date) {
+        if start_date.present? && end_date.present?
+          where(date: start_date..end_date)
+        elsif start_date.present?
+          where("date >= ?", start_date)
+        elsif end_date.present?
+          where("date <= ?", end_date)
+        end
+      }
+
+  def self.valid_statuses
+    return VALID_STATUSES
+  end 
 
   def self.search term
     self.where("array_to_string(subject, ',') like ? OR notes like ?", "%#{term}%", "%#{term}%")

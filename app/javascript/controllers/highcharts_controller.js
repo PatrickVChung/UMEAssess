@@ -17,6 +17,9 @@ export default class extends Controller {
     const isPie = this.chartTypeValue === 'pie'
 
     const options = {
+      accessibility: {
+            enabled: false
+      },
       chart: { type: this.chartTypeValue },
       title: { text: this.titleValue || 'Default Title' },
       series: this.seriesValue,

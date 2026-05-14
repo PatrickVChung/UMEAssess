@@ -1,6 +1,6 @@
 class AdvisorTypesController < ApplicationController
 # advisor_types_controller.rb
-  def advisors
+  def meeting_advisors
     @advisors = Advisor.where(advisor_type_id: params[:id]).where.not(name: 'Coach').order(:name)
     render layout: false
   end

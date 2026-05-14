@@ -9,35 +9,32 @@
           <div class="row mb-0">
             <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2 right-label" %>
             <div class="col-sm-6">
-              <% if @advisor_types.count == 1 %>
-                <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types.first), include_blank: '---',
-                     required: true, class: "form-select"  %>
-              <% else %>
-                <%= select_tag :advisor_type,
-                      options_for_select(@advisor_types, selected: params[:advisor_type]),
-                      include_blank: '---',
-                      required: true,
+
+                <div class="<%= 'filter-active' if active_filter?(:advisor_id) %>">
+                  <label class="form-label">Advisor Type</label>
+                  <%= select_tag :advisor_type_id,
+                      options_from_collection_for_select(
+                        @advisor_types, :id, :name, params[:advisor_type_id] || @advisor_type_id
+                      ),
                       class: "form-select",
-                      # This triggers the form to submit to the server immediately
                       onchange: "this.form.submit();" %>
-              <% end %>
+                </div>
+
+
             </div>
           </div>
           <turbo-frame id="advisor_selection_frame">
             <div class="row mb-0">
               <%= label_tag :Advisor, nil, class: "control-label col-md-2 right-label" %>
               <div class="col-sm-6">
-                <% if !@advisor_name.empty? %>
-                  <%= select_tag :advisor, options_for_select(@advisor_name, selected: @advisor_name), include_blank: "---" , required: true, class: "form-select"  %>
-                <% else %>
+
                 <%# Use @filtered_advisors if it exists, otherwise use all %>
-                      <% advisor_options = @filtered_advisors || @all_advisor_names %>
+                      <% advisor_options = @filtered_advisors || @advisors || @advisor %>
                       <%= select_tag :advisor,
-                            options_for_select(advisor_options, selected: params[:advisor]),
-                            include_blank: "---",
+                            options_from_collection_for_select(advisor_options, :id, :name, selected: params[:advisor]),
                             required: true,
                             class: "form-select" %>
-                <% end %>
+
               </div>
             </div>
           </turbo-frame>

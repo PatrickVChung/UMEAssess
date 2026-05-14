@@ -1,6 +1,6 @@
 
   <% if Advisor.find_by(email: Current.user.email).present? %>
-    <%= turbo_stream.replace "modal-container" do %>
+    <%= turbo_stream.update "modal-container" do %>
       <%= render partial: "shared/modal", locals: {
             title: "Create Retro-Appointment Form",
             size: "modal-lg",
@@ -14,7 +14,7 @@
         } %>
     <% end %>
   <% elsif Current.user.coaching_type == 'student' %>
-    <%= turbo_stream.replace "modal-container" do %>
+    <%= turbo_stream.update "modal-container" do %>
       <%= render partial: "shared/modal", locals: {
             title: "Create New Appointment Form",
             size: "modal-lg",

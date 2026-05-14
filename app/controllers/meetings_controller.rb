@@ -11,7 +11,7 @@ class MeetingsController < ApplicationController
        # @students = @permission_groups.map(&:users).flatten
 
        if Current.user.coaching_type == 'student' && params[:student_id].present?
-           @meetings = User.find_by(uuid: params[:student_id]).meetings
+           @meetings = User.find_by(uuid: params[:student_id]).meetings.order(created_at: :desc)
        else
          @permission_groups = PermissionGroup.where("id >= ? AND id <> ?", 19, 15).pluck(:id)
          @students = User.where(permission_group_id: @permission_groups)
@@ -163,7 +163,7 @@ class MeetingsController < ApplicationController
         if @meeting.event_id.present?
           if send_email_flag["OASIS"]["send_email"] ==  true
             EventMailer.notify_student(@meeting, "Cancel").deliver_later #notify_student_advisor_appt_cancel(@meeting).deliver_later
-          end          
+          end
           Event.where(id: @meeting.event_id).update_all(user_id: nil)
         end
         # 2. Update the meeting record
@@ -220,11 +220,16 @@ class MeetingsController < ApplicationController
     def update
       @meeting = Meeting.find params[:id]
       temp_spec_array = params["specialties"]
-
       if temp_spec_array.present?
         if temp_spec_array.last.include? "Other"
           temp_spec_array[-1] = params["specialties"].last + "~" + params["other_specialty"]
-          User.find_by(id: @meeting.user_id).update(career_interest: temp_spec_array)
+        end
+
+        if @meeting.user.update(career_interest: temp_spec_array)
+          # Success logic
+        else
+          # Inspect errors to see exactly why it returned false
+          Rails.logger.info(@meeting.user.errors.full_messages)
         end
       end
       if @meeting.update(meeting_params)

@@ -15,11 +15,14 @@
     <%= render partial: "all_valid_events"  %>
   </div>
 </div>
-
 <hr>
 <div class="panel panel-default">
   <div class="panel-body d-flex justify-content-center">
-    <div id="calendar">
+
+    <div data-controller="calendar" 
+         data-calendar-events-url-value="/events.json"
+         style="height: 800px; width: 1800px;">
     </div>
+
   </div>
 </div>

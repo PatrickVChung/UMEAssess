@@ -1,7 +1,7 @@
 <div class="container py-4">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-12">
-        <div class="card border-0 shadow-sm bg-primary-subtle text-black p-4 position-relative" style="border-radius: 15px;">
+        <div class="card border-0 shadow-sm bg-primary-subtle text-black p-2 position-relative" style="border-radius: 15px;">
           <div class="position-absolute top-0 end-0 p-3 opacity-75" style="font-size: 1rem;">
                 <i class="bi bi-clock-history me-1"></i>
                 Last login: <%= user.last_sign_in_at.strftime("%b %d %Y, %H:%M") || "First time!" %>
@@ -95,6 +95,18 @@
                 <span class="text-secondary">Specialties Interest</span>
                 <span class="fw-bold"><%= user.career_interest.flatten %></span>
               </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <span class="text-secondary">Required Total # of WBAs (all levels)</span>
+                <span class="fw-bold"><%= user.epas.count %> out of 100</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <span class="text-secondary">Total # of Badges Awarded: </span>
+                <span class="fw-bold"><%= user.epa_masters.where(status: 'Badge').count %> out of 11</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+
+                <span class="fw-bold">** For students who matriculated to medical school prior to 2019, please see Medical Student Handbook for your WBA graduation requirements!</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -107,7 +119,7 @@
           </div>
           <div class="card-body">
             <ul classs="list-group">
-             <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Meeting'.html_safe, meetings_path(student_id: Current.user.uuid), target: "_blank" %> <br>
+             <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path(student_id: user.uuid), target: "_blank" %> <br>
              <%= link_to '<i class="bi bi-file-pdf" style="color:purple"></i> View Artifacts/Upload Documents'.html_safe,
                           artifacts_path(user_id: user.id),
                           data: { turbo: true },
@@ -137,9 +149,20 @@
                 <% end %>
               </ul>
             </ul>
+            <button class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
+              View Requirements <i class="bi bi-chevron-right"></i>
+            </button>
+            <hr>
+            <strong>Quick Actions (<font color="purple">Scheduled Appointment(s)</font>)</strong>
+            <% if event_schedules.present? %>
+              <%= render partial: "homes/appt_schedule", locals: { event_schedules: event_schedules } %>
+            <% else %>
+              <p class="text-muted">No Appointments Found! </p>
+            <% end %>
           </div>
         </div>
       </div>
+
     </div>
 
 </div>

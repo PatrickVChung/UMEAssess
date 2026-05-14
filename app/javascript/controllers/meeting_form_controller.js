@@ -8,7 +8,7 @@ export default class extends Controller {
     if (!advisorTypeId) return
 
     Turbo.visit(
-      `/advisor_types/${advisorTypeId}/advisors`,
+      `/advisor_types/${advisorTypeId}/meeting_advisors`,
       { frame: "advisors_frame" }
     )
 

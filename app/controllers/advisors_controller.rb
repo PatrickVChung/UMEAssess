@@ -1,9 +1,10 @@
 class AdvisorsController < ApplicationController
   before_action :set_advisor, :set_resources, only: [:show, :edit, :update, :destroy]
   include AdvisorsHelper
+
   # advisors_controller.rb
   def availabilities
-    @events = Event.where(advisor_id: 2, user_id: nil).where("start_date > ?", Time.current)
+    @events = Event.where(advisor_id: params[:id], user_id: nil).where("start_date > ?", Time.current)
     @advisor = Advisor.find_by(id: params[:id])
     @other_events = hf_other_availabilities(@advisor)
     render layout: false
@@ -14,9 +15,11 @@ class AdvisorsController < ApplicationController
   # GET /advisors.json
   def index
     @advisors = Advisor.all.sort_by(&:name)
-    respond_to do |format|
-      format.html
+    advisor_type = Advisor.where(advisor_type_id: params[:advisor_type_id]).select(:id, :name).order(:name) if params[:advisor_type_id].present?
 
+    respond_to do |format|
+      format.json { render json: advisor_type || [] }
+      format.html
     end
   end
 
@@ -85,7 +88,7 @@ class AdvisorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def advisor_params
-      params.require(:advisor).permit(:advisor_type, :name, :email, :status, :title, :specialty)
+      params.require(:advisor).permit(:advisor_type, :name, :email, :status, :title, :specialty, :advisor_type_id)
     end
 
     def set_resources

@@ -111,3 +111,41 @@ turbo-frame#remote_side_panel {
 .custom-card-body {
   background-color: #b7d9ed; /* Your hex code */
 }
+
+.filter-active {
+  border-left: 4px solid var(--bs-primary);
+  padding-left: 0.75rem;
+  background-color: rgba(13, 110, 253, 0.05);
+  border-radius: 0.375rem;
+}
+
+/* Spinner overlay while Turbo Frame is loading */
+turbo-frame[aria-busy="true"] {
+  position: relative;
+  opacity: 0.6;
+}
+
+turbo-frame[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -1.25rem 0 0 -1.25rem;
+  border: 0.25rem solid #dee2e6;
+  border-top-color: #0d6efd;
+  border-radius: 50%;
+  animation: turbo-spinner 0.75s linear infinite;
+  z-index: 10;
+}
+
+@keyframes turbo-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.custom-hover {
+  --bs-table-hover-bg: #BEE5B0; /* Replace with your desired color */
+}

@@ -16,6 +16,7 @@ import "jquery-ui-dist/jquery-ui.js";
 import "jquery-contextmenu/dist/jquery.contextMenu.min.js";
 // import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
 
+
 const application = Application.start()
 
 // Configure Stimulus development experience

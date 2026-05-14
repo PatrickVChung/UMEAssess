@@ -14,12 +14,12 @@
           <%
             # Logic to determine which options to show
             select_options = case
-              when meeting.advisor_type.match?(/Career|ERAS/) then hf_career_primary_for_select
-              when meeting.advisor_type.match?(/Academic: Step 1/) then hf_academic_primary_step1_for_select
-              when meeting.advisor_type.match?(/Academic/) then hf_academic_primary_for_select
-              when meeting.advisor_type == 'Wellness' then hf_wellness_primary_for_select
-              when meeting.advisor_type == 'DEIB' then hf_diversity_navigator_for_select
-              when meeting.advisor_type == 'Assist Dean' then hf_assist_dean_for_select
+            when meeting.advisor.advisor_type.name.match?(/Career|ERAS/) then hf_career_primary_for_select
+            when meeting.advisor.advisor_type.name.match?(/Academic: Step 1/) then hf_academic_primary_step1_for_select
+            when meeting.advisor.advisor_type.name.match?(/Academic/) then hf_academic_primary_for_select
+            when meeting.advisor.advisor_type.name == 'Wellness' then hf_wellness_primary_for_select
+            when meeting.advisor.advisor_type.name == 'DEIB' then hf_diversity_navigator_for_select
+            when meeting.advisor.advisor_type.name == 'Assist Dean' then hf_assist_dean_for_select
               else hf_meeting_tags_for_select
             end
           %>
@@ -39,18 +39,18 @@
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscussed">
-          <span class="fw-bold" style="color: #4c0946;"><%= meeting.advisor_type %> Advisor Discussed</span>
+          <span class="fw-bold" style="color: #4c0946;"><%= meeting.advisor.advisor_type.name %> Advisor Discussed</span>
         </button>
       </h2>
       <div id="collapseDiscussed" class="accordion-collapse collapse" data-bs-parent="#meetingAccordion">
         <div class="accordion-body">
           <%
             advisor_subjects = case
-              when meeting.advisor_type.match?(/Career|ERAS/) then hf_career_advisor_discussed_for_select
-              when meeting.advisor_type.match?(/Academic/) then hf_academic_advisor_discussed_for_select
-              when meeting.advisor_type == 'Wellness' then hf_wellness_advisor_discussed_for_select
-              when meeting.advisor_type == 'DEIB' then hf_diversity_navigator_discussed_for_select
-              when meeting.advisor_type == 'Assist Dean' then hf_assist_dean_for_select
+            when meeting.advisor.advisor_type.name.match?(/Career|ERAS/) then hf_career_advisor_discussed_for_select
+            when meeting.advisor.advisor_type.name.match?(/Academic/) then hf_academic_advisor_discussed_for_select
+            when meeting.advisor.advisor_type.name == 'Wellness' then hf_wellness_advisor_discussed_for_select
+            when meeting.advisor.advisor_type.name == 'DEIB' then hf_diversity_navigator_discussed_for_select
+            when meeting.advisor.advisor_type.name == 'Assist Dean' then hf_assist_dean_for_select
             end
           %>
 
@@ -63,14 +63,14 @@
 
           <div class="mt-3">
             <label class="small text-muted">Other Discussion Topics</label>
-            <% field_name = meeting.advisor_type.include?("Career") ? :career_discussed_other : :academic_discussed_other %>
+            <% field_name = meeting.advisor.advisor_type.name.include?("Career") ? :career_discussed_other : :academic_discussed_other %>
             <%= f.text_field field_name, class: "form-control form-control-sm" %>
           </div>
         </div>
       </div>
     </div>
 
-    <% if meeting.advisor_type != 'DEIB' %>
+    <% if meeting.advisor.advisor_type.name != 'DEIB' %>
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResources">
@@ -93,7 +93,38 @@
       </div>
     <% end %>
 
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpecialties">
+          <span class="fw-bold" style="color: #4c0946;">Specialties Interest (check all that apply): </span>
+        </button>
+      </h2>
+      <div id="collapseSpecialties" class="accordion-collapse collapse" data-bs-parent="#meetingAccordion">
+        <div class="accordion-body">
+          <div class="form-check">
+             <% i = 0 %>
+             <% Student.specialties.each do |specialty| %>
+               <% i += 1 %>
+               <div class="form-check">
+                 <% if @career_interest.include? specialty %>
+                  <input class="form-check-input MyCheckBoxSpecialties" type="checkbox" id="checkboxId_<%= i %>" value="<%= specialty %>" name="specialties[]" checked>
+                 <% else %>
+                  <input class="form-check-input MyCheckBoxSpecialties" type="checkbox" id="checkboxId_<%= i %>" value="<%= specialty %>" name="specialties[]" >
+                 <% end %>
+                 <label class="form-check-label" for="checkboxId_<%= i %>">
+                   <%= specialty %>
+                 </label>
+               </div>
+              <% end %>
+              <input id="other_specialty" name="other_specialty" type="text" value="<%= @other_interest %>" placeholder="other" class="form-control" >
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+
 
   <% is_student = true if Current.user.coaching_type == 'student' %>
 
@@ -115,13 +146,13 @@
       <%= f.label :m_status, "Meeting Status", class: "fw-bold small" %>
       <% if is_student %>
           <%# Show a disabled select for visual consistency %>
-          <%= f.select :m_status, ["Scheduled", "Completed", "Meeting Canceled", "Rescheduled", "No Show"], {},
+          <%= f.select :m_status, Meeting.valid_statuses, {},
               class: "form-select bg-light",
               disabled: true %>
           <%# Include a hidden field so the existing value is preserved on save %>
           <%= f.hidden_field :m_status %>
         <% else %>
-          <%= f.select :m_status, ["Scheduled", "Completed", "Meeting Canceled", "Rescheduled", "No Show"], {},
+          <%= f.select :m_status, Meeting.valid_statuses, {},
               class: "form-select" %>
         <% end %>
     </div>

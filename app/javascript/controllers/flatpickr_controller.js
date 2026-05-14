@@ -31,7 +31,10 @@ export default class extends Controller {
     })
   }
   updateEnd(startDate) {
-    if (!startDate || !this.endPicker) return
+    if (!this.startPicker || !this.endPicker) return
+
+    startDate = this.startPicker.selectedDates[0]
+    if (!startDate) return
 
     const endDate = new Date(startDate.getTime())
     endDate.setHours(endDate.getHours() + 5)

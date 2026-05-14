@@ -37,7 +37,7 @@
               <tbody>
                 <% @advisors.sort_by(&:advisor_type).each do |advisor| %>
                   <tr>
-                    <td><%= advisor.advisor_type %></td>
+                    <td><%= advisor.advisor_type.name%></td>
                     <td><%= advisor.name %></td>
                     <td><%= advisor.email %></td>
                     <td><%= advisor.status %></td>

@@ -1,0 +1,51 @@
+<div class="row g-4">
+  <!-- TABLE -->
+  <div class="col-lg-4 col-md-12">
+    <div class="d-flex justify-content-between mb-2">
+      <strong>Summary Meeting Count</strong>
+    </div>
+
+    <table data-datatable-target="table"
+           id="SummaryTable"
+           class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Advisor Name</th>
+          <th>Total Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% summaries.each do |key, value| %>
+          <tr>
+            <td><%= key %></td>
+            <td><%= value %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CHART -->
+  <div class="col-lg-8 col-md-12">
+    <% categories = summaries.keys %>
+    <% total_count = summaries.values.sum %>
+    <% title = "No. of Meetings by Advisor [#{params[:start_date]} - #{params[:end_date]}] <br> Total Count = #{total_count}" %>
+    <% yMaxValue = summaries.values.max + 100 %>
+    <% series = [{
+      name: "Meeting Count",
+      data: summaries.values,
+      colorByPoint: true
+    }] %>
+
+    <div data-controller="highcharts"
+         data-highcharts-series-value="<%= series.to_json %>"
+         data-highcharts-categories-value="<%= categories.to_json %>"
+         data-highcharts-title-value="<%= title %>"
+         data-highcharts-chart-type-value="column"
+         data-highcharts-y-title-value="# of Meetings"
+         data-highcharts-y-max-value="<%= yMaxValue %>"
+         data-highcharts-y-tick-interval="50"
+         style="width: 60%; height:400px;">
+    </div>
+  </div>
+</div>

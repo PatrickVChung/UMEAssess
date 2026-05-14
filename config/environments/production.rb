@@ -7,7 +7,11 @@ Rails.application.configure do
   config.enable_reloading = false
 
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
+
+  config.require_master_key = true
   config.eager_load = true
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.assets.compile = false   # IMPORTANT
 
   # Full error reports are disabled.
   config.consider_all_requests_local = false

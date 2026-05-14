@@ -45,7 +45,7 @@ module MeetingsHelper
     if !advisor_id.nil?
       advisor = Advisor.find_by(id: advisor_id)
       if !advisor.nil?
-        return advisor.name + " / " + advisor.advisor_type
+        return advisor.name + " / " + advisor.advisor_type.name
       else
         return "N/A"
       end
@@ -262,4 +262,9 @@ module MeetingsHelper
       else hf_meeting_ipas_for_select
     end
   end
+
+  def active_filter?(param_name)
+    params[param_name].present?
+  end
+
 end

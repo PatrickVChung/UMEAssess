@@ -1,10 +1,10 @@
 <%# 1. Configuration Logic: Determine what to show based on advisor_type %>
 <div class="container mt-2">
   <%
-    is_wellness = (advisor_type == 'Wellness')
-    is_deib = (advisor_type == 'DEIB')
-    is_academic = ['Academic', 'Academic/Student Affairs', 'Academic: Step 1 Advising'].include?(advisor_type)
-    is_career = advisor_type.to_s.include?('Career') || advisor_type == 'Assist Dean'
+    is_wellness = (advisor_type.name == 'Wellness')
+    is_deib = (advisor_type.name == 'DEIB')
+    is_academic = ['Academic', 'Academic/Student Affairs', 'Academic: Step 1 Advising'].include?(advisor_type.name)
+    is_career = advisor_type.name.to_s.include?('Career') || advisor_type == 'Assist Dean'
     # Determine which helper methods to call for checkboxes
     advisor_subjects = case
       when is_career then hf_career_advisor_discussed_for_select
@@ -24,12 +24,12 @@
 
   <%
     select_primary_reasons = case
-      when advisor_type.match?(/Career|ERAS/) then hf_career_primary_for_select
-      when advisor_type.match?(/Academic: Step 1/) then hf_academic_primary_step1_for_select
-      when advisor_type.match?(/Academic/) then hf_academic_primary_for_select
-      when advisor_type == 'Wellness' then hf_wellness_primary_for_select
-      when advisor_type == 'DEIB' then hf_diversity_navigator_for_select
-      when advisor_type == 'Assist Dean' then hf_assist_dean_for_select
+    when advisor_type.name.match?(/Career|ERAS/) then hf_career_primary_for_select
+    when advisor_type.name.match?(/Academic: Step 1/) then hf_academic_primary_step1_for_select
+    when advisor_type.name.match?(/Academic/) then hf_academic_primary_for_select
+    when advisor_type.name == 'Wellness' then hf_wellness_primary_for_select
+    when advisor_type.name == 'DEIB' then hf_diversity_navigator_for_select
+    when advisor_type.name == 'Assist Dean' then hf_assist_dean_for_select
       else hf_meeting_tags_for_select
     end
   %>
@@ -39,14 +39,14 @@
     <%# Hidden Metadata %>
     <div class="advisors-type" data-advisor_type="<%= advisor_type %>" hidden></div>
     <%= f.hidden_field :advisor_id, value: advisor_id %>
-    <%= f.hidden_field :advisor_type, value: advisor_type %>
+    <%= f.hidden_field :advisor_type, value: advisor_type.name %>
     <%= f.hidden_field :user_id, value: student.id %>
     <%= f.hidden_field :location, value: 'Phone/Webex/Email/Retro-Appt' %>
     <%= f.hidden_field :m_status, value: 'Completed' %>
 
     <div class="mb-1">
       Advisor Name: <b><%= Current.user.full_name %></b><br />
-      Advisor Type: <b><%= advisor_type %></b>
+      Advisor Type: <b><%= advisor_type.name %></b>
     </div>
 
     <%# SECTION 1: Standard Appointment Details (Shared by all) %>

@@ -1,4 +1,34 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :advisors
+      resources :advisor_types
+      resources :artifacts
+      resources :badging_dates
+      resources :categories
+      resources :competencies
+      resources :csl_feedbacks
+      resources :eg_cohorts
+      resources :eg_members
+      resources :eg_reasons
+      resources :epas
+      resources :epa_masters
+      resources :epa_reviews
+      resources :events
+      resources :fom_exams
+      resources :fom_labels
+      resources :formative_feedbacks
+      resources :meetings
+      resources :new_competencies
+      resources :permission_groups
+      resources :permission_ls_groups
+      resources :preceptor_assesses
+      resources :preceptor_evals
+      resources :sessions
+      resources :sub_categories
+      resources :users
+
+      root to: "advisors#index"
+    end
   # get "artifacts/index"
   # get "artifacts/show"
   # get "artifacts/new"
@@ -129,10 +159,10 @@ Rails.application.routes.draw do
     end
   end
 
-
   resources :advisor_types do
+    resources :advisors, only: :index
     member do
-      get :advisors
+      get :meeting_advisors
       get :primary_reasons
     end
   end
@@ -142,6 +172,13 @@ Rails.application.routes.draw do
       get :availabilities
     end
   end
+
+  # resources :advisor_types do
+  #   resources :advisors, only: :index
+  # end
+
+
+  resources :meeting_reports
 
   resources :events do
     collection do

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Authentication
+  before_action :set_current_user
   before_action :resume_session
   before_action :require_authentication
   # before_action :debug_cookie_arrival
@@ -28,5 +29,10 @@ class ApplicationController < ActionController::Base
     def require_login
       redirect_to new_session_path unless session[:user_id]
     end
+
+    def set_current_user
+      Current.user = User.find_by(id: session[:user_id])
+    end
+
 
 end
