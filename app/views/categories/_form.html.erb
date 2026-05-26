@@ -1,38 +1,53 @@
-<%= turbo_frame_tag dom_id(@category) do %>
-  <%= form_with(model: @category, data: { controller: "nested-form" }) do |f| %>
+<%# app/views/categories/_form.html.erb %>
+<%= turbo_frame_tag dom_id(category) do %>
+  <%= form_with(model: category, data: { controller: "nested-form", turbo_frame: "_top" }) do |f| %>
+
+    <% if category.errors.any? %>
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          <% category.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
     <div class="card shadow-sm mb-4">
       <div class="card-body">
+
         <div class="mb-3">
           <%= f.label :name, "Category Name", class: "form-label fw-bold" %>
-          <%= f.text_field :name, class: "form-control form-control-lg", placeholder: "e.g. FoM" %>
+          <%= f.text_field :name, class: "form-control form-control-lg", placeholder: "e.g., Electronics" %>
         </div>
 
         <hr>
         <h5 class="mb-3">Sub-Categories</h5>
 
+        <%# Target container where existing and new subcategories appear %>
         <div data-nested-form-target="container">
           <%= f.fields_for :sub_categories do |sub_f| %>
-            <%= render "sub_category_fields", f: sub_f %>
+            <%= render "categories/sub_category_fields", f: sub_f %>
           <% end %>
         </div>
 
+        <%# The blueprints blueprint template for adding rows dynamically %>
         <template data-nested-form-target="template">
           <%= f.fields_for :sub_categories, SubCategory.new, child_index: "NEW_RECORD" do |sub_f| %>
-            <%= render "sub_category_fields", f: sub_f %>
+            <%= render "categories/sub_category_fields", f: sub_f %>
           <% end %>
         </template>
 
-        <div class="mt-3 d-flex justify-content-between">
+        <div class="mt-3 d-flex justify-content-between align-items-center">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-action="nested-form#add">
             + Add Sub-category
           </button>
 
           <div>
-            <%= link_to "Cancel", categories_path, class: "btn btn-link text-muted" %>
+            <%= link_to "Cancel", categories_path, class: "btn btn-link text-muted me-2" %>
             <%= f.submit "Save Category", class: "btn btn-primary" %>
           </div>
         </div>
+
       </div>
     </div>
   <% end %>

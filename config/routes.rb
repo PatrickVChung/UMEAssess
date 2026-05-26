@@ -66,7 +66,9 @@ Rails.application.routes.draw do
   end
 
   resources :categories do
-    get :subcategories
+    member do
+      get :subcategories # Creates /categories/:id/subcategories
+    end
   end
 
   resources :searches do
@@ -211,4 +213,10 @@ Rails.application.routes.draw do
       patch :cancel # Using PATCH because we are updating the record
     end
   end
+
+  # Error pages routing
+    match "/404", to: "errors#show", via: :all
+    match "/422", to: "errors#show", via: :all
+    match "/500", to: "errors#show", via: :all
+
 end

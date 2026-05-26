@@ -1,0 +1,14 @@
+<%# app/views/categories/edit.html.erb %>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Edit Category</h2>
+        <%= link_to "Back to Categories", categories_path, class: "btn btn-outline-secondary btn-sm" %>
+      </div>
+
+      <%# Renders the exact same form partial, scoped to our active category %>
+      <%= render "form", category: @category %>
+    </div>
+  </div>
+</div>

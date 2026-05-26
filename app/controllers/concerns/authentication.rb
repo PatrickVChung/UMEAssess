@@ -18,7 +18,7 @@ module Authentication
   end
 
   def require_authentication
-    puts "DEBUG: Checking auth. Current.user is: #{Current.user.inspect}"
+    puts "DEBUG: Checking auth. Current.user is: #{Cuauthrrent.user.inspect}"
     return if Current.user
     request_authentication
   end
@@ -38,7 +38,7 @@ module Authentication
   end
 end
 
-  # def resume_session
+  # def resume_sessionauth
   #   # Let's see exactly what the JAR contains
   #   raw_cookie = cookies[:ume_session_id]
   #   signed_id = cookies.signed[:ume_session_id]
@@ -51,12 +51,12 @@ end
   #
   #     Current.session = session
   #     Current.user = session.user
-  #     session.refresh!
+  #     session.refresh!auth
   #     #Rails.logger.info "AUTH SUCCESS: User #{Current.user.id}"
   #   else
   #     Rails.logger.warn "AUTH FAILURE: No session found for Signed ID #{signed_id}"
   #   end
-  # end
+  # endauth
 
   def start_new_session_for(user, remember_me: false)
     session = user.sessions.create!(

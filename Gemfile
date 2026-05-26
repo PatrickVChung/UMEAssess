@@ -71,3 +71,6 @@ gem "aes"
 gem "administrate"
 gem "lazy_high_charts"
 gem "icalendar"
+group :production do
+  gem "exception_notification"
+end 

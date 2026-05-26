@@ -13,6 +13,9 @@ application.register("artifact-form", ArtifactFormController)
 import AutosubmitController from "./autosubmit_controller"
 application.register("autosubmit", AutosubmitController)
 
+import CalendarController from "./calendar_controller"
+application.register("calendar", CalendarController)
+
 import ContextMenuController from "./context_menu_controller"
 application.register("context-menu", ContextMenuController)
 
@@ -24,6 +27,9 @@ application.register("draggable", DraggableController)
 
 import EpaReviewFormLogicController from "./epa_review_form_logic_controller"
 application.register("epa-review-form-logic", EpaReviewFormLogicController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
 
 import FlatpickrController from "./flatpickr_controller"
 application.register("flatpickr", FlatpickrController)
@@ -37,14 +43,20 @@ application.register("hello", HelloController)
 import HighchartsController from "./highcharts_controller"
 application.register("highcharts", HighchartsController)
 
+import IdleTimeoutController from "./idle_timeout_controller"
+application.register("idle-timeout", IdleTimeoutController)
+
+import MeetingFiltersController from "./meeting_filters_controller"
+application.register("meeting-filters", MeetingFiltersController)
+
 import MeetingFormController from "./meeting_form_controller"
 application.register("meeting-form", MeetingFormController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
-import NestFormController from "./nest_form_controller"
-application.register("nest-form", NestFormController)
+import NestedFormController from "./nested_form_controller"
+application.register("nested-form", NestedFormController)
 
 import SearchController from "./search_controller"
 application.register("search", SearchController)
@@ -54,12 +66,3 @@ application.register("side-panel", SidePanelController)
 
 import TomSelectController from "./tom_select_controller"
 application.register("tom-select", TomSelectController)
-
-import FlashController from "./flash_controller"
-application.register("flash", FlashController)
-
-import CalendarController from "./calendar_controller"
-application.register("calendar", CalendarController)
-
-import MeetingFiltersController from "./meeting_filters_controller"
-application.register("meeting-filters", MeetingFiltersController)
