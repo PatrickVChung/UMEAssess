@@ -13,9 +13,13 @@ class SessionsController < ApplicationController
   def index
     @sessions = Current.user.sessions.active.order(last_seen_at: :desc)
   end
+def create
+  username = params.dig(:user, :login) || params[:username]
+  password = params.dig(:user, :password) || params[:password]
 
+  user = User.find_by(username: username)
 
-  def create
+def create
   username = params.dig(:user, :login) || params[:username]
   password = params.dig(:user, :password) || params[:password]
 
@@ -57,24 +61,20 @@ class SessionsController < ApplicationController
     end
   end
 end
-  # def destroy
-  #   session = Current.user.sessions.find(params[:id])
-  #   session.destroy
-  #   redirect_to new_session_path, notice: "Successfully logged out."
-  # end
 
-  def destroy
-    terminate_session
-    redirect_to new_session_path, notice: "You have been logged out."
+
+def destroy
+  terminate_session
+  redirect_to new_session_path, notice: "You have been logged out."
+end
+
+private
+
+def redirect_if_authenticated
+  if Current.user
+    redirect_to root_path, notice: "You are already signed in."
   end
-
-  private
-
-  def redirect_if_authenticated
-    if Current.user
-      redirect_to root_path, notice: "You are already signed in."
-    end
-  end
+end
 
 
 end

@@ -2,16 +2,21 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
-  # Code is not reloaded between requests.
+  #config.hosts << "redei-staging2.ohsu.edu"
+  #config.hosts << "redei.ohsu.edu"
+  #config.hosts << "10.233.20.82"
+  #config.hosts << "localhost"
+  #config.hosts << "127.0.0.1"  
+ # Code is not reloaded between requests.
   config.enable_reloading = false
 
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
 
   config.require_master_key = true
   config.eager_load = true
-  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.public_file_server.enabled = true
   config.assets.compile = false   # IMPORTANT
+  config.action_cable.mount_path = "/cable"
 
   # Full error reports are disabled.
   config.consider_all_requests_local = false
@@ -26,10 +31,10 @@ Rails.application.configure do
   # config.asset_host = "http://assets.example.com"
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :production
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
+  config.assume_ssl = true 
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
@@ -39,7 +44,7 @@ Rails.application.configure do
 
   # Log to STDOUT with the current request id as a default log tag.
   config.log_tags = [ :request_id ]
-  config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+  config.logger   = ActiveSupport::Logger.new("log/production.log")
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
@@ -62,7 +67,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  #config.action_mailer.default_url_options = { host: "https://redei.ohsu.edu" }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -72,6 +77,23 @@ Rails.application.configure do
   #   port: 587,
   #   authentication: :plain
   # }
+  #
+  
+  #config.action_mailer.delivery_method = :smtp
+  #host = 'https://redei.ohsu.edu' #replace with your own url
+  #config.action_mailer.default_url_options = { host: host }
+  #config.action_mailer.raise_delivery_errors = true
+
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true # Helpful to debug if emails fail
+
+config.action_mailer.smtp_settings = {
+  address:              'mail.ohsu.edu', # Replace with your exact institutional SMTP host
+  port:                 25,             # Or 587 depending on your network team's configuration
+  domain:               'ohsu.edu',
+  enable_starttls_auto: true
+}
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -91,4 +113,12 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  #
+    # Exception notification gem
+  config.middleware.use ExceptionNotification::Rack,
+    email: {
+      email_prefix: "[UMEAssess Exception Error] ",
+      sender_address: %{"Notifier" <noreply@redei-som.ohsu.edu>},
+      exception_recipients: %w{chungp@ohsu.edu}
+    }
 end
