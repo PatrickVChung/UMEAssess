@@ -5,7 +5,7 @@ class LdapAuthenticator
   LDAP_HOST = 'ldap.ohsu.edu'
   LDAP_PORT = 389
   LDAP_BASE = 'DC=ohsum01,DC=ohsu,DC=edu'
-  
+
   # The account used to "look up" users initially
   ADMIN_USER = "CN=svcLDAPFamilyMedicine,OU=Service Accounts,OU=Special Accounts,DC=ohsum01,DC=ohsu,DC=edu"
   ADMIN_PASS = 'molt6*pate' # Move this to credentials.yml.enc later!
@@ -24,10 +24,17 @@ class LdapAuthenticator
       if entry
         # Now try to BIND as the actual user using the password they typed
         user_auth = Net::LDAP.new(
-          host: LDAP_HOST, 
-          port: LDAP_PORT, 
+          host: LDAP_HOST,
+          port: LDAP_PORT,
           auth: { method: :simple, username: entry.dn, password: password }
         )
+        user = User.find_by(username: entry.dn)
+        puts "\n" + "-"*40
+            puts "LDAP AUTHENTICATION: SUCCESS"
+            puts "LDAP Login:          #{entry.dn}"
+            puts "Local DB User Found: #{user.present?}"
+            puts "Local User ID:       #{user&.id}"
+            puts "-"*40 + "\n"
         return entry if user_auth.bind
       end
     end

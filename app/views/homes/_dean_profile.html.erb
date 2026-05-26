@@ -69,6 +69,11 @@
               <%= link_to 'View Artifacts/Upload Documents', artifacts_path, data: { turbo: true }, target: "_blank",
                   class: 'list-group-item list-group-item-action text-primary' %>
 
+              <% if Current.user.coaching_type == 'dean'%>
+                <%= link_to 'Category/SubCategory File uploaded', categories_path, data: {turbo: true}, target: "_blank",
+                    class: 'list-group-item list-group-item-action text-primary' %>
+              <% end %>
+
                   <% if Current.user.can_process_fom? and Current.user.coaching_type != 'student'%>
                   <strong>Process FoM Exams File </strong>
                     <ul classs="list-group">
@@ -128,7 +133,7 @@
 
                   <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path, target: "_blank" %>
 
-                  <% if ['admin', 'dean'].include?(Current.user.coaching_type) %>
+                  <% if ['admin', 'dean'].include?(Current.user.coaching_type)  %>
                     <class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle"
                          href="#"
@@ -145,7 +150,7 @@
                       </ul>
                   <% end %>
 
-                  <% if ['admin', 'dean'].include?(Current.user.coaching_type) %>
+                  <% if ['admin', 'dean'].include?(Current.user.coaching_type)  %>
                     <class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle"
                          href="#"

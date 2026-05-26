@@ -1,5 +1,6 @@
 
 class SubCategory < ApplicationRecord
-  belongs_to :category
-  # This might store a boolean 'selected' or be linked to a Join Table
+  belongs_to :category, inverse_of: :sub_categories
+
+    validates :name, presence: true
 end

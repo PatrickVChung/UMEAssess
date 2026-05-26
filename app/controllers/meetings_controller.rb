@@ -13,7 +13,7 @@ class MeetingsController < ApplicationController
        if Current.user.coaching_type == 'student' && params[:student_id].present?
            @meetings = User.find_by(uuid: params[:student_id]).meetings.order(created_at: :desc)
        else
-         @permission_groups = PermissionGroup.where("id >= ? AND id <> ?", 19, 15).pluck(:id)
+         @permission_groups = PermissionGroup.where("(id >= ? AND id <> ?) or id = 7", 19, 15).pluck(:id)
          @students = User.where(permission_group_id: @permission_groups)
                         .select(:id, :full_name, :email, :uuid)
                         .order(:full_name)

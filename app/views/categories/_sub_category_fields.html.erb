@@ -1,0 +1,23 @@
+<%# app/views/categories/_sub_category_fields.html.erb %>
+<div class="nested-fields row g-3 align-items-center mb-2">
+  <%# Hidden fields capture the database ID and the destruction state toggle %>
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :_destroy %>
+
+  <div class="col-7">
+    <%= f.text_field :name, class: "form-control form-control-sm", placeholder: "Sub-category name" %>
+  </div>
+
+  <div class="col-3">
+    <div class="form-check">
+      <%= f.check_box :selected, class: "form-check-input" %>
+      <%= f.label :selected, "Default?", class: "form-check-label small" %>
+    </div>
+  </div>
+
+  <div class="col-2 text-end">
+    <button type="button" class="btn btn-outline-danger btn-sm" data-action="nested-form#remove">
+      Remove
+    </button>
+  </div>
+</div>

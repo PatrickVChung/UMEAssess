@@ -20,7 +20,15 @@
   </head>
 
   <%# KEY CHANGE: Attach the controller here so it covers the entire page %>
-  <body data-controller="side-panel">
+  <body
+    <% if Current.user %>
+      data-controller="idle-timeout side-panel"
+      data-idle-timeout-logout-url-value="<%= new_session_path %>"
+      data-idle-timeout-timeout-value="900000"
+      data-global-ui-theme-value="dark"
+    <% end %>
+  >
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light-green mb-4 sticky-top shadow-sm">
       <div class="container">
         <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>

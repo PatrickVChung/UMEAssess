@@ -74,4 +74,3 @@ gem "icalendar"
 group :production do
   gem "exception_notification"
 end
-

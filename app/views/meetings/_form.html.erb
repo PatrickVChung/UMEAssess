@@ -35,40 +35,40 @@
         </div>
       </div>
     </div>
+    <% if meeting.advisor_discussed.any? %>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscussed">
+            <span class="fw-bold" style="color: #4c0946;"><%= meeting.advisor.advisor_type.name %> Advisor Discussed</span>
+          </button>
+        </h2>
+        <div id="collapseDiscussed" class="accordion-collapse collapse" data-bs-parent="#meetingAccordion">
+          <div class="accordion-body">
+            <%
+              advisor_subjects = case
+              when meeting.advisor.advisor_type.name.match?(/Career|ERAS/) then hf_career_advisor_discussed_for_select
+              when meeting.advisor.advisor_type.name.match?(/Academic/) then hf_academic_advisor_discussed_for_select
+              when meeting.advisor.advisor_type.name == 'Wellness' then hf_wellness_advisor_discussed_for_select
+              when meeting.advisor.advisor_type.name == 'DEIB' then hf_diversity_navigator_discussed_for_select
+              when meeting.advisor.advisor_type.name == 'Assist Dean' then hf_assist_dean_for_select
+              end
+            %>
 
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiscussed">
-          <span class="fw-bold" style="color: #4c0946;"><%= meeting.advisor.advisor_type.name %> Advisor Discussed</span>
-        </button>
-      </h2>
-      <div id="collapseDiscussed" class="accordion-collapse collapse" data-bs-parent="#meetingAccordion">
-        <div class="accordion-body">
-          <%
-            advisor_subjects = case
-            when meeting.advisor.advisor_type.name.match?(/Career|ERAS/) then hf_career_advisor_discussed_for_select
-            when meeting.advisor.advisor_type.name.match?(/Academic/) then hf_academic_advisor_discussed_for_select
-            when meeting.advisor.advisor_type.name == 'Wellness' then hf_wellness_advisor_discussed_for_select
-            when meeting.advisor.advisor_type.name == 'DEIB' then hf_diversity_navigator_discussed_for_select
-            when meeting.advisor.advisor_type.name == 'Assist Dean' then hf_assist_dean_for_select
-            end
-          %>
-
-          <%= f.collection_check_boxes(:advisor_discussed, advisor_subjects, :first, :first) do |b| %>
-            <div class="form-check">
-              <%= b.check_box(class: "form-check-input") %>
-              <%= b.label(class: "form-check-label") { b.text } %>
+            <%= f.collection_check_boxes(:advisor_discussed, advisor_subjects, :first, :first) do |b| %>
+              <div class="form-check">
+                <%= b.check_box(class: "form-check-input") %>
+                <%= b.label(class: "form-check-label") { b.text } %>
+              </div>
+            <% end %>
+            <div class="mt-3">
+              <label class="small text-muted">Other Discussion Topics</label>
+              <% field_name = meeting.advisor.advisor_type.name.include?("Career") ? :career_discussed_other : :academic_discussed_other %>
+              <%= f.text_field field_name, class: "form-control form-control-sm" %>
             </div>
-          <% end %>
-
-          <div class="mt-3">
-            <label class="small text-muted">Other Discussion Topics</label>
-            <% field_name = meeting.advisor.advisor_type.name.include?("Career") ? :career_discussed_other : :academic_discussed_other %>
-            <%= f.text_field field_name, class: "form-control form-control-sm" %>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
 
     <% if meeting.advisor.advisor_type.name != 'DEIB' %>
       <div class="accordion-item">
@@ -123,8 +123,6 @@
     </div>
 
   </div>
-
-
 
   <% is_student = true if Current.user.coaching_type == 'student' %>
 

@@ -28,6 +28,7 @@ export default class extends Controller {
       })
   }
 
+  // app/javascript/controllers/artifact_form_controller.js
   loadSubcategories(event) {
     const categoryId = event.target.value
 
@@ -37,13 +38,23 @@ export default class extends Controller {
     }
 
     fetch(`/categories/${categoryId}/subcategories`, {
-      headers: { Accept: "application/json" }
+      headers: { "Accept": "application/json" }
     })
-      .then(r => r.json())
+      .then(response => {
+        // Catch bad server responses before trying to parse JSON
+        if (!response.ok) {
+          throw new Error(`Server returned status code: ${response.status}`)
+        }
+        return response.json()
+      })
       .then(data => {
         this.subcategorySelectTarget.innerHTML =
           `<option value="">---</option>` +
           data.map(s => `<option value="${s.id}">${s.name}</option>`).join("")
+      })
+      .catch(error => {
+        console.error("Failed to load subcategories:", error)
+        this.subcategorySelectTarget.innerHTML = `<option value="">Error loading subcategories</option>`
       })
   }
 }
