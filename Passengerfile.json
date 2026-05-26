@@ -1,0 +1,9 @@
+{
+  "environment": "staging2",
+  "port": 3000,
+  "daemonize": true,
+  "user": "chungp",
+  "ruby": "ruby-3.3.4",
+  "log_level": 3,
+  "app_type": "rack"
+}

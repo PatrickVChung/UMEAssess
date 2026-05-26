@@ -1,0 +1,10 @@
+production:
+  adapter: redis
+  #url: redis://redei-som.ohsu.edu:6379
+  url: <%= ENV["REDIS_URL"] %>
+
+development:
+  adapter: redis
+  url: <%= ENV["REDIS_URL"] %>
+ 
+
