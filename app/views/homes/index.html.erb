@@ -1,7 +1,7 @@
 <!-- <p>HOME INDEX LOADED</p>
 <%#= "current user: #{Current.user&.full_name} " %> -->
 
-<% if Current.user&.coaching_type == "dean" %>
+<% if Current.user&.coaching_type == "dean" or Current.user&.coaching_type == 'admin' %>
   <%= render partial: "dean_profile",
              locals: {
                events: @events,
@@ -15,11 +15,13 @@
                event_schedules: @event_schedules
              } %>
 <% else %>
-  <% user_email = params[:search] %>
-  <% event_schedules = hf_get_events_email(user_email) %>
-  <%= render partial: "student_profile",
+  <% if params[:seach].present? %>
+    <% user_email = params[:search] %>
+    <% event_schedules = hf_get_events_email(user_email) %>
+    <%= render partial: "student_profile",
              locals: {
                event_schedules: event_schedules
              } %>
+  <% end %>
   <!-- Optional: public landing content -->
 <% end %>

@@ -128,7 +128,7 @@
 
                   <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path, target: "_blank" %>
 
-                  <% if Current.user.coaching_type == 'dean' %>
+                  <% if ['admin', 'dean'].include?(Current.user.coaching_type) %>
                     <class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle"
                          href="#"
@@ -145,7 +145,7 @@
                       </ul>
                   <% end %>
 
-                  <% if Current.user.coaching_type == 'dean' %>
+                  <% if ['admin', 'dean'].include?(Current.user.coaching_type) %>
                     <class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle"
                          href="#"
