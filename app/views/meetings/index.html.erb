@@ -37,11 +37,9 @@
     </div>
   <% end %>
 
-
   <div class="card-body">
     <div id="meeting_details">
       <% if @meetings %>
-
         <%= render "meeting_list", meetings: @meetings %>
       <% else %>
         <p class="text-muted mb-0">Please select a student to view meeting history.</p>

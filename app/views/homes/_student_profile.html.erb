@@ -118,36 +118,60 @@
             <h5 class="card-title text-muted"><i class="bi bi-rocket-takeoff me-2"></i>Quick Actions/View Datasets</h5>
           </div>
           <div class="card-body">
+
             <ul classs="list-group">
-             <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path(student_id: user.uuid), target: "_blank" %> <br>
+              <%= link_to '<i style="color:#31a34f;" class="bi bi-book"></i> Course Catalog'.html_safe, courses_path(), target: '_blank',
+                  class: 'list-group-item list-group-item-action text-primary' %>
+             <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path(student_id: user.uuid), target: "_blank",
+                          class: 'list-group-item list-group-item-action text-primary' %>
              <%= link_to '<i class="bi bi-file-pdf" style="color:purple"></i> View Artifacts/Upload Documents'.html_safe,
                           artifacts_path(user_id: user.id),
                           data: { turbo: true },
-                          class: 'list-group-item list-group-item-action',
+                          class: 'list-group-item list-group-item-action text-primary',
                           target: "_blank"
                    %>
-              Clinical Datasets<br />
-              <strong class="text-primary">FoM Blocks </strong><br>
-              <ul classs="list-group">
-                <% fom_block_array = [] %>
-                <%  hf_exists_in_FomExam(user.id).each do |block| %>
-                    <% cohort = block["cohort"] %>
-                    <% permission_group_id = block["permission_group_id"] %>
-                    <% course_code = block["course_code"] %>
-                    <% if !course_code.include? "DISABLED" %>
-                      <% session[:attach_id] = -1 %>
-                      <% hf_check_aes_key %>
-                      <% fom_block_array.push course_code %>
-                      <li><%= link_to("#{cohort}:Foundation of Medicine: #{course_code}".html_safe,
-                              display_fom_fom_exams_path(permission_group_id: AES.encrypt(permission_group_id.to_s, session[:aes_key]),
-                              course_code: AES.encrypt(course_code, session[:aes_key] ),
-                              uuid: user.uuid), method: :get,   data: { turbo: true },
-                              target: '_blank', class: 'list-group-item list-group-item-action') %> </li>
-                    <% else %>
-                       <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
-                    <% end %>
-                <% end %>
-              </ul>
+
+                   <div style="display: flex; align-items: center; gap: 8px;">
+                     <%= icon "female-doctor-with-a-circle-mark-svgrepo-com", width: 48, height: 48 %>
+                     <h6 style="margin: 0;">Clinical Datasets</h6>
+                   </div>
+
+                   <%= icon "Stethoscope--Streamline-Core-Gradient", width: 24, height: 24 %>
+                   <strong class="text-primary">Foundation of Medicine Blocks</strong>
+                   <ul classs="list-group">
+                     <% fom_block_array = [] %>
+                     <% hf_exists_in_FomExam(user.id).each do |block| %>
+                       <% cohort = block["cohort"] %>
+                       <% permission_group_id = block["permission_group_id"] %>
+                       <% course_code = block["course_code"] %>
+
+                       <% if !course_code.include? "DISABLED" %>
+                         <% session[:attach_id] = -1 %>
+                         <% hf_check_aes_key %>
+                         <% fom_block_array.push course_code %>
+
+                         <li class="list-group-item">
+                           <div style="text-indent: 20px;">
+                             <%= link_to("#{cohort}: #{course_code}".html_safe,
+                                         display_fom_fom_exams_path(
+                                           permission_group_id: AES.encrypt(permission_group_id.to_s, session[:aes_key]),
+                                           course_code: AES.encrypt(course_code, session[:aes_key]),
+                                           uuid: user.uuid
+                                         ),
+                                         method: :get,
+                                         data: { turbo: true },
+                                         target: '_blank',
+                                         class: 'list-group-item list-group-item-action text-primary' ) %>
+                            </div>
+                          </li>
+
+                       <% else %>
+                         <li class="list-group-item disabled text-muted fw-bold">
+                           <%= "#{cohort}:Foundation of Medicine: #{course_code}" %>
+                         </li>
+                       <% end %>
+                     <% end %>
+                    </ul>
             </ul>
             <button class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
               View Requirements <i class="bi bi-chevron-right"></i>

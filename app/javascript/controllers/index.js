@@ -66,3 +66,9 @@ application.register("side-panel", SidePanelController)
 
 import TomSelectController from "./tom_select_controller"
 application.register("tom-select", TomSelectController)
+
+import WindowController from "./window_controller"
+application.register("window", WindowController)
+
+import AccordionFiltersController from "./accordion_filters_controller"
+application.register("accordion-filters", AccordionFiltersController)

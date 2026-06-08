@@ -1,0 +1,101 @@
+<br />
+<div class="row justify-content-center">
+  <div class="card" style="width: 45%;">
+    <div class="d-flex justify-content-between align-items-center">
+      <%= link_to '← Back to Courses', courses_path, class: 'btn btn-outline-secondary' %>
+      <h3 style="font-family: cambria; margin: 0;">YourMD Course Catalog</h3>
+    </div>
+
+    <hr style="height:3px; background-color:grey; margin-top: 15px;">
+
+    <% course_detail = @course_detail.first  %>
+    <h4 style="color:#0092ca;font-family:cambria"><strong><%= course_detail["course_number"].to_s %> <%= course_detail["course_name"] %></strong></h4>
+    <h5><i style="color:#455d7a;font-family:cambria"><%= course_detail["department"] %> </i></h5>
+    <div class="calibri-font">
+      <strong>Course Purpose Statement:</strong>&ensp;<%= course_detail["course_purpose_statement"] %><br><br>
+      <strong>Special Notes:</strong>&ensp;<%= course_detail["special_notes"] %><br><br>
+      <strong>Required Prerequisite(s):</strong>&ensp;<%= course_detail["required_prerequisites"] %><br>
+      <i>Course Director may waive prerequisites on a case-by-case basis for this course..</i>
+      <hr style="height:3px; background-color:#3e4a61;">
+      <div class="row">
+        <div class="col-md-6">
+          <strong>Duration:</strong>&ensp;<%= course_detail["duration"] %><br>
+          <strong>Site(s):</strong>&ensp;<%= course_detail["site"] %><br>
+          <strong>Type:</strong>&ensp;<%= course_detail["content_type"] %> <br>
+          <strong>Credits:</strong>&ensp;<%= course_detail["credits"] %><br>
+          <strong>Available through the lottery: </strong>&ensp;<%= course_detail["available_through_the_lottery"] ? "Yes" : "No"%>
+        </div>
+        <div class="col-md-6">
+          <strong>Course Director (name / email):</strong>&ensp;
+          <%= course_detail["course_director"] %>
+          <% if course_detail["course_director_email"].present? %>
+            <% course_name = course_detail["course_number"].to_s + " " + course_detail["course_name"] %>
+            <% director_email = course_detail["course_director_email"] %>
+            /  <%= link_to director_email, contact_form_courses_path(to_email: director_email,
+                subject: course_name), target: '_blank' %>
+          <% end %>
+          <br>
+
+          <strong>Course Coordinator (name / email):</strong>&ensp;
+          <%= course_detail["course_coordinator"] %>
+          <% if course_detail["course_coordinator_email"].present? %>
+            <% course_name = course_detail["course_number"].to_s + " " + course_detail["course_name"] %>
+            <% coordinator_email = course_detail["course_coordinator_email"] %>
+            / <%= link_to coordinator_email, contact_form_courses_path(to_email: coordinator_email,
+                subject: course_name), target: '_blank' %>
+          <% end %>
+          <br>
+        </div>
+      </div>
+      <hr style="height:3px; background-color:#3e4a61;">
+    </div>
+    <div class="row">
+      <div class="col-9">
+        <h6 style="text-align: center;"><strong> Available Blocks: </strong></h6>
+
+        <%= turbo_frame_tag "course_schedules" do %>
+          <table id="courseSchedules-table" class="table-responsive nowrap table table-hover table-bordered table3-striped custom-grid-color" >
+            <thead>
+              <tr>
+              <th style="text-align: center;">Year</th>
+              <th style="text-align: center; width: 15%;">Block</th>
+              <th style="text-align: center; width: 15%;">StartDate</th>
+              <th style="text-align: center; width: 15%;">EndDate</th>
+              <th style="text-align: center;">Capacity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render partial: "course_schedules_list", locals: {course_schedules: @course_schedules} %>
+            </tbody>
+          </table>
+        <% end %>
+        <%= link_to "Show full course availability",
+              course_schedules_path(course_id: params[:course_id]),
+              class: "btn btn-outline-secondary btn-sm"
+               %>
+
+      </div>
+      <div class="col-sm-3">
+        <div class="grid-container">
+          <strong>Competencies Assessed: </strong>
+
+            <% if course_detail["competencies"].blank? %>
+              <div class="text-muted fst-italic py-1">
+                <i class="fa fa-info-circle me-1"></i> No competencies assigned to this course.
+              </div>
+            <% else %>
+              <ul class="mb-0">
+                <% course_detail["competencies"].sort.each do |comp| %>
+                  <li><%= comp %></li>
+                <% end %>
+              </ul>
+            <% end %>
+
+        </div>
+      </div>
+
+      <p><strong>Entrollment instruction: </strong><%= course_detail["enrollment_instructions"] || "Please contact the course coordinator." %></p>
+      <hr style="height:4px; background-color:#B2DBED;">
+      <h6 style="color: #0092ca;"><strong> <%= course_detail["category"] %> </strong></h6>
+    </div>
+  </div>

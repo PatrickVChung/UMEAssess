@@ -3,6 +3,7 @@
 @use "datatables.net-bs5/css/dataTables.bootstrap5.css";
 @use "jquery-contextmenu/dist/jquery.contextMenu.css";
 @use "tom-select/dist/css/tom-select.bootstrap5.css";
+@import "course_schedules.css";
 
 .navbar {
   transition: box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;
@@ -148,4 +149,32 @@ turbo-frame[aria-busy="true"]::after {
 
 .custom-hover {
   --bs-table-hover-bg: #BEE5B0; /* Replace with your desired color */
+}
+/* courses styling */
+.right-label {
+  text-align: right;
+}
+
+.custom-clickable-row {
+	cursor: pointer;
+}
+
+.accordion-header.has-checked .accordion-button {
+    background-color: #8CE3D0;
+    font-weight: 600;
+}
+/* COURSE_SCHEDULES CSS */
+grid-container {
+  display: flex;
+  justify-content: center;  /* Centers the <ul> horizontally */
+  align-items: center;      /* Centers the <ul> vertically */
+  height: 100vh;            /* Example: makes container the full height of viewport */
+  border: 1px solid #ccc;   /* Optional: visualize the container */
+}
+.table3-striped>tbody>tr:nth-child(odd)>td,
+.table3-striped>tbody>tr:nth-child(odd)>th {
+ background-color: #B2DBED;
+}
+.custom-grid-color {
+  --bs-table-border-color: #A0C5D5; /* Your custom color */
 }

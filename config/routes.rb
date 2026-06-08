@@ -214,6 +214,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :course_schedules
+  resources :courses do
+    collection do
+      get 'contact_form'
+    end
+  end
+
   # Error pages routing
     match "/404", to: "errors#show", via: :all
     match "/422", to: "errors#show", via: :all

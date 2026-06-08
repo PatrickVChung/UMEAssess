@@ -1,0 +1,33 @@
+<%= form_with model: @course, data: { turbo: false } do |f| %>
+
+  <% if @course.errors.any? %>
+    <div class="alert alert-danger">
+      <h6 class="mb-2">Please fix the following errors:</h6>
+      <ul class="mb-0">
+        <% @course.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card-body">
+
+    <!-- TABS CONTENT -->
+    <div class="row">
+      <!-- COURSE TAB -->
+      <div class="col">
+        <%= render "courses/course_fields", f: f %>
+      </div>
+
+      <!-- SCHEDULES TAB -->
+      <div class="col">
+        <%= render "courses/schedule_fields", f: f %>
+      </div>
+    </div>
+
+  </div>
+  <div class="card-footer text-end">
+      <%= f.submit "Save Course", class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>

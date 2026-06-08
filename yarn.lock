@@ -537,6 +537,7 @@ __metadata:
     datatables.net: "npm:^2.3.6"
     datatables.net-bs5: "npm:^2.3.6"
     esbuild: "npm:^0.27.2"
+    esbuild-coffeescript: "npm:^3.1.0"
     flatpickr: "npm:^4.6.13"
     highcharts: "npm:^12.5.0"
     jquery: "npm:^4.0.0"
@@ -712,6 +713,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"coffeescript@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "coffeescript@npm:2.7.0"
+  bin:
+    cake: bin/cake
+    coffee: bin/coffee
+  checksum: 10c0/c98e4086e5cc26d669949a1b7ca6a14cd9d515885f397ab19a5a6ad1eee0c84a526f7d78b6368c7007adafafb9549b334597a7798bec3f08b218363a97f9685b
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^2.0.1":
   version: 2.0.1
   resolution: "color-convert@npm:2.0.1"
@@ -814,6 +825,17 @@ __metadata:
   version: 2.0.3
   resolution: "err-code@npm:2.0.3"
   checksum: 10c0/b642f7b4dd4a376e954947550a3065a9ece6733ab8e51ad80db727aaae0817c2e99b02a97a3d6cecc648a97848305e728289cf312d09af395403a90c9d4d8a66
+  languageName: node
+  linkType: hard
+
+"esbuild-coffeescript@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "esbuild-coffeescript@npm:3.1.0"
+  dependencies:
+    coffeescript: "npm:^2.7.0"
+  peerDependencies:
+    esbuild: ">=0.25.9"
+  checksum: 10c0/45e3741cf118acae944057ba106d8e40f8871343487efa469a66e209945fce151e05d38bb7e54e4d694a0e183221e00c9a1e55ce404d8e5517b213b91ca9ddb6
   languageName: node
   linkType: hard
 

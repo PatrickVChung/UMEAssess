@@ -1,0 +1,47 @@
+<div id="<%= dom_id course %>">
+  <div style="display:flex; align-items:center; gap:10px;">
+    <strong>Course number:</strong>
+
+    <h5 class="mb-0"><%= course.course_number %></h5>
+
+    <% if Current.user.can_process_course_catalog? %>
+      [<%= link_to "Edit", edit_course_path(course), target: "_blank" %> /
+      <%= button_to "Destroy this course", @course, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>]
+      <%= link_to "New Schedule",
+                  new_course_schedule_path(course_id: course.id, course_number: course.course_number, course_name: course.course_name),
+                  method: :get,
+                  form: { target: '_blank' },
+                  class: 'btn btn-sm btn-info' %>
+
+    <% end %>
+  </div>
+
+    <strong>Course name:</strong>
+    <h5 style="display:inline;color:purple"><%= course.course_name %></h5><br>
+
+    <strong>Content type:</strong>
+    <%= course.content_type %><br />
+
+    <strong>Department:</strong>
+    <%= course.department %><br />
+
+    <strong>Course Purpose Statement:</strong>
+    <%= highlight(course.course_purpose_statement, params[:searchWord], highlighter: '<span class="text-danger">\1</span>') %><br>
+
+    <strong>Prerequisites:</strong>
+    <%= course.prerequisites ? "Yes" : "No" %><br />
+    <strong>Rural:</strong>
+    <%= course.rural ? "Yes" : "No" %><br />
+    <strong>Continuity:</strong>
+    <%= course.continuity ? "Yes" : "No" %><br />
+    <strong>Lottery:</strong>
+    <%= course.available_through_the_lottery ? "Yes" : "No" %><br />
+    <div style="display:flex; align-items:center; gap:10px;">
+      <%= link_to "Click Here for Full Course Detail",
+            course_schedules_path(course_id: course.id, offerings: params[:offerings]),
+            class: "btn btn-outline-secondary btn-sm",
+            target: "_blank" %>
+    </div>
+    <hr>
+
+</div>

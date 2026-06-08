@@ -1,0 +1,130 @@
+<div class="container-fluid" data-controller="accordion-filters">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="card">
+        <div class="card-header bg-danger text-white">
+          Search
+        </div>
+        <div class="card-body">
+          <%= form_with url: courses_path, method: :get, local: true do |form| %>
+              <div class="card-header">
+                <strong>Keyword Search </strong>
+                <button data-action="click->accordion-filters#clearFilters" class="btn btn-sm btn-primary">Clear All Checkboxes</button>
+              </div>
+              <div class="card-body">
+               <input type="text" class="form-control" id="searchWord" name="searchWord" placeholder="Enter keywords here" value="<%= params[:searchWord] %>" data-accordion-filters-target="searchWord">
+              </div>
+              <div class="accordion" id="accordionFilters">
+                <%= render partial: "filter_table",
+                           locals: {
+                             title: "Course Type",
+                             items: @course_types,
+                             selected_param: params[:course_types],
+                             field_name: "course_types",
+                             count_hash: @course_type_count,
+                             prefix: "courseType"
+                           } %>
+
+                <%= render partial: "filter_table",
+                           locals: {
+                             title: "Department",
+                             items: @departments,
+                             selected_param: params[:departments],
+                             field_name: "departments",
+                             count_hash: @department_count,
+                             prefix: "dep"
+                           } %>
+
+                 <%= render partial: "filter_table",
+                            locals: {
+                              title: "Content Type",
+                              items: @content_types,
+                              selected_param: params[:content_types],
+                              field_name: "content_types",
+                              count_hash: @content_type_count,
+                              prefix: "info"
+                            } %>
+
+
+               <%= render partial: "filter_table",
+                          locals: {
+                            title: "Course Information",
+                            items: @course_info,
+                            selected_param: params[:course_info],
+                            field_name: "course_info",
+                            count_hash: @course_info_count,
+                            prefix: "info"
+                          } %>
+
+              <%= render partial: "filter_table",
+                         locals: {
+                           title: "Course Prerequisite",
+                           items: @prerequisites,
+                           selected_param: params[:prerequisites],
+                           field_name: "prerequisites",
+                           count_hash: @prerequisites_count,
+                           prefix: "prereq"
+                         } %>
+
+                <%= render partial: "filter_table",
+                           locals: {
+                             title: "Duration",
+                             items: @durations,
+                             selected_param: params[:durations],
+                             field_name: "durations",
+                             count_hash: @duration_count,
+                             prefix: "dur"
+                           } %>
+
+                 <%= render partial: "filter_table",
+                            locals: {
+                              title: "Block Offered",
+                              items: @offerings,
+                              selected_param: params[:offerings],
+                              field_name: "offerings",
+                              count_hash: @offering_count,
+                              prefix: "off"
+                            } %>
+
+                  <%= render partial: "filter_table",
+                             locals: {
+                               title: "Competency",
+                               items: CourseSchedule.comp_codes,
+                               selected_param: params[:competencies],
+                               field_name: "competencies",
+                               count_hash: @competencies_count,
+                               prefix: "comp"
+                             } %>
+
+                </div>
+              <br>
+              <%= form.submit "Search", id: "sbumit-btn", class: "btn btn-primary" %>
+            <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+          <span>
+            <%= "Found #{@courses.count} courses." %>
+            <% if Current.user.can_process_course_catalog? %>
+              <%= link_to "New Course", new_course_path, method: :get, target: '_blank', class: 'btn btn-sm btn-info' %>
+            <% end %>
+          </span>
+          <%= link_to "/course_catalog/Clinical_Exp_Block_Calendar_AY2526_AY2728.pdf", target: "_blank", class: "btn btn-sm btn-info" do %>
+            <i class="bi bi-calendar3"></i> View Block Calendar (AY2526-AY2728)
+          <% end %>
+        </div>
+
+        <div class="card-body">
+          <% if @courses.present? %>
+            <%= render @courses %>
+          <% else %>
+            <p class="text-muted">No courses found.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
