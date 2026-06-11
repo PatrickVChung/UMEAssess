@@ -39,3 +39,18 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+environment "staging"
+
+app_dir = File.expand_path("..", __dir__)
+
+bind "unix://#{app_dir}/tmp/sockets/puma.sock"
+
+pidfile "#{app_dir}/tmp/pids/puma.pid"
+
+stdout_redirect "#{app_dir}/log/puma.stdout.log",
+                "#{app_dir}/log/puma.stderr.log",
+                true
+
+workers 2
+threads 1, 6
