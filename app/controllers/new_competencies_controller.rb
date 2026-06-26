@@ -12,42 +12,42 @@ class NewCompetenciesController < ApplicationController
 
   # GET /new_competencies or /new_competencies.json
   def index
-    if params[:user_id].present?
-      @user = User.find(params[:user_id])
-      @new_competencies = NewCompetency.where(user_id: params[:user_id]).order(submit_date: :desc).load_async
+    if params[:uuid].present?
+      @user = User.find_by(uuid: params[:uuid])
+      @new_competencies = NewCompetency.where(user_id: @user.id).order(submit_date: :desc).load_async
       @comp_new = @new_competencies.map(&:attributes)
 
       @comp_new_hash3 = hf_new_comp(@comp_new, 3)
       @comp_new_data_clinical = hf_average_comp_new (@comp_new_hash3)
       @comp_new_unfiltered = NewCompetency.joins(:user).where(permission_group_id: @user.permission_group_id).load_async.map(&:attributes)
       @comp_class_mean = hf_competency_new_class_mean(@comp_new_unfiltered)
-      @chart_new ||= hf_create_chart('New Competency', @comp_new_data_clinical, @comp_class_mean, @user.full_name)
+      # @chart_new ||= hf_create_chart('New Competency', @comp_new_data_clinical, @comp_class_mean, @user.full_name)
 
-      @mock_artifacts = hf_get_mock(params[:user_id], "Mock Step 1")
-      @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", params[:user_id]).order(:exam_date, :no_attempts).load_async
-      @hss_exams   = UsmleExam.where(user_id: params[:user_id], exam_type: 'HSS').order(:exam_date, :no_attempts).load_async
-      @student_badge_info = hf_get_badge_info_new(params[:user_id], @user.new_competency)
+      @mock_artifacts = hf_get_mock(@user.id, "Mock Step 1")
+      @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @user.id).order(:exam_date, :no_attempts).load_async
+      @hss_exams   = UsmleExam.where(user_id: @user.id, exam_type: 'HSS').order(:exam_date, :no_attempts).load_async
+      @student_badge_info = hf_get_badge_info_new(@user.id, @user.new_competency)
 
-      preceptor_assesses = PreceptorAssess.where(user_id: params[:user_id]).load_async.map(&:attributes)
+      preceptor_assesses = PreceptorAssess.where(user_id: @user.id).load_async.map(&:attributes)
       @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
       if ["20", "21", "22"].include? @user.permission_group_id.to_s   # only Med26, Med27, Med28
-        @wbas = Epa.where(user_id: params[:user_id])
+        @wbas = Epa.where(user_id: @user.id)
       else
-        @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", params[:user_id])
+        @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", @user.id)
       end
       @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
       @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
 
       if ["20", "21", "22"].include? @user.permission_group_id.to_s  # only Med26, Med27, Med28
-        @epa_hash = Epa.where(user_id: params[:user_id]).group(:epa).order(:epa).count
+        @epa_hash = Epa.where(user_id: @user.id).group(:epa).order(:epa).count
         #re-arranging the EPAs on the graph by using Slice.
         @epa_hash = @epa_hash.slice("EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13")
         # merge with a epa hash with zero count so that we can show it on graph.
         @epa_hash = epa_hash_merge(@epa_hash, @user.permission_group_id)
       else
         # for Med29, etc..
-        @epa_hash = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", params[:user_id]).group(:epa).order(:epa).count
+        @epa_hash = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", @user.id).group(:epa).order(:epa).count
       end
 
       @new_epas = hf_new_epa(@comp_new_data_clinical)
@@ -76,7 +76,7 @@ class NewCompetenciesController < ApplicationController
 
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
 
-     if @selected_user.permission_group_id >= 16 or @selected_user.permission_group_id == 11
+     if @selected_user.permission_group_id >= 16 or @selected_user.permission_group_id == 7 or @selected_user.permission_group_id = 11
        @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
        # if @all_blocks.first.second.empty?  # to check component 1 is empty
        #    @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')

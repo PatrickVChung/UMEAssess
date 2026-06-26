@@ -18,7 +18,7 @@ module Authentication
   end
 
   def require_authentication
-    puts "DEBUG: Checking auth. Current.user is: #{Cuauthrrent.user.inspect}"
+    puts "DEBUG: Checking auth. Current.user is: #{Current.user.inspect}"
     return if Current.user
     request_authentication
   end

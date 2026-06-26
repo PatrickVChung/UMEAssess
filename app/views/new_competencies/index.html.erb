@@ -1,4 +1,4 @@
-<% return unless !current_user.nil? %>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-auto bg-light sticky-top">
@@ -101,10 +101,27 @@
                 <%= render partial: "wba_graphs" %>
             </div>
               <div id="milestone" class="tab-pane fade" role="tabpanel"  aria-labelledby="milestone-tab">
-
                 <div class="card">
                   <div class="card-body">
-                    <%= high_chart("comp_graph_new", @chart_new) %>
+                    <% #@chart_new ||= hf_create_chart('New Competency', @comp_new_data_clinical, @comp_class_mean, @user.full_name) %>
+                    <% title = "New Competency - #{@user.full_name}"
+                       student_data_series = @comp_new_data_clinical.values
+                       class_mean_data_series = @comp_class_mean.values
+                       categories = @comp_class_mean.keys
+                       series_data = [{name: @user.full_name, data: student_data_series},
+                                      {name: 'Class Mean', data: class_mean_data_series}]
+
+                     %>
+                    <div data-controller="highcharts"
+                         data-highcharts-series-value="<%= series_data.to_json %>"
+                         data-highcharts-categories-value="<%= categories.to_json %>"
+                         data-highcharts-title-value="<%= title %>"
+                         data-highcharts-y-title-value="Percentage (%)"
+                         data-highcharts-chart-type-value="column"
+                         style="width:100%; height:400px;">
+                    </div>
+
+                    <%# = high_chart("comp_graph_new", @chart_new) %>
                   </div>
                 </div>
               </div>

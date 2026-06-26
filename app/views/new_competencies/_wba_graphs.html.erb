@@ -2,20 +2,62 @@
   <div class="column w-50 p-0">
     <div class="card">
         <div class="card-body">
-              <% wba_epa_graph = hf_wba_graph(@epa_hash, @user, "WBAs") %>
-              <%= high_chart("new_wba_epa_graph", wba_epa_graph) %>
+              <% title = "Workbased Assessment Datapoints - #{@user.full_name}" + "<br/>" +
+                         "Total # of WBAs: " + @epa_hash.values.sum.to_s + "<br />" +
+                         "<i style='color: tomato'>Requirement: At least 2 WBAs for each EPA </i>"
+                 student_data_series = @epa_hash.values
+                 categories = @epa_hash.keys
+                 yMax = @epa_hash.values.max
+                 series_data = [{name: 'EPA', data: student_data_series}]
+
+               %>
+              <div data-controller="highcharts"
+                   data-highcharts-series-value="<%= series_data.to_json %>"
+                   data-highcharts-categories-value="<%= categories.to_json %>"
+                   data-highcharts-title-value="<%= title %>"
+                   data-highcharts-y-title-value="No of WBAs"
+                   data-highcharts-y-max-value="<%= yMax %>"
+                   data-highcharts-y-tick-interval-value=5
+                   data-highcharts-chart-type-value="column"
+                   style="width:100%; height:400px;">
+              </div>
+
         </div>
     </div>
   </div>
   <div class="column w-50 p-0">
     <div class="card">
         <div class="card-body">
-              <% wba_clinical_by_involve_graph = hf_clinical_assessors_graph(@clinical_hash_by_involve, @user, @total_wba_count) %>
-              <% if wba_clinical_by_involve_graph.nil? %>
-                No WBA found!
-              <% else %>
-                <%= high_chart("wba_clinical_by_involve_graph", wba_clinical_by_involve_graph) %>
-              <% end %>
+
+              <%
+               wba = @clinical_hash_by_involve
+               names = wba.keys
+               data = wba.values.transpose
+              %>
+
+              <% title = "Workbased Assessment by Clinical Assessors - #{@user.full_name}" + "<br/>" +
+                         "Total # of WBAs: " + @total_wba_count.to_s + "<br />" +
+                         "Total # of WBAs for Attending Faculty: " + "<br />" +
+                         "<i style='color: tomato'>Requirement: At Least 51 Attendings</i>"
+                 categories = names
+                 series_data = [{ name: '1 - I did it', yAxis: 0, data: data[0] },
+                                { name: '2 - I talked them through it', yAxis: 0, data: data[1]},
+                                { name: '3 - I directed them from time to time', yAxis: 0, data: data[2] },
+                                { name: '<b>4 - I was available just in case</b>', yAxis: 0, data: data[3] }
+                              ]
+
+               %>
+
+              <div data-controller="highcharts"
+                   data-highcharts-series-value="<%= series_data.to_json %>"
+                   data-highcharts-categories-value="<%= categories.to_json %>"
+                   data-highcharts-title-value="<%= title %>"
+                   data-highcharts-y-title-value="No of WBAs"
+                   data-highcharts-y-max-value=50
+                   data-highcharts-y-tick-interval-value=5
+                   data-highcharts-chart-type-value="column"
+                   style="width:100%; height:400px;">
+              </div>
         </div>
     </div>
   </div>

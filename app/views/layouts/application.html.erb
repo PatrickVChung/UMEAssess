@@ -45,10 +45,10 @@
 
             <span class="nav-link text-light">Welcome, <%= Current.user.display_name %>!</span>
 
-            <% if Current.user.coaching_type == 'dean' %>
+            <% if ['dean', 'admin'].include?Current.user.coaching_type %>
               <%= form_with url: searches_path, method: :get, class: "d-flex me-3", local: true,
                     data: { turbo_frame: "results" } do |form| %>
-                <%= form.label :search, "Student/Cohort Search", class: "form-control" %>
+                <%= form.label :search, "Student/Cohort Search", class: "form-control text-primary fw-bold" %>
                 <%= form.text_field :search, class: "form-control form-control-sm me-2", placeholder: "Search Student LastName…" %>
               <% end %>
             <% end %>

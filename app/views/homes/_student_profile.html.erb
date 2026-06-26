@@ -133,7 +133,7 @@
 
                    <div style="display: flex; align-items: center; gap: 8px;">
                      <%= icon "female-doctor-with-a-circle-mark-svgrepo-com", width: 48, height: 48 %>
-                     <h6 style="margin: 0;">Clinical Datasets</h6>
+                     <%= link_to 'Clinical Datasets', new_competencies_path(uuid: @user.uuid), target: "_blank" %>
                    </div>
 
                    <%= icon "Stethoscope--Streamline-Core-Gradient", width: 24, height: 24 %>
