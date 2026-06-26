@@ -1,5 +1,5 @@
 class AdvisorsController < ApplicationController
-  before_action :set_advisor, :set_resources, only: [:show, :edit, :update, :destroy]
+  before_action :set_advisor, :set_resources, only: [ :show, :edit, :update, :destroy ]
   include AdvisorsHelper
 
   # advisors_controller.rb
@@ -46,7 +46,7 @@ class AdvisorsController < ApplicationController
 
     respond_to do |format|
       if @advisor.save
-        format.html { redirect_to @advisor, notice: 'Advisor was successfully created.' }
+        format.html { redirect_to @advisor, notice: "Advisor was successfully created." }
         format.json { render :show, status: :created, location: @advisor }
       else
         format.html { render :new }
@@ -60,7 +60,7 @@ class AdvisorsController < ApplicationController
   def update
     respond_to do |format|
       if @advisor.update(advisor_params)
-        format.html { redirect_to @advisor, notice: 'Advisor was successfully updated.' }
+        format.html { redirect_to @advisor, notice: "Advisor was successfully updated." }
         format.json { render :show, status: :ok, location: @advisor }
       else
         format.html { render :edit }
@@ -74,7 +74,7 @@ class AdvisorsController < ApplicationController
   def destroy
     @advisor.destroy
     respond_to do |format|
-      format.html { redirect_to advisors_url, notice: 'Advisor was successfully destroyed.' }
+      format.html { redirect_to advisors_url, notice: "Advisor was successfully destroyed." }
       format.json { head :no_content }
     end
   end

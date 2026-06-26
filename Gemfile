@@ -60,7 +60,7 @@ group :development do
   gem "web-console"
 end
 gem "net-ldap"
-gem "dotenv-rails", groups: [:development, :test]
+gem "dotenv-rails", groups: [ :development, :test ]
 #### Utilities
 gem "csv"
 gem "csv_hasher"

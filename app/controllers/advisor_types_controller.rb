@@ -1,7 +1,7 @@
 class AdvisorTypesController < ApplicationController
-# advisor_types_controller.rb
+  # advisor_types_controller.rb
   def meeting_advisors
-    @advisors = Advisor.where(advisor_type_id: params[:id]).where.not(name: 'Coach').order(:name)
+    @advisors = Advisor.where(advisor_type_id: params[:id]).where.not(name: "Coach").order(:name)
     render layout: false
   end
 
@@ -9,5 +9,6 @@ class AdvisorTypesController < ApplicationController
     @advisor_type = AdvisorType.find(params[:id])
     render layout: false
   end
+
 
 end
