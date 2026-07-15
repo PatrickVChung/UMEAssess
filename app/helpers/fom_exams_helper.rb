@@ -9,6 +9,16 @@ COMPONENT_DESC = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Qu
                   'comp5b_bss' => 'Component 5B: Basic Science Skills Assessment',
                   'summary_comp' => 'Summary Data'
                 }
+COMPONENT_DESC2 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
+                  'comp2a_hss' => 'Component 2A: Clinical/Health Systems Science Skills Assessments',
+                  'comp2b_bss' => 'Component 2B: Basic Science Skills Assessments',
+                  'comp3_final' => 'Component 3: Final Block Exam',
+                  'comp4_nbme' => 'Component 4: NBME Exam',
+                  'comp5a_hss' => 'Component 5A: Clinical/Health Systems Science Skills Assessments',
+                  'comp5b_bss' => 'Component 5B: Basic Science Skills Assessment',
+                  'comp6_mb'   => 'Component 6: Formative Mid-Block Assessment',
+                  'summary_comp' => 'Summary Data'
+                }
 COMPONENT_DESC_MED21 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
                   'comp2b_bss' => 'Component 2: Basic Science Skills Assessments',
                   'comp3_final' => 'Component 3: Final Block Exam',
@@ -68,6 +78,28 @@ LABELS3 = {
   "q7" => "Informatics Formative Feedback",
   "q8" => "Attachment File"
 }
+
+def hf_get_block_desc(in_code)
+  return BLOCKS[in_code]
+end
+
+def hf_component_desc(in_code)
+  if !COMPONENT_DESC[in_code].nil?
+    return COMPONENT_DESC[in_code]
+  end
+end
+
+def hf_component_desc2(in_code)
+  if !COMPONENT_DESC2[in_code].nil?
+    return COMPONENT_DESC2[in_code]
+  end
+end
+
+def hf_component_desc3(in_code)
+  if !COMPONENT_DESC_MED21[in_code].nil?
+    return COMPONENT_DESC_MED21[in_code]
+  end
+end
 
 def get_label (permission_group_id, course_code, component)
   label = FomLabel.find_by(permission_group_id: permission_group_id, course_code: course_code).labels
@@ -302,22 +334,6 @@ end
 
   end
 
-  def hf_get_block_desc(in_code)
-    return BLOCKS[in_code]
-  end
-
-  def hf_component_desc(in_code)
-    if !COMPONENT_DESC[in_code].nil?
-      return COMPONENT_DESC[in_code]
-    end
-  end
-
-  def hf_component_desc2(in_code)
-    if !COMPONENT_DESC_MED21[in_code].nil?
-      return COMPONENT_DESC_MED21[in_code]
-    end
-  end
-
   def hf_formative_feedback_labels(in_q, label_code)
     if label_code == '_qs1'
       label = LABELS[in_q]
@@ -475,16 +491,20 @@ end
     student_series = check_pass_fail(student_series)
     class_mean_series = check_pass_fail(class_mean_series)
 
-    height = 400
+    # height = 400
 
     if component == 'comp1_wk' and permission_group >= 20
       title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'
+    elsif permission_group >= 24
+      title =  hf_component_desc2(component) + '<br ><b>' + student_name + '</b>'
+    elsif permission_group < 20
+      title =  hf_component_desc3(component) + '<br ><b>' + student_name + '</b>'
     else
       title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
     end
 
-    series_data = [{name: 'Student', data: student_series},
-                   {name: 'Class Mean', data: class_mean_series}]
+    series_data = [{name: 'Student', color: "#7EFF5E", data: student_series },
+                   {name: 'Class Mean', color: "#6E92FF", data: class_mean_series }]
 
     return title, series_data, selected_categories
 

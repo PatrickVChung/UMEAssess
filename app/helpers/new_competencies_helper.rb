@@ -111,6 +111,58 @@ module NewCompetenciesHelper
      return NEW_COMP_ASSESSORS
    end
 
+   def get_color
+     return NEW_EPA_COLORS.values
+   end
+
+   def random_pastel_color
+    # Hue: 0 to 360 degrees (the full color spectrum)
+    hue = rand(0..360)
+    # Saturation: 60% to 70% (keeps it colorful but muted)
+    saturation = rand(60..70)
+    # Lightness: 75% to 85% (high lightness gives it that "pastel" look)
+    lightness = rand(75..85)
+
+    # Convert HSL to RGB to get the Hex string
+    # A neat trick in Rails to avoid writing math algorithms is using Color tools
+    # or a quick procedural conversion. Here is a standalone Ruby implementation:
+
+    h = hue / 360.0
+    s = saturation / 100.0
+    l = lightness / 100.0
+
+    q = l < 0.5 ? l * (1.0 + s) : l + s - l * s
+    p = 2.0 * l - q
+
+    rgb = [h + 1.0/3.0, h, h - 1.0/3.0].map do |v|
+      v += 1.0 if v < 0
+      v -= 1.0 if v > 1
+      if v < 1.0/6.0
+        p + (q - p) * 6.0 * v
+      elsif v < 1.0/2.0
+        q
+      elsif v < 2.0/3.0
+        p + (q - p) * (2.0/3.0 - v) * 6.0
+      else
+        p
+      end
+    end
+
+    # Convert decimal to 2-digit Hex format
+    "#" + rgb.map { |c| (c * 255).round.to_s(16).rjust(2, '0') }.join.upcase
+  end
+
+   def hf_assign_colors(data_series)
+     color_hash = {}
+     new_series = []
+
+     data_series.each do |score|
+       color_hash = {y: score, color: random_pastel_color}
+       new_series.push color_hash
+     end
+     return new_series
+   end
+
    def hf_collect_comp_data(comp)
      comp_data = {}
      NEW_COMP_CODES.each do |code|

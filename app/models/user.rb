@@ -18,6 +18,11 @@ class User < ApplicationRecord
   has_many :competencies, dependent: :destroy, inverse_of: :user
   has_many :new_competencies, dependent: :destroy, inverse_of: :user
 
+  has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  has_one :med24_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  has_one :med26_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  has_one :med27_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  
   has_many :preceptor_evals, dependent: :destroy
   has_many :preceptor_assesses, dependent: :destroy
 

@@ -158,8 +158,6 @@ class EpaReviewsController < ApplicationController
               new_comments = epa_review.general_comments2.to_s + "\n" + value
               epa_review.update!(general_comments2: value)
 
-              byebug
-
           end
         end
 

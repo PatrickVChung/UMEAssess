@@ -4,11 +4,17 @@ class FomExam < ApplicationRecord
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
+  PREFIX_KEYS_NEW = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'comp6_mb', 'summary_comp']
+
   PREFIX_KEYS_MED21 = ['comp1_wk', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss','comp5b_bss', 'summary_comp']
 
 
   def self.comp_keys
     return PREFIX_KEYS
+  end
+
+  def self.comp_keys_new
+    return PREFIX_KEYS_NEW
   end
 
   def self.comp_keys_med21
@@ -90,11 +96,11 @@ class FomExam < ApplicationRecord
         end
       end
     end
-    attachment = ActiveStorage::Attachment.find(attachment_id)
-    filename = attachment.blob.filename.to_s
-    if !filename.include? 'processed'
-      attachment.blob.update!(filename: rename_file(filename))
-    end
+    # attachment = ActiveStorage::Attachment.find(attachment_id)
+    # filename = attachment.blob.filename.to_s
+    # if !filename.include? 'processed'
+    #   attachment.blob.update!(filename: rename_file(filename))
+    # end
     row_to_hash = {}
     row_to_hash.store("no_updated", no_updated)
     row_to_hash.store("no_not_updated", no_not_updated)
@@ -102,6 +108,61 @@ class FomExam < ApplicationRecord
     log_results.push row_to_hash
 
     return log_results
+  end
+
+  def self.update_mid_block(attachment_id, artifact_content)
+    log_results = []
+    row_to_hash = {}
+    no_updated = 0
+    no_not_updated = 0
+    total_count = 0
+
+    course_code = artifact_content.split(" ").first
+    puts "course_code: " + course_code
+    Rails.logger.debug {"course_code: #{course_code}"}
+
+    attachment = ActiveStorage::Attachment.find(attachment_id)
+    attachment.open do |temp_file|
+      CSV.foreach(temp_file.path, headers: true, col_sep: "\t") do |row|
+        yes_updated = true
+        total_count += 1
+        if !row["Student ID"].nil?
+          sid = row["Student ID"]
+          if !sid.include?"U0"
+            sid = "U00#{row["Student ID"]}"
+          end
+
+          yes_updated = FomExam.joins(:user)
+                 .where(users: { sid: sid })
+                 .where("fom_exams.permission_group_id = users.permission_group_id")
+                 .where(course_code: course_code)
+                 .update(comp6_mb: row["Score"])
+
+          if yes_updated
+            row_to_hash.store("status", " --> Updated")
+            no_updated += 1
+            log_results.push "Created or Updated ==> #{row["LastName"]}, #{row["FirstName"]}"
+          else
+            row_to_hash.store("status", " --> NOT Updated")
+            no_not_updated += 1
+            log_results.push "*** Not Created or Updated ==> #{row["LastName"]}, #{row["FirstName"]}"
+          end
+        end
+      end
+    end
+
+    # CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t") do |row|
+    #
+    # end
+
+    row_to_hash = {}
+    row_to_hash.store("no_updated", no_updated)
+    row_to_hash.store("no_not_updated", no_not_updated)
+    row_to_hash.store("total_count", total_count)
+    log_results.push row_to_hash
+
+    return log_results
+
   end
 
   def self.execute_sql(*sql_array)
@@ -160,7 +221,7 @@ class FomExam < ApplicationRecord
 
   sql = sql.delete_suffix(", ")
   #  sql += 'course_end_date'  ## This fieldname is NOT in label file.
-
+    table_name_prefix = table_name_prefix.to_s
     results = FomExam.execute_sql(sql + " from " + table_name_prefix + "fom_exams, users " +
       "where users.id = " + table_name_prefix + "fom_exams.user_id and " +
       table_name_prefix + "fom_exams.user_id = ? and " +
@@ -187,6 +248,19 @@ class FomExam < ApplicationRecord
 
     return results, results_avg,  row_to_hash
 
+  end
+
+  def self.get_comp1f(user_id, permission_group_id, course_code, block_enabled, table_name_prefix)
+
+    if permission_group_id < 24
+      return {}, {}
+    else
+      comp6_mb= FomExam.where(user_id: user_id, permission_group_id: permission_group_id, course_code: course_code).first.comp6_mb
+      comp1f_avg = FomExam.where(permission_group_id: permission_group_id, course_code: course_code).average(:comp6_mb)
+      comp1f_exam = { "comp6_mb" => comp6_mb }
+      comp1f_avg_exam = { "avg_comp6_mb" => comp1f_avg }
+    end
+    return comp1f_exam, comp1f_avg_exam
   end
 
   def self.get_attachment_by_filename(user_id)

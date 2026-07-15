@@ -31,6 +31,7 @@ class SearchesController < ApplicationController
     elsif params[:search].include? "Med"
       @parameter = "%" + params[:search] + "%"
       permission_group = PermissionGroup.where("title like ?", @parameter)
+
       if !permission_group.empty?
         #joins_query = "inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like " + "#{@parameter}" + " order by users.full_name"
         @users = User.where(permission_group_id: permission_group.first.id ).order(:full_name)

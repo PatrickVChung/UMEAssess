@@ -40,7 +40,7 @@ class MeetingsController < ApplicationController
         @student = User.find_by(id: params[:user_id])
 
       else
-        byebug
+        
       end
 
       @meeting = Meeting.new

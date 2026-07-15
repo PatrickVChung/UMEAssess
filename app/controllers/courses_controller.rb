@@ -124,7 +124,7 @@ class CoursesController < ApplicationController
 
   def contact_form
     if params[:message].present?
-      ActionMailer::Base.mail(from: params[:from], to: params[:to], subject: params[:subject], body: params[:message].html_safe, content_type: 'text/html').deliver_later
+      CourseMailer.contact_form(params[:from], params[:to], params[:subject], params[:message]).deliver_later
       flash[:send_alert] = "Your email was sent!"
     end
   end

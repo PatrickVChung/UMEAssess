@@ -5,12 +5,22 @@
     <div data-controller="datatable">
       <table data-datatable-target="table" class="table table-striped">
         <thead>
+          <th>Action</th>
           <% @eg_cohorts.first.keys.each do |header| %>
             <th><%= header.titleize %></th>
           <% end %>
         </thead>
         <% @eg_cohorts.each do |data| %>
           <tr>
+            <td>
+              <%= button_to delete_cohort_fix_eg_members_path(eg_cohort_email: data["email"]),
+                            method: :delete,
+                            form: { data: { turbo_confirm: 'Are you sure?' } },
+                            class: 'delete_review fa fa-trash' do %>
+                -Delete
+              <% end %>
+            </td>
+
             <% data.each do |key, val| %>
               <td> <%= val %> </td>
             <% end %>

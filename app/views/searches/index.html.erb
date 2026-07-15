@@ -10,8 +10,8 @@
     <% event_schedules = hf_get_events_email(user_email) %>
     <%= render "homes/student_profile", welcome_msg: "Student: #{@user.display_name}", user: @user, event_schedules: event_schedules %>
   <% elsif @users.count == 1  %>
-    <% event_schedules = hf_get_events_email(@users.first.email) %>  
-    <%= render "homes/student_profile", welcome_msg: "Student: #{@users.first.display_name}", user: @users.first %>
+    <% event_schedules = hf_get_events_email(@users.first.email) %>
+    <%= render "homes/student_profile", welcome_msg: "Student: #{@users.first.display_name}", user: @users.first, event_schedules: event_schedules%>
   <% else %>
       <%= render "results", users: @users %>
   <% end %>

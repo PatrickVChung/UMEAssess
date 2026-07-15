@@ -61,11 +61,17 @@
             <% end %>
 
             <% if current_user.can_process_fom? and current_user.coaching_type != 'student'%>
-              <% if artifact.content.to_s.include? "Excel"  %>
-                <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank  %>
-              <% elsif artifact.content == "FoM Tab Delimited File"   %>
-                / <%= link_to 'Process FoM File', process_csv_fom_exams_path(attach_id: artifact.documents.first), class: 'text-danger' %>
-              <% end %>
+            <% if artifact.content.to_s.include? "Excel" %>
+              <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank %>
+            <% elsif artifact.content == "FoM (Tab Deilimited File)" %>
+              / <%= link_to 'Process FoM File', process_csv_fom_exams_path(attach_id: artifact.documents.first),
+                            class: 'text-danger',
+                            data: { turbo_frame: "_top" } %>
+            <% elsif artifact.content.include?("Mid-Block") %>
+              / <%= link_to 'Process Mid-Block File', process_mid_block_fom_exams_path(attach_id: artifact.documents.first, artifact_content: artifact.content),
+                            class: 'text-danger',
+                            data: { turbo_frame: "_top" } %>
+            <% end %>
             <% end %>
 
           </td>

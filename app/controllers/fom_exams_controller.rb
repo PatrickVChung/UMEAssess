@@ -55,6 +55,10 @@ class FomExamsController < ApplicationController
 
   end
 
+  def process_mid_block
+    @log_results = FomExam.update_mid_block(params[:attach_id], params[:artifact_content])
+  end
+
   def send_alerts
 
     if params[:uniq_cohort].present?
@@ -157,10 +161,14 @@ class FomExamsController < ApplicationController
        elsif @cohort <= 'med21'
          table_name_prefix = 'med21'+ "_"
           @comp_keys = FomExam.comp_keys_med21
+        elsif @cohort >=  'med30'
+             tabole_name_prefix = ""
+             @comp_keys = FomExam.comp_keys_new
        else
          table_name_prefix = ""
           @comp_keys = FomExam.comp_keys
        end
+
        @student_email = student.email
        @student_full_name = student.full_name
        @student_perm_group = student.permission_group_id
@@ -171,10 +179,22 @@ class FomExamsController < ApplicationController
        if ['dean', 'admin'].include? Current.user.coaching_type
          block_enabled = true ## always visible
          @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+         if permission_group_id >= 24 #Med20
+           @comp1f_exam, @comp1f_avg_exam = FomExam.get_comp1f(student.id, permission_group_id, @course_code, block_enabled, table_name_prefix)
+           @comp_exams = [].push @comp_exams.first.merge @comp1f_exam
+           @comp_avg_exams = [].push @comp_avg_exams.first.merge @comp1f_avg_exam
+         end
+
        elsif Current.user.coaching_type == 'student'
          block_enabled = FomLabel.find_by(course_code: @course_code, permission_group_id: permission_group_id).block_enabled
          if block_enabled
            @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+           if permission_group_id >= 24 #Med20
+             @comp1f_exam, @comp1f_avg_exam = FomExam.get_comp1f(student.id, permission_group_id, @course_code, block_enabled, table_name_prefix)
+             @comp_exams = [].push @comp_exams.first.merge @comp1f_exam
+             @comp_avg_exams = [].push @comp_avg_exams.first.merge @comp1f_avg_exam
+           end
+
          else
            @comp_exams = nil
          end

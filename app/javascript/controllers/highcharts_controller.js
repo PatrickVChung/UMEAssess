@@ -9,37 +9,13 @@ export default class extends Controller {
     chartType: { type: String, default: 'column' },
     yMax: { type: Number, default: 100 },
     yTickInterval: { type: Number, default: 20 },
-    yTitle: { type: String, default: 'Score (%)' }
+    yTitle: { type: String, default: 'Score (%)' },
+    colorByPoint: { type: Boolean, default: false }
   }
 
   connect() {
     const isPie = this.chartTypeValue === 'pie'
     const isColumn = this.chartTypeValue === 'column'
-
-    const baseColors = [
-      '#7cb5ec', '#f7a35c', '#90ee7e', '#7798BF',
-      '#aaeeee', '#ff0066', '#eeaaee', '#55BF3B',
-      '#DF5353', '#000080'
-    ]
-
-    // Fix 1: Properly utilize the randomized array
-    const randomizedColors = [...baseColors].sort(() => 0.5 - Math.random())
-
-    // Fix 2: Explicitly inject colors into each series object for multi-series column charts
-    // Color every single individual data point point-by-point
-    let colorIndex = 0
-    const processedSeries = this.seriesValue.map((seriesObj) => {
-      if (isColumn && seriesObj.data) {
-        const coloredData = seriesObj.data.map((value) => {
-          const color = randomizedColors[colorIndex % randomizedColors.length]
-          colorIndex++ // Move to next color for the next bar
-          return { y: value, color: color }
-        })
-        return { ...seriesObj, data: coloredData }
-      }
-      return seriesObj
-    })
-
 
     const options = {
       accessibility: { enabled: false },
@@ -50,9 +26,7 @@ export default class extends Controller {
               }
              },
 
-      // Fix 3: Use the newly processed series array
-      series: processedSeries,
-      colors: randomizedColors,
+      series: this.seriesValue, 
 
       xAxis: isPie ? {} : {
         categories: this.categoriesValue,
@@ -79,7 +53,7 @@ export default class extends Controller {
               overflow: 'none'
           },
           // Keep this true if you ever switch to a single series with multiple points
-          colorByPoint: true
+          colorByPoint: this.colorByPointValue
         },
         pie: {
           allowPointSelect: true,

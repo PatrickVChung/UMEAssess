@@ -77,3 +77,4 @@ group :production do
 end
 
 gem "rails_icons", "~> 1.8"
+gem "foreman"
