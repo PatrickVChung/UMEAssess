@@ -178,3 +178,25 @@ grid-container {
 .custom-grid-color {
   --bs-table-border-color: #A0C5D5; /* Your custom color */
 }
+
+.progress {
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+.gradient-red-to-green {
+  background-image: linear-gradient(
+    to right,
+    #ff4d4d 0%,
+    #ffa000 50%,
+    #4cd964 100%
+  );
+  /* The gradient stays 100% of the parent width, regardless of inner bar width */
+  background-size: 100cqw 100%;
+  background-repeat: no-repeat;
+  transition: width 0.4s ease;
+}
+
+.opaque-image {
+  opacity: 0.25;
+}

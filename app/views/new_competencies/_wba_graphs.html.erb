@@ -5,9 +5,10 @@
               <% title = "Workbased Assessment Datapoints - #{@user.full_name}" + "<br/>" +
                          "Total # of WBAs: " + @epa_hash.values.sum.to_s + "<br />" +
                          "<i style='color: tomato'>Requirement: At least 2 WBAs for each EPA </i>"
-                 student_data_series = @epa_hash.values
+                 # student_data_series = @epa_hash.values
                  categories = @epa_hash.keys
                  yMax = @epa_hash.values.max
+                 student_data_series = hf_assign_colors(@epa_hash.values)
                  series_data = [{name: 'EPA', data: student_data_series}]
 
                %>
@@ -62,7 +63,8 @@
     </div>
   </div>
 </div>
-<table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true" ">
+<div data-controller="datatable">
+  <table data-datatable-target="table" id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true">
     <thead>
       <tr class="filters">
         <th>EPA</th>
@@ -93,4 +95,5 @@
         </tr>
       <% end %>
     <% end %>
-</table>
+  </table>
+</div>

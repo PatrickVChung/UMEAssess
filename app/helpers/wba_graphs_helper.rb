@@ -1,5 +1,5 @@
 module WbaGraphsHelper
-  # 
+  #
   # include LsReports::CompetencyHelper
   # include LsReports::ClinicalphaseHelper
   # include LsReports::SpreadsheetHelper
@@ -71,19 +71,20 @@ module WbaGraphsHelper
   end
 
   def surveygrps(permission_group_id)
-    surveys =  PermissionLsGroup.where(permission_group_id: permission_group_id).order(:updated_at)
+    # disable all limesuvey data sets.
     temp_surveys = []
-    surveys.each do |survey|
-      if survey.lime_survey.title.include? "Core Clinical/Electives/Intersessions"
-        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
-      elsif survey.lime_survey.title.include? "Preceptorship"
-        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
-      elsif survey.lime_survey.title.include? "CSL Narrative Assessment"
-        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
-      elsif survey.lime_survey.title.include? "All Blocks"
-        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
-      end
-    end
+    # surveys =  PermissionLsGroup.where(permission_group_id: permission_group_id).order(:updated_at)
+    # surveys.each do |survey|
+    #   if survey.lime_survey.title.include? "Core Clinical/Electives/Intersessions"
+    #     temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+    #   elsif survey.lime_survey.title.include? "Preceptorship"
+    #     temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+    #   elsif survey.lime_survey.title.include? "CSL Narrative Assessment"
+    #     temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+    #   elsif survey.lime_survey.title.include? "All Blocks"
+    #     temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+    #   end
+    # end
     return temp_surveys
     #LimeSurveysLanguagesetting.where(surveyls_survey_id: survey.lime_survey_sid).first
   end

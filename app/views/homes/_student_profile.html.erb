@@ -87,7 +87,7 @@
                    <% end %>
                 <% else %>
                     <span class="text-secondary">BLS ExpDate</span>
-                    <span class="fw-bold" style="color:red"><b>No BLS Data</b>/span>
+                    <span class="fw-bold" style="color:red"><b>No BLS Data</b></span>
                 <% end %>
                 </li>
 
@@ -133,7 +133,11 @@
 
                    <div style="display: flex; align-items: center; gap: 8px;">
                      <%= icon "female-doctor-with-a-circle-mark-svgrepo-com", width: 48, height: 48 %>
-                     <%= link_to 'Clinical Datasets', new_competencies_path(uuid: user.uuid), target: "_blank" %>
+                     <% if user.permission_group_id < 20 %>
+                      <%= link_to 'Clinical Datasets', competencies_path(uuid: user.uuid), target: "_blank" %>
+                    <% else %>
+                      <%= link_to 'Clinical Datasets', new_competencies_path(uuid: user.uuid), target: "_blank" %>
+                    <% end %>
                    </div>
 
                    <%= icon "Stethoscope--Streamline-Core-Gradient", width: 24, height: 24 %>

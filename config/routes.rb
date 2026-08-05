@@ -93,6 +93,9 @@ Rails.application.routes.draw do
     end
   end
   resources :users do
+    resources :competencies, param: :user_id, only: [:index, :new]
+    resources :overall_progresses, param: :user_id, only: [:index]
+    resources :new_competencies, param: :user_id, only: [:index, :new]    
     collection do
         get "update_loa", action: :update_loa, to: "users#update_loa#"
         get "save_update_loa", action: :save_update_loa, to: "users#save_update_loa"
@@ -115,7 +118,7 @@ Rails.application.routes.draw do
       get  :reviewer_update
       get  :eg_assignment
       get  :download_file
-      delete  :delete_cohort      
+      delete  :delete_cohort
     end
   end
 
@@ -155,7 +158,7 @@ Rails.application.routes.draw do
   end
 
   resources :badging_dates
-
+  resources :competencies, only: [:index, :new, :create, :destroy]
   resources :new_competencies do
     collection  do
       get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'

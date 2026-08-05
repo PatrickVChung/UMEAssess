@@ -395,6 +395,23 @@ end
     return new_series
   end
 
+  def check_pass_fail2(data_series)
+    fail_hash = {}
+    new_series = []
+    data_series.each do |score|
+      if (score < 70 and score != 0.0)
+        fail_hash = {y: score, color: "#FF0000"}
+        new_series.push fail_hash
+      elsif score == 0.0
+        fail_hash = {y: nil}
+        new_series.push fail_hash
+      else
+        new_series.push score
+      end
+    end
+    return new_series
+  end
+
   def hf_check_label_file(attachment_id)
     filename = ActiveStorage::Attachment.find(attachment_id).filename.to_s
     if filename.downcase.include? 'label'
@@ -489,9 +506,7 @@ end
     end
 
     student_series = check_pass_fail(student_series)
-    class_mean_series = check_pass_fail(class_mean_series)
-
-    # height = 400
+    class_mean_series = check_pass_fail2(class_mean_series)
 
     if component == 'comp1_wk' and permission_group >= 20
       title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'
@@ -507,63 +522,5 @@ end
                    {name: 'Class Mean', color: "#6E92FF", data: class_mean_series }]
 
     return title, series_data, selected_categories
-
-    # chart = LazyHighCharts::HighChart.new('graph') do |f|
-    #   f.title(text: title)
-    #   #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
-    #   f.xAxis(categories: selected_categories,
-    #     labels: {
-    #           style:  {
-    #                       fontWeight: 'bold',
-    #                       color: '#000000',
-    #                       fontSize: '13px'
-    #                   }
-    #             }
-    #   )
-    #   f.series(name: "Student", yAxis: 0, data: student_series)
-    #   f.series(name: "Class Mean", yAxis: 0, data: class_mean_series)
-    #
-    #   # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-    #   f.colors(["#7EFF5E", "#6E92FF"])
-    #   f.yAxis [
-    #      { tickInterval: 20,
-    #        title: {text: "Score (%)", margin: 20,
-    #           style:  {
-    #                    fontWeight: 'bold',
-    #                    color: '#000000',
-    #                    fontSize: '13px'
-    #                  }
-    #        }
-    #      }
-    #   ]
-    #   f.plot_options(
-    #     column: {
-    #         dataLabels: {
-    #             enabled: true,
-    #             crop: false,
-    #             overflow: 'none'
-    #         }
-    #     },
-    #     series: {
-    #       cursor: 'pointer'
-    #     }
-    #   )
-    #   f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
-    #   #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
-    #   f.chart({
-    #             defaultSeriesType: "column",
-    #             #width: 1100, height: height,
-    #             plotBorderWidth: 0,
-    #             borderWidth: 0,
-    #             plotShadow: false,
-    #             borderColor: '',
-    #             minPadding: 0,
-    #             maxPadding: 0,
-    #             plotBackgroundImage: ''
-    #           })
-    # end
-    #
-    # return chart
   end
-
 end

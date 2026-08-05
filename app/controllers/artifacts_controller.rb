@@ -58,7 +58,7 @@ class ArtifactsController < ApplicationController
   # PATCH/PUT /artifacts/1
   def update
     if @artifact.update(artifact_params)
-      redirect_to @artifact, notice: 'Artifact was successfully updated.'
+      redirect_to @artifact, notice: "Artifact was successfully updated."
     else
       render :edit
     end
@@ -68,7 +68,7 @@ class ArtifactsController < ApplicationController
   def destroy
     @artifact = Artifact.find(params[:id])
     @artifact.destroy!
-    redirect_to artifacts_url, notice: 'Artifact was successfully destroyed.'
+    redirect_to artifacts_url, notice: "Artifact was successfully destroyed."
   end
 
   def delete_document
@@ -94,22 +94,22 @@ class ArtifactsController < ApplicationController
 
   def process_preceptor_eval
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_upload_data(@artifact, 'PreceptorEval')
+    @log_results = Artifact.process_upload_data(@artifact, "PreceptorEval")
   end
 
   def process_formative_feedback
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_upload_data(@artifact, 'FormativeFeedback')
+    @log_results = Artifact.process_upload_data(@artifact, "FormativeFeedback")
   end
 
   def process_informatics_feedback
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_upload_data(@artifact, 'InformaticsFeedback')
+    @log_results = Artifact.process_upload_data(@artifact, "InformaticsFeedback")
   end
 
   def process_usmle_exam
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_upload_data(@artifact, 'UsmleExam')
+    @log_results = Artifact.process_upload_data(@artifact, "UsmleExam")
   end
 
   def process_comp_excel
@@ -173,7 +173,7 @@ class ArtifactsController < ApplicationController
 
   def purge_all_documents
     if params[:content].present?
-      file_path = Rails.root.join('public', "FoM_#{params[:content]}_#{params[:file_type]}.txt")
+      file_path = Rails.root.join("public", "FoM_#{params[:content]}_#{params[:file_type]}.txt")
       CSV.foreach(file_path, col_sep: "\t", headers: true) do |row|
         artifact_id = row["artifact_id"]
         user_id = row["user_id"]
