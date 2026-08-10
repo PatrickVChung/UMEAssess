@@ -16,7 +16,7 @@ pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 # --- THE FIXES START HERE ---
 
 # 1. Dynamically detect the environment (defaults to development)
-rails_env = ENV.fetch("RAILS_ENV") { "development" }
+rails_env = ENV.fetch("RAILS_ENV") { "staging" }
 environment rails_env
 
 app_dir = File.expand_path("..", __dir__)

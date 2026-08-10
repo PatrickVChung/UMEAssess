@@ -1,0 +1,74 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: patrick
+  password: redei
+  host: localhost
+  port: 5432
+
+development:
+  primary:
+    <<: *default
+    database: ume_assess_development
+
+production:
+  primary: &production_default
+    adapter: postgresql
+    database: redeisom_staging2 
+    host: redei.ohsu.edu
+    username: redeisomadmin
+    password: <%= Rails.application.credentials.staging2_dbpwd %>
+    pool: 20
+    reconnect: false
+    reaping_frequency: 120
+    connect_timeout: 5
+    read_timeout: 5
+    schema_search_path: 'public,target,transform,source'
+
+staging:
+  primary:
+    adapter: postgresql
+    database: redeisom_staging2 
+    host: redei.ohsu.edu
+    username: redeisomadmin
+    password: <%= Rails.application.credentials.staging2_dbpwd %>
+    pool: 20
+    reconnect: false
+    reaping_frequency: 120
+    connect_timeout: 5
+    read_timeout: 5
+    schema_search_path: 'public,target,transform,source'
+
+  cable:
+    adapter: postgresql
+    database: redeisom_staging2 
+    host: redei.ohsu.edu
+    username: redeisomadmin
+    password: <%= Rails.application.credentials.staging2_dbpwd %>
+    pool: 20
+
+  queue:
+    adapter: postgresql
+    database: redeisom_staging2 
+    host: redei.ohsu.edu
+    username: redeisomadmin
+    password: <%= Rails.application.credentials.staging2_dbpwd %>
+    pool: 20
+
+  cache:
+    adapter: postgresql
+    database: redeisom_staging2 
+    host: redei.ohsu.edu
+    username: redeisomadmin
+    password: <%= Rails.application.credentials.staging2_dbpwd %>
+    pool: 20
+
+  cable:
+    <<: *production_default
+
+  queue:
+    <<: *production_default
+
+  cache:
+    <<: *production_default
