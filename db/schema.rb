@@ -11,11 +11,15 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
+  create_schema "source"
+  create_schema "target"
+  create_schema "transform"
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "active_storage_attachments", force: :cascade do |t|
+  create_table "public.active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.string "name", null: false
@@ -25,7 +29,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", force: :cascade do |t|
+  create_table "public.active_storage_blobs", force: :cascade do |t|
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.string "content_type"
@@ -37,20 +41,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", force: :cascade do |t|
+  create_table "public.active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "advisor_types", force: :cascade do |t|
+  create_table "public.advisor_types", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_advisor_types_on_name", unique: true
   end
 
-  create_table "advisors", force: :cascade do |t|
+  create_table "public.advisors", force: :cascade do |t|
     t.string "advisor_type"
     t.integer "advisor_type_id"
     t.text "brief_cv"
@@ -65,7 +69,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["advisor_type_id"], name: "index_advisors_on_advisor_type_id"
   end
 
-  create_table "artifacts", force: :cascade do |t|
+  create_table "public.artifacts", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", precision: nil, null: false
     t.string "title"
@@ -74,7 +78,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_artifacts_on_user_id"
   end
 
-  create_table "badging_dates", force: :cascade do |t|
+  create_table "public.badging_dates", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "last_review_end_date"
     t.date "next_review_end_date"
@@ -83,13 +87,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "categories", force: :cascade do |t|
+  create_table "public.categories", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
   end
 
-  create_table "chart_series", id: :serial, force: :cascade do |t|
+  create_table "public.chart_series", id: :serial, force: :cascade do |t|
     t.text "category_filter"
     t.integer "chart_id"
     t.datetime "created_at", precision: nil
@@ -101,7 +105,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["chart_id"], name: "index_chart_series_on_chart_id"
   end
 
-  create_table "charts", id: :serial, force: :cascade do |t|
+  create_table "public.charts", id: :serial, force: :cascade do |t|
     t.text "aggregator_type"
     t.text "chart_type"
     t.text "cols"
@@ -114,7 +118,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_charts_on_user_id"
   end
 
-  create_table "cohorts", id: :serial, force: :cascade do |t|
+  create_table "public.cohorts", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.integer "permission_group_id"
     t.string "title"
@@ -124,7 +128,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_cohorts_on_user_id"
   end
 
-  create_table "competencies", force: :cascade do |t|
+  create_table "public.competencies", force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -194,7 +198,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_competencies_on_user_id"
   end
 
-  create_table "content_slugs", id: :serial, force: :cascade do |t|
+  create_table "public.content_slugs", id: :serial, force: :cascade do |t|
     t.text "content"
     t.boolean "public"
     t.boolean "resizeable", default: true
@@ -203,7 +207,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.integer "user_id"
   end
 
-  create_table "course_schedules", force: :cascade do |t|
+  create_table "public.course_schedules", force: :cascade do |t|
     t.string "block"
     t.string "comment"
     t.bigint "course_id"
@@ -216,7 +220,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["course_id"], name: "index_course_schedules_on_course_id"
   end
 
-  create_table "courses", force: :cascade do |t|
+  create_table "public.courses", force: :cascade do |t|
     t.string "admin_notes"
     t.boolean "available_through_the_lottery"
     t.text "competencies", default: [], array: true
@@ -252,7 +256,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["course_type", "course_number"], name: "index_courses_on_course_type_and_course_number"
   end
 
-  create_table "cpxes", force: :cascade do |t|
+  create_table "public.cpxes", force: :cascade do |t|
     t.json "cpx_data"
     t.string "email"
     t.string "full_name"
@@ -261,7 +265,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_cpxes_on_user_id"
   end
 
-  create_table "csl_evals", force: :cascade do |t|
+  create_table "public.csl_evals", force: :cascade do |t|
     t.integer "c1"
     t.integer "c2"
     t.integer "c3"
@@ -283,7 +287,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_csl_evals_on_user_id"
   end
 
-  create_table "csl_feedbacks", force: :cascade do |t|
+  create_table "public.csl_feedbacks", force: :cascade do |t|
     t.string "c1"
     t.string "c1_feedback"
     t.string "c2"
@@ -303,7 +307,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_csl_feedbacks_on_user_id"
   end
 
-  create_table "dashboard_widgets", id: :serial, force: :cascade do |t|
+  create_table "public.dashboard_widgets", id: :serial, force: :cascade do |t|
     t.integer "dashboard_id"
     t.integer "position"
     t.boolean "resizeable", default: true
@@ -314,17 +318,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.text "widget_type"
   end
 
-  create_table "dashboards", id: :serial, force: :cascade do |t|
+  create_table "public.dashboards", id: :serial, force: :cascade do |t|
     t.text "theme"
     t.integer "user_id"
     t.index ["user_id"], name: "index_dashboards_on_user_id"
   end
 
-  create_table "data_migrations", id: :serial, force: :cascade do |t|
+  create_table "public.data_migrations", id: :serial, force: :cascade do |t|
     t.text "version", null: false
   end
 
-  create_table "eg_cohorts", force: :cascade do |t|
+  create_table "public.eg_cohorts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "eg_email1"
     t.string "eg_email2"
@@ -337,7 +341,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_eg_cohorts_on_user_id"
   end
 
-  create_table "eg_members", force: :cascade do |t|
+  create_table "public.eg_members", force: :cascade do |t|
     t.boolean "active"
     t.datetime "created_at", null: false
     t.string "eg_type"
@@ -346,13 +350,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "eg_reasons", force: :cascade do |t|
+  create_table "public.eg_reasons", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.string "reason"
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "epa_masters", force: :cascade do |t|
+  create_table "public.epa_masters", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.string "epa"
     t.datetime "expiration_date", precision: nil
@@ -364,7 +368,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_epa_masters_on_user_id"
   end
 
-  create_table "epa_reviews", force: :cascade do |t|
+  create_table "public.epa_reviews", force: :cascade do |t|
     t.string "badge_decision1"
     t.string "badge_decision2"
     t.datetime "created_at", precision: nil, null: false
@@ -390,7 +394,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["reviewable_type", "reviewable_id"], name: "index_epa_reviews_on_reviewable_type_and_reviewable_id"
   end
 
-  create_table "epas", force: :cascade do |t|
+  create_table "public.epas", force: :cascade do |t|
     t.string "assessor_email"
     t.string "assessor_name"
     t.boolean "attending_faculty"
@@ -417,7 +421,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_epas_on_user_id"
   end
 
-  create_table "events", force: :cascade do |t|
+  create_table "public.events", force: :cascade do |t|
     t.integer "advisor_id"
     t.datetime "created_at", precision: nil, null: false
     t.text "description"
@@ -430,7 +434,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id", "id"], name: "index_events_on_user_id_and_id"
   end
 
-  create_table "fileupload_settings", force: :cascade do |t|
+  create_table "public.fileupload_settings", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
     t.integer "permission_group_id"
@@ -439,7 +443,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["permission_group_id", "code"], name: "index_fileupload_settings_on_permission_group_id_and_code", unique: true
   end
 
-  create_table "fom_exams", force: :cascade do |t|
+  create_table "public.fom_exams", force: :cascade do |t|
     t.string "comp1_dropped_quiz"
     t.decimal "comp1_dropped_score"
     t.decimal "comp1_wk1"
@@ -523,7 +527,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_fom_exams_on_user_id"
   end
 
-  create_table "fom_labels", force: :cascade do |t|
+  create_table "public.fom_labels", force: :cascade do |t|
     t.boolean "block_enabled"
     t.string "course_code"
     t.json "labels"
@@ -531,7 +535,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["permission_group_id", "course_code"], name: "by_permission_group_course_code", unique: true
   end
 
-  create_table "fom_remeds", force: :cascade do |t|
+  create_table "public.fom_remeds", force: :cascade do |t|
     t.string "acad_probation"
     t.string "areas_of_deficiency"
     t.string "block"
@@ -549,7 +553,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_fom_remeds_on_user_id"
   end
 
-  create_table "formative_feedbacks", force: :cascade do |t|
+  create_table "public.formative_feedbacks", force: :cascade do |t|
     t.string "block_code"
     t.datetime "created_at", null: false
     t.string "csa_code"
@@ -569,7 +573,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_formative_feedbacks_on_user_id"
   end
 
-  create_table "goals", id: :serial, force: :cascade do |t|
+  create_table "public.goals", id: :serial, force: :cascade do |t|
     t.string "competency_tag"
     t.datetime "created_at", precision: nil, null: false
     t.text "description"
@@ -581,21 +585,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
-  create_table "ipe_courses", primary_key: "course_id", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.ipe_courses", primary_key: "course_id", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "course_code", limit: 20, null: false
     t.string "course_name", limit: 100
 
     t.unique_constraint ["course_code"], name: "ipe_courses_course_code"
   end
 
-  create_table "lime_answer_l10ns", id: :serial, force: :cascade do |t|
+  create_table "public.lime_answer_l10ns", id: :serial, force: :cascade do |t|
     t.integer "aid", null: false
     t.text "answer", null: false
     t.string "language", limit: 20, null: false
     t.index ["aid", "language"], name: "lime_idx1_answer_l10ns", unique: true
   end
 
-  create_table "lime_answers", primary_key: "aid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_answers", primary_key: "aid", id: :serial, force: :cascade do |t|
     t.text "answer"
     t.integer "assessment_value", default: 0, null: false
     t.string "code", limit: 5, null: false
@@ -606,7 +610,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["sortorder"], name: "lime_answers_idx2"
   end
 
-  create_table "lime_archived_table_settings", id: :serial, force: :cascade do |t|
+  create_table "public.lime_archived_table_settings", id: :serial, force: :cascade do |t|
     t.text "attributes"
     t.datetime "created", precision: nil, null: false
     t.text "properties", null: false
@@ -616,7 +620,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.integer "user_id", null: false
   end
 
-  create_table "lime_assessments", primary_key: ["id", "language"], force: :cascade do |t|
+  create_table "public.lime_assessments", primary_key: ["id", "language"], force: :cascade do |t|
     t.integer "gid", default: 0, null: false
     t.serial "id", null: false
     t.string "language", limit: 20, default: "en", null: false
@@ -630,12 +634,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["sid"], name: "assessments_idx2"
   end
 
-  create_table "lime_asset_version", id: :serial, force: :cascade do |t|
+  create_table "public.lime_asset_version", id: :serial, force: :cascade do |t|
     t.text "path", null: false
     t.integer "version", null: false
   end
 
-  create_table "lime_boxes", id: :serial, force: :cascade do |t|
+  create_table "public.lime_boxes", id: :serial, force: :cascade do |t|
     t.text "desc"
     t.string "ico", limit: 255
     t.text "page"
@@ -645,7 +649,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.integer "usergroup"
   end
 
-  create_table "lime_conditions", primary_key: "cid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_conditions", primary_key: "cid", id: :serial, force: :cascade do |t|
     t.string "cfieldname", limit: 50, default: "", null: false
     t.integer "cqid", default: 0, null: false
     t.string "method", limit: 5, default: "", null: false
@@ -656,14 +660,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["qid"], name: "conditions_idx2"
   end
 
-  create_table "lime_defaultvalue_l10ns", id: :serial, force: :cascade do |t|
+  create_table "public.lime_defaultvalue_l10ns", id: :serial, force: :cascade do |t|
     t.text "defaultvalue"
     t.integer "dvid", default: 0, null: false
     t.string "language", limit: 20, null: false
     t.index ["dvid", "language"], name: "lime_idx1_defaultvalue_l10ns", unique: true
   end
 
-  create_table "lime_defaultvalues", primary_key: "dvid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_defaultvalues", primary_key: "dvid", id: :serial, force: :cascade do |t|
     t.integer "qid", default: 0, null: false
     t.integer "scale_id", default: 0, null: false
     t.string "specialtype", limit: 20, default: "", null: false
@@ -671,7 +675,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["qid", "scale_id", "sqid", "specialtype"], name: "lime_idx1_defaultvalue"
   end
 
-  create_table "lime_expression_errors", id: :serial, force: :cascade do |t|
+  create_table "public.lime_expression_errors", id: :serial, force: :cascade do |t|
     t.text "eqn"
     t.string "errortime", limit: 50
     t.integer "gid"
@@ -683,13 +687,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "type", limit: 50
   end
 
-  create_table "lime_failed_login_attempts", id: :serial, force: :cascade do |t|
+  create_table "public.lime_failed_login_attempts", id: :serial, force: :cascade do |t|
     t.string "ip", limit: 40, null: false
     t.string "last_attempt", limit: 20, null: false
     t.integer "number_attempts", null: false
   end
 
-  create_table "lime_group_l10ns", id: :serial, force: :cascade do |t|
+  create_table "public.lime_group_l10ns", id: :serial, force: :cascade do |t|
     t.text "description"
     t.integer "gid", null: false
     t.text "group_name", null: false
@@ -697,7 +701,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["gid", "language"], name: "lime_idx1_group_l10ns", unique: true
   end
 
-  create_table "lime_groups", primary_key: "gid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_groups", primary_key: "gid", id: :serial, force: :cascade do |t|
     t.text "grelevance"
     t.string "group_name"
     t.integer "group_order", default: 0, null: false
@@ -706,14 +710,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["sid"], name: "lime_idx1_groups"
   end
 
-  create_table "lime_label_l10ns", id: :serial, force: :cascade do |t|
+  create_table "public.lime_label_l10ns", id: :serial, force: :cascade do |t|
     t.integer "label_id", null: false
     t.string "language", limit: 20, default: "en", null: false
     t.text "title"
     t.index ["label_id", "language"], name: "lime_idx1_label_l10ns", unique: true
   end
 
-  create_table "lime_labels", id: :serial, force: :cascade do |t|
+  create_table "public.lime_labels", id: :serial, force: :cascade do |t|
     t.integer "assessment_value", default: 0, null: false
     t.string "code", limit: 5, null: false
     t.integer "lid", null: false
@@ -721,18 +725,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["lid", "code"], name: "lime_idx5_labels", unique: true
   end
 
-  create_table "lime_labelsets", primary_key: "lid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_labelsets", primary_key: "lid", id: :serial, force: :cascade do |t|
     t.string "label_name", limit: 100, default: "", null: false
     t.string "languages", limit: 255, null: false
   end
 
-  create_table "lime_map_tutorial_users", primary_key: ["uid", "tid"], force: :cascade do |t|
+  create_table "public.lime_map_tutorial_users", primary_key: ["uid", "tid"], force: :cascade do |t|
     t.integer "taken", default: 1
     t.integer "tid", null: false
     t.integer "uid", null: false
   end
 
-  create_table "lime_notifications", id: :serial, force: :cascade do |t|
+  create_table "public.lime_notifications", id: :serial, force: :cascade do |t|
     t.datetime "created", precision: nil, null: false
     t.string "display_class", limit: 31, default: "default"
     t.string "entity", limit: 15, null: false
@@ -747,7 +751,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["hash"], name: "lime_notif_hash_index"
   end
 
-  create_table "lime_old_survey_466694_20190709111307", id: :integer, default: -> { "nextval('lime_survey_466694_id_seq1'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_survey_466694_20190709111307", id: :integer, default: -> { "nextval('lime_survey_466694_id_seq1'::regclass)" }, force: :cascade do |t|
     t.text "466694X1333X14400"
     t.text "466694X1334X14401"
     t.integer "lastpage"
@@ -758,7 +762,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_466694_31886"
   end
 
-  create_table "lime_old_survey_595124_20200310065839", id: :integer, default: -> { "nextval('lime_survey_595124_id_seq'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_survey_595124_20200310065839", id: :integer, default: -> { "nextval('lime_survey_595124_id_seq'::regclass)" }, force: :cascade do |t|
     t.text "595124X1498X16328CoachEmail"
     t.text "595124X1498X16328CoachName"
     t.text "595124X1498X16328StudentEmail"
@@ -824,7 +828,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_595124_16545"
   end
 
-  create_table "lime_old_survey_856292_20220421060524", id: :integer, default: -> { "nextval('lime_survey_856292_id_seq'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_survey_856292_20220421060524", id: :integer, default: -> { "nextval('lime_survey_856292_id_seq'::regclass)" }, force: :cascade do |t|
     t.text "856292X133X2068CoachEmail"
     t.text "856292X133X2068CoachName"
     t.text "856292X133X2068StudentEmail"
@@ -871,7 +875,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_856292_23796"
   end
 
-  create_table "lime_old_survey_856292_20220421063014", id: :integer, default: -> { "nextval('lime_survey_856292_id_seq1'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_survey_856292_20220421063014", id: :integer, default: -> { "nextval('lime_survey_856292_id_seq1'::regclass)" }, force: :cascade do |t|
     t.text "856292X133X2068CoachEmail"
     t.text "856292X133X2068CoachName"
     t.text "856292X133X2068StudentEmail"
@@ -918,7 +922,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_856292_2508"
   end
 
-  create_table "lime_old_survey_966338_20190808070842", id: :integer, default: -> { "nextval('lime_survey_966338_id_seq'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_survey_966338_20190808070842", id: :integer, default: -> { "nextval('lime_survey_966338_id_seq'::regclass)" }, force: :cascade do |t|
     t.text "966338X1475X15865CoachEmail"
     t.text "966338X1475X15865CoachName"
     t.text "966338X1475X15865StudentEmail"
@@ -978,7 +982,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_966338_32523"
   end
 
-  create_table "lime_old_tokens_466694_20190709111307", primary_key: "tid", id: :integer, default: -> { "nextval('lime_tokens_466694_tid_seq2'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_tokens_466694_20190709111307", primary_key: "tid", id: :integer, default: -> { "nextval('lime_tokens_466694_tid_seq2'::regclass)" }, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -998,7 +1002,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_466694_10224"
   end
 
-  create_table "lime_old_tokens_966338_20190807092921", primary_key: "tid", id: :integer, default: -> { "nextval('lime_tokens_966338_tid_seq'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_tokens_966338_20190807092921", primary_key: "tid", id: :integer, default: -> { "nextval('lime_tokens_966338_tid_seq'::regclass)" }, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -1018,7 +1022,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_966338_32398"
   end
 
-  create_table "lime_old_tokens_966338_20190807093503", primary_key: "tid", id: :integer, default: -> { "nextval('lime_tokens_966338_tid_seq1'::regclass)" }, force: :cascade do |t|
+  create_table "public.lime_old_tokens_966338_20190807093503", primary_key: "tid", id: :integer, default: -> { "nextval('lime_tokens_966338_tid_seq1'::regclass)" }, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -1038,13 +1042,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_966338_9563"
   end
 
-  create_table "lime_participant_attribute", primary_key: ["participant_id", "attribute_id"], force: :cascade do |t|
+  create_table "public.lime_participant_attribute", primary_key: ["participant_id", "attribute_id"], force: :cascade do |t|
     t.integer "attribute_id", null: false
     t.string "participant_id", limit: 50, null: false
     t.text "value", null: false
   end
 
-  create_table "lime_participant_attribute_names", primary_key: "attribute_id", id: :serial, force: :cascade do |t|
+  create_table "public.lime_participant_attribute_names", primary_key: "attribute_id", id: :serial, force: :cascade do |t|
     t.string "attribute_type", limit: 4, null: false
     t.string "core_attribute", limit: 5, default: "", null: false
     t.string "defaultname", limit: 255, null: false
@@ -1052,25 +1056,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "visible", limit: 5, null: false
   end
 
-  create_table "lime_participant_attribute_names_lang", primary_key: ["attribute_id", "lang"], force: :cascade do |t|
+  create_table "public.lime_participant_attribute_names_lang", primary_key: ["attribute_id", "lang"], force: :cascade do |t|
     t.integer "attribute_id", null: false
     t.string "attribute_name", limit: 255, null: false
     t.string "lang", limit: 20, null: false
   end
 
-  create_table "lime_participant_attribute_values", primary_key: "value_id", id: :serial, force: :cascade do |t|
+  create_table "public.lime_participant_attribute_values", primary_key: "value_id", id: :serial, force: :cascade do |t|
     t.integer "attribute_id", null: false
     t.text "value", null: false
   end
 
-  create_table "lime_participant_shares", primary_key: ["participant_id", "share_uid"], force: :cascade do |t|
+  create_table "public.lime_participant_shares", primary_key: ["participant_id", "share_uid"], force: :cascade do |t|
     t.string "can_edit", limit: 5, null: false
     t.datetime "date_added", precision: nil, null: false
     t.string "participant_id", limit: 50, null: false
     t.integer "share_uid", null: false
   end
 
-  create_table "lime_participants", primary_key: "participant_id", id: { type: :string, limit: 50 }, force: :cascade do |t|
+  create_table "public.lime_participants", primary_key: "participant_id", id: { type: :string, limit: 50 }, force: :cascade do |t|
     t.string "blacklisted", limit: 1, null: false
     t.datetime "created", precision: nil
     t.integer "created_by", null: false
@@ -1082,7 +1086,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.integer "owner_uid", null: false
   end
 
-  create_table "lime_permissions", id: :serial, force: :cascade do |t|
+  create_table "public.lime_permissions", id: :serial, force: :cascade do |t|
     t.integer "create_p", default: 0, null: false
     t.integer "delete_p", default: 0, null: false
     t.string "entity", limit: 50, null: false
@@ -1096,7 +1100,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["entity_id", "entity", "uid", "permission"], name: "permissions_idx2", unique: true
   end
 
-  create_table "lime_permissiontemplates", primary_key: "ptid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_permissiontemplates", primary_key: "ptid", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.integer "created_by", null: false
     t.text "description"
@@ -1105,7 +1109,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["name"], name: "lime_idx1_name", unique: true
   end
 
-  create_table "lime_plugin_settings", id: :serial, force: :cascade do |t|
+  create_table "public.lime_plugin_settings", id: :serial, force: :cascade do |t|
     t.string "key", limit: 50, null: false
     t.string "model", limit: 50
     t.integer "model_id"
@@ -1113,7 +1117,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.text "value"
   end
 
-  create_table "lime_plugins", id: :serial, force: :cascade do |t|
+  create_table "public.lime_plugins", id: :serial, force: :cascade do |t|
     t.integer "active", default: 0, null: false
     t.integer "load_error", default: 0
     t.text "load_error_message"
@@ -1123,7 +1127,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "version", limit: 32
   end
 
-  create_table "lime_question_attributes", primary_key: "qaid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_question_attributes", primary_key: "qaid", id: :serial, force: :cascade do |t|
     t.string "attribute", limit: 50
     t.string "language", limit: 20
     t.integer "qid", default: 0, null: false
@@ -1132,7 +1136,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["qid"], name: "question_attributes_idx2"
   end
 
-  create_table "lime_question_l10ns", id: :serial, force: :cascade do |t|
+  create_table "public.lime_question_l10ns", id: :serial, force: :cascade do |t|
     t.text "help"
     t.string "language", limit: 20, null: false
     t.integer "qid", null: false
@@ -1141,7 +1145,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["qid", "language"], name: "lime_idx1_question_l10ns", unique: true
   end
 
-  create_table "lime_question_themes", id: :serial, force: :cascade do |t|
+  create_table "public.lime_question_themes", id: :serial, force: :cascade do |t|
     t.string "api_version", limit: 45, null: false
     t.string "author", limit: 150
     t.string "author_email", limit: 255
@@ -1167,7 +1171,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["name"], name: "lime_idx1_question_themes"
   end
 
-  create_table "lime_questions", primary_key: "qid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_questions", primary_key: "qid", id: :serial, force: :cascade do |t|
     t.string "encrypted", limit: 1, default: "N"
     t.integer "gid", default: 0, null: false
     t.string "mandatory", limit: 1
@@ -1191,7 +1195,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["type"], name: "lime_idx3_questions"
   end
 
-  create_table "lime_quota", id: :serial, force: :cascade do |t|
+  create_table "public.lime_quota", id: :serial, force: :cascade do |t|
     t.integer "action"
     t.integer "active", default: 1, null: false
     t.integer "autoload_url", default: 0, null: false
@@ -1201,7 +1205,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["sid"], name: "quota_idx2"
   end
 
-  create_table "lime_quota_languagesettings", primary_key: "quotals_id", id: :serial, force: :cascade do |t|
+  create_table "public.lime_quota_languagesettings", primary_key: "quotals_id", id: :serial, force: :cascade do |t|
     t.string "quotals_language", limit: 45, default: "en", null: false
     t.text "quotals_message", null: false
     t.string "quotals_name", limit: 255
@@ -1210,7 +1214,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "quotals_urldescrip", limit: 255
   end
 
-  create_table "lime_quota_members", id: :serial, force: :cascade do |t|
+  create_table "public.lime_quota_members", id: :serial, force: :cascade do |t|
     t.string "code", limit: 11
     t.integer "qid"
     t.integer "quota_id"
@@ -1218,7 +1222,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["sid", "qid", "quota_id", "code"], name: "lime_quota_members_ixcode_idx"
   end
 
-  create_table "lime_saved_control", primary_key: "scid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_saved_control", primary_key: "scid", id: :serial, force: :cascade do |t|
     t.text "access_code", null: false
     t.string "email", limit: 254
     t.text "identifier", null: false
@@ -1232,17 +1236,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["sid"], name: "saved_control_idx2"
   end
 
-  create_table "lime_sessions", id: { type: :string, limit: 32 }, force: :cascade do |t|
+  create_table "public.lime_sessions", id: { type: :string, limit: 32 }, force: :cascade do |t|
     t.binary "data"
     t.integer "expire"
     t.index ["expire"], name: "sess_expire"
   end
 
-  create_table "lime_settings_global", primary_key: "stg_name", id: { type: :string, limit: 50, default: "" }, force: :cascade do |t|
+  create_table "public.lime_settings_global", primary_key: "stg_name", id: { type: :string, limit: 50, default: "" }, force: :cascade do |t|
     t.text "stg_value", null: false
   end
 
-  create_table "lime_settings_user", id: :serial, force: :cascade do |t|
+  create_table "public.lime_settings_user", id: :serial, force: :cascade do |t|
     t.string "entity", limit: 15
     t.string "entity_id", limit: 31
     t.string "stg_name", limit: 63, null: false
@@ -1250,7 +1254,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.integer "uid", null: false
   end
 
-  create_table "lime_survey_115373", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_115373", id: :serial, force: :cascade do |t|
     t.decimal "115373X117X1873Week1MCQ", precision: 30, scale: 10
     t.decimal "115373X117X1873Week2MCQ", precision: 30, scale: 10
     t.decimal "115373X117X1873Week3MCQ", precision: 30, scale: 10
@@ -1297,7 +1301,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_115373_45301"
   end
 
-  create_table "lime_survey_115743", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_115743", id: :serial, force: :cascade do |t|
     t.string "115743X1128X13254SQ001", limit: 5
     t.string "115743X1128X13254SQ002", limit: 5
     t.string "115743X1128X13254SQ004", limit: 5
@@ -1320,7 +1324,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_115743_42533"
   end
 
-  create_table "lime_survey_117798", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_117798", id: :serial, force: :cascade do |t|
     t.string "117798X188X2399", limit: 255
     t.text "117798X188X2400"
     t.string "117798X188X2405", limit: 255
@@ -1343,7 +1347,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_117798_18168"
   end
 
-  create_table "lime_survey_118128", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_118128", id: :serial, force: :cascade do |t|
     t.text "118128X1470X15790"
     t.integer "118128X1470X15790_filecount"
     t.text "118128X1471X15791CoachEmail"
@@ -1359,7 +1363,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_118128_6285"
   end
 
-  create_table "lime_survey_127551", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_127551", id: :serial, force: :cascade do |t|
     t.text "127551X573X7078"
     t.text "127551X573X7081"
     t.string "127551X574X7079C1", limit: 5
@@ -1389,7 +1393,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_127551_6831"
   end
 
-  create_table "lime_survey_128963", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_128963", id: :serial, force: :cascade do |t|
     t.decimal "128963X737X8832", precision: 30, scale: 10
     t.text "128963X737X8836"
     t.string "128963X737X8843", limit: 5
@@ -1415,7 +1419,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_128963_15721"
   end
 
-  create_table "lime_survey_133379", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_133379", id: :serial, force: :cascade do |t|
     t.text "133379X1320X14277CoachEmail"
     t.text "133379X1320X14277CoachName"
     t.text "133379X1320X14277StudentEmail"
@@ -1450,7 +1454,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_133379_23379"
   end
 
-  create_table "lime_survey_135694", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_135694", id: :serial, force: :cascade do |t|
     t.text "135694X1370X14626"
     t.text "135694X1370X14629"
     t.string "135694X1371X14627C1", limit: 5
@@ -1480,7 +1484,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_135694_13172"
   end
 
-  create_table "lime_survey_135887", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_135887", id: :serial, force: :cascade do |t|
     t.text "135887X875X9833"
     t.text "135887X875X9836"
     t.string "135887X876X9834C1", limit: 5
@@ -1510,7 +1514,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_135887_15696"
   end
 
-  create_table "lime_survey_137847", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_137847", id: :serial, force: :cascade do |t|
     t.text "137847X253X3146"
     t.text "137847X253X3149"
     t.string "137847X254X3147C1", limit: 5
@@ -1540,7 +1544,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_137847_38530"
   end
 
-  create_table "lime_survey_144697", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_144697", id: :serial, force: :cascade do |t|
     t.text "144697X390X4282"
     t.text "144697X390X4287"
     t.text "144697X390X4288"
@@ -1579,7 +1583,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_144697_35918"
   end
 
-  create_table "lime_survey_146548", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_146548", id: :serial, force: :cascade do |t|
     t.string "146548X944X10512", limit: 5
     t.text "146548X944X10512other"
     t.string "146548X944X10513", limit: 1
@@ -1609,7 +1613,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.datetime "submitdate", precision: nil
   end
 
-  create_table "lime_survey_147365", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_147365", id: :serial, force: :cascade do |t|
     t.text "147365X271X3289CoachEmail"
     t.text "147365X271X3289CoachName"
     t.text "147365X271X3289StudentEmail"
@@ -1631,7 +1635,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_147365_11370"
   end
 
-  create_table "lime_survey_147694", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_147694", id: :serial, force: :cascade do |t|
     t.string "147694X1145X13324SQ001", limit: 5
     t.string "147694X1145X13324SQ002", limit: 5
     t.string "147694X1145X13324SQ004", limit: 5
@@ -1650,7 +1654,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_147694_8192"
   end
 
-  create_table "lime_survey_153794", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_153794", id: :serial, force: :cascade do |t|
     t.text "153794X969X10680CoachEmail"
     t.text "153794X969X10680CoachName"
     t.text "153794X969X10680Course"
@@ -1700,7 +1704,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_153794_7839"
   end
 
-  create_table "lime_survey_154741", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_154741", id: :serial, force: :cascade do |t|
     t.text "154741X1382X14722Address1"
     t.text "154741X1382X14722Address2"
     t.text "154741X1382X14722City"
@@ -1867,7 +1871,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_154741_47699"
   end
 
-  create_table "lime_survey_155954", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_155954", id: :serial, force: :cascade do |t|
     t.text "155954X1393X14922CoachEmail"
     t.text "155954X1393X14922CoachName"
     t.text "155954X1393X14922StudentEmail"
@@ -1919,7 +1923,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_155954_16562"
   end
 
-  create_table "lime_survey_156227", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_156227", id: :serial, force: :cascade do |t|
     t.text "156227X564X6956CoachEmail"
     t.text "156227X564X6956CoachName"
     t.text "156227X564X6956StudentEmail"
@@ -1964,7 +1968,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_156227_38713"
   end
 
-  create_table "lime_survey_158233", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_158233", id: :serial, force: :cascade do |t|
     t.string "158233X548X6789InstructorKnowledge", limit: 5
     t.string "158233X548X6789InstructorRate", limit: 5
     t.string "158233X548X6789InstructorWellPrep", limit: 5
@@ -1985,7 +1989,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_158233_39005"
   end
 
-  create_table "lime_survey_166929", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_166929", id: :serial, force: :cascade do |t|
     t.text "166929X616X7501SQ1"
     t.text "166929X616X7501SQ10"
     t.text "166929X616X7501SQ2"
@@ -2243,7 +2247,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_166929_34184"
   end
 
-  create_table "lime_survey_171898", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_171898", id: :serial, force: :cascade do |t|
     t.string "171898X1148X13336SQ001", limit: 5
     t.string "171898X1148X13336SQ002", limit: 5
     t.string "171898X1148X13336SQ004", limit: 5
@@ -2262,7 +2266,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_171898_43483"
   end
 
-  create_table "lime_survey_174335", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_174335", id: :serial, force: :cascade do |t|
     t.text "174335X852X9555"
     t.text "174335X852X9558"
     t.string "174335X853X9556C1", limit: 5
@@ -2292,7 +2296,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_174335_47809"
   end
 
-  create_table "lime_survey_174547", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_174547", id: :serial, force: :cascade do |t|
     t.text "174547X1032X12397SQ001"
     t.text "174547X1032X12397SQ002"
     t.text "174547X1032X12397SQ003"
@@ -2325,7 +2329,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_174547_49993"
   end
 
-  create_table "lime_survey_179962", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_179962", id: :serial, force: :cascade do |t|
     t.string "179962X1159X13371SQ001", limit: 5
     t.string "179962X1159X13371SQ002", limit: 5
     t.string "179962X1159X13371SQ003", limit: 5
@@ -2350,7 +2354,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_179962_18941"
   end
 
-  create_table "lime_survey_181695", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_181695", id: :serial, force: :cascade do |t|
     t.string "181695X971X107391", limit: 5
     t.string "181695X971X107392", limit: 5
     t.string "181695X971X107393", limit: 5
@@ -2371,7 +2375,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_181695_38650"
   end
 
-  create_table "lime_survey_186962", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_186962", id: :serial, force: :cascade do |t|
     t.text "186962X1535X16653Address1"
     t.text "186962X1535X16653Address2"
     t.text "186962X1535X16653City"
@@ -2538,7 +2542,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_186962_46346"
   end
 
-  create_table "lime_survey_187299", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_187299", id: :serial, force: :cascade do |t|
     t.text "187299X1488X16282SQ001"
     t.text "187299X1488X16282SQ002"
     t.text "187299X1488X16282SQ004"
@@ -2568,7 +2572,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_187299_42601"
   end
 
-  create_table "lime_survey_191467", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_191467", id: :serial, force: :cascade do |t|
     t.text "191467X224X2748CoachEmail"
     t.text "191467X224X2748CoachName"
     t.text "191467X224X2748StudentEmail"
@@ -2608,7 +2612,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_191467_45593"
   end
 
-  create_table "lime_survey_195566", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_195566", id: :serial, force: :cascade do |t|
     t.text "195566X1544X16789SQ001"
     t.text "195566X1544X16789SQ002"
     t.text "195566X1544X16789SQ004"
@@ -2638,7 +2642,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_195566_30996"
   end
 
-  create_table "lime_survey_196377", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_196377", id: :serial, force: :cascade do |t|
     t.string "196377X1041X124521", limit: 5
     t.string "196377X1041X1245210", limit: 5
     t.string "196377X1041X12452100", limit: 5
@@ -2788,7 +2792,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_196377_21179"
   end
 
-  create_table "lime_survey_196476", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_196476", id: :serial, force: :cascade do |t|
     t.text "196476X130X2044CoachEmail"
     t.text "196476X130X2044CoachName"
     t.text "196476X130X2044StudentEmail"
@@ -2820,7 +2824,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_196476_24563"
   end
 
-  create_table "lime_survey_211877", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_211877", id: :serial, force: :cascade do |t|
     t.text "211877X275X3343"
     t.string "211877X275X3344", limit: 5
     t.string "211877X275X3345", limit: 5
@@ -2841,7 +2845,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_211877_10306"
   end
 
-  create_table "lime_survey_212442", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_212442", id: :serial, force: :cascade do |t|
     t.text "212442X1458X15732SQ001"
     t.text "212442X1458X15732SQ002"
     t.text "212442X1458X15732SQ004"
@@ -2871,7 +2875,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_212442_4575"
   end
 
-  create_table "lime_survey_213273", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_213273", id: :serial, force: :cascade do |t|
     t.text "213273X922X10389"
     t.text "213273X922X10390"
     t.text "213273X922X10396"
@@ -2908,7 +2912,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_213273_31593"
   end
 
-  create_table "lime_survey_213273_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_213273_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "213273X922X10389time"
     t.float "213273X922X10390time"
     t.float "213273X922X10396time"
@@ -2928,7 +2932,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_216744", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_216744", id: :serial, force: :cascade do |t|
     t.text "216744X1530X16588CoachEmail"
     t.text "216744X1530X16588CoachName"
     t.text "216744X1530X16588StudentEmail"
@@ -2989,7 +2993,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_216744_37975"
   end
 
-  create_table "lime_survey_217615", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_217615", id: :serial, force: :cascade do |t|
     t.string "217615X96X1501SQ001", limit: 5
     t.string "217615X96X1502", limit: 5
     t.string "217615X96X1503", limit: 1
@@ -3040,7 +3044,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_217615_8121"
   end
 
-  create_table "lime_survey_217615_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_217615_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "217615X96X1501time"
     t.float "217615X96X1502time"
     t.float "217615X96X1503time"
@@ -3061,7 +3065,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_218865", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_218865", id: :serial, force: :cascade do |t|
     t.text "218865X640X7875"
     t.text "218865X640X7877"
     t.text "218865X640X7878"
@@ -3106,7 +3110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_218865_17913"
   end
 
-  create_table "lime_survey_218935", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_218935", id: :serial, force: :cascade do |t|
     t.text "218935X811X9322"
     t.text "218935X811X9323"
     t.text "218935X811X9324"
@@ -3145,7 +3149,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_218935_28384"
   end
 
-  create_table "lime_survey_218935_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_218935_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "218935X811X9322time"
     t.float "218935X811X9323time"
     t.float "218935X811X9324time"
@@ -3165,7 +3169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_219315", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_219315", id: :serial, force: :cascade do |t|
     t.text "219315X602X7365"
     t.text "219315X602X7366"
     t.text "219315X602X7372"
@@ -3216,7 +3220,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_219315_101"
   end
 
-  create_table "lime_survey_219315_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_219315_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "219315X602X7365time"
     t.float "219315X602X7366time"
     t.float "219315X602X7372time"
@@ -3236,7 +3240,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_221971", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_221971", id: :serial, force: :cascade do |t|
     t.string "221971X872X9824", limit: 5
     t.string "221971X872X9826", limit: 5
     t.string "221971X873X9825", limit: 5
@@ -3257,7 +3261,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_221971_2796"
   end
 
-  create_table "lime_survey_221971_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_221971_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "221971X872X9824time"
     t.float "221971X872X9826time"
     t.float "221971X872time"
@@ -3272,7 +3276,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_222865", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_222865", id: :serial, force: :cascade do |t|
     t.string "222865X1376X14662", limit: 5
     t.string "222865X1376X14663", limit: 5
     t.text "222865X1376X14665"
@@ -3290,7 +3294,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_222865_24617"
   end
 
-  create_table "lime_survey_223338", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_223338", id: :serial, force: :cascade do |t|
     t.text "223338X516X5997CoachEmail"
     t.text "223338X516X5997CoachName"
     t.text "223338X516X5997StudentEmail"
@@ -3342,7 +3346,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_223338_30651"
   end
 
-  create_table "lime_survey_224436", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_224436", id: :serial, force: :cascade do |t|
     t.string "224436X64X1056", limit: 255
     t.string "224436X64X1057", limit: 5
     t.string "224436X64X1058", limit: 5
@@ -3363,7 +3367,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_224436_4515"
   end
 
-  create_table "lime_survey_225663", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_225663", id: :serial, force: :cascade do |t|
     t.decimal "225663X735X8829", precision: 30, scale: 10
     t.text "225663X735X8838"
     t.string "225663X735X8847", limit: 5
@@ -3387,7 +3391,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_225663_27294"
   end
 
-  create_table "lime_survey_226417", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_226417", id: :serial, force: :cascade do |t|
     t.string "226417X93X1451InstructorKnowledge", limit: 5
     t.string "226417X93X1451InstructorRate", limit: 5
     t.string "226417X93X1451InstructorWellPrep", limit: 5
@@ -3408,7 +3412,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_226417_26428"
   end
 
-  create_table "lime_survey_226843", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_226843", id: :serial, force: :cascade do |t|
     t.text "226843X1453X15703SQ001"
     t.text "226843X1453X15703SQ002"
     t.text "226843X1453X15703SQ004"
@@ -3438,7 +3442,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_226843_13704"
   end
 
-  create_table "lime_survey_229785", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_229785", id: :serial, force: :cascade do |t|
     t.text "229785X582X7167IntMedComp1"
     t.text "229785X582X7167IntMedComp2"
     t.text "229785X582X7167IntMedComp3"
@@ -3507,7 +3511,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_229785_41816"
   end
 
-  create_table "lime_survey_231599", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_231599", id: :serial, force: :cascade do |t|
     t.text "231599X1336X14404"
     t.text "231599X1336X14407"
     t.text "231599X1336X14995CoachEmail"
@@ -3537,7 +3541,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_231599_19088"
   end
 
-  create_table "lime_survey_231881", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_231881", id: :serial, force: :cascade do |t|
     t.string "231881X94X1465SQ001", limit: 5
     t.string "231881X94X1466SQ001", limit: 5
     t.string "231881X94X1467", limit: 5
@@ -3581,7 +3585,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_231881_2029"
   end
 
-  create_table "lime_survey_231881_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_231881_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "231881X94X1465time"
     t.float "231881X94X1466time"
     t.float "231881X94X1467time"
@@ -3600,7 +3604,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_233128", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_233128", id: :serial, force: :cascade do |t|
     t.string "233128X1177X13465SQ001", limit: 5
     t.string "233128X1177X13465SQ002", limit: 5
     t.string "233128X1177X13465SQ003", limit: 5
@@ -3623,7 +3627,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_233128_30166"
   end
 
-  create_table "lime_survey_233677", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_233677", id: :serial, force: :cascade do |t|
     t.text "233677X1447X15564CoachEmail"
     t.text "233677X1447X15564CoachName"
     t.text "233677X1447X15564StudentEmail"
@@ -3689,7 +3693,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_233677_5849"
   end
 
-  create_table "lime_survey_234282", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_234282", id: :serial, force: :cascade do |t|
     t.string "234282X112X1833SQ001", limit: 5
     t.string "234282X112X1833SQ002", limit: 5
     t.string "234282X112X1833SQ003", limit: 5
@@ -3714,7 +3718,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_234282_24913"
   end
 
-  create_table "lime_survey_237826", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_237826", id: :serial, force: :cascade do |t|
     t.decimal "237826X53X730Week1MCQ", precision: 30, scale: 10
     t.decimal "237826X53X730Week2MCQ", precision: 30, scale: 10
     t.decimal "237826X53X730Week3MCQ", precision: 30, scale: 10
@@ -3846,7 +3850,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_237826_18182"
   end
 
-  create_table "lime_survey_244784", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_244784", id: :serial, force: :cascade do |t|
     t.string "244784X73X1253InstructorKnowledge", limit: 5
     t.string "244784X73X1253InstructorRate", limit: 5
     t.string "244784X73X1253InstructorWellPrep", limit: 5
@@ -3864,7 +3868,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_244784_41537"
   end
 
-  create_table "lime_survey_251129", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_251129", id: :serial, force: :cascade do |t|
     t.string "251129X1225X13679SQ001", limit: 5
     t.string "251129X1225X13679SQ002", limit: 5
     t.string "251129X1225X13679SQ003", limit: 5
@@ -3889,7 +3893,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_251129_9904"
   end
 
-  create_table "lime_survey_255281", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_255281", id: :serial, force: :cascade do |t|
     t.text "255281X109X1732Address1"
     t.text "255281X109X1732Address2"
     t.text "255281X109X1732City"
@@ -4056,7 +4060,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_255281_31938"
   end
 
-  create_table "lime_survey_262858", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_262858", id: :serial, force: :cascade do |t|
     t.string "262858X977X12154", limit: 5
     t.string "262858X977X12155", limit: 5
     t.string "262858X977X12156", limit: 5
@@ -4073,7 +4077,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_262858_6001"
   end
 
-  create_table "lime_survey_263331", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_263331", id: :serial, force: :cascade do |t|
     t.text "263331X1549X16812CoachEmail"
     t.text "263331X1549X16812CoachName"
     t.text "263331X1549X16812StudentEmail"
@@ -4087,7 +4091,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_263331_38610"
   end
 
-  create_table "lime_survey_264391", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_264391", id: :serial, force: :cascade do |t|
     t.text "264391X917X10360"
     t.text "264391X917X10361"
     t.text "264391X917X10367"
@@ -4124,7 +4128,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_264391_19762"
   end
 
-  create_table "lime_survey_264391_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_264391_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "264391X917X10360time"
     t.float "264391X917X10361time"
     t.float "264391X917X10367time"
@@ -4144,7 +4148,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_266127", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_266127", id: :serial, force: :cascade do |t|
     t.text "266127X978X12163"
     t.text "266127X978X12166"
     t.string "266127X979X12164C1", limit: 5
@@ -4174,7 +4178,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_266127_19649"
   end
 
-  create_table "lime_survey_273679", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_273679", id: :serial, force: :cascade do |t|
     t.text "273679X1070X12968CoachEmail"
     t.text "273679X1070X12968CoachName"
     t.text "273679X1070X12968StudentEmail"
@@ -4209,7 +4213,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_273679_2838"
   end
 
-  create_table "lime_survey_279267", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_279267", id: :serial, force: :cascade do |t|
     t.text "279267X1397X15001CoachEmail"
     t.text "279267X1397X15001CoachName"
     t.text "279267X1397X15001StudentEmail"
@@ -4269,7 +4273,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_279267_49307"
   end
 
-  create_table "lime_survey_279376", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_279376", id: :serial, force: :cascade do |t|
     t.text "279376X592X7279"
     t.text "279376X592X7280"
     t.text "279376X592X7286"
@@ -4320,7 +4324,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_279376_22055"
   end
 
-  create_table "lime_survey_279376_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_279376_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "279376X592X7279time"
     t.float "279376X592X7280time"
     t.float "279376X592X7286time"
@@ -4340,7 +4344,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_283462", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_283462", id: :serial, force: :cascade do |t|
     t.text "283462X1428X15453CoachEmail"
     t.text "283462X1428X15453CoachName"
     t.text "283462X1428X15453StudentEmail"
@@ -4370,7 +4374,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_283462_39551"
   end
 
-  create_table "lime_survey_285498", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_285498", id: :serial, force: :cascade do |t|
     t.text "285498X387X4260"
     t.text "285498X387X4264"
     t.text "285498X387X4265"
@@ -4402,7 +4406,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_285498_30368"
   end
 
-  create_table "lime_survey_286313", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_286313", id: :serial, force: :cascade do |t|
     t.string "286313X5X103SQ001", limit: 5
     t.string "286313X5X103SQ002", limit: 5
     t.string "286313X5X103SQ003", limit: 5
@@ -4426,7 +4430,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.datetime "submitdate", precision: nil
   end
 
-  create_table "lime_survey_289191", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_289191", id: :serial, force: :cascade do |t|
     t.datetime "289191X290X3418", precision: nil
     t.string "289191X290X3419", limit: 5
     t.text "289191X290X3419other"
@@ -4534,7 +4538,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_289191_8175"
   end
 
-  create_table "lime_survey_297591", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_297591", id: :serial, force: :cascade do |t|
     t.string "297591X1055X12823SQ001", limit: 5
     t.string "297591X1055X12823SQ002", limit: 5
     t.string "297591X1055X12823SQ003", limit: 5
@@ -4570,7 +4574,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_297591_21558"
   end
 
-  create_table "lime_survey_297723", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_297723", id: :serial, force: :cascade do |t|
     t.text "297723X338X3903"
     t.text "297723X338X3906"
     t.string "297723X339X3904C1", limit: 5
@@ -4600,7 +4604,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_297723_16774"
   end
 
-  create_table "lime_survey_315995", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_315995", id: :serial, force: :cascade do |t|
     t.string "315995X1509X16449PatientCare1", limit: 5
     t.string "315995X1509X16449PatientCare2", limit: 5
     t.string "315995X1509X16449PatientCare3", limit: 5
@@ -4638,7 +4642,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_315995_20312"
   end
 
-  create_table "lime_survey_319345", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_319345", id: :serial, force: :cascade do |t|
     t.string "319345X1096X13077PatientCare1", limit: 5
     t.string "319345X1096X13077PatientCare2", limit: 5
     t.string "319345X1096X13077PatientCare3", limit: 5
@@ -4672,7 +4676,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_319345_35404"
   end
 
-  create_table "lime_survey_325846", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_325846", id: :serial, force: :cascade do |t|
     t.string "325846X526X6172SQ001", limit: 5
     t.string "325846X526X6173", limit: 5
     t.string "325846X526X6174", limit: 1
@@ -4760,7 +4764,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_325846_49757"
   end
 
-  create_table "lime_survey_325846_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_325846_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "325846X526X6172time"
     t.float "325846X526X6173time"
     t.float "325846X526X6174time"
@@ -4796,7 +4800,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_332979", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_332979", id: :serial, force: :cascade do |t|
     t.string "332979X1284X14006SQ001", limit: 5
     t.string "332979X1284X14006SQ002", limit: 5
     t.string "332979X1284X14006SQ003", limit: 5
@@ -4837,7 +4841,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_332979_3139"
   end
 
-  create_table "lime_survey_333341", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_333341", id: :serial, force: :cascade do |t|
     t.text "333341X887X10017"
     t.string "333341X887X10018", limit: 5
     t.string "333341X887X10019", limit: 5
@@ -4858,7 +4862,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_333341_22176"
   end
 
-  create_table "lime_survey_333689", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_333689", id: :serial, force: :cascade do |t|
     t.string "333689X505X5796InstructorKnowledge", limit: 5
     t.string "333689X505X5796InstructorRate", limit: 5
     t.string "333689X505X5796InstructorWellPrep", limit: 5
@@ -4879,7 +4883,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_333689_27797"
   end
 
-  create_table "lime_survey_337222", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_337222", id: :serial, force: :cascade do |t|
     t.text "337222X817X9366"
     t.text "337222X817X9371"
     t.text "337222X817X9372"
@@ -4923,7 +4927,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_337222_35434"
   end
 
-  create_table "lime_survey_339266", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_339266", id: :serial, force: :cascade do |t|
     t.string "339266X263X3200", limit: 5
     t.string "339266X264X32011", limit: 5
     t.string "339266X264X320110", limit: 5
@@ -4976,7 +4980,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_339266_46803"
   end
 
-  create_table "lime_survey_339853", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_339853", id: :serial, force: :cascade do |t|
     t.text "339853X949X10546"
     t.text "339853X949X10549"
     t.string "339853X950X10547C1", limit: 5
@@ -5006,7 +5010,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_339853_40415"
   end
 
-  create_table "lime_survey_346978", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_346978", id: :serial, force: :cascade do |t|
     t.text "346978X723X8728CoachEmail"
     t.text "346978X723X8728CoachName"
     t.text "346978X723X8728StudentEmail"
@@ -5036,7 +5040,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_346978_15640"
   end
 
-  create_table "lime_survey_347561", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_347561", id: :serial, force: :cascade do |t|
     t.text "347561X477X5407"
     t.text "347561X477X5410"
     t.string "347561X478X5408C1", limit: 5
@@ -5066,7 +5070,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_347561_11874"
   end
 
-  create_table "lime_survey_349478", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_349478", id: :serial, force: :cascade do |t|
     t.string "349478X1118X13162", limit: 5
     t.text "349478X1118X13162other"
     t.string "349478X1118X13163", limit: 5
@@ -5120,7 +5124,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.datetime "submitdate", precision: nil
   end
 
-  create_table "lime_survey_349478_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_349478_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "349478X1118X13162time"
     t.float "349478X1118X13163time"
     t.float "349478X1118X13164time"
@@ -5153,7 +5157,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_352185", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_352185", id: :serial, force: :cascade do |t|
     t.string "352185X1360X14591PatientCare1", limit: 5
     t.string "352185X1360X14591PatientCare2", limit: 5
     t.string "352185X1360X14591PatientCare3", limit: 5
@@ -5189,7 +5193,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_352185_19025"
   end
 
-  create_table "lime_survey_352355", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_352355", id: :serial, force: :cascade do |t|
     t.text "352355X65X1071CoachEmail"
     t.text "352355X65X1071CoachName"
     t.text "352355X65X1071StudentEmail"
@@ -5229,7 +5233,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_352355_28503"
   end
 
-  create_table "lime_survey_354858", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_354858", id: :serial, force: :cascade do |t|
     t.text "354858X653X7969"
     t.text "354858X653X7971"
     t.text "354858X653X7972"
@@ -5274,7 +5278,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_354858_1651"
   end
 
-  create_table "lime_survey_355638", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_355638", id: :serial, force: :cascade do |t|
     t.text "355638X1449X15634CoachEmail"
     t.text "355638X1449X15634CoachName"
     t.text "355638X1449X15634MedhubID"
@@ -5348,7 +5352,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_355638_19419"
   end
 
-  create_table "lime_survey_355818", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_355818", id: :serial, force: :cascade do |t|
     t.text "355818X798X9236"
     t.text "355818X798X9241"
     t.text "355818X798X9242"
@@ -5392,7 +5396,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_355818_13339"
   end
 
-  create_table "lime_survey_356148", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_356148", id: :serial, force: :cascade do |t|
     t.string "356148X1181X13481SQ001", limit: 5
     t.string "356148X1181X13481SQ002", limit: 5
     t.string "356148X1181X13481SQ003", limit: 5
@@ -5421,7 +5425,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_356148_29915"
   end
 
-  create_table "lime_survey_356167", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_356167", id: :serial, force: :cascade do |t|
     t.string "356167X506X5838SQ006", limit: 5
     t.string "356167X506X58391", limit: 5
     t.string "356167X506X58392", limit: 5
@@ -5488,7 +5492,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_356167_31105"
   end
 
-  create_table "lime_survey_361445", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_361445", id: :serial, force: :cascade do |t|
     t.text "361445X566X7007"
     t.text "361445X566X7010"
     t.string "361445X567X7008C1", limit: 5
@@ -5518,7 +5522,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_361445_24030"
   end
 
-  create_table "lime_survey_363835", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_363835", id: :serial, force: :cascade do |t|
     t.text "363835X1422X15374CoachEmail"
     t.text "363835X1422X15374CoachName"
     t.text "363835X1422X15374StudentEmail"
@@ -5536,7 +5540,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_363835_19595"
   end
 
-  create_table "lime_survey_364732", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_364732", id: :serial, force: :cascade do |t|
     t.string "364732X550X6831InstructorKnowledge", limit: 5
     t.string "364732X550X6831InstructorRate", limit: 5
     t.string "364732X550X6831InstructorWellPrep", limit: 5
@@ -5557,7 +5561,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_364732_4594"
   end
 
-  create_table "lime_survey_364796", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_364796", id: :serial, force: :cascade do |t|
     t.string "364796X549X6803InstructorKnowledge", limit: 5
     t.string "364796X549X6803InstructorRate", limit: 5
     t.string "364796X549X6803InstructorWellPrep", limit: 5
@@ -5578,7 +5582,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_364796_48660"
   end
 
-  create_table "lime_survey_364877", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_364877", id: :serial, force: :cascade do |t|
     t.string "364877X552X6860SQ1", limit: 5
     t.string "364877X552X6860SQ10", limit: 5
     t.string "364877X552X6860SQ2", limit: 5
@@ -5618,7 +5622,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_364877_34029"
   end
 
-  create_table "lime_survey_365272", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_365272", id: :serial, force: :cascade do |t|
     t.text "365272X885X9964CoachEmail"
     t.text "365272X885X9964CoachName"
     t.text "365272X885X9964StudentEmail"
@@ -5668,7 +5672,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_365272_21704"
   end
 
-  create_table "lime_survey_365933", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_365933", id: :serial, force: :cascade do |t|
     t.string "365933X1279X13966SQ001", limit: 5
     t.string "365933X1279X13966SQ002", limit: 5
     t.string "365933X1279X13966SQ003", limit: 5
@@ -5709,7 +5713,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_365933_8215"
   end
 
-  create_table "lime_survey_371212", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_371212", id: :serial, force: :cascade do |t|
     t.text "371212X522X6152"
     t.text "371212X522X6155"
     t.string "371212X523X6153C1", limit: 5
@@ -5739,7 +5743,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_371212_27237"
   end
 
-  create_table "lime_survey_374554", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_374554", id: :serial, force: :cascade do |t|
     t.string "374554X1255X13813SQ001", limit: 5
     t.string "374554X1255X13813SQ002", limit: 5
     t.string "374554X1255X13813SQ003", limit: 5
@@ -5768,7 +5772,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_374554_20429"
   end
 
-  create_table "lime_survey_375442", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_375442", id: :serial, force: :cascade do |t|
     t.text "375442X1493X16305SQ001"
     t.text "375442X1493X16305SQ002"
     t.text "375442X1493X16305SQ004"
@@ -5798,7 +5802,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_375442_30762"
   end
 
-  create_table "lime_survey_376199", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_376199", id: :serial, force: :cascade do |t|
     t.string "376199X1163X13386SQ001", limit: 5
     t.string "376199X1163X13386SQ002", limit: 5
     t.string "376199X1163X13386SQ003", limit: 5
@@ -5827,7 +5831,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_376199_33778"
   end
 
-  create_table "lime_survey_377251", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_377251", id: :serial, force: :cascade do |t|
     t.text "377251X562X6910CoachEmail"
     t.text "377251X562X6910CoachName"
     t.text "377251X562X6910StudentEmail"
@@ -5873,7 +5877,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_377251_8448"
   end
 
-  create_table "lime_survey_377817", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_377817", id: :serial, force: :cascade do |t|
     t.text "377817X70X1200CoachEmail"
     t.text "377817X70X1200CoachName"
     t.text "377817X70X1200StudentEmail"
@@ -5921,7 +5925,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_377817_27181"
   end
 
-  create_table "lime_survey_379942", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_379942", id: :serial, force: :cascade do |t|
     t.text "379942X355X4021CoachEmail"
     t.text "379942X355X4021CoachName"
     t.text "379942X355X4021StudentEmail"
@@ -5986,7 +5990,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_379942_19621"
   end
 
-  create_table "lime_survey_387311", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_387311", id: :serial, force: :cascade do |t|
     t.text "387311X1414X15172CoachEmail"
     t.text "387311X1414X15172CoachName"
     t.text "387311X1414X15172StudentEmail"
@@ -6037,7 +6041,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_387311_1342"
   end
 
-  create_table "lime_survey_387554", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_387554", id: :serial, force: :cascade do |t|
     t.text "387554X1312X14215"
     t.text "387554X1312X14216"
     t.text "387554X1312X14217"
@@ -6076,7 +6080,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_387554_27673"
   end
 
-  create_table "lime_survey_387554_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_387554_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "387554X1312X14215time"
     t.float "387554X1312X14216time"
     t.float "387554X1312X14217time"
@@ -6096,7 +6100,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_388285", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_388285", id: :serial, force: :cascade do |t|
     t.text "388285X727X8744CoachEmail"
     t.text "388285X727X8744CoachName"
     t.text "388285X727X8744MedhubID"
@@ -6171,7 +6175,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_388285_8887"
   end
 
-  create_table "lime_survey_394338", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_394338", id: :serial, force: :cascade do |t|
     t.text "394338X295X3530CoachEmail"
     t.text "394338X295X3530CoachName"
     t.text "394338X295X3530StudentEmail"
@@ -6229,7 +6233,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_394338_34262"
   end
 
-  create_table "lime_survey_394961", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_394961", id: :serial, force: :cascade do |t|
     t.string "394961X282X3380SQ1", limit: 5
     t.string "394961X282X3380SQ10", limit: 5
     t.string "394961X282X3380SQ2", limit: 5
@@ -6270,7 +6274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_394961_14791"
   end
 
-  create_table "lime_survey_395824", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_395824", id: :serial, force: :cascade do |t|
     t.text "395824X396X4317InterComp1"
     t.text "395824X396X4317InterComp2"
     t.text "395824X396X4317InterComp3"
@@ -6310,7 +6314,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_395824_44826"
   end
 
-  create_table "lime_survey_397638", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_397638", id: :serial, force: :cascade do |t|
     t.text "397638X1420X15314CoachEmail"
     t.text "397638X1420X15314CoachName"
     t.text "397638X1420X15314StudentEmail"
@@ -6367,7 +6371,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_397638_44146"
   end
 
-  create_table "lime_survey_397785", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_397785", id: :serial, force: :cascade do |t|
     t.text "397785X829X9433"
     t.text "397785X829X9436"
     t.string "397785X830X9434C1", limit: 5
@@ -6397,7 +6401,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_397785_30030"
   end
 
-  create_table "lime_survey_398373", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_398373", id: :serial, force: :cascade do |t|
     t.text "398373X890X10092CoachEmail"
     t.text "398373X890X10092CoachName"
     t.text "398373X890X10092Course"
@@ -6447,7 +6451,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_398373_39962"
   end
 
-  create_table "lime_survey_398458", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_398458", id: :serial, force: :cascade do |t|
     t.text "398458X1123X13223CoachEmail"
     t.text "398458X1123X13223CoachName"
     t.text "398458X1123X13223StudentEmail"
@@ -6477,7 +6481,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_398458_45462"
   end
 
-  create_table "lime_survey_421869", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_421869", id: :serial, force: :cascade do |t|
     t.text "421869X1401X15065CoachEmail"
     t.text "421869X1401X15065CoachName"
     t.text "421869X1401X15065Course"
@@ -6541,7 +6545,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_421869_37721"
   end
 
-  create_table "lime_survey_425411", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_425411", id: :serial, force: :cascade do |t|
     t.text "425411X891X10140"
     t.text "425411X891X10143"
     t.string "425411X892X10141C1", limit: 5
@@ -6571,7 +6575,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_425411_1939"
   end
 
-  create_table "lime_survey_427934", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_427934", id: :serial, force: :cascade do |t|
     t.text "427934X135X2113CoachEmail"
     t.text "427934X135X2113CoachName"
     t.text "427934X135X2113StudentEmail"
@@ -6600,7 +6604,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_427934_39520"
   end
 
-  create_table "lime_survey_427934_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_427934_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "427934X135X2113time"
     t.float "427934X135time"
     t.float "427934X82X1343time"
@@ -6609,7 +6613,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_429836", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_429836", id: :serial, force: :cascade do |t|
     t.string "429836X1174X13444SQ001", limit: 5
     t.string "429836X1174X13444SQ002", limit: 5
     t.string "429836X1174X13444SQ003", limit: 5
@@ -6638,7 +6642,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_429836_28841"
   end
 
-  create_table "lime_survey_435562", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_435562", id: :serial, force: :cascade do |t|
     t.string "435562X1190X13523SQ001", limit: 5
     t.string "435562X1190X13523SQ002", limit: 5
     t.string "435562X1190X13523SQ003", limit: 5
@@ -6661,7 +6665,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_435562_9403"
   end
 
-  create_table "lime_survey_435624", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_435624", id: :serial, force: :cascade do |t|
     t.text "435624X663X8074"
     t.text "435624X663X8077"
     t.string "435624X664X8075C1", limit: 5
@@ -6691,7 +6695,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_435624_38597"
   end
 
-  create_table "lime_survey_437763", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_437763", id: :serial, force: :cascade do |t|
     t.text "437763X266X3240"
     t.text "437763X266X3241"
     t.text "437763X266X3247"
@@ -6742,7 +6746,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_437763_19384"
   end
 
-  create_table "lime_survey_437763_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_437763_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "437763X266X3240time"
     t.float "437763X266X3241time"
     t.float "437763X266X3247time"
@@ -6762,7 +6766,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_439977", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_439977", id: :serial, force: :cascade do |t|
     t.text "439977X196X2419CoachEmail"
     t.text "439977X196X2419CoachName"
     t.text "439977X196X2419StudentEmail"
@@ -6778,7 +6782,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_439977_30437"
   end
 
-  create_table "lime_survey_444625", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_444625", id: :serial, force: :cascade do |t|
     t.string "444625X78X1291InstructorKnowledge", limit: 5
     t.string "444625X78X1291InstructorRate", limit: 5
     t.string "444625X78X1291InstructorWellPrep", limit: 5
@@ -6795,7 +6799,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_444625_23702"
   end
 
-  create_table "lime_survey_445212", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_445212", id: :serial, force: :cascade do |t|
     t.text "445212X934X10463"
     t.text "445212X934X10468"
     t.text "445212X934X10469"
@@ -6830,7 +6834,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_445212_31357"
   end
 
-  create_table "lime_survey_451531", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_451531", id: :serial, force: :cascade do |t|
     t.text "451531X1532X16650"
     t.text "451531X1533X16651"
     t.text "451531X1534X16652"
@@ -6842,7 +6846,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_451531_49474"
   end
 
-  create_table "lime_survey_454475", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_454475", id: :serial, force: :cascade do |t|
     t.text "454475X207X2452"
     t.text "454475X207X2455"
     t.string "454475X208X2453C1", limit: 5
@@ -6872,7 +6876,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_454475_32604"
   end
 
-  create_table "lime_survey_457387", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_457387", id: :serial, force: :cascade do |t|
     t.text "457387X424X4559CoachEmail"
     t.text "457387X424X4559CoachName"
     t.text "457387X424X4559StudentEmail"
@@ -6922,7 +6926,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_457387_29335"
   end
 
-  create_table "lime_survey_462858", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_462858", id: :serial, force: :cascade do |t|
     t.text "462858X1060X12853SQ001"
     t.text "462858X1060X12853SQ002"
     t.text "462858X1060X12853SQ003"
@@ -6947,7 +6951,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_462858_12819"
   end
 
-  create_table "lime_survey_466694", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_466694", id: :serial, force: :cascade do |t|
     t.text "466694X1333X14400"
     t.text "466694X1334X14401"
     t.text "466694X1474X15864"
@@ -6959,7 +6963,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_466694_1068"
   end
 
-  create_table "lime_survey_467179", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_467179", id: :serial, force: :cascade do |t|
     t.text "467179X1304X14159"
     t.text "467179X1304X14160"
     t.text "467179X1304X14161"
@@ -6998,7 +7002,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_467179_34446"
   end
 
-  create_table "lime_survey_467179_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_467179_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "467179X1304X14159time"
     t.float "467179X1304X14160time"
     t.float "467179X1304X14161time"
@@ -7018,7 +7022,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_467574", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_467574", id: :serial, force: :cascade do |t|
     t.text "467574X359X4081CoachEmail"
     t.text "467574X359X4081CoachName"
     t.text "467574X359X4081StudentEmail"
@@ -7076,7 +7080,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_467574_39533"
   end
 
-  create_table "lime_survey_469168", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_469168", id: :serial, force: :cascade do |t|
     t.text "469168X790X9169"
     t.text "469168X790X9170"
     t.text "469168X790X9176"
@@ -7113,7 +7117,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_469168_13080"
   end
 
-  create_table "lime_survey_469168_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_469168_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "469168X790X9169time"
     t.float "469168X790X9170time"
     t.float "469168X790X9176time"
@@ -7133,7 +7137,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_474646", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_474646", id: :serial, force: :cascade do |t|
     t.text "474646X623X7772"
     t.text "474646X623X7776"
     t.text "474646X623X7777"
@@ -7178,7 +7182,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_474646_13239"
   end
 
-  create_table "lime_survey_476665", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_476665", id: :serial, force: :cascade do |t|
     t.string "476665X972X10745SQ002", limit: 5
     t.string "476665X972X10745SQ003", limit: 5
     t.string "476665X972X10745SQ004", limit: 5
@@ -7850,7 +7854,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_476665_5387"
   end
 
-  create_table "lime_survey_486269", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_486269", id: :serial, force: :cascade do |t|
     t.text "486269X416X4503"
     t.text "486269X416X4504"
     t.text "486269X416X4505"
@@ -7887,7 +7891,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_486269_38001"
   end
 
-  create_table "lime_survey_486269_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_486269_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "486269X416X4503time"
     t.float "486269X416X4504time"
     t.float "486269X416X4505time"
@@ -7907,7 +7911,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_486571", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_486571", id: :serial, force: :cascade do |t|
     t.text "486571X308X3635InterComp1"
     t.text "486571X308X3635InterComp2"
     t.text "486571X308X3635InterComp3"
@@ -7947,7 +7951,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_486571_26963"
   end
 
-  create_table "lime_survey_491682", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_491682", id: :serial, force: :cascade do |t|
     t.string "491682X1348X14536SQ001", limit: 5
     t.string "491682X1348X14536SQ002", limit: 5
     t.string "491682X1348X14536SQ003", limit: 5
@@ -7972,7 +7976,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_491682_37201"
   end
 
-  create_table "lime_survey_492174", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_492174", id: :serial, force: :cascade do |t|
     t.text "492174X1343X14500"
     t.integer "492174X1343X14500_filecount"
     t.text "492174X1344X14501CoachEmail"
@@ -7988,7 +7992,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_492174_26257"
   end
 
-  create_table "lime_survey_492244", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_492244", id: :serial, force: :cascade do |t|
     t.string "492244X140X2132PatientCare1", limit: 5
     t.string "492244X140X2132PatientCare2", limit: 5
     t.string "492244X140X2132PatientCare3", limit: 5
@@ -8024,7 +8028,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_492244_34347"
   end
 
-  create_table "lime_survey_493992", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_493992", id: :serial, force: :cascade do |t|
     t.text "493992X194X2412CoachEmail"
     t.text "493992X194X2412CoachName"
     t.text "493992X194X2412StudentEmail"
@@ -8040,7 +8044,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_493992_18236"
   end
 
-  create_table "lime_survey_495231", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_495231", id: :serial, force: :cascade do |t|
     t.text "495231X484X5449"
     t.text "495231X484X5454"
     t.text "495231X484X5455"
@@ -8079,7 +8083,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_495231_3088"
   end
 
-  create_table "lime_survey_497227", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_497227", id: :serial, force: :cascade do |t|
     t.text "497227X1330X14376CoachEmail"
     t.text "497227X1330X14376CoachName"
     t.text "497227X1330X14376StudentEmail"
@@ -8113,7 +8117,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_497227_5975"
   end
 
-  create_table "lime_survey_499971", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_499971", id: :serial, force: :cascade do |t|
     t.text "499971X402X4393CoachEmail"
     t.text "499971X402X4393CoachName"
     t.text "499971X402X4393StudentEmail"
@@ -8147,7 +8151,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_499971_40900"
   end
 
-  create_table "lime_survey_511677", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_511677", id: :serial, force: :cascade do |t|
     t.text "511677X868X9717Address1"
     t.text "511677X868X9717Address2"
     t.text "511677X868X9717City"
@@ -8314,7 +8318,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_511677_4958"
   end
 
-  create_table "lime_survey_515521", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_515521", id: :serial, force: :cascade do |t|
     t.string "515521X879X9853SQ001", limit: 5
     t.string "515521X879X9854", limit: 5
     t.string "515521X879X9855", limit: 1
@@ -8370,7 +8374,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_515521_6114"
   end
 
-  create_table "lime_survey_515521_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_515521_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "515521X879X9853time"
     t.float "515521X879X9854time"
     t.float "515521X879X9855time"
@@ -8400,7 +8404,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_515866", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_515866", id: :serial, force: :cascade do |t|
     t.string "515866X1X10", limit: 5
     t.text "515866X1X10other"
     t.text "515866X1X11"
@@ -8438,7 +8442,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_515866_44125"
   end
 
-  create_table "lime_survey_515866_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_515866_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "515866X1X10time"
     t.float "515866X1X11time"
     t.float "515866X1X1time"
@@ -8454,7 +8458,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_519686", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_519686", id: :serial, force: :cascade do |t|
     t.decimal "519686X233X2841", precision: 30, scale: 10
     t.text "519686X233X2842"
     t.decimal "519686X233X2843Comp1", precision: 30, scale: 10
@@ -8475,7 +8479,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_519686_7060"
   end
 
-  create_table "lime_survey_521515", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_521515", id: :serial, force: :cascade do |t|
     t.text "521515X759X8951CoachEmail"
     t.text "521515X759X8951CoachName"
     t.text "521515X759X8951StudentEmail"
@@ -8510,7 +8514,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_521515_17573"
   end
 
-  create_table "lime_survey_523595", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_523595", id: :serial, force: :cascade do |t|
     t.string "523595X1212X13621SQ001", limit: 5
     t.string "523595X1212X13621SQ002", limit: 5
     t.string "523595X1212X13621SQ003", limit: 5
@@ -8535,7 +8539,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_523595_26225"
   end
 
-  create_table "lime_survey_529666", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_529666", id: :serial, force: :cascade do |t|
     t.text "529666X1442X15522"
     t.text "529666X1442X15525"
     t.string "529666X1443X15523C1", limit: 5
@@ -8565,7 +8569,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_529666_5350"
   end
 
-  create_table "lime_survey_533729", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_533729", id: :serial, force: :cascade do |t|
     t.text "533729X1463X15758CoachEmail"
     t.text "533729X1463X15758CoachName"
     t.text "533729X1463X15758StudentEmail"
@@ -8600,7 +8604,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_533729_41906"
   end
 
-  create_table "lime_survey_533935", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_533935", id: :serial, force: :cascade do |t|
     t.text "533935X1327X14346CoachEmail"
     t.text "533935X1327X14346CoachName"
     t.text "533935X1327X14346StudentEmail"
@@ -8634,7 +8638,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_533935_47483"
   end
 
-  create_table "lime_survey_539178", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_539178", id: :serial, force: :cascade do |t|
     t.string "539178X1269X13906SQ001", limit: 5
     t.string "539178X1269X13906SQ002", limit: 5
     t.string "539178X1269X13906SQ003", limit: 5
@@ -8666,7 +8670,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_539178_48555"
   end
 
-  create_table "lime_survey_541377", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_541377", id: :serial, force: :cascade do |t|
     t.text "541377X953X10562"
     t.text "541377X953X10567"
     t.text "541377X953X10568"
@@ -8701,7 +8705,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_541377_48253"
   end
 
-  create_table "lime_survey_543187", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_543187", id: :serial, force: :cascade do |t|
     t.string "543187X1086X13039PatientCare1", limit: 5
     t.string "543187X1086X13039PatientCare2", limit: 5
     t.string "543187X1086X13039PatientCare3", limit: 5
@@ -8739,7 +8743,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_543187_45505"
   end
 
-  create_table "lime_survey_546189", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_546189", id: :serial, force: :cascade do |t|
     t.string "546189X1289X14044SQ001", limit: 5
     t.string "546189X1289X14044SQ002", limit: 5
     t.string "546189X1289X14044SQ003", limit: 5
@@ -8780,7 +8784,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_546189_23872"
   end
 
-  create_table "lime_survey_555987", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_555987", id: :serial, force: :cascade do |t|
     t.text "555987X912X10331"
     t.text "555987X912X10332"
     t.text "555987X912X10338"
@@ -8817,7 +8821,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_555987_14200"
   end
 
-  create_table "lime_survey_555987_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_555987_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "555987X912X10331time"
     t.float "555987X912X10332time"
     t.float "555987X912X10338time"
@@ -8837,7 +8841,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_558829", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_558829", id: :serial, force: :cascade do |t|
     t.decimal "558829X1044X12607SQ001", precision: 30, scale: 10
     t.decimal "558829X1044X12607SQ002", precision: 30, scale: 10
     t.decimal "558829X1044X12607SQ003", precision: 30, scale: 10
@@ -9003,7 +9007,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_558829_48739"
   end
 
-  create_table "lime_survey_563811", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_563811", id: :serial, force: :cascade do |t|
     t.string "563811X20X235", limit: 255
     t.decimal "563811X20X342FPEB", precision: 30, scale: 10
     t.decimal "563811X20X342HIST", precision: 30, scale: 10
@@ -9017,7 +9021,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_563811_10246"
   end
 
-  create_table "lime_survey_564857", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_564857", id: :serial, force: :cascade do |t|
     t.text "564857X1308X14187"
     t.text "564857X1308X14188"
     t.text "564857X1308X14189"
@@ -9056,7 +9060,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_564857_2792"
   end
 
-  create_table "lime_survey_564857_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_564857_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "564857X1308X14187time"
     t.float "564857X1308X14188time"
     t.float "564857X1308X14189time"
@@ -9076,7 +9080,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_565251", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_565251", id: :serial, force: :cascade do |t|
     t.text "565251X1477X15926CoachEmail"
     t.text "565251X1477X15926CoachName"
     t.text "565251X1477X15926Course"
@@ -9140,7 +9144,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_565251_130"
   end
 
-  create_table "lime_survey_573344", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_573344", id: :serial, force: :cascade do |t|
     t.string "573344X1242X13753SQ001", limit: 5
     t.string "573344X1242X13753SQ002", limit: 5
     t.string "573344X1242X13753SQ003", limit: 5
@@ -9169,7 +9173,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_573344_9470"
   end
 
-  create_table "lime_survey_586629", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_586629", id: :serial, force: :cascade do |t|
     t.text "586629X536X6431"
     t.text "586629X536X6432"
     t.text "586629X536X6433"
@@ -9187,7 +9191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_586629_3082"
   end
 
-  create_table "lime_survey_587195", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_587195", id: :serial, force: :cascade do |t|
     t.text "587195X888X10029CoachEmail"
     t.text "587195X888X10029CoachName"
     t.text "587195X888X10029StudentEmail"
@@ -9239,7 +9243,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_587195_11177"
   end
 
-  create_table "lime_survey_588433", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_588433", id: :serial, force: :cascade do |t|
     t.string "588433X1138X13297SQ001", limit: 5
     t.string "588433X1138X13297SQ002", limit: 5
     t.string "588433X1138X13297SQ004", limit: 5
@@ -9257,7 +9261,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_588433_35399"
   end
 
-  create_table "lime_survey_588566", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_588566", id: :serial, force: :cascade do |t|
     t.text "588566X659X8053"
     t.text "588566X659X8056"
     t.string "588566X660X8054C1", limit: 5
@@ -9287,7 +9291,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_588566_28195"
   end
 
-  create_table "lime_survey_591843", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_591843", id: :serial, force: :cascade do |t|
     t.text "591843X258X3166CoachEmail"
     t.text "591843X258X3166CoachName"
     t.text "591843X258X3166StudentEmail"
@@ -9309,7 +9313,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_591843_227"
   end
 
-  create_table "lime_survey_595124", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_595124", id: :serial, force: :cascade do |t|
     t.text "595124X1498X16328CoachEmail"
     t.text "595124X1498X16328CoachName"
     t.text "595124X1498X16328StudentEmail"
@@ -9377,7 +9381,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_595124_6274"
   end
 
-  create_table "lime_survey_596212", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_596212", id: :serial, force: :cascade do |t|
     t.text "596212X496X5619CoachEmail"
     t.text "596212X496X5619CoachName"
     t.text "596212X496X5619StudentEmail"
@@ -9447,7 +9451,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_596212_18439"
   end
 
-  create_table "lime_survey_597816", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_597816", id: :serial, force: :cascade do |t|
     t.string "597816X863X9650", limit: 1
     t.decimal "597816X863X9651", precision: 30, scale: 10
     t.string "597816X863X9652", limit: 5
@@ -9467,7 +9471,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_597816_38536"
   end
 
-  create_table "lime_survey_598842", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_598842", id: :serial, force: :cascade do |t|
     t.text "598842X1418X15237CoachEmail"
     t.text "598842X1418X15237CoachName"
     t.text "598842X1418X15237StudentEmail"
@@ -9519,7 +9523,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_598842_355"
   end
 
-  create_table "lime_survey_599254", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_599254", id: :serial, force: :cascade do |t|
     t.string "599254X1350X14556PatientCare1", limit: 5
     t.string "599254X1350X14556PatientCare2", limit: 5
     t.string "599254X1350X14556PatientCare3", limit: 5
@@ -9555,7 +9559,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_599254_39004"
   end
 
-  create_table "lime_survey_612253", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_612253", id: :serial, force: :cascade do |t|
     t.string "612253X1077X13003PatientCare1", limit: 5
     t.string "612253X1077X13003PatientCare2", limit: 5
     t.string "612253X1077X13003PatientCare3", limit: 5
@@ -9589,7 +9593,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_612253_46019"
   end
 
-  create_table "lime_survey_613333", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_613333", id: :serial, force: :cascade do |t|
     t.text "613333X856X9575CoachEmail"
     t.text "613333X856X9575CoachName"
     t.text "613333X856X9575StudentEmail"
@@ -9642,7 +9646,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_613333_24580"
   end
 
-  create_table "lime_survey_613437", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_613437", id: :serial, force: :cascade do |t|
     t.text "613437X170X2293CoachEmail"
     t.text "613437X170X2293CoachName"
     t.text "613437X170X2293StudentEmail"
@@ -9667,7 +9671,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_613437_45980"
   end
 
-  create_table "lime_survey_615493", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_615493", id: :serial, force: :cascade do |t|
     t.decimal "615493X740X8833", precision: 30, scale: 10
     t.text "615493X740X8837"
     t.string "615493X740X8845", limit: 5
@@ -9690,7 +9694,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_615493_4802"
   end
 
-  create_table "lime_survey_619823", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_619823", id: :serial, force: :cascade do |t|
     t.string "619823X72X1244SQ001", limit: 5
     t.string "619823X72X1244SQ002", limit: 5
     t.string "619823X72X1244SQ003", limit: 5
@@ -9707,7 +9711,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_619823_4612"
   end
 
-  create_table "lime_survey_621988", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_621988", id: :serial, force: :cascade do |t|
     t.string "621988X1229X13697SQ001", limit: 5
     t.string "621988X1229X13697SQ002", limit: 5
     t.string "621988X1229X13697SQ003", limit: 5
@@ -9730,7 +9734,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_621988_15539"
   end
 
-  create_table "lime_survey_624522", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_624522", id: :serial, force: :cascade do |t|
     t.decimal "624522X62X1002Week1MCQ", precision: 30, scale: 10
     t.decimal "624522X62X1002Week2MCQ", precision: 30, scale: 10
     t.decimal "624522X62X1002Week3MCQ", precision: 30, scale: 10
@@ -9771,7 +9775,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_624522_45381"
   end
 
-  create_table "lime_survey_632996", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_632996", id: :serial, force: :cascade do |t|
     t.text "632996X643X7909"
     t.text "632996X643X7914"
     t.text "632996X643X7915"
@@ -9810,7 +9814,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_632996_5300"
   end
 
-  create_table "lime_survey_641121", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_641121", id: :serial, force: :cascade do |t|
     t.text "641121X1000X12238"
     t.text "641121X1000X12239"
     t.text "641121X1001X12240"
@@ -9897,7 +9901,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_641121_5367"
   end
 
-  create_table "lime_survey_642132", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_642132", id: :serial, force: :cascade do |t|
     t.string "642132X1199X13563SQ001", limit: 5
     t.string "642132X1199X13563SQ002", limit: 5
     t.string "642132X1199X13563SQ003", limit: 5
@@ -9922,7 +9926,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_642132_29847"
   end
 
-  create_table "lime_survey_646543", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_646543", id: :serial, force: :cascade do |t|
     t.text "646543X678X8236"
     t.text "646543X678X8238"
     t.text "646543X678X8239"
@@ -9967,7 +9971,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_646543_44330"
   end
 
-  create_table "lime_survey_647365", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_647365", id: :serial, force: :cascade do |t|
     t.text "647365X1006X12256CoachEmail"
     t.text "647365X1006X12256CoachName"
     t.text "647365X1006X12256StudentEmail"
@@ -10030,7 +10034,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_647365_22183"
   end
 
-  create_table "lime_survey_648667", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_648667", id: :serial, force: :cascade do |t|
     t.text "648667X1486X16222CoachEmail"
     t.text "648667X1486X16222CoachName"
     t.text "648667X1486X16222StudentEmail"
@@ -10084,7 +10088,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_648667_22412"
   end
 
-  create_table "lime_survey_649133", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_649133", id: :serial, force: :cascade do |t|
     t.text "649133X218X2703"
     t.text "649133X218X2709"
     t.text "649133X218X2710"
@@ -10137,7 +10141,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_649133_18768"
   end
 
-  create_table "lime_survey_659914", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_659914", id: :serial, force: :cascade do |t|
     t.text "659914X235X2854CoachEmail"
     t.text "659914X235X2854CoachName"
     t.text "659914X235X2854StudentEmail"
@@ -10172,7 +10176,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_659914_8282"
   end
 
-  create_table "lime_survey_662352", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_662352", id: :serial, force: :cascade do |t|
     t.text "662352X785X9140"
     t.text "662352X785X9141"
     t.text "662352X785X9147"
@@ -10209,7 +10213,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_662352_46561"
   end
 
-  create_table "lime_survey_662352_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_662352_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "662352X785X9140time"
     t.float "662352X785X9141time"
     t.float "662352X785X9147time"
@@ -10229,7 +10233,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_665268", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_665268", id: :serial, force: :cascade do |t|
     t.text "665268X276X3355CoachEmail"
     t.text "665268X276X3355CoachName"
     t.text "665268X276X3355StudentEmail"
@@ -10251,7 +10255,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_665268_39078"
   end
 
-  create_table "lime_survey_665981", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_665981", id: :serial, force: :cascade do |t|
     t.string "665981X1247X13777SQ001", limit: 5
     t.string "665981X1247X13777SQ002", limit: 5
     t.string "665981X1247X13777SQ003", limit: 5
@@ -10276,7 +10280,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_665981_25523"
   end
 
-  create_table "lime_survey_666796", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_666796", id: :serial, force: :cascade do |t|
     t.string "666796X1390X14874SQ001", limit: 5
     t.string "666796X1390X14875", limit: 5
     t.string "666796X1390X14876", limit: 1
@@ -10332,7 +10336,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_666796_2390"
   end
 
-  create_table "lime_survey_666796_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_666796_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "666796X1390X14874time"
     t.float "666796X1390X14875time"
     t.float "666796X1390X14876time"
@@ -10362,7 +10366,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_668697", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_668697", id: :serial, force: :cascade do |t|
     t.text "668697X939X10490"
     t.text "668697X939X10493"
     t.string "668697X940X10491C1", limit: 5
@@ -10387,7 +10391,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_668697_30304"
   end
 
-  create_table "lime_survey_671159", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_671159", id: :serial, force: :cascade do |t|
     t.text "671159X242X2886CoachEmail"
     t.text "671159X242X2886CoachName"
     t.text "671159X242X2886StudentEmail"
@@ -10411,7 +10415,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_671159_46148"
   end
 
-  create_table "lime_survey_677249", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_677249", id: :serial, force: :cascade do |t|
     t.string "677249X1258X13834SQ001", limit: 5
     t.string "677249X1258X13834SQ002", limit: 5
     t.string "677249X1258X13834SQ003", limit: 5
@@ -10440,7 +10444,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_677249_6266"
   end
 
-  create_table "lime_survey_683612", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_683612", id: :serial, force: :cascade do |t|
     t.string "683612X1294X14082SQ001", limit: 5
     t.string "683612X1294X14082SQ002", limit: 5
     t.string "683612X1294X14082SQ003", limit: 5
@@ -10481,7 +10485,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_683612_19327"
   end
 
-  create_table "lime_survey_692188", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_692188", id: :serial, force: :cascade do |t|
     t.text "692188X803X9266"
     t.text "692188X803X9267"
     t.text "692188X803X9268"
@@ -10520,7 +10524,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_692188_14432"
   end
 
-  create_table "lime_survey_692188_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_692188_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "692188X803X9266time"
     t.float "692188X803X9267time"
     t.float "692188X803X9268time"
@@ -10540,7 +10544,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_692745", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_692745", id: :serial, force: :cascade do |t|
     t.string "692745X1264X13876SQ001", limit: 5
     t.string "692745X1264X13876SQ002", limit: 5
     t.string "692745X1264X13876SQ003", limit: 5
@@ -10572,7 +10576,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_692745_43903"
   end
 
-  create_table "lime_survey_693131", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_693131", id: :serial, force: :cascade do |t|
     t.string "693131X1237X13729SQ001", limit: 5
     t.string "693131X1237X13729SQ002", limit: 5
     t.string "693131X1237X13729SQ003", limit: 5
@@ -10601,7 +10605,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_693131_19982"
   end
 
-  create_table "lime_survey_695171", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_695171", id: :serial, force: :cascade do |t|
     t.decimal "695171X216X2690Comp1", precision: 30, scale: 10
     t.decimal "695171X216X2690Comp2", precision: 30, scale: 10
     t.decimal "695171X216X2690Comp3", precision: 30, scale: 10
@@ -10622,7 +10626,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_695171_47182"
   end
 
-  create_table "lime_survey_696162", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_696162", id: :serial, force: :cascade do |t|
     t.text "696162X1432X15480"
     t.text "696162X1432X15483"
     t.string "696162X1433X15481C1", limit: 5
@@ -10652,7 +10656,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_696162_30970"
   end
 
-  create_table "lime_survey_696695", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_696695", id: :serial, force: :cascade do |t|
     t.string "696695X1127X13240SQ001", limit: 5
     t.string "696695X1127X13240SQ002", limit: 5
     t.string "696695X1127X13240SQ003", limit: 5
@@ -10675,7 +10679,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_696695_36189"
   end
 
-  create_table "lime_survey_698673", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_698673", id: :serial, force: :cascade do |t|
     t.text "698673X823X9399"
     t.text "698673X823X9404"
     t.text "698673X823X9405"
@@ -10719,7 +10723,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_698673_34030"
   end
 
-  create_table "lime_survey_699643", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_699643", id: :serial, force: :cascade do |t|
     t.decimal "699643X632X7842", precision: 30, scale: 10
     t.decimal "699643X632X7843", precision: 30, scale: 10
     t.string "699643X632X8003", limit: 1
@@ -10755,7 +10759,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_699643_33869"
   end
 
-  create_table "lime_survey_712943", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_712943", id: :serial, force: :cascade do |t|
     t.text "712943X572X7030CoachEmail"
     t.text "712943X572X7030CoachName"
     t.text "712943X572X7030Course"
@@ -10805,7 +10809,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_712943_40204"
   end
 
-  create_table "lime_survey_717754", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_717754", id: :serial, force: :cascade do |t|
     t.string "717754X1105X13109PatientCare1", limit: 5
     t.string "717754X1105X13109PatientCare2", limit: 5
     t.string "717754X1105X13109PatientCare3", limit: 5
@@ -10839,7 +10843,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_717754_38151"
   end
 
-  create_table "lime_survey_719849", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_719849", id: :serial, force: :cascade do |t|
     t.string "719849X1216X13639SQ001", limit: 5
     t.string "719849X1216X13639SQ002", limit: 5
     t.string "719849X1216X13639SQ003", limit: 5
@@ -10862,7 +10866,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_719849_24602"
   end
 
-  create_table "lime_survey_721872", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_721872", id: :serial, force: :cascade do |t|
     t.text "721872X1484X16160CoachEmail"
     t.text "721872X1484X16160CoachName"
     t.text "721872X1484X16160StudentEmail"
@@ -10916,7 +10920,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_721872_36988"
   end
 
-  create_table "lime_survey_723278", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_723278", id: :serial, force: :cascade do |t|
     t.text "723278X1341X14419CoachEmail"
     t.text "723278X1341X14419CoachName"
     t.text "723278X1341X14419StudentEmail"
@@ -10973,7 +10977,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_723278_43436"
   end
 
-  create_table "lime_survey_723478", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_723478", id: :serial, force: :cascade do |t|
     t.string "723478X1037X12423", limit: 5
     t.string "723478X1037X12430", limit: 5
     t.string "723478X1037X12431", limit: 5
@@ -11003,7 +11007,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_723478_41940"
   end
 
-  create_table "lime_survey_731241", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_731241", id: :serial, force: :cascade do |t|
     t.text "731241X1316X14243"
     t.text "731241X1316X14244"
     t.text "731241X1316X14245"
@@ -11042,7 +11046,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_731241_30232"
   end
 
-  create_table "lime_survey_731241_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_731241_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "731241X1316X14243time"
     t.float "731241X1316X14244time"
     t.float "731241X1316X14245time"
@@ -11062,7 +11066,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_732242", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_732242", id: :serial, force: :cascade do |t|
     t.text "732242X899X10181CoachEmail"
     t.text "732242X899X10181CoachName"
     t.text "732242X899X10181StudentEmail"
@@ -11080,7 +11084,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_732242_8625"
   end
 
-  create_table "lime_survey_732933", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_732933", id: :serial, force: :cascade do |t|
     t.text "732933X903X10241CoachEmail"
     t.text "732933X903X10241CoachName"
     t.text "732933X903X10241StudentEmail"
@@ -11125,7 +11129,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_732933_8666"
   end
 
-  create_table "lime_survey_735127", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_735127", id: :serial, force: :cascade do |t|
     t.string "735127X1168X13414SQ001", limit: 5
     t.string "735127X1168X13414SQ002", limit: 5
     t.string "735127X1168X13414SQ003", limit: 5
@@ -11157,7 +11161,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_735127_24727"
   end
 
-  create_table "lime_survey_735426", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_735426", id: :serial, force: :cascade do |t|
     t.text "735426X717X8646"
     t.text "735426X717X8649"
     t.string "735426X718X8647C1", limit: 5
@@ -11187,7 +11191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_735426_14373"
   end
 
-  create_table "lime_survey_737564", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_737564", id: :serial, force: :cascade do |t|
     t.text "737564X1052X12776SQ001"
     t.text "737564X1052X12776SQ002"
     t.text "737564X1052X12776SQ003"
@@ -11218,7 +11222,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_737564_17154"
   end
 
-  create_table "lime_survey_737849", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_737849", id: :serial, force: :cascade do |t|
     t.text "737849X518X6044Address1"
     t.text "737849X518X6044Address2"
     t.text "737849X518X6044City"
@@ -11385,7 +11389,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_737849_298"
   end
 
-  create_table "lime_survey_751219", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_751219", id: :serial, force: :cascade do |t|
     t.text "751219X776X9069"
     t.text "751219X776X9070"
     t.text "751219X776X9071"
@@ -11424,7 +11428,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_751219_46533"
   end
 
-  create_table "lime_survey_751219_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_751219_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "751219X776X9069time"
     t.float "751219X776X9070time"
     t.float "751219X776X9071time"
@@ -11444,7 +11448,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_756815", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_756815", id: :serial, force: :cascade do |t|
     t.string "756815X1274X13936SQ001", limit: 5
     t.string "756815X1274X13936SQ002", limit: 5
     t.string "756815X1274X13936SQ003", limit: 5
@@ -11476,7 +11480,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_756815_5545"
   end
 
-  create_table "lime_survey_763739", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_763739", id: :serial, force: :cascade do |t|
     t.string "763739X25X77RateYourHealth4Weeks", limit: 5
     t.string "763739X25X78DifficultDailyWork", limit: 5
     t.string "763739X25X78EmotionsProb", limit: 5
@@ -11508,7 +11512,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_763739_1407"
   end
 
-  create_table "lime_survey_765455", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_765455", id: :serial, force: :cascade do |t|
     t.text "765455X273X3304CoachEmail"
     t.text "765455X273X3304CoachName"
     t.text "765455X273X3304StudentEmail"
@@ -11550,7 +11554,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_765455_32089"
   end
 
-  create_table "lime_survey_766876", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_766876", id: :serial, force: :cascade do |t|
     t.text "766876X674X8216"
     t.text "766876X674X8219"
     t.string "766876X675X8217C1", limit: 5
@@ -11580,7 +11584,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_766876_39868"
   end
 
-  create_table "lime_survey_767155", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_767155", id: :serial, force: :cascade do |t|
     t.text "767155X426X4614InterComp1"
     t.text "767155X426X4614InterComp2"
     t.text "767155X426X4614InterComp3"
@@ -11620,7 +11624,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_767155_27453"
   end
 
-  create_table "lime_survey_771162", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_771162", id: :serial, force: :cascade do |t|
     t.text "771162X1412X15153CoachEmail"
     t.text "771162X1412X15153CoachName"
     t.text "771162X1412X15153StudentEmail"
@@ -11640,7 +11644,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_771162_14794"
   end
 
-  create_table "lime_survey_771525", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_771525", id: :serial, force: :cascade do |t|
     t.text "771525X927X10418"
     t.text "771525X927X10423"
     t.text "771525X927X10424"
@@ -11675,7 +11679,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_771525_3744"
   end
 
-  create_table "lime_survey_775361", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_775361", id: :serial, force: :cascade do |t|
     t.text "775361X864X9672CoachEmail"
     t.text "775361X864X9672CoachName"
     t.text "775361X864X9672StudentEmail"
@@ -11691,7 +11695,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_775361_4711"
   end
 
-  create_table "lime_survey_777581", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_777581", id: :serial, force: :cascade do |t|
     t.text "777581X901X10191CoachEmail"
     t.text "777581X901X10191CoachName"
     t.text "777581X901X10191StudentEmail"
@@ -11741,7 +11745,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_777581_13188"
   end
 
-  create_table "lime_survey_777632", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_777632", id: :serial, force: :cascade do |t|
     t.text "777632X102X1598CoachEmail"
     t.text "777632X102X1598CoachName"
     t.text "777632X102X1598StudentEmail"
@@ -11776,7 +11780,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_777632_1953"
   end
 
-  create_table "lime_survey_777632_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_777632_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "777632X102X1598time"
     t.float "777632X102time"
     t.float "777632X103X1592time"
@@ -11792,7 +11796,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_777786", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_777786", id: :serial, force: :cascade do |t|
     t.string "777786X122X1961", limit: 5
     t.string "777786X122X1962", limit: 255
     t.text "777786X88X1400"
@@ -11845,7 +11849,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_777786_35677"
   end
 
-  create_table "lime_survey_783623", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_783623", id: :serial, force: :cascade do |t|
     t.text "783623X807X9294"
     t.text "783623X807X9295"
     t.text "783623X807X9296"
@@ -11884,7 +11888,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_783623_35943"
   end
 
-  create_table "lime_survey_783623_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_783623_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "783623X807X9294time"
     t.float "783623X807X9295time"
     t.float "783623X807X9296time"
@@ -11904,7 +11908,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_784264", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_784264", id: :serial, force: :cascade do |t|
     t.string "784264X551X6845InstructorKnowledge", limit: 5
     t.string "784264X551X6845InstructorRate", limit: 5
     t.string "784264X551X6845InstructorWellPrep", limit: 5
@@ -11925,7 +11929,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_784264_13496"
   end
 
-  create_table "lime_survey_784488", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_784488", id: :serial, force: :cascade do |t|
     t.text "784488X1058X12852SQ001"
     t.text "784488X1058X12852SQ002"
     t.text "784488X1058X12852SQ003"
@@ -11959,7 +11963,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_784488_46118"
   end
 
-  create_table "lime_survey_786237", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_786237", id: :serial, force: :cascade do |t|
     t.text "786237X758X8950"
     t.datetime "datestamp", precision: nil, null: false
     t.integer "lastpage"
@@ -11971,7 +11975,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_786237_24870"
   end
 
-  create_table "lime_survey_788731", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_788731", id: :serial, force: :cascade do |t|
     t.text "788731X577X7098NeuroComp1"
     t.text "788731X577X7098NeuroComp2"
     t.text "788731X577X7098NeuroComp3"
@@ -12040,7 +12044,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_788731_7096"
   end
 
-  create_table "lime_survey_789651", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_789651", id: :serial, force: :cascade do |t|
     t.text "789651X420X4531"
     t.text "789651X420X4532"
     t.text "789651X420X4533"
@@ -12077,7 +12081,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_789651_47454"
   end
 
-  create_table "lime_survey_789651_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_789651_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "789651X420X4531time"
     t.float "789651X420X4532time"
     t.float "789651X420X4533time"
@@ -12097,7 +12101,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_791695", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_791695", id: :serial, force: :cascade do |t|
     t.text "791695X1424X15384CoachEmail"
     t.text "791695X1424X15384CoachName"
     t.text "791695X1424X15384MedhubID"
@@ -12172,7 +12176,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_791695_6567"
   end
 
-  create_table "lime_survey_794391", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_794391", id: :serial, force: :cascade do |t|
     t.text "794391X1480X16038CoachEmail"
     t.text "794391X1480X16038CoachName"
     t.text "794391X1480X16038StudentEmail"
@@ -12229,7 +12233,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_794391_5346"
   end
 
-  create_table "lime_survey_795622", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_795622", id: :serial, force: :cascade do |t|
     t.text "795622X481X5427"
     t.text "795622X481X5431"
     t.text "795622X481X5432"
@@ -12261,7 +12265,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_795622_43759"
   end
 
-  create_table "lime_survey_795667", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_795667", id: :serial, force: :cascade do |t|
     t.string "795667X75X1273InstructorKnowledge", limit: 5
     t.string "795667X75X1273InstructorRate", limit: 5
     t.string "795667X75X1273InstructorWellPrep", limit: 5
@@ -12279,7 +12283,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_795667_32907"
   end
 
-  create_table "lime_survey_796478", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_796478", id: :serial, force: :cascade do |t|
     t.text "796478X405X4423CoachEmail"
     t.text "796478X405X4423CoachName"
     t.text "796478X405X4423StudentEmail"
@@ -12313,7 +12317,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_796478_34160"
   end
 
-  create_table "lime_survey_798191", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_798191", id: :serial, force: :cascade do |t|
     t.text "798191X280X3370CoachEmail"
     t.text "798191X280X3370CoachName"
     t.text "798191X280X3370StudentEmail"
@@ -12331,7 +12335,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_798191_32052"
   end
 
-  create_table "lime_survey_799577", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_799577", id: :serial, force: :cascade do |t|
     t.text "799577X375X4170"
     t.text "799577X375X4176"
     t.text "799577X375X4177"
@@ -12363,7 +12367,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_799577_2274"
   end
 
-  create_table "lime_survey_812723", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_812723", id: :serial, force: :cascade do |t|
     t.text "812723X229X2794CoachEmail"
     t.text "812723X229X2794CoachName"
     t.text "812723X229X2794StudentEmail"
@@ -12381,7 +12385,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_812723_14011"
   end
 
-  create_table "lime_survey_814276", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_814276", id: :serial, force: :cascade do |t|
     t.string "814276X612X7457", limit: 5
     t.string "814276X613X74581", limit: 5
     t.string "814276X613X745810", limit: 5
@@ -12434,7 +12438,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_814276_2922"
   end
 
-  create_table "lime_survey_815884", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_815884", id: :serial, force: :cascade do |t|
     t.text "815884X231X2804CoachEmail"
     t.text "815884X231X2804CoachName"
     t.text "815884X231X2804StudentEmail"
@@ -12476,7 +12480,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_815884_26662"
   end
 
-  create_table "lime_survey_815996", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_815996", id: :serial, force: :cascade do |t|
     t.string "815996X833X9453PatientCare1", limit: 5
     t.string "815996X833X9453PatientCare2", limit: 5
     t.string "815996X833X9453PatientCare3", limit: 5
@@ -12510,7 +12514,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_815996_17780"
   end
 
-  create_table "lime_survey_822191", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_822191", id: :serial, force: :cascade do |t|
     t.string "822191X1141X13308SQ001", limit: 5
     t.string "822191X1141X13308SQ002", limit: 5
     t.string "822191X1141X13308SQ005", limit: 5
@@ -12531,7 +12535,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_822191_8015"
   end
 
-  create_table "lime_survey_822697", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_822697", id: :serial, force: :cascade do |t|
     t.text "822697X945X10531"
     t.text "822697X945X10534"
     t.string "822697X946X10532C1", limit: 5
@@ -12561,7 +12565,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_822697_12987"
   end
 
-  create_table "lime_survey_832226", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_832226", id: :serial, force: :cascade do |t|
     t.text "832226X321X3748InterComp1"
     t.text "832226X321X3748InterComp2"
     t.text "832226X321X3748InterComp3"
@@ -12597,7 +12601,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_832226_10039"
   end
 
-  create_table "lime_survey_834556", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_834556", id: :serial, force: :cascade do |t|
     t.text "834556X126X2013"
     t.text "834556X126X2014"
     t.text "834556X126X2015"
@@ -12631,7 +12635,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_834556_36271"
   end
 
-  create_table "lime_survey_834556_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_834556_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "834556X126X2013time"
     t.float "834556X126X2014time"
     t.float "834556X126X2015time"
@@ -12648,7 +12652,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_835117", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_835117", id: :serial, force: :cascade do |t|
     t.string "835117X1251X13795SQ001", limit: 5
     t.string "835117X1251X13795SQ002", limit: 5
     t.string "835117X1251X13795SQ003", limit: 5
@@ -12674,7 +12678,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_835117_2603"
   end
 
-  create_table "lime_survey_835844", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_835844", id: :serial, force: :cascade do |t|
     t.string "835844X1203X13581SQ001", limit: 5
     t.string "835844X1203X13581SQ002", limit: 5
     t.string "835844X1203X13581SQ003", limit: 5
@@ -12703,7 +12707,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_835844_1472"
   end
 
-  create_table "lime_survey_838243", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_838243", id: :serial, force: :cascade do |t|
     t.decimal "838243X80X1303Week1MCQ", precision: 30, scale: 10
     t.decimal "838243X80X1303Week2MCQ", precision: 30, scale: 10
     t.decimal "838243X80X1303Week3MCQ", precision: 30, scale: 10
@@ -12747,7 +12751,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_838243_9486"
   end
 
-  create_table "lime_survey_839222", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_839222", id: :serial, force: :cascade do |t|
     t.text "839222X721X8667CoachEmail"
     t.text "839222X721X8667CoachName"
     t.text "839222X721X8667StudentEmail"
@@ -12809,7 +12813,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_839222_14554"
   end
 
-  create_table "lime_survey_843428", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_843428", id: :serial, force: :cascade do |t|
     t.string "843428X1345X14513SQ001", limit: 5
     t.string "843428X1345X14513SQ002", limit: 5
     t.string "843428X1345X14513SQ003", limit: 5
@@ -12839,7 +12843,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_843428_15640"
   end
 
-  create_table "lime_survey_845373", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_845373", id: :serial, force: :cascade do |t|
     t.decimal "845373X736X8831", precision: 30, scale: 10
     t.text "845373X736X8835"
     t.string "845373X736X8849", limit: 5
@@ -12864,7 +12868,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_845373_29883"
   end
 
-  create_table "lime_survey_845943", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_845943", id: :serial, force: :cascade do |t|
     t.string "845943X768X9045SQ001", limit: 5
     t.text "845943X768X9047"
     t.string "845943X769X9048SQ001", limit: 5
@@ -12889,7 +12893,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_845943_21741"
   end
 
-  create_table "lime_survey_846349", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_846349", id: :serial, force: :cascade do |t|
     t.text "846349X973X12085CoachEmail"
     t.text "846349X973X12085CoachName"
     t.text "846349X973X12085MedhubID"
@@ -12964,7 +12968,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_846349_44466"
   end
 
-  create_table "lime_survey_851468", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_851468", id: :serial, force: :cascade do |t|
     t.text "851468X252X3098CoachEmail"
     t.text "851468X252X3098CoachName"
     t.text "851468X252X3098Course"
@@ -13014,7 +13018,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_851468_9564"
   end
 
-  create_table "lime_survey_853179", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_853179", id: :serial, force: :cascade do |t|
     t.string "853179X342X3924SQ1", limit: 5
     t.string "853179X342X3924SQ10", limit: 5
     t.string "853179X342X3924SQ2", limit: 5
@@ -13054,7 +13058,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_853179_8195"
   end
 
-  create_table "lime_survey_854737", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_854737", id: :serial, force: :cascade do |t|
     t.text "854737X905X10292CoachEmail"
     t.text "854737X905X10292CoachName"
     t.text "854737X905X10292StudentEmail"
@@ -13072,7 +13076,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_854737_40967"
   end
 
-  create_table "lime_survey_855879", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_855879", id: :serial, force: :cascade do |t|
     t.text "855879X1436X15495"
     t.text "855879X1436X15498"
     t.string "855879X1437X15496C1", limit: 5
@@ -13102,7 +13106,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_855879_24381"
   end
 
-  create_table "lime_survey_856163", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_856163", id: :serial, force: :cascade do |t|
     t.string "856163X150X2167PatientCare1", limit: 5
     t.string "856163X150X2167PatientCare2", limit: 5
     t.string "856163X150X2167PatientCare3", limit: 5
@@ -13136,7 +13140,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_856163_36446"
   end
 
-  create_table "lime_survey_856292", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_856292", id: :serial, force: :cascade do |t|
     t.text "856292X133X2068CoachEmail"
     t.text "856292X133X2068CoachName"
     t.text "856292X133X2068StudentEmail"
@@ -13183,7 +13187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_856292_40604"
   end
 
-  create_table "lime_survey_862455", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_862455", id: :serial, force: :cascade do |t|
     t.string "862455X1261X13855SQ001", limit: 5
     t.string "862455X1261X13855SQ002", limit: 5
     t.string "862455X1261X13855SQ003", limit: 5
@@ -13212,7 +13216,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_862455_23743"
   end
 
-  create_table "lime_survey_867378", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_867378", id: :serial, force: :cascade do |t|
     t.string "867378X510X5923SQ001", limit: 5
     t.string "867378X510X5923SQ002", limit: 5
     t.string "867378X510X5923SQ003", limit: 5
@@ -13242,7 +13246,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_867378_31266"
   end
 
-  create_table "lime_survey_868713", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_868713", id: :serial, force: :cascade do |t|
     t.text "868713X541X6515SQ1"
     t.text "868713X541X6515SQ10"
     t.text "868713X541X6515SQ2"
@@ -13498,7 +13502,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_868713_47039"
   end
 
-  create_table "lime_survey_869922", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_869922", id: :serial, force: :cascade do |t|
     t.datetime "869922X199X2427", precision: nil
     t.text "869922X199X2437"
     t.text "869922X199X2438"
@@ -13525,7 +13529,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_869922_42232"
   end
 
-  create_table "lime_survey_871339", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_871339", id: :serial, force: :cascade do |t|
     t.text "871339X780X9097"
     t.text "871339X780X9098"
     t.text "871339X780X9104"
@@ -13562,7 +13566,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_871339_41778"
   end
 
-  create_table "lime_survey_871339_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_871339_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "871339X780X9097time"
     t.float "871339X780X9098time"
     t.float "871339X780X9104time"
@@ -13582,7 +13586,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_872832", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_872832", id: :serial, force: :cascade do |t|
     t.text "872832X1482X16099CoachEmail"
     t.text "872832X1482X16099CoachName"
     t.text "872832X1482X16099StudentEmail"
@@ -13639,7 +13643,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_872832_4521"
   end
 
-  create_table "lime_survey_874158", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_874158", id: :serial, force: :cascade do |t|
     t.text "874158X648X7939"
     t.text "874158X648X7944"
     t.text "874158X648X7945"
@@ -13678,7 +13682,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_874158_25114"
   end
 
-  create_table "lime_survey_875262", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_875262", id: :serial, force: :cascade do |t|
     t.text "875262X627X7812"
     t.text "875262X627X7817"
     t.text "875262X627X7818"
@@ -13717,7 +13721,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_875262_31634"
   end
 
-  create_table "lime_survey_876368", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_876368", id: :serial, force: :cascade do |t|
     t.text "876368X882X9940CoachEmail"
     t.text "876368X882X9940CoachName"
     t.text "876368X882X9940StudentEmail"
@@ -13751,7 +13755,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_876368_38913"
   end
 
-  create_table "lime_survey_877165", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_877165", id: :serial, force: :cascade do |t|
     t.text "877165X933X10451"
     t.string "877165X933X10452", limit: 5
     t.string "877165X933X10453", limit: 5
@@ -13772,7 +13776,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_877165_23843"
   end
 
-  create_table "lime_survey_878259", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_878259", id: :serial, force: :cascade do |t|
     t.string "878259X1134X13281SQ001", limit: 5
     t.string "878259X1134X13281SQ002", limit: 5
     t.string "878259X1134X13281SQ004", limit: 5
@@ -13791,7 +13795,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_878259_29175"
   end
 
-  create_table "lime_survey_882568", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_882568", id: :serial, force: :cascade do |t|
     t.decimal "882568X733X8827", precision: 30, scale: 10
     t.text "882568X733X8834"
     t.string "882568X733X8848", limit: 5
@@ -13817,7 +13821,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_882568_11603"
   end
 
-  create_table "lime_survey_885481", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_885481", id: :serial, force: :cascade do |t|
     t.text "885481X560X6900CoachEmail"
     t.text "885481X560X6900CoachName"
     t.text "885481X560X6900StudentEmail"
@@ -13835,7 +13839,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_885481_32791"
   end
 
-  create_table "lime_survey_886573", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_886573", id: :serial, force: :cascade do |t|
     t.string "886573X245X2904", limit: 5
     t.string "886573X250X3071", limit: 5
     t.string "886573X251X3072", limit: 5
@@ -13847,7 +13851,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_886573_21544"
   end
 
-  create_table "lime_survey_887795", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_887795", id: :serial, force: :cascade do |t|
     t.text "887795X58X888CoachEmail"
     t.text "887795X58X888CoachName"
     t.text "887795X58X888StudentEmail"
@@ -13885,7 +13889,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_887795_37480"
   end
 
-  create_table "lime_survey_893188", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_893188", id: :serial, force: :cascade do |t|
     t.string "893188X187X2385InstructorKnowledge", limit: 5
     t.string "893188X187X2385InstructorRate", limit: 5
     t.string "893188X187X2385InstructorWellPrep", limit: 5
@@ -13906,7 +13910,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_893188_15797"
   end
 
-  create_table "lime_survey_893785", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_893785", id: :serial, force: :cascade do |t|
     t.string "893785X1233X13713SQ001", limit: 5
     t.string "893785X1233X13713SQ002", limit: 5
     t.string "893785X1233X13713SQ003", limit: 5
@@ -13929,7 +13933,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_893785_48130"
   end
 
-  create_table "lime_survey_895586", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_895586", id: :serial, force: :cascade do |t|
     t.decimal "895586X734X8828", precision: 30, scale: 10
     t.text "895586X734X8839"
     t.string "895586X734X8842", limit: 5
@@ -13955,7 +13959,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_895586_5495"
   end
 
-  create_table "lime_survey_895675", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_895675", id: :serial, force: :cascade do |t|
     t.string "895675X1208X13605SQ001", limit: 5
     t.string "895675X1208X13605SQ002", limit: 5
     t.string "895675X1208X13605SQ003", limit: 5
@@ -13978,7 +13982,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_895675_40937"
   end
 
-  create_table "lime_survey_898357", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_898357", id: :serial, force: :cascade do |t|
     t.text "898357X850X9493"
     t.integer "898357X850X9493_filecount"
     t.text "898357X851X9548CoachEmail"
@@ -13994,7 +13998,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_898357_27121"
   end
 
-  create_table "lime_survey_911612", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_911612", id: :serial, force: :cascade do |t|
     t.text "911612X963X10615CoachEmail"
     t.text "911612X963X10615CoachName"
     t.text "911612X963X10615StudentEmail"
@@ -14043,7 +14047,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_911612_12080"
   end
 
-  create_table "lime_survey_914672", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_914672", id: :serial, force: :cascade do |t|
     t.text "914672X311X3653PCP1"
     t.text "914672X311X3653PCP2"
     t.text "914672X311X3653PCP3"
@@ -14100,7 +14104,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_914672_1605"
   end
 
-  create_table "lime_survey_915499", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_915499", id: :serial, force: :cascade do |t|
     t.datetime "915499X471X5281", precision: nil
     t.string "915499X471X5282", limit: 5
     t.text "915499X471X5282other"
@@ -14243,7 +14247,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_915499_49000"
   end
 
-  create_table "lime_survey_916752", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_916752", id: :serial, force: :cascade do |t|
     t.string "916752X2X30SQ001", limit: 5
     t.string "916752X2X31", limit: 5
     t.string "916752X2X32", limit: 1
@@ -14288,7 +14292,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_916752_28174"
   end
 
-  create_table "lime_survey_916752_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_916752_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "916752X2X30time"
     t.float "916752X2X31time"
     t.float "916752X2X32time"
@@ -14306,7 +14310,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_917581", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_917581", id: :serial, force: :cascade do |t|
     t.text "917581X668X8100CoachEmail"
     t.text "917581X668X8100CoachName"
     t.text "917581X668X8100MedhubID"
@@ -14379,7 +14383,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_917581_38329"
   end
 
-  create_table "lime_survey_919367", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_919367", id: :serial, force: :cascade do |t|
     t.string "919367X1194X13539SQ001", limit: 5
     t.string "919367X1194X13539SQ002", limit: 5
     t.string "919367X1194X13539SQ003", limit: 5
@@ -14408,7 +14412,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_919367_24951"
   end
 
-  create_table "lime_survey_923271", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_923271", id: :serial, force: :cascade do |t|
     t.text "923271X1402X15112"
     t.text "923271X1402X15115"
     t.string "923271X1403X15113C1", limit: 5
@@ -14438,7 +14442,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_923271_2337"
   end
 
-  create_table "lime_survey_923512", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_923512", id: :serial, force: :cascade do |t|
     t.string "923512X608X7413", limit: 5
     t.string "923512X609X74141", limit: 5
     t.string "923512X609X741410", limit: 5
@@ -14491,7 +14495,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_923512_37818"
   end
 
-  create_table "lime_survey_925715", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_925715", id: :serial, force: :cascade do |t|
     t.text "925715X408X4447"
     t.text "925715X408X4448"
     t.text "925715X408X4449"
@@ -14530,7 +14534,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_925715_28227"
   end
 
-  create_table "lime_survey_925715_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_925715_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "925715X408X4447time"
     t.float "925715X408X4448time"
     t.float "925715X408X4449time"
@@ -14550,7 +14554,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_927695", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_927695", id: :serial, force: :cascade do |t|
     t.text "927695X83X1357"
     t.string "927695X83X1358", limit: 255
     t.text "927695X83X1364"
@@ -14601,7 +14605,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_927695_12443"
   end
 
-  create_table "lime_survey_927695_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_927695_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "927695X83X1357time"
     t.float "927695X83X1358time"
     t.float "927695X83X1364time"
@@ -14621,7 +14625,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_928898", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_928898", id: :serial, force: :cascade do |t|
     t.string "928898X186X2371InstructorKnowledge", limit: 5
     t.string "928898X186X2371InstructorRate", limit: 5
     t.string "928898X186X2371InstructorWellPrep", limit: 5
@@ -14642,7 +14646,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_928898_21326"
   end
 
-  create_table "lime_survey_929272", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_929272", id: :serial, force: :cascade do |t|
     t.string "929272X1008X12318", limit: 5
     t.text "929272X1009X12319"
     t.text "929272X1010X12323"
@@ -14675,7 +14679,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_929272_24871"
   end
 
-  create_table "lime_survey_931453", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_931453", id: :serial, force: :cascade do |t|
     t.string "931453X74X1263InstructorKnowledge", limit: 5
     t.string "931453X74X1263InstructorRate", limit: 5
     t.string "931453X74X1263InstructorWellPrep", limit: 5
@@ -14693,7 +14697,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_931453_37424"
   end
 
-  create_table "lime_survey_933729", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_933729", id: :serial, force: :cascade do |t|
     t.string "933729X1155X13355SQ001", limit: 5
     t.string "933729X1155X13355SQ002", limit: 5
     t.string "933729X1155X13355SQ003", limit: 5
@@ -14716,7 +14720,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_933729_49728"
   end
 
-  create_table "lime_survey_937831", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_937831", id: :serial, force: :cascade do |t|
     t.text "937831X958X10588"
     t.text "937831X958X10593"
     t.text "937831X958X10594"
@@ -14751,7 +14755,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_937831_35363"
   end
 
-  create_table "lime_survey_941869", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_941869", id: :serial, force: :cascade do |t|
     t.string "941869X1220X13655SQ001", limit: 5
     t.string "941869X1220X13655SQ002", limit: 5
     t.string "941869X1220X13655SQ003", limit: 5
@@ -14780,7 +14784,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_941869_46305"
   end
 
-  create_table "lime_survey_942554", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_942554", id: :serial, force: :cascade do |t|
     t.text "942554X1551X16874SQ001"
     t.text "942554X1551X16874SQ002"
     t.text "942554X1551X16874SQ004"
@@ -14810,7 +14814,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_942554_20335"
   end
 
-  create_table "lime_survey_945182", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_945182", id: :serial, force: :cascade do |t|
     t.decimal "945182X738X8830", precision: 30, scale: 10
     t.text "945182X738X8840"
     t.string "945182X738X8844", limit: 5
@@ -14833,7 +14837,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_945182_16503"
   end
 
-  create_table "lime_survey_949341", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_949341", id: :serial, force: :cascade do |t|
     t.text "949341X597X7322"
     t.text "949341X597X7323"
     t.text "949341X597X7329"
@@ -14884,7 +14888,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_949341_25167"
   end
 
-  create_table "lime_survey_949341_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_949341_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "949341X597X7322time"
     t.float "949341X597X7323time"
     t.float "949341X597X7329time"
@@ -14904,7 +14908,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_961225", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_961225", id: :serial, force: :cascade do |t|
     t.text "961225X1406X15127"
     t.integer "961225X1406X15127_filecount"
     t.text "961225X1407X15128CoachEmail"
@@ -14935,7 +14939,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_961225_26190"
   end
 
-  create_table "lime_survey_965969", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_965969", id: :serial, force: :cascade do |t|
     t.text "965969X370X4127"
     t.text "965969X370X4128"
     t.text "965969X370X4134"
@@ -14986,7 +14990,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_965969_32496"
   end
 
-  create_table "lime_survey_965969_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_965969_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "965969X370X4127time"
     t.float "965969X370X4128time"
     t.float "965969X370X4134time"
@@ -15006,7 +15010,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_966338", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_966338", id: :serial, force: :cascade do |t|
     t.text "966338X1475X15865CoachEmail"
     t.text "966338X1475X15865CoachName"
     t.text "966338X1475X15865StudentEmail"
@@ -15066,7 +15070,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_966338_41780"
   end
 
-  create_table "lime_survey_967443", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_967443", id: :serial, force: :cascade do |t|
     t.text "967443X1472X15797CoachEmail"
     t.text "967443X1472X15797CoachName"
     t.text "967443X1472X15797StudentEmail"
@@ -15125,7 +15129,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_967443_42100"
   end
 
-  create_table "lime_survey_974861", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_974861", id: :serial, force: :cascade do |t|
     t.text "974861X1066X12953"
     t.text "974861X1066X12956"
     t.string "974861X1067X12954C1", limit: 5
@@ -15155,7 +15159,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_974861_9965"
   end
 
-  create_table "lime_survey_975859", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_975859", id: :serial, force: :cascade do |t|
     t.text "975859X907X10302"
     t.text "975859X907X10303"
     t.text "975859X907X10309"
@@ -15192,7 +15196,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_975859_13829"
   end
 
-  create_table "lime_survey_975859_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_975859_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "975859X907X10302time"
     t.float "975859X907X10303time"
     t.float "975859X907X10309time"
@@ -15212,7 +15216,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_976265", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_976265", id: :serial, force: :cascade do |t|
     t.text "976265X514X5946CoachEmail"
     t.text "976265X514X5946CoachName"
     t.text "976265X514X5946StudentEmail"
@@ -15258,7 +15262,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_976265_28151"
   end
 
-  create_table "lime_survey_977261", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_977261", id: :serial, force: :cascade do |t|
     t.text "977261X381X4215"
     t.text "977261X381X4221"
     t.text "977261X381X4222"
@@ -15297,7 +15301,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_977261_28361"
   end
 
-  create_table "lime_survey_979663", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_979663", id: :serial, force: :cascade do |t|
     t.text "979663X297X3589CoachEmail"
     t.text "979663X297X3589CoachName"
     t.text "979663X297X3589StudentEmail"
@@ -15332,7 +15336,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_979663_37184"
   end
 
-  create_table "lime_survey_982113", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_982113", id: :serial, force: :cascade do |t|
     t.text "982113X305X3621CoachEmail"
     t.text "982113X305X3621CoachName"
     t.text "982113X305X3621StudentEmail"
@@ -15381,7 +15385,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_982113_4688"
   end
 
-  create_table "lime_survey_983399", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_983399", id: :serial, force: :cascade do |t|
     t.string "983399X1186X13505SQ001", limit: 5
     t.string "983399X1186X13505SQ002", limit: 5
     t.string "983399X1186X13505SQ003", limit: 5
@@ -15406,7 +15410,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_983399_38373"
   end
 
-  create_table "lime_survey_987322", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_987322", id: :serial, force: :cascade do |t|
     t.text "987322X412X4475"
     t.text "987322X412X4476"
     t.text "987322X412X4477"
@@ -15445,7 +15449,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_987322_23638"
   end
 
-  create_table "lime_survey_987322_timings", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_survey_987322_timings", id: :integer, default: nil, force: :cascade do |t|
     t.float "987322X412X4475time"
     t.float "987322X412X4476time"
     t.float "987322X412X4477time"
@@ -15465,7 +15469,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.float "interviewtime"
   end
 
-  create_table "lime_survey_988354", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_988354", id: :serial, force: :cascade do |t|
     t.text "988354X895X10161"
     t.text "988354X895X10164"
     t.string "988354X896X10162C1", limit: 5
@@ -15495,7 +15499,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_988354_24059"
   end
 
-  create_table "lime_survey_991545", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_991545", id: :serial, force: :cascade do |t|
     t.text "991545X1324X14316CoachEmail"
     t.text "991545X1324X14316CoachName"
     t.text "991545X1324X14316StudentEmail"
@@ -15529,7 +15533,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_991545_38234"
   end
 
-  create_table "lime_survey_996971", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_996971", id: :serial, force: :cascade do |t|
     t.text "996971X330X3845InterComp1"
     t.text "996971X330X3845InterComp2"
     t.text "996971X330X3845InterComp3"
@@ -15569,7 +15573,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_996971_17717"
   end
 
-  create_table "lime_survey_998484", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_998484", id: :serial, force: :cascade do |t|
     t.text "998484X672X8168CoachEmail"
     t.text "998484X672X8168CoachName"
     t.text "998484X672X8168StudentEmail"
@@ -15616,7 +15620,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_survey_token_998484_656"
   end
 
-  create_table "lime_survey_links", primary_key: ["participant_id", "token_id", "survey_id"], force: :cascade do |t|
+  create_table "public.lime_survey_links", primary_key: ["participant_id", "token_id", "survey_id"], force: :cascade do |t|
     t.datetime "date_completed", precision: nil
     t.datetime "date_created", precision: nil
     t.datetime "date_invited", precision: nil
@@ -15625,14 +15629,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.integer "token_id", null: false
   end
 
-  create_table "lime_survey_url_parameters", id: :serial, force: :cascade do |t|
+  create_table "public.lime_survey_url_parameters", id: :serial, force: :cascade do |t|
     t.string "parameter", limit: 50, null: false
     t.integer "sid", null: false
     t.integer "targetqid"
     t.integer "targetsqid"
   end
 
-  create_table "lime_surveymenu", id: :serial, force: :cascade do |t|
+  create_table "public.lime_surveymenu", id: :serial, force: :cascade do |t|
     t.boolean "active", default: false, null: false
     t.datetime "changed_at", precision: nil
     t.integer "changed_by", default: 0, null: false
@@ -15652,7 +15656,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["title"], name: "lime_idx2_surveymenu"
   end
 
-  create_table "lime_surveymenu_entries", id: :serial, force: :cascade do |t|
+  create_table "public.lime_surveymenu_entries", id: :serial, force: :cascade do |t|
     t.string "action", limit: 192, default: "", null: false
     t.boolean "active", default: false, null: false
     t.datetime "changed_at", precision: nil
@@ -15684,7 +15688,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["name"], name: "lime_surveymenu_entries_name", unique: true
   end
 
-  create_table "lime_surveys", primary_key: "sid", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_surveys", primary_key: "sid", id: :integer, default: nil, force: :cascade do |t|
     t.string "active", limit: 1, default: "N", null: false
     t.text "additional_languages"
     t.string "admin", limit: 50
@@ -15748,7 +15752,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "usetokens", limit: 1, default: "N", null: false
   end
 
-  create_table "lime_surveys_groups", primary_key: "gsid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_surveys_groups", primary_key: "gsid", id: :serial, force: :cascade do |t|
     t.boolean "alwaysavailable"
     t.datetime "created", precision: nil
     t.integer "created_by", null: false
@@ -15762,7 +15766,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "title", limit: 100
   end
 
-  create_table "lime_surveys_groupsettings", primary_key: "gsid", id: :integer, default: nil, force: :cascade do |t|
+  create_table "public.lime_surveys_groupsettings", primary_key: "gsid", id: :integer, default: nil, force: :cascade do |t|
     t.string "admin", limit: 50
     t.string "adminemail", limit: 254
     t.string "alloweditaftercompletion", limit: 1, default: "N"
@@ -15807,7 +15811,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "usecookie", limit: 1, default: "N", null: false
   end
 
-  create_table "lime_surveys_languagesettings", primary_key: ["surveyls_survey_id", "surveyls_language"], force: :cascade do |t|
+  create_table "public.lime_surveys_languagesettings", primary_key: ["surveyls_survey_id", "surveyls_language"], force: :cascade do |t|
     t.text "attachments"
     t.text "email_admin_notification"
     t.string "email_admin_notification_subj", limit: 255
@@ -15837,7 +15841,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.text "surveyls_welcometext"
   end
 
-  create_table "lime_template_configuration", id: :serial, force: :cascade do |t|
+  create_table "public.lime_template_configuration", id: :serial, force: :cascade do |t|
     t.text "cssframework_css"
     t.text "cssframework_js"
     t.string "cssframework_name", limit: 45
@@ -15858,7 +15862,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["uid"], name: "lime_idx4_template_configuration"
   end
 
-  create_table "lime_templates", id: :serial, force: :cascade do |t|
+  create_table "public.lime_templates", id: :serial, force: :cascade do |t|
     t.string "api_version", limit: 45, null: false
     t.string "author", limit: 150
     t.string "author_email", limit: 255
@@ -15882,7 +15886,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["title"], name: "lime_idx2_templates"
   end
 
-  create_table "lime_tokens_115743", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_115743", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -15904,7 +15908,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_115743_40921"
   end
 
-  create_table "lime_tokens_117798", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_117798", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -15931,7 +15935,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_117798_10364"
   end
 
-  create_table "lime_tokens_127551", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_127551", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_10", limit: 255
     t.string "attribute_11", limit: 255
@@ -15963,7 +15967,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_127551_11160"
   end
 
-  create_table "lime_tokens_128963", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_128963", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -15984,7 +15988,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_128963_12689"
   end
 
-  create_table "lime_tokens_133379", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_133379", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16005,7 +16009,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_133379_34041"
   end
 
-  create_table "lime_tokens_135694", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_135694", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -16038,7 +16042,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_135694_39641"
   end
 
-  create_table "lime_tokens_135887", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_135887", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -16070,7 +16074,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_135887_41412"
   end
 
-  create_table "lime_tokens_137847", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_137847", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_10", limit: 255
     t.string "attribute_11", limit: 255
@@ -16107,7 +16111,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_137847_38280"
   end
 
-  create_table "lime_tokens_144697", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_144697", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -16135,7 +16139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_144697_19725"
   end
 
-  create_table "lime_tokens_146548", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_146548", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16156,7 +16160,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_146548_20294"
   end
 
-  create_table "lime_tokens_147694", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_147694", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16177,7 +16181,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_147694_25420"
   end
 
-  create_table "lime_tokens_153794", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_153794", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16198,7 +16202,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_153794_47851"
   end
 
-  create_table "lime_tokens_154741", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_154741", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -16222,7 +16226,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_154741_35709"
   end
 
-  create_table "lime_tokens_155954", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_155954", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16243,7 +16247,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_155954_27556"
   end
 
-  create_table "lime_tokens_156227", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_156227", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16264,7 +16268,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_156227_2089"
   end
 
-  create_table "lime_tokens_166929", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_166929", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -16290,7 +16294,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_166929_7605"
   end
 
-  create_table "lime_tokens_171898", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_171898", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16311,7 +16315,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_171898_41202"
   end
 
-  create_table "lime_tokens_174335", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_174335", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -16343,7 +16347,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_174335_1664"
   end
 
-  create_table "lime_tokens_174547", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_174547", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -16369,7 +16373,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_174547_42762"
   end
 
-  create_table "lime_tokens_179962", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_179962", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16390,7 +16394,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_179962_13717"
   end
 
-  create_table "lime_tokens_181695", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_181695", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16411,7 +16415,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_181695_31032"
   end
 
-  create_table "lime_tokens_186962", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_186962", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -16435,7 +16439,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_186962_14443"
   end
 
-  create_table "lime_tokens_196377", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_196377", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16456,7 +16460,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_196377_25212"
   end
 
-  create_table "lime_tokens_196476", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_196476", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16477,7 +16481,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_196476_3130"
   end
 
-  create_table "lime_tokens_212442", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_212442", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16498,7 +16502,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_212442_6588"
   end
 
-  create_table "lime_tokens_213273", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_213273", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -16522,7 +16526,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_213273_29426"
   end
 
-  create_table "lime_tokens_216744", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_216744", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16543,7 +16547,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_216744_22193"
   end
 
-  create_table "lime_tokens_218865", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_218865", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -16571,7 +16575,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_218865_37010"
   end
 
-  create_table "lime_tokens_218935", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_218935", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -16595,7 +16599,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_218935_19265"
   end
 
-  create_table "lime_tokens_219315", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_219315", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -16619,7 +16623,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_219315_32725"
   end
 
-  create_table "lime_tokens_221971", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_221971", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16640,7 +16644,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_221971_31448"
   end
 
-  create_table "lime_tokens_222865", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_222865", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16661,7 +16665,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_222865_5353"
   end
 
-  create_table "lime_tokens_223338", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_223338", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16682,7 +16686,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_223338_32816"
   end
 
-  create_table "lime_tokens_224436", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_224436", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16703,7 +16707,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_224436_14084"
   end
 
-  create_table "lime_tokens_225663", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_225663", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16724,7 +16728,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_225663_15675"
   end
 
-  create_table "lime_tokens_226843", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_226843", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16745,7 +16749,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_226843_12451"
   end
 
-  create_table "lime_tokens_231599", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_231599", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.string "attribute_11", limit: 255
@@ -16778,7 +16782,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_231599_31656"
   end
 
-  create_table "lime_tokens_233128", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_233128", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16799,7 +16803,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_233128_39718"
   end
 
-  create_table "lime_tokens_233677", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_233677", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16820,7 +16824,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_233677_18380"
   end
 
-  create_table "lime_tokens_234282", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_234282", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16841,7 +16845,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_234282_47963"
   end
 
-  create_table "lime_tokens_237826", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_237826", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16862,7 +16866,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_237826_2965"
   end
 
-  create_table "lime_tokens_244784", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_244784", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16883,7 +16887,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_244784_22852"
   end
 
-  create_table "lime_tokens_251129", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_251129", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16904,7 +16908,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_251129_34645"
   end
 
-  create_table "lime_tokens_262858", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_262858", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16925,7 +16929,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_262858_16068"
   end
 
-  create_table "lime_tokens_263331", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_263331", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -16946,7 +16950,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_263331_29478"
   end
 
-  create_table "lime_tokens_264391", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_264391", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -16970,7 +16974,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_264391_20520"
   end
 
-  create_table "lime_tokens_266127", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_266127", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_14"
@@ -17002,7 +17006,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_266127_21044"
   end
 
-  create_table "lime_tokens_273679", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_273679", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17023,7 +17027,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_273679_22631"
   end
 
-  create_table "lime_tokens_279267", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_279267", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17044,7 +17048,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_279267_28594"
   end
 
-  create_table "lime_tokens_279376", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_279376", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -17070,7 +17074,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_279376_30926"
   end
 
-  create_table "lime_tokens_283462", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_283462", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17091,7 +17095,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_283462_24784"
   end
 
-  create_table "lime_tokens_285498", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_285498", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -17119,7 +17123,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_285498_23308"
   end
 
-  create_table "lime_tokens_286313", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_286313", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -17141,7 +17145,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_286313_34289"
   end
 
-  create_table "lime_tokens_289191", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_289191", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17162,7 +17166,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_289191_27274"
   end
 
-  create_table "lime_tokens_297591", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_297591", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17183,7 +17187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_297591_37152"
   end
 
-  create_table "lime_tokens_297723", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_297723", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -17213,7 +17217,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_297723_48210"
   end
 
-  create_table "lime_tokens_315995", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_315995", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -17237,7 +17241,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_315995_49389"
   end
 
-  create_table "lime_tokens_325846", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_325846", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -17259,7 +17263,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_325846_45021"
   end
 
-  create_table "lime_tokens_332979", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_332979", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17280,7 +17284,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_332979_36377"
   end
 
-  create_table "lime_tokens_333341", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_333341", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17301,7 +17305,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_333341_6267"
   end
 
-  create_table "lime_tokens_337222", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_337222", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -17329,7 +17333,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_337222_18959"
   end
 
-  create_table "lime_tokens_339266", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_339266", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -17353,7 +17357,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_339266_43859"
   end
 
-  create_table "lime_tokens_339853", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_339853", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -17388,7 +17392,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_339853_23492"
   end
 
-  create_table "lime_tokens_346978", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_346978", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17409,7 +17413,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_346978_39221"
   end
 
-  create_table "lime_tokens_347561", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_347561", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -17438,7 +17442,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_347561_27227"
   end
 
-  create_table "lime_tokens_352355", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_352355", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17459,7 +17463,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_352355_19909"
   end
 
-  create_table "lime_tokens_354858", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_354858", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -17489,7 +17493,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_354858_18226"
   end
 
-  create_table "lime_tokens_355818", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_355818", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -17517,7 +17521,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_355818_46990"
   end
 
-  create_table "lime_tokens_356148", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_356148", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17538,7 +17542,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_356148_9013"
   end
 
-  create_table "lime_tokens_356167", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_356167", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -17560,7 +17564,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_356167_13428"
   end
 
-  create_table "lime_tokens_361445", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_361445", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_10", limit: 255
     t.string "attribute_11", limit: 255
@@ -17592,7 +17596,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_361445_1487"
   end
 
-  create_table "lime_tokens_364732", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_364732", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17613,7 +17617,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_364732_48954"
   end
 
-  create_table "lime_tokens_364877", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_364877", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17634,7 +17638,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_364877_6080"
   end
 
-  create_table "lime_tokens_365272", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_365272", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17655,7 +17659,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_365272_18347"
   end
 
-  create_table "lime_tokens_365933", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_365933", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17676,7 +17680,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_365933_34017"
   end
 
-  create_table "lime_tokens_371212", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_371212", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -17705,7 +17709,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_371212_46113"
   end
 
-  create_table "lime_tokens_374554", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_374554", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17726,7 +17730,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_374554_14614"
   end
 
-  create_table "lime_tokens_376199", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_376199", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17747,7 +17751,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_376199_26384"
   end
 
-  create_table "lime_tokens_377251", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_377251", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17768,7 +17772,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_377251_44986"
   end
 
-  create_table "lime_tokens_377817", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_377817", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17789,7 +17793,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_377817_19462"
   end
 
-  create_table "lime_tokens_387311", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_387311", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17810,7 +17814,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_387311_38628"
   end
 
-  create_table "lime_tokens_387554", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_387554", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -17834,7 +17838,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_387554_48669"
   end
 
-  create_table "lime_tokens_388285", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_388285", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17855,7 +17859,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_388285_42914"
   end
 
-  create_table "lime_tokens_394338", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_394338", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17876,7 +17880,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_394338_22035"
   end
 
-  create_table "lime_tokens_394961", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_394961", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "blacklisted", limit: 17
@@ -17899,7 +17903,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_394961_23258"
   end
 
-  create_table "lime_tokens_395824", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_395824", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17920,7 +17924,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_395824_10013"
   end
 
-  create_table "lime_tokens_397638", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_397638", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17941,7 +17945,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_397638_23521"
   end
 
-  create_table "lime_tokens_397785", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_397785", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -17973,7 +17977,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_397785_39864"
   end
 
-  create_table "lime_tokens_398373", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_398373", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -17994,7 +17998,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_398373_20644"
   end
 
-  create_table "lime_tokens_398458", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_398458", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18015,7 +18019,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_398458_25137"
   end
 
-  create_table "lime_tokens_425411", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_425411", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.string "attribute_11", limit: 255
@@ -18050,7 +18054,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_425411_45435"
   end
 
-  create_table "lime_tokens_427934", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_427934", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18075,7 +18079,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_427934_2056"
   end
 
-  create_table "lime_tokens_429836", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_429836", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18096,7 +18100,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_429836_3777"
   end
 
-  create_table "lime_tokens_435562", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_435562", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18117,7 +18121,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_435562_8527"
   end
 
-  create_table "lime_tokens_435624", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_435624", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -18149,7 +18153,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_435624_1443"
   end
 
-  create_table "lime_tokens_437763", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_437763", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -18173,7 +18177,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_437763_18677"
   end
 
-  create_table "lime_tokens_444625", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_444625", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18194,7 +18198,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_444625_3626"
   end
 
-  create_table "lime_tokens_445212", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_445212", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18222,7 +18226,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_445212_36560"
   end
 
-  create_table "lime_tokens_451531", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_451531", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18243,7 +18247,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_451531_39408"
   end
 
-  create_table "lime_tokens_454475", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_454475", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -18280,7 +18284,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_454475_9368"
   end
 
-  create_table "lime_tokens_457387", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_457387", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18301,7 +18305,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_457387_28421"
   end
 
-  create_table "lime_tokens_462858", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_462858", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18322,7 +18326,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_462858_19719"
   end
 
-  create_table "lime_tokens_466694", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_466694", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18343,7 +18347,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_466694_7376"
   end
 
-  create_table "lime_tokens_467179", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_467179", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18367,7 +18371,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_467179_41885"
   end
 
-  create_table "lime_tokens_467574", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_467574", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18388,7 +18392,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_467574_18738"
   end
 
-  create_table "lime_tokens_469168", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_469168", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18412,7 +18416,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_469168_7032"
   end
 
-  create_table "lime_tokens_474646", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_474646", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18442,7 +18446,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_474646_49095"
   end
 
-  create_table "lime_tokens_476665", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_476665", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18463,7 +18467,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_476665_49863"
   end
 
-  create_table "lime_tokens_486269", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_486269", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -18487,7 +18491,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_486269_27525"
   end
 
-  create_table "lime_tokens_486571", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_486571", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18508,7 +18512,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_486571_46146"
   end
 
-  create_table "lime_tokens_491682", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_491682", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18529,7 +18533,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_491682_36038"
   end
 
-  create_table "lime_tokens_495231", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_495231", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -18557,7 +18561,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_495231_40018"
   end
 
-  create_table "lime_tokens_497227", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_497227", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18578,7 +18582,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_497227_15517"
   end
 
-  create_table "lime_tokens_499971", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_499971", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18599,7 +18603,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_499971_32544"
   end
 
-  create_table "lime_tokens_511677", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_511677", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18623,7 +18627,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_511677_26256"
   end
 
-  create_table "lime_tokens_515521", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_515521", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -18645,7 +18649,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_515521_47184"
   end
 
-  create_table "lime_tokens_515866", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_515866", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -18667,7 +18671,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_515866_30762"
   end
 
-  create_table "lime_tokens_523595", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_523595", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18688,7 +18692,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_523595_1987"
   end
 
-  create_table "lime_tokens_533935", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_533935", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18709,7 +18713,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_533935_32676"
   end
 
-  create_table "lime_tokens_539178", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_539178", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18730,7 +18734,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_539178_44108"
   end
 
-  create_table "lime_tokens_541377", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_541377", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18758,7 +18762,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_541377_32274"
   end
 
-  create_table "lime_tokens_543187", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_543187", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -18782,7 +18786,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_543187_14112"
   end
 
-  create_table "lime_tokens_546189", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_546189", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18803,7 +18807,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_546189_14601"
   end
 
-  create_table "lime_tokens_555987", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_555987", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18827,7 +18831,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_555987_33426"
   end
 
-  create_table "lime_tokens_558829", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_558829", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -18854,7 +18858,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_558829_36473"
   end
 
-  create_table "lime_tokens_563811", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_563811", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18875,7 +18879,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_563811_11715"
   end
 
-  create_table "lime_tokens_564857", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_564857", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -18899,7 +18903,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_564857_29965"
   end
 
-  create_table "lime_tokens_565251", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_565251", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18920,7 +18924,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_565251_44091"
   end
 
-  create_table "lime_tokens_573344", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_573344", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18941,7 +18945,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_573344_40258"
   end
 
-  create_table "lime_tokens_586629", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_586629", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -18967,7 +18971,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_586629_9573"
   end
 
-  create_table "lime_tokens_587195", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_587195", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -18988,7 +18992,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_587195_23926"
   end
 
-  create_table "lime_tokens_588433", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_588433", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19009,7 +19013,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_588433_2939"
   end
 
-  create_table "lime_tokens_588566", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_588566", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -19041,7 +19045,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_588566_1686"
   end
 
-  create_table "lime_tokens_595124", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_595124", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19062,7 +19066,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_595124_8076"
   end
 
-  create_table "lime_tokens_596212", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_596212", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19083,7 +19087,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_596212_21718"
   end
 
-  create_table "lime_tokens_597816", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_597816", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19104,7 +19108,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_597816_41282"
   end
 
-  create_table "lime_tokens_598842", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_598842", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19125,7 +19129,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_598842_3035"
   end
 
-  create_table "lime_tokens_612253", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_612253", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "blacklisted", limit: 17
@@ -19148,7 +19152,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_612253_13487"
   end
 
-  create_table "lime_tokens_613333", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_613333", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19169,7 +19173,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_613333_31967"
   end
 
-  create_table "lime_tokens_615493", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_615493", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19190,7 +19194,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_615493_20926"
   end
 
-  create_table "lime_tokens_619823", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_619823", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19211,7 +19215,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_619823_6870"
   end
 
-  create_table "lime_tokens_621988", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_621988", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19232,7 +19236,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_621988_19656"
   end
 
-  create_table "lime_tokens_624522", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_624522", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19253,7 +19257,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_624522_1833"
   end
 
-  create_table "lime_tokens_632996", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_632996", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -19281,7 +19285,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_632996_38978"
   end
 
-  create_table "lime_tokens_641121", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_641121", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19302,7 +19306,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_641121_32385"
   end
 
-  create_table "lime_tokens_642132", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_642132", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19323,7 +19327,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_642132_13206"
   end
 
-  create_table "lime_tokens_646543", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_646543", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -19353,7 +19357,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_646543_12080"
   end
 
-  create_table "lime_tokens_647365", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_647365", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19374,7 +19378,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_647365_44798"
   end
 
-  create_table "lime_tokens_648667", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_648667", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19395,7 +19399,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_648667_43246"
   end
 
-  create_table "lime_tokens_649133", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_649133", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -19423,7 +19427,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_649133_22290"
   end
 
-  create_table "lime_tokens_662352", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_662352", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -19447,7 +19451,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_662352_31406"
   end
 
-  create_table "lime_tokens_665268", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_665268", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -19469,7 +19473,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_665268_27218"
   end
 
-  create_table "lime_tokens_665981", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_665981", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19490,7 +19494,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_665981_49310"
   end
 
-  create_table "lime_tokens_666796", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_666796", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -19512,7 +19516,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_666796_8653"
   end
 
-  create_table "lime_tokens_668697", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_668697", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -19544,7 +19548,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_668697_36803"
   end
 
-  create_table "lime_tokens_677249", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_677249", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19565,7 +19569,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_677249_29344"
   end
 
-  create_table "lime_tokens_683612", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_683612", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19586,7 +19590,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_683612_5056"
   end
 
-  create_table "lime_tokens_692188", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_692188", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -19610,7 +19614,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_692188_37609"
   end
 
-  create_table "lime_tokens_692745", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_692745", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19631,7 +19635,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_692745_29290"
   end
 
-  create_table "lime_tokens_693131", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_693131", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19652,7 +19656,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_693131_28620"
   end
 
-  create_table "lime_tokens_696695", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_696695", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19673,7 +19677,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_696695_13713"
   end
 
-  create_table "lime_tokens_698673", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_698673", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -19701,7 +19705,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_698673_11855"
   end
 
-  create_table "lime_tokens_699643", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_699643", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -19723,7 +19727,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_699643_4561"
   end
 
-  create_table "lime_tokens_719849", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_719849", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19744,7 +19748,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_719849_29346"
   end
 
-  create_table "lime_tokens_721872", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_721872", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19765,7 +19769,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_721872_18415"
   end
 
-  create_table "lime_tokens_723278", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_723278", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19786,7 +19790,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_723278_3624"
   end
 
-  create_table "lime_tokens_723478", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_723478", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -19812,7 +19816,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_723478_19975"
   end
 
-  create_table "lime_tokens_731241", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_731241", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -19836,7 +19840,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_731241_37719"
   end
 
-  create_table "lime_tokens_732242", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_732242", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19857,7 +19861,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_732242_12205"
   end
 
-  create_table "lime_tokens_732933", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_732933", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19878,7 +19882,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_732933_36670"
   end
 
-  create_table "lime_tokens_735127", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_735127", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -19899,7 +19903,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_735127_44342"
   end
 
-  create_table "lime_tokens_735426", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_735426", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -19931,7 +19935,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_735426_47187"
   end
 
-  create_table "lime_tokens_737564", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_737564", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -19953,7 +19957,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_737564_25682"
   end
 
-  create_table "lime_tokens_737849", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_737849", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -19977,7 +19981,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_737849_40688"
   end
 
-  create_table "lime_tokens_751219", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_751219", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20001,7 +20005,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_751219_46711"
   end
 
-  create_table "lime_tokens_756815", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_756815", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20022,7 +20026,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_756815_22229"
   end
 
-  create_table "lime_tokens_763739", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_763739", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20043,7 +20047,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_763739_18570"
   end
 
-  create_table "lime_tokens_766876", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_766876", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -20075,7 +20079,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_766876_10047"
   end
 
-  create_table "lime_tokens_767155", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_767155", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20096,7 +20100,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_767155_318"
   end
 
-  create_table "lime_tokens_771162", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_771162", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20117,7 +20121,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_771162_39237"
   end
 
-  create_table "lime_tokens_771525", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_771525", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20145,7 +20149,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_771525_32156"
   end
 
-  create_table "lime_tokens_775361", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_775361", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20166,7 +20170,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_775361_37085"
   end
 
-  create_table "lime_tokens_777581", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_777581", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20187,7 +20191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_777581_4012"
   end
 
-  create_table "lime_tokens_777632", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_777632", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20211,7 +20215,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_777632_47135"
   end
 
-  create_table "lime_tokens_777786", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_777786", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20239,7 +20243,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_777786_34631"
   end
 
-  create_table "lime_tokens_783623", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_783623", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20263,7 +20267,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_783623_14366"
   end
 
-  create_table "lime_tokens_784264", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_784264", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20284,7 +20288,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_784264_19861"
   end
 
-  create_table "lime_tokens_784488", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_784488", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20305,7 +20309,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_784488_12385"
   end
 
-  create_table "lime_tokens_786237", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_786237", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20326,7 +20330,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_786237_24306"
   end
 
-  create_table "lime_tokens_789651", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_789651", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -20350,7 +20354,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_789651_38546"
   end
 
-  create_table "lime_tokens_791695", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_791695", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20371,7 +20375,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_791695_8237"
   end
 
-  create_table "lime_tokens_794391", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_794391", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20392,7 +20396,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_794391_4009"
   end
 
-  create_table "lime_tokens_795622", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_795622", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -20420,7 +20424,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_795622_31650"
   end
 
-  create_table "lime_tokens_795667", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_795667", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20441,7 +20445,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_795667_16239"
   end
 
-  create_table "lime_tokens_796478", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_796478", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20462,7 +20466,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_796478_1892"
   end
 
-  create_table "lime_tokens_799577", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_799577", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -20490,7 +20494,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_799577_29836"
   end
 
-  create_table "lime_tokens_814276", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_814276", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -20514,7 +20518,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_814276_4536"
   end
 
-  create_table "lime_tokens_815996", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_815996", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "blacklisted", limit: 17
@@ -20537,7 +20541,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_815996_24473"
   end
 
-  create_table "lime_tokens_822191", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_822191", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20558,7 +20562,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_822191_13168"
   end
 
-  create_table "lime_tokens_822697", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_822697", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -20593,7 +20597,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_822697_28568"
   end
 
-  create_table "lime_tokens_834556", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_834556", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20617,7 +20621,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_834556_15726"
   end
 
-  create_table "lime_tokens_835117", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_835117", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20638,7 +20642,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_835117_5093"
   end
 
-  create_table "lime_tokens_835844", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_835844", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20659,7 +20663,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_835844_36979"
   end
 
-  create_table "lime_tokens_839222", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_839222", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20680,7 +20684,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_839222_8698"
   end
 
-  create_table "lime_tokens_843428", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_843428", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20701,7 +20705,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_843428_31649"
   end
 
-  create_table "lime_tokens_845373", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_845373", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20722,7 +20726,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_845373_42890"
   end
 
-  create_table "lime_tokens_845943", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_845943", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20743,7 +20747,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_845943_18445"
   end
 
-  create_table "lime_tokens_854737", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_854737", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20764,7 +20768,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_854737_22634"
   end
 
-  create_table "lime_tokens_862455", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_862455", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20785,7 +20789,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_862455_17148"
   end
 
-  create_table "lime_tokens_867378", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_867378", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20806,7 +20810,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_867378_34350"
   end
 
-  create_table "lime_tokens_868713", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_868713", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -20832,7 +20836,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_868713_13187"
   end
 
-  create_table "lime_tokens_869922", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_869922", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -20858,7 +20862,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_869922_46275"
   end
 
-  create_table "lime_tokens_871339", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_871339", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20882,7 +20886,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_871339_23660"
   end
 
-  create_table "lime_tokens_872832", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_872832", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20903,7 +20907,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_872832_9032"
   end
 
-  create_table "lime_tokens_874158", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_874158", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20931,7 +20935,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_874158_17553"
   end
 
-  create_table "lime_tokens_875262", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_875262", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -20959,7 +20963,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_875262_9762"
   end
 
-  create_table "lime_tokens_876368", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_876368", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -20980,7 +20984,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_876368_45631"
   end
 
-  create_table "lime_tokens_878259", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_878259", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21001,7 +21005,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_878259_7812"
   end
 
-  create_table "lime_tokens_882568", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_882568", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21022,7 +21026,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_882568_3878"
   end
 
-  create_table "lime_tokens_885481", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_885481", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21043,7 +21047,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_885481_24951"
   end
 
-  create_table "lime_tokens_886573", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_886573", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21064,7 +21068,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_886573_40191"
   end
 
-  create_table "lime_tokens_887795", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_887795", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21085,7 +21089,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_887795_3404"
   end
 
-  create_table "lime_tokens_893785", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_893785", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21106,7 +21110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_893785_33142"
   end
 
-  create_table "lime_tokens_895586", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_895586", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21127,7 +21131,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_895586_34562"
   end
 
-  create_table "lime_tokens_895675", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_895675", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21148,7 +21152,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_895675_37122"
   end
 
-  create_table "lime_tokens_898357", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_898357", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21169,7 +21173,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_898357_17836"
   end
 
-  create_table "lime_tokens_911612", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_911612", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21190,7 +21194,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_911612_44766"
   end
 
-  create_table "lime_tokens_915499", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_915499", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21211,7 +21215,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_915499_48904"
   end
 
-  create_table "lime_tokens_916752", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_916752", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
@@ -21233,7 +21237,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_916752_8848"
   end
 
-  create_table "lime_tokens_917581", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_917581", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21254,7 +21258,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_917581_30643"
   end
 
-  create_table "lime_tokens_919367", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_919367", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21275,7 +21279,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_919367_15192"
   end
 
-  create_table "lime_tokens_923271", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_923271", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -21308,7 +21312,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_923271_33802"
   end
 
-  create_table "lime_tokens_923512", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_923512", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -21332,7 +21336,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_923512_6795"
   end
 
-  create_table "lime_tokens_925715", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_925715", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -21356,7 +21360,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_925715_11945"
   end
 
-  create_table "lime_tokens_927695", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_927695", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -21382,7 +21386,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_927695_21724"
   end
 
-  create_table "lime_tokens_929272", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_929272", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21403,7 +21407,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_929272_34891"
   end
 
-  create_table "lime_tokens_931453", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_931453", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21424,7 +21428,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_931453_12274"
   end
 
-  create_table "lime_tokens_933729", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_933729", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21445,7 +21449,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_933729_28332"
   end
 
-  create_table "lime_tokens_937831", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_937831", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -21473,7 +21477,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_937831_33890"
   end
 
-  create_table "lime_tokens_941869", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_941869", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21494,7 +21498,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_941869_7888"
   end
 
-  create_table "lime_tokens_942554", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_942554", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21515,7 +21519,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_942554_21185"
   end
 
-  create_table "lime_tokens_945182", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_945182", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21536,7 +21540,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_945182_26052"
   end
 
-  create_table "lime_tokens_949341", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_949341", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -21560,7 +21564,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_949341_36888"
   end
 
-  create_table "lime_tokens_965969", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_965969", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -21586,7 +21590,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_965969_30910"
   end
 
-  create_table "lime_tokens_966338", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_966338", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21607,7 +21611,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_966338_39502"
   end
 
-  create_table "lime_tokens_967443", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_967443", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21628,7 +21632,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_967443_23384"
   end
 
-  create_table "lime_tokens_974861", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_974861", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_14"
@@ -21660,7 +21664,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_974861_11818"
   end
 
-  create_table "lime_tokens_975859", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_975859", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_2"
     t.text "attribute_3"
@@ -21684,7 +21688,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_975859_17657"
   end
 
-  create_table "lime_tokens_976265", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_976265", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21705,7 +21709,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_976265_40069"
   end
 
-  create_table "lime_tokens_977261", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_977261", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -21733,7 +21737,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_977261_34386"
   end
 
-  create_table "lime_tokens_982113", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_982113", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21754,7 +21758,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_982113_45316"
   end
 
-  create_table "lime_tokens_983399", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_983399", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21775,7 +21779,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_983399_47456"
   end
 
-  create_table "lime_tokens_987322", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_987322", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "attribute_1", limit: 255
     t.string "attribute_2", limit: 255
     t.string "attribute_3", limit: 255
@@ -21799,7 +21803,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_987322_44935"
   end
 
-  create_table "lime_tokens_988354", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_988354", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.text "attribute_1"
     t.text "attribute_10"
     t.text "attribute_11"
@@ -21834,7 +21838,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_988354_22837"
   end
 
-  create_table "lime_tokens_991545", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_991545", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21855,7 +21859,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_991545_9755"
   end
 
-  create_table "lime_tokens_996971", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_996971", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21876,7 +21880,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_996971_27367"
   end
 
-  create_table "lime_tokens_998484", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tokens_998484", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.string "blacklisted", limit: 17
     t.string "completed", limit: 17, default: "N"
     t.text "email"
@@ -21897,14 +21901,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["token"], name: "idx_token_token_998484_13403"
   end
 
-  create_table "lime_tutorial_entries", primary_key: "teid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tutorial_entries", primary_key: "teid", id: :serial, force: :cascade do |t|
     t.text "content"
     t.integer "ordering"
     t.text "settings"
     t.text "title"
   end
 
-  create_table "lime_tutorial_entry_relation", primary_key: ["teid", "tid"], force: :cascade do |t|
+  create_table "public.lime_tutorial_entry_relation", primary_key: ["teid", "tid"], force: :cascade do |t|
     t.integer "sid"
     t.integer "teid", null: false
     t.integer "tid", null: false
@@ -21913,7 +21917,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["uid"], name: "lime_idx1_tutorial_entry_relation"
   end
 
-  create_table "lime_tutorials", primary_key: "tid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_tutorials", primary_key: "tid", id: :serial, force: :cascade do |t|
     t.integer "active", default: 0
     t.text "description"
     t.string "icon", limit: 64
@@ -21925,23 +21929,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["name"], name: "lime_idx1_tutorials", unique: true
   end
 
-  create_table "lime_user_groups", primary_key: "ugid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_user_groups", primary_key: "ugid", id: :serial, force: :cascade do |t|
     t.text "description", null: false
     t.string "name", limit: 20, null: false
     t.integer "owner_id", null: false
   end
 
-  create_table "lime_user_in_groups", primary_key: ["ugid", "uid"], force: :cascade do |t|
+  create_table "public.lime_user_in_groups", primary_key: ["ugid", "uid"], force: :cascade do |t|
     t.integer "ugid", null: false
     t.integer "uid", null: false
   end
 
-  create_table "lime_user_in_permissionrole", primary_key: ["ptid", "uid"], force: :cascade do |t|
+  create_table "public.lime_user_in_permissionrole", primary_key: ["ptid", "uid"], force: :cascade do |t|
     t.integer "ptid", null: false
     t.integer "uid", null: false
   end
 
-  create_table "lime_users", primary_key: "uid", id: :serial, force: :cascade do |t|
+  create_table "public.lime_users", primary_key: "uid", id: :serial, force: :cascade do |t|
     t.datetime "created", precision: nil
     t.integer "dateformat", default: 1, null: false
     t.string "email", limit: 254
@@ -21963,7 +21967,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["users_name"], name: "lime_users_users_name_key"
   end
 
-  create_table "med18_competencies", force: :cascade do |t|
+  create_table "public.med18_competencies", force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -22033,7 +22037,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_med18_competencies_on_user_id"
   end
 
-  create_table "med18_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med18_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22042,7 +22046,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med18_mspe_email_key"
   end
 
-  create_table "med19_competencies", force: :cascade do |t|
+  create_table "public.med19_competencies", force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -22112,7 +22116,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_med19_competencies_on_user_id"
   end
 
-  create_table "med19_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med19_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22121,7 +22125,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med19_mspe_email_key"
   end
 
-  create_table "med20_competencies", force: :cascade do |t|
+  create_table "public.med20_competencies", force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -22191,7 +22195,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_med20_competencies_on_user_id"
   end
 
-  create_table "med20_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med20_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22200,7 +22204,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med20_mspe_email_key"
   end
 
-  create_table "med21_competencies", force: :cascade do |t|
+  create_table "public.med21_competencies", force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -22270,7 +22274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_med21_competencies_on_user_id"
   end
 
-  create_table "med21_fom_exams", force: :cascade do |t|
+  create_table "public.med21_fom_exams", force: :cascade do |t|
     t.string "comp1_dropped_quiz"
     t.decimal "comp1_dropped_score"
     t.decimal "comp1_wk1"
@@ -22328,7 +22332,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id", "permission_group_id", "course_code"], name: "by_med21_user_permission_group_course_code", unique: true
   end
 
-  create_table "med21_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med21_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22337,7 +22341,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med21_mspe_email_key"
   end
 
-  create_table "med22_fom_exams", force: :cascade do |t|
+  create_table "public.med22_fom_exams", force: :cascade do |t|
     t.string "comp1_dropped_quiz"
     t.decimal "comp1_dropped_score"
     t.decimal "comp1_wk1"
@@ -22401,14 +22405,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id", "permission_group_id", "course_code"], name: "by_med22_user_permission_group_course_code", unique: true
   end
 
-  create_table "med22_mspe_cces", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med22_mspe_cces", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
 
     t.unique_constraint ["email"], name: "med22_mspe_cces_email_key"
   end
 
-  create_table "med22_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med22_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22417,7 +22421,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med22_mspe_email_key"
   end
 
-  create_table "med23_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med23_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22426,7 +22430,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med23_mspe_email_key"
   end
 
-  create_table "med24_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med24_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22435,7 +22439,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med24_mspe_email_key"
   end
 
-  create_table "med25_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med25_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22444,7 +22448,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med25_mspe_email_key"
   end
 
-  create_table "med26_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.med26_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
@@ -22453,7 +22457,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.unique_constraint ["email"], name: "med26_mspe_email_key"
   end
 
-  create_table "med27_mspes", force: :cascade do |t|
+  create_table "public.med27_mspes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
     t.string "full_name"
@@ -22464,7 +22468,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_med27_mspes_on_user_id"
   end
 
-  create_table "medhub_courses", force: :cascade do |t|
+  create_table "public.medhub_courses", force: :cascade do |t|
     t.string "course_code"
     t.integer "course_id"
     t.string "course_name"
@@ -22473,7 +22477,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["course_code"], name: "index_medhub_courses_on_course_code"
   end
 
-  create_table "medhub_period_ids", id: false, force: :cascade do |t|
+  create_table "public.medhub_period_ids", id: false, force: :cascade do |t|
     t.integer "courseID"
     t.date "end_date"
     t.integer "periodID"
@@ -22481,7 +22485,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["courseID", "periodID"], name: "medhub_period_ids_idx"
   end
 
-  create_table "meetings", id: :serial, force: :cascade do |t|
+  create_table "public.meetings", id: :serial, force: :cascade do |t|
     t.string "academic_discussed_other"
     t.string "academic_outcomes_other"
     t.string "advice_category"
@@ -22512,7 +22516,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_meetings_on_user_id"
   end
 
-  create_table "messages", id: :serial, force: :cascade do |t|
+  create_table "public.messages", id: :serial, force: :cascade do |t|
     t.boolean "archived", default: false
     t.text "content"
     t.datetime "created_at", precision: nil, null: false
@@ -22523,20 +22527,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "meta_attribute_entity_groups", id: :serial, force: :cascade do |t|
+  create_table "public.meta_attribute_entity_groups", id: :serial, force: :cascade do |t|
     t.text "group_name", null: false
     t.text "parent_table", null: false
     t.string "parent_table_pk", limit: 255
     t.boolean "visible", default: true
   end
 
-  create_table "meta_attribute_groups", id: :serial, force: :cascade do |t|
+  create_table "public.meta_attribute_groups", id: :serial, force: :cascade do |t|
     t.text "group_name", null: false
     t.text "parent_table", null: false
     t.boolean "visible", default: true
   end
 
-  create_table "new_competencies", force: :cascade do |t|
+  create_table "public.new_competencies", force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -22580,14 +22584,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id", "id"], name: "index_new_competencies_on_user_id_and_id", unique: true
   end
 
-  create_table "permission_groups", id: :serial, force: :cascade do |t|
+  create_table "public.permission_groups", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil
     t.text "pinned_survey_group_titles"
     t.text "title", null: false
     t.datetime "updated_at", precision: nil
   end
 
-  create_table "permission_ls_group_filters", id: :serial, force: :cascade do |t|
+  create_table "public.permission_ls_group_filters", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil
     t.boolean "filter_all", default: false
     t.text "ident_type"
@@ -22598,7 +22602,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["permission_ls_group_id", "lime_question_qid"], name: "uniq_qid_by_group", unique: true
   end
 
-  create_table "permission_ls_groups", id: :serial, force: :cascade do |t|
+  create_table "public.permission_ls_groups", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil
     t.boolean "enabled", default: false
     t.integer "lime_survey_sid", null: false
@@ -22609,7 +22613,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true
   end
 
-  create_table "precep_meetings", force: :cascade do |t|
+  create_table "public.precep_meetings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "meeting_date"
     t.string "meeting_notes"
@@ -22622,7 +22626,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_precep_meetings_on_user_id"
   end
 
-  create_table "preceptor_assesses", force: :cascade do |t|
+  create_table "public.preceptor_assesses", force: :cascade do |t|
     t.boolean "attribute1"
     t.text "attribute1_no"
     t.boolean "attribute2"
@@ -22646,7 +22650,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_preceptor_assesses_on_user_id"
   end
 
-  create_table "preceptor_evals", force: :cascade do |t|
+  create_table "public.preceptor_evals", force: :cascade do |t|
     t.text "comments"
     t.string "concern_comments"
     t.datetime "created_at", precision: nil, null: false
@@ -22677,7 +22681,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_preceptor_evals_on_user_id"
   end
 
-  create_table "question_widgets", id: :serial, force: :cascade do |t|
+  create_table "public.question_widgets", id: :serial, force: :cascade do |t|
     t.string "agg", limit: 255
     t.datetime "created_at", precision: nil
     t.string "graph_type", limit: 255
@@ -22689,7 +22693,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "view_type"
   end
 
-  create_table "role_aggregates", id: :serial, force: :cascade do |t|
+  create_table "public.role_aggregates", id: :serial, force: :cascade do |t|
     t.text "agg_fieldname"
     t.string "agg_label", limit: 255
     t.string "agg_title_fieldname", limit: 255
@@ -22703,7 +22707,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "view_type", limit: 255
   end
 
-  create_table "rooms", id: :serial, force: :cascade do |t|
+  create_table "public.rooms", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.integer "discussable_id"
     t.string "discussable_type"
@@ -22711,7 +22715,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "sessions", force: :cascade do |t|
+  create_table "public.sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_at"
     t.string "ip_address"
@@ -22723,7 +22727,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "solid_cache_entries", force: :cascade do |t|
+  create_table "public.solid_cache_entries", force: :cascade do |t|
     t.integer "byte_size", null: false
     t.datetime "created_at", null: false
     t.binary "key", null: false
@@ -22733,7 +22737,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["key_hash"], name: "index_solid_cache_entries_on_key_hash", unique: true
   end
 
-  create_table "solid_queue_blocked_executions", force: :cascade do |t|
+  create_table "public.solid_queue_blocked_executions", force: :cascade do |t|
     t.string "concurrency_key", null: false
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
@@ -22745,7 +22749,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["job_id"], name: "index_solid_queue_blocked_executions_on_job_id", unique: true
   end
 
-  create_table "solid_queue_claimed_executions", force: :cascade do |t|
+  create_table "public.solid_queue_claimed_executions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "job_id", null: false
     t.bigint "process_id"
@@ -22753,14 +22757,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["process_id", "job_id"], name: "index_solid_queue_claimed_executions_on_process_id_and_job_id"
   end
 
-  create_table "solid_queue_failed_executions", force: :cascade do |t|
+  create_table "public.solid_queue_failed_executions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "error"
     t.bigint "job_id", null: false
     t.index ["job_id"], name: "index_solid_queue_failed_executions_on_job_id", unique: true
   end
 
-  create_table "solid_queue_jobs", force: :cascade do |t|
+  create_table "public.solid_queue_jobs", force: :cascade do |t|
     t.string "active_job_id"
     t.text "arguments"
     t.string "class_name", null: false
@@ -22778,13 +22782,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["scheduled_at", "finished_at"], name: "index_solid_queue_jobs_for_alerting"
   end
 
-  create_table "solid_queue_pauses", force: :cascade do |t|
+  create_table "public.solid_queue_pauses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "queue_name", null: false
     t.index ["queue_name"], name: "index_solid_queue_pauses_on_queue_name", unique: true
   end
 
-  create_table "solid_queue_processes", force: :cascade do |t|
+  create_table "public.solid_queue_processes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "hostname"
     t.string "kind", null: false
@@ -22798,7 +22802,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["supervisor_id"], name: "index_solid_queue_processes_on_supervisor_id"
   end
 
-  create_table "solid_queue_ready_executions", force: :cascade do |t|
+  create_table "public.solid_queue_ready_executions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "job_id", null: false
     t.integer "priority", default: 0, null: false
@@ -22808,7 +22812,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["queue_name", "priority", "job_id"], name: "index_solid_queue_poll_by_queue"
   end
 
-  create_table "solid_queue_recurring_executions", force: :cascade do |t|
+  create_table "public.solid_queue_recurring_executions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "job_id", null: false
     t.datetime "run_at", null: false
@@ -22817,7 +22821,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["task_key", "run_at"], name: "index_solid_queue_recurring_executions_on_task_key_and_run_at", unique: true
   end
 
-  create_table "solid_queue_recurring_tasks", force: :cascade do |t|
+  create_table "public.solid_queue_recurring_tasks", force: :cascade do |t|
     t.text "arguments"
     t.string "class_name"
     t.string "command", limit: 2048
@@ -22833,7 +22837,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["static"], name: "index_solid_queue_recurring_tasks_on_static"
   end
 
-  create_table "solid_queue_scheduled_executions", force: :cascade do |t|
+  create_table "public.solid_queue_scheduled_executions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "job_id", null: false
     t.integer "priority", default: 0, null: false
@@ -22843,7 +22847,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["scheduled_at", "priority", "job_id"], name: "index_solid_queue_dispatch_all"
   end
 
-  create_table "solid_queue_semaphores", force: :cascade do |t|
+  create_table "public.solid_queue_semaphores", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
     t.string "key", null: false
@@ -22854,13 +22858,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
-  create_table "student_lists", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+  create_table "public.student_lists", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "full_name", limit: 50
     t.integer "permission_group_id"
     t.bigint "user_id"
   end
 
-  create_table "sub_categories", force: :cascade do |t|
+  create_table "public.sub_categories", force: :cascade do |t|
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.string "name"
@@ -22869,7 +22873,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["category_id"], name: "index_sub_categories_on_category_id"
   end
 
-  create_table "temp_competencies", id: false, force: :cascade do |t|
+  create_table "public.temp_competencies", id: false, force: :cascade do |t|
     t.text "add_comm_on_perform"
     t.text "clinic_exp_comment"
     t.text "comm_prof_concerns"
@@ -22938,7 +22942,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.bigint "user_id"
   end
 
-  create_table "ume_assess_plans", force: :cascade do |t|
+  create_table "public.ume_assess_plans", force: :cascade do |t|
     t.string "assessment_description"
     t.string "competency"
     t.datetime "created_at", null: false
@@ -22953,7 +22957,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.string "year"
   end
 
-  create_table "ume_blses", force: :cascade do |t|
+  create_table "public.ume_blses", force: :cascade do |t|
     t.string "comments"
     t.datetime "created_at", null: false
     t.date "expiration_date"
@@ -22962,14 +22966,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_ume_blses_on_user_id"
   end
 
-  create_table "user_externals", id: :serial, force: :cascade do |t|
+  create_table "public.user_externals", id: :serial, force: :cascade do |t|
     t.string "ident", limit: 255
     t.string "ident_type", limit: 255
     t.boolean "use_email", default: false
     t.integer "user_id"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
+  create_table "public.users", id: :serial, force: :cascade do |t|
     t.string "career_interest", default: [], array: true
     t.string "coaching_type"
     t.integer "cohort_id"
@@ -23008,7 +23012,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
-  create_table "usmle_exams", force: :cascade do |t|
+  create_table "public.usmle_exams", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.datetime "exam_date", precision: nil
     t.integer "exam_score"
@@ -23020,13 +23024,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["user_id"], name: "index_usmle_exams_on_user_id"
   end
 
-  create_table "version_notes", id: :serial, force: :cascade do |t|
+  create_table "public.version_notes", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.text "note"
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "versions", id: :serial, force: :cascade do |t|
+  create_table "public.versions", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil
     t.string "event", limit: 255, null: false
     t.integer "item_id", null: false
@@ -23039,39 +23043,3702 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_202346) do
     t.index ["version_note_id"], name: "index_versions_on_version_note_id"
   end
 
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "artifacts", "users"
-  add_foreign_key "cohorts", "users"
-  add_foreign_key "competencies", "permission_groups"
-  add_foreign_key "competencies", "users"
-  add_foreign_key "course_schedules", "courses"
-  add_foreign_key "csl_evals", "users"
-  add_foreign_key "csl_feedbacks", "users"
-  add_foreign_key "eg_cohorts", "users"
-  add_foreign_key "epa_masters", "users"
-  add_foreign_key "epas", "users"
-  add_foreign_key "fom_exams", "users"
-  add_foreign_key "formative_feedbacks", "users"
-  add_foreign_key "med18_competencies", "permission_groups"
-  add_foreign_key "med19_competencies", "permission_groups"
-  add_foreign_key "med20_competencies", "permission_groups"
-  add_foreign_key "med21_competencies", "permission_groups"
-  add_foreign_key "med23_mspes", "users"
-  add_foreign_key "med24_mspes", "users"
-  add_foreign_key "med25_mspes", "users"
-  add_foreign_key "med26_mspes", "users"
-  add_foreign_key "med27_mspes", "users"
-  add_foreign_key "precep_meetings", "users"
-  add_foreign_key "preceptor_assesses", "users"
-  add_foreign_key "preceptor_evals", "users"
-  add_foreign_key "sessions", "users"
-  add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "student_lists", "users"
-  add_foreign_key "sub_categories", "categories"
-  add_foreign_key "usmle_exams", "users"
+  add_foreign_key "public.active_storage_variant_records", "public.active_storage_blobs", column: "blob_id"
+  add_foreign_key "public.artifacts", "public.users"
+  add_foreign_key "public.cohorts", "public.users"
+  add_foreign_key "public.competencies", "public.permission_groups"
+  add_foreign_key "public.competencies", "public.users"
+  add_foreign_key "public.course_schedules", "public.courses"
+  add_foreign_key "public.csl_evals", "public.users"
+  add_foreign_key "public.csl_feedbacks", "public.users"
+  add_foreign_key "public.eg_cohorts", "public.users"
+  add_foreign_key "public.epa_masters", "public.users"
+  add_foreign_key "public.epas", "public.users"
+  add_foreign_key "public.fom_exams", "public.users"
+  add_foreign_key "public.formative_feedbacks", "public.users"
+  add_foreign_key "public.med18_competencies", "public.permission_groups"
+  add_foreign_key "public.med19_competencies", "public.permission_groups"
+  add_foreign_key "public.med20_competencies", "public.permission_groups"
+  add_foreign_key "public.med21_competencies", "public.permission_groups"
+  add_foreign_key "public.med23_mspes", "public.users"
+  add_foreign_key "public.med24_mspes", "public.users"
+  add_foreign_key "public.med25_mspes", "public.users"
+  add_foreign_key "public.med26_mspes", "public.users"
+  add_foreign_key "public.med27_mspes", "public.users"
+  add_foreign_key "public.precep_meetings", "public.users"
+  add_foreign_key "public.preceptor_assesses", "public.users"
+  add_foreign_key "public.preceptor_evals", "public.users"
+  add_foreign_key "public.sessions", "public.users"
+  add_foreign_key "public.solid_queue_blocked_executions", "public.solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "public.solid_queue_claimed_executions", "public.solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "public.solid_queue_failed_executions", "public.solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "public.solid_queue_ready_executions", "public.solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "public.solid_queue_recurring_executions", "public.solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "public.solid_queue_scheduled_executions", "public.solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "public.student_lists", "public.users"
+  add_foreign_key "public.sub_categories", "public.categories"
+  add_foreign_key "public.usmle_exams", "public.users"
+
+  create_table "target.meta_attribute_entities", id: :serial, force: :cascade do |t|
+    t.integer "edition"
+    t.text "entity_type", null: false
+    t.string "entity_type_fk", limit: 255
+    t.text "meta_attribute_entity_group_group_name", null: false
+    t.integer "reference_year"
+    t.date "start_date"
+    t.date "stop_date"
+    t.integer "version"
+    t.boolean "visible", default: true
+    t.index ["entity_type"], name: "ix_meta_attribute_entities", unique: true
+  end
+
+  create_table "target.meta_attribute_questions", id: :serial, force: :cascade do |t|
+    t.text "attribute_name"
+    t.text "category"
+    t.boolean "continuous"
+    t.text "data_type"
+    t.text "description"
+    t.text "meta_attribute_entity_entity_type", null: false
+    t.boolean "optional"
+    t.text "options_hash"
+    t.text "original_text"
+    t.text "short_name"
+    t.boolean "visible", default: true
+  end
+
+  create_table "target.meta_attribute_statistics", primary_key: "meta_attribute_statistic_id", id: :bigint, default: nil, force: :cascade do |t|
+    t.string "attribute_data_type"
+    t.string "attribute_description"
+    t.bigint "attribute_index"
+    t.string "attribute_name"
+    t.decimal "ci_lower"
+    t.decimal "ci_upper"
+    t.decimal "count"
+    t.string "entity_name"
+    t.string "entity_schema"
+    t.boolean "is_continuous", default: false, null: false
+    t.decimal "max"
+    t.decimal "mean"
+    t.decimal "min"
+    t.decimal "n"
+    t.decimal "n_percent", precision: 5, scale: 2
+    t.decimal "stddev"
+    t.decimal "subset_ci_lower"
+    t.decimal "subset_ci_upper"
+    t.decimal "subset_count"
+    t.string "subset_id"
+    t.decimal "subset_max"
+    t.decimal "subset_mean"
+    t.decimal "subset_min"
+    t.decimal "subset_n"
+    t.decimal "subset_n_percent", precision: 5, scale: 2
+    t.decimal "subset_stddev"
+    t.index ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true
+  end
+
+  create_table "target.meta_attribute_values", primary_key: "meta_attribute_value_id", id: :bigint, default: nil, force: :cascade do |t|
+    t.string "attribute_name"
+    t.decimal "count"
+    t.string "entity_name"
+    t.string "entity_schema"
+    t.bigint "meta_attribute_statistic_id"
+    t.decimal "subset_count"
+    t.string "subset_id"
+    t.decimal "value"
+    t.string "value_description"
+    t.index ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id"
+    t.index ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true
+  end
+
+  create_table "transform.critical_values", primary_key: ["alpha", "df"], force: :cascade do |t|
+    t.decimal "alpha", default: "0.05", null: false
+    t.integer "df", null: false
+    t.decimal "t", null: false
+    t.check_constraint "df >= 1", name: "critical_values_df_check"
+  end
+
+  create_table "source.meta_attribute_values", primary_key: ["entity_schema", "entity_name", "attribute_name", "value"], force: :cascade do |t|
+    t.string "attribute_name", null: false
+    t.string "entity_name", null: false
+    t.string "entity_schema", null: false
+    t.decimal "value", null: false
+    t.string "value_description"
+  end
+
+  create_table "source.p4_clinics", id: :serial, force: :cascade do |t|
+    t.string "clinic_abbreviation"
+    t.string "p4_clinic_id", null: false
+    t.string "p4_program_id", null: false
+
+    t.unique_constraint ["p4_clinic_id"], name: "u_p4_clinic_id"
+  end
+
+  create_table "source.p4_programs", id: :serial, force: :cascade do |t|
+    t.string "abfm_program_id", null: false
+    t.string "alias"
+    t.string "p4_program_id", null: false
+    t.string "program_name"
+  end
+
+  create_table "source.p4_resident_clinics", id: false, force: :cascade do |t|
+    t.integer "first_year"
+    t.integer "last_year"
+    t.string "p4_clinic_id", null: false
+    t.integer "p4_resident_id", null: false
+  end
+
+  create_table "source.p4_residents", id: :serial, force: :cascade do |t|
+    t.string "abfm_last_four", null: false
+    t.string "abfm_last_four_old"
+    t.integer "entry_year", null: false
+    t.string "error_codes"
+    t.integer "graduation_year"
+    t.string "notes"
+    t.string "p4_program_id"
+  end
+
+  create_table "source.p4_residents_nonconsenting", id: :serial, force: :cascade do |t|
+    t.string "abfm_last_four", null: false
+    t.integer "graduation_year"
+    t.string "p4_program_id", null: false
+  end
+
+  create_table "source.p4_webads_rankings", id: false, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "p4_program_id", null: false
+    t.integer "rank", null: false
+    t.integer "ranking_type_id", null: false
+    t.integer "year", null: false
+  end
+
+  create_table "source.y1_continuity_clinics", primary_key: ["p4_program_id", "settingid"], force: :cascade do |t|
+    t.bigint "daysacuteapptfac", comment: "1.06 Average days to first acute appt.- faculty"
+    t.bigint "daysacuteapptres", comment: "1.07 Average days to first acute appt.- residents"
+    t.bigint "daysfuapptfac", comment: "1.05 Average days to first follow-up appt. - faculty"
+    t.bigint "daysfuapptres", comment: "1.05 Average days to first follow-up appt. - residents"
+    t.bigint "daysnewapptfac", comment: "1.05 Average days to first new patient appt. - faculty"
+    t.bigint "daysnewapptres", comment: "1.05 Average days to first new patient appt. - residents"
+    t.string "emrbrand", comment: "2.01 EMR Brand"
+    t.bigint "emrforclinqual", comment: "2.03 Using EMR for clinical quality processes and/or projects"
+    t.string "emrforclinqualtxt", comment: "2.03 Text"
+    t.bigint "emrforqualsafe", comment: "2.04 Using EMR for quality and safety"
+    t.string "emrforqualsafetxt", comment: "2.04 Text"
+    t.bigint "emrmonths", comment: "2.02 Months EMR implemented"
+    t.string "emrversion", comment: "2.01 EMR Version"
+    t.bigint "emryrs", comment: "2.02 Years EMR implemented"
+    t.decimal "fteadmin", precision: 11, scale: 2, comment: "1.11 # FTEs - Administrative Staff"
+    t.decimal "fteallied", precision: 11, scale: 2, comment: "1.11 # FTEs - Allied Health Staff"
+    t.decimal "ftediet", precision: 11, scale: 2, comment: "1.11 # FTEs - Dieticians"
+    t.decimal "ftefmres", precision: 11, scale: 2, comment: "1.10 # FTEs - Family Medicine Residents, Fellows"
+    t.decimal "ftefp", precision: 11, scale: 2, comment: "1.10 # FTEs - Family Physicians"
+    t.decimal "fteim", precision: 11, scale: 2, comment: "1.10 # FTEs - Internists"
+    t.decimal "fteimres", precision: 11, scale: 2, comment: "1.10 # FTEs - Internal Medicine Residents"
+    t.decimal "ftema", precision: 11, scale: 2, comment: "1.11 # FTEs - Medical Assistants"
+    t.decimal "ftenp", precision: 11, scale: 2, comment: "1.11 # FTEs - Nurse Practitioners"
+    t.decimal "fteob", precision: 11, scale: 2, comment: "1.10 # FTEs - OB/GYN Physicians"
+    t.decimal "fteobres", precision: 11, scale: 2, comment: "1.10 # FTEs - OB/GYN Residents"
+    t.decimal "fteotherphys1", precision: 11, scale: 2, comment: "1.10 # FTEs - Other Specialty #1"
+    t.string "fteotherphys1txt", comment: "1.10 # FTEs - Other Specialty #1 Text"
+    t.decimal "fteotherphys2", precision: 11, scale: 2, comment: "1.10 # FTEs - Other Specialty #2"
+    t.string "fteotherphys2txt", comment: "1.10 # FTEs - Other Specialty #2 Text"
+    t.decimal "fteotherphys3", precision: 11, scale: 2, comment: "1.10 # FTEs - Other Specialty #3"
+    t.string "fteotherphys3txt", comment: "1.10 # FTEs - Other Specialty #3 Text"
+    t.decimal "fteotherspec1", precision: 11, scale: 2, comment: "1.11 # FTEs - Other Specialty #1"
+    t.string "fteotherspec1txt", comment: "1.11 # FTEs - Other Specialty #1 Text"
+    t.decimal "fteotherspec2", precision: 11, scale: 2, comment: "1.11 # FTEs - Other Specialty #2"
+    t.string "fteotherspec2txt", comment: "1.11 # FTEs - Other Specialty #2 Text"
+    t.decimal "fteotherspec3", precision: 11, scale: 2, comment: "1.11 # FTEs - Other Specialty #3"
+    t.string "fteotherspec3txt", comment: "1.11 # FTEs - Other Specialty #3 Text"
+    t.decimal "ftepa", precision: 11, scale: 2, comment: "1.11 # FTEs - Physician Assistants"
+    t.decimal "fteped", precision: 11, scale: 2, comment: "1.10 # FTEs - Pediatricians"
+    t.decimal "ftepedres", precision: 11, scale: 2, comment: "1.10 # FTEs - Pediatric Residents"
+    t.decimal "ftepsych", precision: 11, scale: 2, comment: "1.11 # FTEs - Psychologists"
+    t.decimal "ftepteduc", precision: 11, scale: 2, comment: "1.11 # FTEs - Patient Educators"
+    t.decimal "fternlpn", precision: 11, scale: 2, comment: "1.11 # FTEs - RNs and LPNs"
+    t.decimal "ftesocial", precision: 11, scale: 2, comment: "1.11 # FTEs - Social Workers"
+    t.bigint "integrated", comment: "1.14 Part of an integrated health system?"
+    t.bigint "learningsetting", comment: "1.02 Learning setting for this practice"
+    t.string "learningsettingtxt", comment: "1.02 Other learning setting text"
+    t.string "noemr", comment: "2.05 If no EMR, why"
+    t.bigint "numallied", comment: "1.12 # Staff Members - Allied Health Staff"
+    t.bigint "numdiet", comment: "1.12 # Staff Members - Dieticians"
+    t.bigint "numexamrooms", comment: "1.08 # of exam rooms"
+    t.bigint "numma", comment: "1.12 # Staff Members - Medical Assistant"
+    t.bigint "numnp", comment: "1.12 # Staff Members - Nurse Practitioners"
+    t.bigint "numotherspec", comment: "1.12 # Staff Members - Other Specialty"
+    t.string "numotherspectxt", comment: "1.12 # Staff Members - Other Specialty"
+    t.bigint "numpa", comment: "1.12 # Staff Members - Physician Assistants"
+    t.bigint "numpsych", comment: "1.12 # Staff Members - Psychologists"
+    t.bigint "numpteduc", comment: "1.12 # Staff Members - Patient Educators"
+    t.bigint "numptlastyrfac", comment: "1.09.a # patients seen last year - faculty"
+    t.bigint "numptlastyrres", comment: "1.09.b # patients seen last year - residents"
+    t.bigint "numrnlpn", comment: "1.12 # Staff Members - RNs and LPNs"
+    t.bigint "numsocial", comment: "1.12 # Staff Members - Social Workers"
+    t.string "p4_program_id", null: false, comment: "Unique P4 - Assigned Residency Program ID"
+    t.decimal "pgy1acute", precision: 11, scale: 2, comment: "1.04 % Acute visits - PGY 1"
+    t.decimal "pgy1routine", precision: 11, scale: 2, comment: "1.04 % Routine visits - PGY 1"
+    t.decimal "pgy2acute", precision: 11, scale: 2, comment: "1.04 % Acute visits - PGY 2"
+    t.decimal "pgy2routine", precision: 11, scale: 2, comment: "1.04 % Routine visits - PGY 2"
+    t.decimal "pgy3acute", precision: 11, scale: 2, comment: "1.04 % Acute visits - PGY 3"
+    t.decimal "pgy3routine", precision: 11, scale: 2, comment: "1.04 % Routine visits - PGY 3"
+    t.decimal "pgy4acute", precision: 11, scale: 2, comment: "1.04 % Acute visits - PGY 4"
+    t.decimal "pgy4routine", precision: 11, scale: 2, comment: "1.04 % Routine visits - PGY 4"
+    t.bigint "ptassigned", comment: "1.03 Patients assigned to personal physician"
+    t.string "settingid", null: false, comment: "P4 Residency ID"
+    t.bigint "statbilling", comment: "New Model Status: Electronic billing integrated w/EMR"
+    t.bigint "statcasemgt", comment: "New Model Status: Integrated case management social services"
+    t.bigint "statdisregistry", comment: "New Model Status: Chronic disease management registries"
+    t.bigint "statemr", comment: "New Model Status: EMR"
+    t.bigint "statexpandedhrs", comment: "New Model Status: Expanded clinic hours"
+    t.bigint "statgroup", comment: "New Model Status: Group visits"
+    t.bigint "stathospemr", comment: "New Model Status: Hospital EMR w/full-computerized physician order entry"
+    t.bigint "statnetscheduling", comment: "New Model Status: Asynchronous patient-accessible scheduling"
+    t.bigint "statopenaccess", comment: "New Model Status: Advanced or open-access scheduling"
+    t.bigint "statorders", comment: "New Model Status: Electronic orders integrated w/EMR"
+    t.bigint "statpaperless", comment: "New Model Status: Paperless practice"
+    t.bigint "statparking", comment: "New Model Status: Adequate, free parking"
+    t.bigint "statpharm", comment: "New Model Status: Clinical pharmacy support"
+    t.bigint "statprevregistry", comment: "New Model Status: EMB-based preventive services registries"
+    t.bigint "statprovcommunication", comment: "New Model Status: Asynchronous communication w/other providers"
+    t.bigint "statpsych", comment: "New Model Status: Integrated behavioral health"
+    t.bigint "statptcentered", comment: "New Model Status: Practice as patient-centered vs physician-centered"
+    t.bigint "statptcommunication", comment: "New Model Status: HIPAA-compliant asynchronous communication w/patients"
+    t.bigint "statqa", comment: "New Model Status: Ongoing population-based QA using EMR"
+    t.bigint "statremote", comment: "New Model Status: Full secured remote access"
+    t.bigint "statresearch", comment: "New Model Status: Practice-based research using EMR"
+    t.bigint "statscheduling", comment: "New Model Status: Electronic scheduling integrated w/EMR"
+    t.bigint "statspace", comment: "New Model Status: Sufficient and adequate physical space"
+    t.bigint "statsurvey", comment: "New Model Status: Credible, reliable patient satisfaction survey"
+    t.bigint "statteams", comment: "New Model Status: Teams managing patient care"
+    t.bigint "stattelephone", comment: "New Model Status: Quality monitoring telephone system"
+    t.bigint "stattranscription", comment: "New Model Status: Transcription expense"
+    t.bigint "stattransit", comment: "New Model Status: Convenient public transportation access"
+    t.string "teachingsite", comment: "Residency Program Type"
+
+    t.unique_constraint ["settingid"], name: "y1_continuity_clinics_settingid_key"
+  end
+
+  create_table "source.y1_graduate_responses", id: :serial, force: :cascade do |t|
+    t.string "graduateid", null: false, comment: "P4-Assigned Unique Graduate ID"
+    t.string "p4_program_id", null: false, comment: "Residency Program Attended"
+    t.integer "p4_resident_id"
+    t.bigint "q101a", comment: "Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "If Yes, Year of Initial Certification"
+    t.bigint "q101c", comment: "If No, Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "If Yes, when (insert year):"
+    t.bigint "q102a", comment: "CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "CAQ in geriatrics?"
+    t.bigint "q102c", comment: "CAQ in sports medicine?"
+    t.bigint "q102d", comment: "Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "If YES, please specify:"
+    t.bigint "q103a", comment: "Are you currently enrolled in or did you complete a fellowship after\n  residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics/Maternity Care"
+    t.bigint "q103b_2", comment: "Geriatrics"
+    t.bigint "q103b_3", comment: "Sports Medicine"
+    t.bigint "q103b_4", comment: "Research"
+    t.bigint "q103b_5", comment: "Faculty Development"
+    t.bigint "q103b_6", comment: "Other "
+    t.string "q103b_other", comment: "(Please specify):"
+    t.string "q104", comment: "In what state are you practicing? (State 1)"
+    t.bigint "q105", comment: "What is your age in years?"
+    t.bigint "q106", comment: "What is your gender?"
+    t.bigint "q107_1", comment: "Race: White"
+    t.bigint "q107_2", comment: "Race: Black"
+    t.bigint "q107_3", comment: "Race: Hispanic"
+    t.bigint "q107_4", comment: "Race: Asian/Pacific Islander"
+    t.bigint "q107_5", comment: "Race: American Indian or Alaska Native"
+    t.bigint "q107_6", comment: "Race: Other"
+    t.string "q107_other", comment: "Race: Other (Please specify):"
+    t.bigint "q108", comment: "What is your current marital status?"
+    t.bigint "q114", comment: "What kind of teaching activities do you participate in? - None"
+    t.bigint "q119.01", comment: "Other: PA"
+    t.bigint "q119.02", comment: "Other: NP"
+    t.string "q20.02", comment: "(State 2)"
+    t.string "q20.03", comment: "Other States/Countries"
+    t.bigint "q201", comment: "Which of the following best describes your current professional setting?  (Please select only one)"
+    t.string "q201_other", comment: "(Please specify):"
+    t.bigint "q202_a", comment: "Practicing:  HPSA: Federally designated health professional shortage area"
+    t.bigint "q202_b", comment: "Practicing:  MUA: Federally designated medically underserved area"
+    t.bigint "q202_c", comment: "Practicing:  MHC: Federally designated migrant health clinic"
+    t.bigint "q202_d", comment: "Practicing:  CHC: Federally designated community health clinic"
+    t.bigint "q202_e", comment: "Practicing:  RHC: Federally designated rural health clinic"
+    t.bigint "q202_f", comment: "Practicing:  NHSC: National Health Service Corps"
+    t.bigint "q202_g", comment: "Practicing:  IHS: Indian Health Services"
+    t.bigint "q202_h", comment: "Practicing:  Other state or federally qualified health center/clinic"
+    t.string "q202_other", comment: "(Please specify):"
+    t.bigint "q203", comment: "Which best describes the community in which you practice? (Please select only one)"
+    t.decimal "q204", precision: 11, scale: 2, comment: "How long in months have you been at your current practice location?"
+    t.decimal "q205", precision: 11, scale: 2, comment: "Number of office visits in an average full day (If you only work in half day increments, multiply by 2 to get full day number)"
+    t.decimal "q206", precision: 11, scale: 2, comment: "Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office"
+    t.decimal "q207a", precision: 11, scale: 2, comment: "Payor Mix: Private Insurance %"
+    t.decimal "q207b", precision: 11, scale: 2, comment: "Payor Mix:  Medicaid %"
+    t.bigint "q207c", comment: "Payor Mix:  Medicare %"
+    t.decimal "q207d", precision: 11, scale: 2, comment: "Payor Mix:  HMO/managed care %"
+    t.decimal "q207e", precision: 11, scale: 2, comment: "Payor Mix:  Self-pay"
+    t.decimal "q207f", precision: 11, scale: 2, comment: "Other %"
+    t.string "q207f_other", comment: "(Please specify)"
+    t.bigint "q208", comment: "What is your Pre-tax Income excluding benefits?"
+    t.bigint "q301a", comment: "Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "Overall, my residency prepared me well for my current clinical practice."
+    t.bigint "q401", comment: "EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "Paperless Practice (all interfaces and scanning work--no paper charts)"
+    t.bigint "q403", comment: "Full secured remote access"
+    t.bigint "q404", comment: "Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "Electronic scheduling system integrated with EMR"
+    t.bigint "q406", comment: "Electronic billing system integrated with EMR"
+    t.bigint "q407", comment: "Electronic orders (e.g. lab, x-ray) integrated with EMR"
+    t.bigint "q408", comment: "Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "Secure HIPPA-compliant asynchronous communication (e.g. email or text messaging) with patients"
+    t.bigint "q410", comment: "Asynchronous communication with other providers"
+    t.bigint "q411", comment: "Ongoing population-based Quality Assurance using an EMR/registry"
+    t.bigint "q412", comment: "Chronic disease management registries"
+    t.bigint "q413", comment: "EMR-based preventive services registries"
+    t.bigint "q414", comment: "Practice-based research using an EMR"
+    t.bigint "q415", comment: "Advance or open-access scheduling"
+    t.bigint "q416", comment: "Expanded hours (e.g. clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "Functional quality monitoring telephone system (system to monitor call abandonnment/time to answer)"
+    t.bigint "q418", comment: "Full asynchronous patient-accessible scheduling (e.g. Internet-based)"
+    t.bigint "q419", comment: "Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "Sufficient and adequate physical space"
+    t.bigint "q421", comment: "Adequate, free parking"
+    t.bigint "q422", comment: "Convenient public transportation access"
+    t.bigint "q423", comment: "Using teams to manage patient care"
+    t.bigint "q424", comment: "Integrated behavioral health"
+    t.bigint "q425", comment: "Integrated case management, social services"
+    t.bigint "q426", comment: "Clinical pharmacy support"
+    t.bigint "q427", comment: "Group visits"
+    t.bigint "q428", comment: "Your practice as patient-centered versus physician-centered"
+    t.bigint "q4301", comment: "Practicing:  No/None of the Above"
+    t.bigint "q501a", comment: "Adult inpatient care"
+    t.bigint "q501a_group", comment: "If No, does someone in your group provide this care?"
+    t.bigint "q501b", comment: "Adult ICU/CCU care"
+    t.bigint "q501b_group", comment: "If No, does someone in your group provide this care?"
+    t.bigint "q501c", comment: "Nursing home care"
+    t.bigint "q501c_group", comment: "If No, does some in your group provide this care?"
+    t.bigint "q501d", comment: "Newborn nursery care"
+    t.bigint "q501d_group", comment: "If No, does someone in your group provide this care?"
+    t.bigint "q501e", comment: "Pediatric inpatient care"
+    t.bigint "q501e_group", comment: "If No, does someone in your group provide this care?"
+    t.bigint "q501f", comment: "Surgical inpt. procedures"
+    t.bigint "q501f_group", comment: "If No, does someone in your group provide this care?"
+    t.bigint "q501g", comment: "Emergency Room care"
+    t.bigint "q501g_group", comment: "If No, does someone in your group provide this care?"
+    t.bigint "q502", comment: "Do you currently provide prenatal care?"
+    t.bigint "q503", comment: "Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "If No, do other members of your practice group deliver babies?"
+    t.decimal "q503a", precision: 11, scale: 2, comment: "If Yes, how many babies did YOU deliver in the past year - Vaginal Deliveries"
+    t.bigint "q503b", comment: "If Yes, how many babies did YOU deliver in the past year - C-section\n  deliveries (as primary surgeon)?"
+    t.bigint "q504", comment: "Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "If Yes, please describe:"
+    t.bigint "q505_1", comment: "What kind of teaching activities do you participate in? - Medical Students"
+    t.bigint "q505_2", comment: "What kind of teaching activities do you participate in? - Residents"
+    t.bigint "q505_3", comment: "What kind of teaching activities do you participate in? - Fellows"
+    t.bigint "q505_4", comment: "What kind of teaching activities do you participate in? - Other health care professionals"
+    t.string "q505_other", comment: "(Please specify):"
+    t.bigint "q506a", comment: "Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q506b", comment: "Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q506c", comment: "Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q506d", comment: "Incision and drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice?"
+    t.bigint "q506e", comment: "Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507a", comment: "IUD insertion/removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507b", comment: "Endometrial bx"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507c", comment: "Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507d", comment: "Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507e", comment: "Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507f", comment: "Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507g", comment: "LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507h", comment: "Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507i", comment: "Uterine aspiration/dilation/evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice?"
+    t.bigint "q507j", comment: "Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508a", comment: "OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508b", comment: "Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508c", comment: "Labor induction/augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508d", comment: "Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508e", comment: "3rd and 4th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508f", comment: "C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice?"
+    t.bigint "q508g", comment: "C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice?"
+    t.bigint "q509a", comment: "Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q509b", comment: "Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q509c", comment: "Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510a", comment: "Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510b", comment: "Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510c", comment: "Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510d", comment: "Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510e", comment: "Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510f", comment: "Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510g", comment: "Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice?"
+    t.bigint "q510h", comment: "Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice?"
+    t.bigint "q511a", comment: "Initial managment of simple FXs - including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q511b", comment: "Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q511c", comment: "Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q512a", comment: "Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q512b", comment: "Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q513a", comment: "Local anesthesia/Field block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q513b", comment: "Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q513c", comment: "Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q513d", comment: "Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice?"
+    t.bigint "q513e", comment: "Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514a", comment: "Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514b", comment: "Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514c", comment: "Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514d", comment: "Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514e", comment: "Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514f", comment: "Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514g", comment: "Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice?"
+    t.bigint "q514h", comment: "Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice?"
+    t.bigint "q601a", comment: "Prenatal care"
+    t.bigint "q601b", comment: "Labor management"
+    t.bigint "q601c", comment: "Vaginal deliveries"
+    t.bigint "q601d", comment: "Post-partum care"
+    t.bigint "q601e", comment: "C-section assist"
+    t.bigint "q602a", comment: "Ambulatory care"
+    t.bigint "q602b", comment: "Newborn resuscitation"
+    t.bigint "q602c", comment: "Newborn care in hospital"
+    t.bigint "q602d", comment: "Other hospital care"
+    t.bigint "q602e", comment: "Teen care"
+    t.bigint "q603a", comment: "Ambulatory care"
+    t.bigint "q603b", comment: "Inpatient care"
+    t.bigint "q603c", comment: "Intensive care/ICU-CCU"
+    t.bigint "q603d", comment: "Nursing home care"
+    t.bigint "q603e", comment: "Surgical assist"
+    t.bigint "q603f", comment: "EKG interpretation"
+    t.bigint "q604a", comment: "Pre and Post-Op care"
+    t.bigint "q604b", comment: "Ophthalmology"
+    t.bigint "q604c", comment: "Otolaryngology"
+    t.bigint "q604d", comment: "Urology"
+    t.bigint "q605a", comment: "Major Psych Disorders/Psychiatry"
+    t.bigint "q605b", comment: "Counseling Individual/Family"
+    t.bigint "q605c", comment: "Pain Management"
+    t.bigint "q605d", comment: "Alcohol/Substance Abuse"
+    t.bigint "q606a", comment: "Women's Health"
+    t.bigint "q606b", comment: "Gynecology"
+    t.bigint "q606c", comment: "Orthopedics/Muscoskeletal Med"
+    t.bigint "q606d", comment: "Sports Medicine"
+    t.bigint "q606e", comment: "Emergency Medicine"
+    t.bigint "q606f", comment: "Dermatology"
+    t.bigint "q606g", comment: "Diagnostic Imaging"
+    t.bigint "q606h", comment: "Geriatrics"
+    t.bigint "q606i", comment: "End of Life Care"
+    t.string "q701", comment: "Any additional comments you would like to make?"
+  end
+
+  create_table "source.y1_residency_programs", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.decimal "billingisexp", precision: 11, scale: 2, comment: "4.01.h Program Expenses in 2006/2007 - Billing and Information Systems"
+    t.decimal "capitalexp", precision: 11, scale: 2, comment: "4.01.g Program Expenses in 2006/2007 - Capital"
+    t.decimal "charitablerev", precision: 11, scale: 2, comment: "4.02.b Program Revenue in 2006/2007 - Charitable Contributions"
+    t.decimal "clinstaffexp", precision: 11, scale: 2, comment: "4.01.c Program Expenses in 2006/2007 - Clinical Staff"
+    t.decimal "contractexp", precision: 11, scale: 2, comment: "4.01.f Program Expenses in 2006/2007 - Contracts"
+    t.decimal "expbenefits", precision: 11, scale: 2, comment: "2.02.1.c Program expenses in 2006/2007: Residency operations Benefits"
+    t.decimal "expcontracts", precision: 11, scale: 2, comment: "2.02.1.d Program expenses in 2006/2007: Residency operations Contracts"
+    t.decimal "expdfm", precision: 11, scale: 2, comment: "2.02.8 Program expenses in 2006/2007: DFM Costs"
+    t.decimal "expdme", precision: 11, scale: 2, comment: "2.02.7 Program expenses in 2006/2007: DME Costs"
+    t.decimal "expequipment", precision: 11, scale: 2, comment: "2.02.1.e Program expenses in 2006/2007: Residency operations Equipment"
+    t.decimal "expfacultyfte", precision: 11, scale: 2, comment: "2.02.1.a.1 Program expenses in 2006/2007: Residency operations Faculty FTE"
+    t.decimal "expfacultysalary", precision: 11, scale: 2, comment: "2.02.1.a.2 Program expenses in 2006/2007: Residency operations Faculty Salaries"
+    t.decimal "exphospitalgme", precision: 11, scale: 2, comment: "2.02.3 Program expenses in 2006/2007: Hospital GME"
+    t.decimal "exphospstepdown", precision: 11, scale: 2, comment: "2.02.5 Program expenses in 2006/2007: Hospital Step-down Costs"
+    t.decimal "expmalpractice", precision: 11, scale: 2, comment: "2.02.4 Program expenses in 2006/2007: Malpractice Costs"
+    t.decimal "expmedschool", precision: 11, scale: 2, comment: "2.02.6 Program expenses in 2006/2007: Medical School"
+    t.decimal "expother", precision: 11, scale: 2, comment: "2.02.9.1 Program expenses in 2006/2007: Other"
+    t.decimal "expotherresop", precision: 11, scale: 2, comment: "2.02.1.h.1 Program expenses in 2006/2007: Residency operations Other"
+    t.string "expotherresoptxt", comment: "2.02.1.h.2 Program expenses in 2006/2007: Residency operations Other, text"
+    t.string "expothertxt", comment: "2.02.9.2 Program expenses in 2006/2007: Other, text"
+    t.decimal "exprecruitment", precision: 11, scale: 2, comment: "2.02.2 Program expenses in 2006/2007: Recruitment"
+    t.decimal "exprent", precision: 11, scale: 2, comment: "2.02.1.g Program expenses in 2006/2007: Residency operations Rent"
+    t.decimal "expstafffte", precision: 11, scale: 2, comment: "2.02.1.b.1 Program expenses in 2006/2007: Residency operations Staff FTE"
+    t.decimal "expstaffsalary", precision: 11, scale: 2, comment: "2.02.1.b.2 Program expenses in 2006/2007: Residency operations Staff Salaries"
+    t.decimal "expsupplies", precision: 11, scale: 2, comment: "2.02.1.f Program expenses in 2006/2007: Residency operations Supplies"
+    t.decimal "exptotal", precision: 11, scale: 2, comment: "2.02.10 Program expenses in 2006/2007: Total Expenses"
+    t.decimal "facsalaryexp", precision: 11, scale: 2, comment: "4.01.a Program Expenses in 2006/2007 - Faculty Salary"
+    t.decimal "grantsrev", precision: 11, scale: 2, comment: "4.02.a Program Revenue in 2006/2007 - Grants"
+    t.bigint "id", null: false, comment: "ABFM program ID"
+    t.decimal "nonclinstaffexp", precision: 11, scale: 2, comment: "4.01.d Program Expenses in 2006/2007 - Non-Clinical Staff"
+    t.bigint "numfilledjulyintl", comment: "1.02 # International graduates filled by July 1"
+    t.bigint "numfilledjulyusallo", comment: "1.02 # US Allopathic graduates filled by July 1"
+    t.bigint "numfilledjulyusosteo", comment: "1.02 # US Osteopathic graduates filled by July 1"
+    t.bigint "numfilledmatchintl", comment: "1.02 # International graduates filled in match"
+    t.bigint "numfilledmatchusallo", comment: "1.02 # US Allopathic graduates filled in match"
+    t.bigint "numfilledmatchusosteo", comment: "1.02 # US Osteopathic graduates filled in match"
+    t.bigint "numinterviewed", comment: "1.01 # medical graduates interviewed last year"
+    t.bigint "numqipgy1avail", comment: "1.05 # QI projects available to PGY 1 residents"
+    t.bigint "numqipgy1res", comment: "1.05 # PGY 1 Residents working on QI projects"
+    t.bigint "numqipgy2avail", comment: "1.05 # QI projects available to PGY 2 residents"
+    t.bigint "numqipgy2res", comment: "1.05 # PGY 2 Residents working on QI projects"
+    t.bigint "numqipgy3avail", comment: "1.05 # QI projects available to PGY 3 residents"
+    t.bigint "numqipgy3res", comment: "1.05 # PGY 3 Residents working on QI projects"
+    t.bigint "numqipgy4avail", comment: "1.05 # QI projects available to PGY 4 residents"
+    t.bigint "numqipgy4res", comment: "1.05 # PGY 4 Residents working on QI projects"
+    t.bigint "numrschpgy1avail", comment: "1.05 # Research projects available to PGY 1 residents"
+    t.bigint "numrschpgy1res", comment: "1.05 # PGY 1 residents working on research projects"
+    t.bigint "numrschpgy2avail", comment: "1.05 # Research projects available to PGY 2 residents"
+    t.bigint "numrschpgy2res", comment: "1.05 # PGY 2 residents working on research projects"
+    t.bigint "numrschpgy3avail", comment: "1.05 # Research projects available to PGY 3 residents"
+    t.bigint "numrschpgy3res", comment: "1.05 # PGY 3 residents working on research projects"
+    t.bigint "numrschpgy4avail", comment: "1.05 # Research projects available to PGY 4 residents"
+    t.bigint "numrschpgy4res", comment: "1.05 # PGY 4 residents working on research projects"
+    t.bigint "pctaafp", comment: "1.04 % of residents members of AAFP"
+    t.decimal "pctnonpeerreview", precision: 11, scale: 2, comment: "1.07 % Core faculty with at least one NON-peer-reviewed publication last year"
+    t.decimal "pctpeerreview", precision: 11, scale: 2, comment: "1.06 % Core faculty with at least one peer-reviewed publication last year"
+    t.decimal "pctpresenting", precision: 11, scale: 2, comment: "1.08 % Core faculty presenting at meetings last year"
+    t.decimal "ptcarerev", precision: 11, scale: 2, comment: "4.02.c Program Revenue in 2006/2007 - Patient Care"
+    t.bigint "ratefacdevel", comment: "3.01.a Rate faculty development"
+    t.bigint "ratefacmorale", comment: "3.01.b Rate faculty morale"
+    t.bigint "rateresmorale", comment: "3.01.c Rate resident morale"
+    t.bigint "ratesatisfaction", comment: "3.01.d Rate residency program satisfaction"
+    t.decimal "recruitexp", precision: 11, scale: 2, comment: "4.01.e Program Expenses in 2006/2007 - Recruitment"
+    t.bigint "resleave", comment: "1.03 Residents leave program last year"
+    t.bigint "resleavepgy1", comment: "1.03 # residents leave from PGY 1"
+    t.bigint "resleavepgy2", comment: "1.03 # residents leave from PGY 2"
+    t.bigint "resleavepgy3", comment: "1.03 # residents leave from PGY 3"
+    t.bigint "resleavepgy4", comment: "1.03 # residents leave from PGY 4"
+    t.decimal "revcharity", precision: 11, scale: 2, comment: "2.01.2 Amount of revenue in charitable contributions program received in 2006/2007"
+    t.decimal "revgrants", precision: 11, scale: 2, comment: "2.01.1 Amount of revenue in grants program received in 2006/2007"
+    t.decimal "revhospitalgme", precision: 11, scale: 2, comment: "2.01.6 Amount of revenue in Hospital GME program received in 2006/2007"
+    t.decimal "revmedicaiddirect", precision: 11, scale: 2, comment: "2.01.5.a Amount of revenue in Medicaid direct program received in 2006/2007"
+    t.decimal "revmedicaidindirect", precision: 11, scale: 2, comment: "2.01.5.b Amount of revenue in Medicaid indirect program received in 2006/2007"
+    t.decimal "revmedicaredirect", precision: 11, scale: 2, comment: "2.01.4.a Amount of revenue in Medicare direct program received in 2006/2007"
+    t.decimal "revmedicaredisproportionate", precision: 11, scale: 2, comment: "2.01.4.d Amount of revenue in Medicare disproportionate share program received in 2006/2007"
+    t.decimal "revmedicarehmo", precision: 11, scale: 2, comment: "2.01.4.c Amount of revenue in Medicare HMO carve out return payments program received in 2006/2007"
+    t.decimal "revmedicareindirect", precision: 11, scale: 2, comment: "2.01.4.b Amount of revenue in Medicare indirect program received in 2006/2007"
+    t.decimal "revother", precision: 11, scale: 2, comment: "2.01.7.a Amount of revenue in Other program received in 2006/2007"
+    t.string "revothertxt", comment: "2.01.7.b Other revenue specified, text"
+    t.decimal "revstate", precision: 11, scale: 2, comment: "2.01.3 Amount of revenue in state funding program received in 2006/2007"
+    t.decimal "revtotal", precision: 11, scale: 2, comment: "2.01.8 Amount of revenue Total program received in 2006/2007"
+    t.decimal "techancrev", precision: 11, scale: 2, comment: "4.02.d Program Revenue in 2006/2007 - Technical and Ancillary Fees"
+    t.decimal "volfacultyexp", precision: 11, scale: 2, comment: "4.01.b Program Expenses in 2006/2007 - Volunteer Faculty"
+
+    t.unique_constraint ["id"], name: "y1_residency_programs_id_key"
+  end
+
+  create_table "source.y1_resident_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "ID written on 2007 survey"
+    t.bigint "abfm_last_four2", comment: "Correct last 4 digits of Residents 2007 ABFM ID"
+    t.bigint "activitiesclinrot", comment: "2.02 % time spent in clinical rotations"
+    t.bigint "activitieslectsem", comment: "2.02 % time spent in lectures and seminars"
+    t.bigint "activitiesservlearn", comment: "2.02 % time spent in service learning"
+    t.bigint "age", comment: "1.01 Resident age in years"
+    t.bigint "children", comment: "1.06 Have children"
+    t.string "contclin", comment: "P4-Assigned Continuity Clinic ID"
+    t.bigint "ethnicity", comment: "1.04 Ethnicity: Of hispanic origin"
+    t.bigint "evaluatefaculty", comment: "2.06 Opportunity to evaluate faculty at least once per year"
+    t.bigint "evaluateprogram", comment: "2.07 Opportunity to evaluate program at least once per year"
+    t.bigint "facultysupervising", comment: "2.03 Faculty spend sufficient time supervising residents"
+    t.bigint "facultyteaching", comment: "2.03 Faculty spend sufficient time teaching residents"
+    t.bigint "feedback", comment: "2.05 Receive written feedback on performance for each rotation"
+    t.bigint "firstfamilyphysician", comment: "1.10 If NO, First family physician in family"
+    t.bigint "firstgenerationcollege", comment: "1.09 First generation college graduate"
+    t.bigint "firstgenphysician", comment: "1.10 First person in family to become a physician"
+    t.bigint "gender", comment: "1.02 Resident gender"
+    t.bigint "goals", comment: "2.01 Program provided access to written goals & objectives for each rotation"
+    t.bigint "importance1", comment: "New Model Importance: EMR"
+    t.bigint "importance10", comment: "New Model Importance: HIPPA-compliant asynchronous communication with patients"
+    t.bigint "importance11", comment: "New Model Importance: Asynchronous communication with other providers"
+    t.bigint "importance12", comment: "New Model Importance: Ongoing population-based QA using EMR"
+    t.bigint "importance13", comment: "New Model Importance: Chronic disease management registries"
+    t.bigint "importance14", comment: "New Model Importance: EMR-based preventive services"
+    t.bigint "importance15", comment: "New Model Importance: Doing any practice-based research"
+    t.bigint "importance16", comment: "New Model Importance: Doing practice-based research using EMR"
+    t.bigint "importance17", comment: "New Model Importance: Advanced or open-access scheduling"
+    t.bigint "importance18", comment: "New Model Importance: Expanded hours"
+    t.bigint "importance19", comment: "New Model Importance: Functional quality monitoring telephone system"
+    t.bigint "importance2", comment: "New Model Importance: Paperless practice"
+    t.bigint "importance20", comment: "New Model Importance: Full asynchronous patient-accessible scheduling"
+    t.bigint "importance21", comment: "New Model Importance: Credible, reliable patient satisfaction survey"
+    t.bigint "importance22", comment: "New Model Importance: Teams managing patient care"
+    t.bigint "importance23", comment: "New Model Importance: Integrated behavioral health"
+    t.bigint "importance24", comment: "New Model Importance: Integrated case management "
+    t.bigint "importance25", comment: "New Model Importance: Clinical pharmacy support"
+    t.bigint "importance26", comment: "New Model Importance: Group visits"
+    t.bigint "importance27", comment: "New Model Importance: Practice being patient-centered versus physician-centered"
+    t.bigint "importance3", comment: "New Model Importance: Secure remote access to clinical info"
+    t.bigint "importance4", comment: "New Model Importance: Integrated transcription"
+    t.bigint "importance5", comment: "New Model Importance: Electronic scheduling integrated with EMR"
+    t.bigint "importance6", comment: "New Model Importance: Electronic billing integrated with EMR"
+    t.bigint "importance7", comment: "New Model Importance: Electronic orders integrated with EMR"
+    t.bigint "importance8", comment: "New Model Importance: Electronic prescribing integrated with EMR"
+    t.bigint "importance9", comment: "New Model Importance: Hospital EMR w/full-computerized physician order entry"
+    t.bigint "influence", comment: "1.13 P4 Influence decision to rank program in match"
+    t.bigint "many", comment: "1.06 How many children"
+    t.bigint "marital", comment: "1.05 Current marital status"
+    t.bigint "masters", comment: "1.14 Working towards masters degree (MS, MPH, MBA)"
+    t.string "medgraddate", comment: "1.11 Date graduated from med school"
+    t.bigint "medicalafterbs", comment: "1.07 Enter med school immediately after completing bachelors"
+    t.bigint "othertraineesinterfere", comment: "2.09 Other trainees interfere with or supplement education"
+    t.string "p4_program_id", null: false, comment: "P4-Assgined Residency ID"
+    t.integer "p4_resident_id"
+    t.string "p4resid", comment: "P4-Assigned Resident ID"
+    t.string "p4residency_abfm_id", null: false, comment: "ABFM Residency Program ID"
+    t.bigint "participationconferences", comment: "2.04 Faculty participation in conferences"
+    t.bigint "participationjournalclub", comment: "2.04 Faculty participation in journal club"
+    t.bigint "programyear", comment: "1.12 Current Program Year"
+    t.bigint "race_aa", comment: "1.03 Race: Black"
+    t.bigint "race_ap", comment: "1.03 Race: Asian or Pacific Islander"
+    t.bigint "race_c", comment: "1.03 Race: White"
+    t.bigint "race_in", comment: "1.03 Race: American Indian or Alaska Native"
+    t.bigint "race_o", comment: "1.03 Race: Other"
+    t.bigint "satisfied", comment: "2.11 Overall satisfaction with residency training thus far"
+    t.bigint "speakfreely", comment: "2.08 Able to speak freely about issues and problems without fear"
+    t.bigint "strengthscompetence", comment: "2.10 Strengths/weaknesses of program - Competence of faculty"
+    t.bigint "strengthscurrchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in curriculum change"
+    t.bigint "strengthsfacteaching", comment: "2.10 Strengths/weaknesses of program - Teaching"
+    t.bigint "strengthsoverallcurr", comment: "2.10 Strengths/weaknesses of program - Overall curriculum"
+    t.bigint "strengthsp4implement", comment: "2.10 Strengths/weaknesses of program - Success implementing P4 innovations"
+    t.bigint "strengthsp4innovations", comment: "2.10 Strengths/weaknesses of program - Success conveying what P4 innovations are to you"
+    t.bigint "strengthspracchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in clinical practice change"
+    t.bigint "usamedschool", comment: "1.08 Attend med school in United States"
+    t.bigint "yearsbeforemedschool", comment: "1.07 Years between undergrad and medical school"
+  end
+
+  create_table "source.y1_webads_responses", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.bigint "bartholin", comment: "WebAds Required Procedure - I & D Bartholin Cyst"
+    t.bigint "castremoval", comment: "WebAds Required Procedure - Cast Removed"
+    t.bigint "catheter", comment: "WebAds Required Procedure - Bladder Catheter"
+    t.bigint "cerumenremoval", comment: "WebAds Required Procedure - Cerumen Removal"
+    t.bigint "circumcision", comment: "WebAds Required Procedure - Circumcision"
+    t.bigint "colposcopy", comment: "WebAds Required Procedure - Colposcopy"
+    t.bigint "cryosurgery", comment: "WebAds Required Procedure - Skin Cryosurgery"
+    t.bigint "curettage", comment: "WebAds Required Procedure - Endocervical Curettage"
+    t.decimal "dailyptsadultyr1", comment: "Average # Adult patients managed daily - Y1"
+    t.decimal "dailyptsadultyr2", comment: "Average # Adult patients managed daily - Y2"
+    t.decimal "dailyptsadultyr3", comment: "Average # Adult patients managed daily - Y3"
+    t.decimal "dailyptsnewbornyr1", comment: "Average # Newborn patients managed daily - Y1"
+    t.decimal "dailyptsnewbornyr2", comment: "Average # Newborn patients managed daily - Y2"
+    t.decimal "dailyptsnewbornyr3", comment: "Average # Newborn patients managed daily - Y3"
+    t.decimal "dailyptspedsyr1", comment: "Average # Pediatric patients managed daily - Y1"
+    t.decimal "dailyptspedsyr2", comment: "Average # Pediatric patients managed daily - Y2"
+    t.decimal "dailyptspedsyr3", comment: "Average # Pediatric patients managed daily - Y3"
+    t.bigint "ekg", comment: "WebAds Required Procedure - EKG Interpretation"
+    t.bigint "endometrialbx", comment: "WebAds Required Procedure - Endometrial Biopsy"
+    t.bigint "eyefb", comment: "WebAds Required Procedure - Foreign Body Removal"
+    t.bigint "genitalwarts", comment: "WebAds Required Procedure - Genital Wart Treatment"
+    t.bigint "ingrowntoenail", comment: "WebAds Required Procedure - Ingrown toenail surgery"
+    t.bigint "injectionasp", comment: "WebAds Required Procedure - Injection/Aspiration"
+    t.bigint "intubation", comment: "WebAds Required Procedure - Endotracheal Intubation of an adult, emergency"
+    t.bigint "iud", comment: "WebAds Required Procedure - IUD Insertion/Removal"
+    t.bigint "ivstart", comment: "WebAds Required Procedure - IV Start"
+    t.bigint "lacrepair", comment: "WebAds Required Procedure - Laceration repair"
+    t.bigint "nstcst", comment: "WebAds Required Procedure - NST/CST Interpretation"
+    t.bigint "obultrasound", comment: "WebAds Required Procedure - OB Ultrasound"
+    t.bigint "omt", comment: "WebAds Required Procedure - OMT"
+    t.bigint "papsmear", comment: "WebAds Required Procedure - Pap Smear"
+    t.bigint "pgy1activefulltime", comment: "# PGY 1 residents active full time"
+    t.bigint "pgy1activeparttime", comment: "# PGY 1 residents active part time"
+    t.bigint "pgy1completed", comment: "# PGY 1 residents completed all training"
+    t.bigint "pgy2activefulltime", comment: "# PGY 2 residents active full time"
+    t.bigint "pgy2activeparttime", comment: "# PGY 2 residents active part time"
+    t.bigint "pgy2completed", comment: "# PGY 2 residents completed all training"
+    t.bigint "pgy3activefulltime", comment: "# PGY 3 residents active full time"
+    t.bigint "pgy3activeparttime", comment: "# PGY 3 residents active part time"
+    t.bigint "pgy3completed", comment: "# PGY 3 residents completed all training"
+    t.bigint "pgy4activefulltime", comment: "# PGY 4 residents active full time"
+    t.bigint "pgy4activeparttime", comment: "# PGY 4 residents active part time"
+    t.bigint "pgy4completed", comment: "# PGY 4 residents completed all training"
+    t.bigint "skinbiopsy", comment: "WebAds Required Procedure - Skin Bx/Lesion Removal"
+    t.bigint "skiniandd", comment: "WebAds Required Procedure - Skin I & D Abscess"
+    t.bigint "spirometry", comment: "WebAds Required Procedure - Spirometry"
+    t.bigint "treadmill", comment: "WebAds Required Procedure - Cardiovascular Treadmill Test"
+    t.bigint "vasectomy", comment: "WebAds Required Procedure - Vasectomy"
+  end
+
+  create_table "source.y2_continuity_clinics", primary_key: ["p4_program_id", "settingid"], force: :cascade do |t|
+    t.string "agesource", comment: "2.02.8 Source of patient age estimates"
+    t.decimal "asian", precision: 11, scale: 2, comment: "2.04.2 Percent Asian patients"
+    t.decimal "black", precision: 11, scale: 2, comment: "2.04.3 Percent Black/African American patients"
+    t.decimal "daysacuteapptfac", precision: 11, scale: 2, comment: "1.05.e Number of days to acute 1st available appointment for faculty"
+    t.decimal "daysacuteapptfac3", precision: 11, scale: 2, comment: "1.05.f Number of days to acute 3rd available appointment for faculty"
+    t.decimal "daysacuteapptres", precision: 11, scale: 2, comment: "1.05.k Number of days to acute 1st available appointment for residents"
+    t.decimal "daysacuteapptres3", precision: 11, scale: 2, comment: "1.05.l Number of days to acute 3rd available appointment for residents"
+    t.decimal "daysfuapptfac", precision: 11, scale: 2, comment: "1.05.c Number of days to follow up 1st available appointment for faculty"
+    t.decimal "daysfuapptfac3", precision: 11, scale: 2, comment: "1.05.d Number of days to follow up 3rd available appointment for faculty"
+    t.decimal "daysfuapptres", precision: 11, scale: 2, comment: "1.05.i Number of days to follow up 1st available appointment for residents"
+    t.decimal "daysfuapptres3", precision: 11, scale: 2, comment: "1.05.j Number of days to follow up 3rd available appointment for residents"
+    t.decimal "daysnewapptfac", precision: 11, scale: 2, comment: "1.05.a Number of days to new patient 1st available appointment for faculty"
+    t.decimal "daysnewapptfac3", precision: 11, scale: 2, comment: "1.05.b Number of days to new patient 3rd available appointment for faculty"
+    t.decimal "daysnewapptres", precision: 11, scale: 2, comment: "1.05.g Number of days to new patient 1st available appointment for residents"
+    t.decimal "daysnewapptres3", precision: 11, scale: 2, comment: "1.05.h Number of days to new patient 3rd available appointment for residents"
+    t.decimal "eighteen", precision: 11, scale: 2, comment: "2.02.3 Percent of patients between 18-24 years"
+    t.bigint "emrforsafety", comment: "3.02.a EMR used for patient safety"
+    t.string "emrforsafetytxt", comment: "3.02.b If yes, please describe"
+    t.decimal "emryrs", precision: 11, scale: 2, comment: "3.01.a Years EMR has been implemented in practice"
+    t.decimal "female", precision: 11, scale: 2, comment: "2.01.b Percent female patients"
+    t.decimal "ffs", precision: 11, scale: 2, comment: "2.05.2 Percent Private Health Insurance (Fee for service)"
+    t.decimal "fortyfive", precision: 11, scale: 2, comment: "2.02.5 Percent of patients between 45-64 years"
+    t.decimal "fteadmin", precision: 11, scale: 2, comment: "1.09.f Number of clinical staff FTEs for Administrative Staff"
+    t.decimal "fteallied", precision: 11, scale: 2, comment: "1.09.e Number of clinical staff FTEs for Allied Health Staff"
+    t.decimal "ftediet", precision: 11, scale: 2, comment: "1.09.i Number of clinical staff FTEs for Dieticians"
+    t.decimal "ftefmres", precision: 11, scale: 2, comment: "1.08.b Number of physician FTEs for Family Medicine Residents"
+    t.decimal "ftefp", precision: 11, scale: 2, comment: "1.08.a Number of physician FTEs for Family Physicians"
+    t.decimal "fteim", precision: 11, scale: 2, comment: "1.08.e Number of physician FTEs for Internists"
+    t.decimal "fteimres", precision: 11, scale: 2, comment: "1.08.f Number of physician FTEs for Internal Medicine Residents"
+    t.decimal "ftema", precision: 11, scale: 2, comment: "1.09.d Number of clinical staff FTEs for Medical Assistants"
+    t.decimal "ftenp", precision: 11, scale: 2, comment: "1.09.a Number of clinical staff FTEs for Nurse Practioners"
+    t.decimal "fteob", precision: 11, scale: 2, comment: "1.08.g Number of physician FTEs for OBGYN Physicians"
+    t.decimal "fteobres", precision: 11, scale: 2, comment: "1.08.h Number of physician FTEs for OBGYN Residents"
+    t.decimal "fteotherphys1", precision: 11, scale: 2, comment: "1.08.i Number of physician FTEs for Other Specialty 1"
+    t.string "fteotherphys1txt", comment: "1.08.j Number of physician FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherphys2", precision: 11, scale: 2, comment: "1.08.k Number of physician FTEs for Other Specialty 2"
+    t.string "fteotherphys2txt", comment: "1.08.l Number of physician FTEs for Other Specialty 2 Text"
+    t.decimal "fteotherspec1", precision: 11, scale: 2, comment: "1.09.k Number of clinical staff FTEs for Other Specialty 1"
+    t.string "fteotherspec1txt", comment: "1.09.l Number of clinical staff FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherspec2", precision: 11, scale: 2, comment: "1.09.m Number of clinical staff FTEs for Other Specialty 2"
+    t.string "fteotherspec2txt", comment: "1.09.n Number of clinical staff FTEs for Other Specialty 2 Text"
+    t.decimal "ftepa", precision: 11, scale: 2, comment: "1.09.b Number of clinical staff FTEs for Physicians Assistants"
+    t.decimal "fteped", precision: 11, scale: 2, comment: "1.08.c Number of physician FTEs for Pediatricians"
+    t.decimal "ftepedres", precision: 11, scale: 2, comment: "1.08.d Number of physician FTEs for Pediatric Residents"
+    t.decimal "ftepsych", precision: 11, scale: 2, comment: "1.09.g Number of clinical staff FTEs for Psychologists"
+    t.decimal "ftepteduc", precision: 11, scale: 2, comment: "1.09.j Number of clinical staff FTEs for Patient Educators"
+    t.decimal "fternlpn", precision: 11, scale: 2, comment: "1.09.c Number of clinical staff FTEs for Nursing Staff RN/LPN"
+    t.decimal "ftesocial", precision: 11, scale: 2, comment: "1.09.h Number of clinical staff FTEs for Social Workers"
+    t.string "gendersource", comment: "2.01.c Source of patient gender estimates"
+    t.decimal "hawaiian", precision: 11, scale: 2, comment: "2.04.4 Percent Hawaiian patients"
+    t.decimal "hispanic", precision: 11, scale: 2, comment: "2.03.1 Percent Hispanic or Latino patients"
+    t.decimal "indian", precision: 11, scale: 2, comment: "2.04.1 Percent American Indian/Native American patients"
+    t.bigint "integrated", comment: "1.11 Currently part of an integrated health system (with specialists in hospital)"
+    t.decimal "lt3", precision: 11, scale: 2, comment: "2.02.1 Percent of patients under 3 years"
+    t.decimal "male", precision: 11, scale: 2, comment: "2.01.a Percent male patients"
+    t.decimal "medicaid", precision: 11, scale: 2, comment: "2.05.4 Percent Medicaid"
+    t.decimal "medicare", precision: 11, scale: 2, comment: "2.05.3 Percent Medicare"
+    t.string "noemrtxt", comment: "3.01.b If no EMR, why"
+    t.decimal "nonhispanic", precision: 11, scale: 2, comment: "2.03.2 Percent Not Hispanic or Latino patients"
+    t.bigint "numallied", comment: "1.10.e Number of Allied Health Staff taught in clinic over the past year"
+    t.bigint "numdiet", comment: "1.10.h Number of Dieticians taught in clinic over the past year"
+    t.bigint "numexamrooms", comment: "1.06 Total number of exam rooms"
+    t.bigint "numma", comment: "1.10.d Number of Medical Assistants taught in clinic over the past year"
+    t.bigint "numnp", comment: "1.10.a Number of Nurse Practioners taught in clinic over the past year"
+    t.bigint "numotherspec", comment: "1.10.j Number of Other Specialty taught in clinic over the past year"
+    t.string "numotherspectxt", comment: "1.10.k Other Specialty taught in clinic over the past year Text"
+    t.bigint "numpa", comment: "1.10.b Number of Physicians Assistants taught in clinic over the past year"
+    t.bigint "numpsych", comment: "1.10.f Number of Psychologists taught in clinic over the past year"
+    t.bigint "numpteduc", comment: "1.10.i Number of Patient Educators taught in clinic over the past year"
+    t.decimal "numptfac", precision: 11, scale: 2, comment: "1.07.a Total # of patients seen by faculty in 2007/08"
+    t.decimal "numptmid", precision: 11, scale: 2, comment: "1.07.b Total # of patients seen by Mid-level clinicians in 2007/08"
+    t.decimal "numptres", precision: 11, scale: 2, comment: "1.07.c Total # of patients seen by residents in 2007/08"
+    t.bigint "numrnlpn", comment: "1.10.c Number of Nursing Staff RN/LPN taught in clinic over the past year"
+    t.bigint "numsocial", comment: "1.10.g Number of Social Workers taught in clinic over the past year"
+    t.decimal "otherpay", precision: 11, scale: 2, comment: "2.05.5 Percent Other Payment Method"
+    t.decimal "otherrace", precision: 11, scale: 2, comment: "2.04.6 Percent Other Ethnicity patients"
+    t.decimal "owner", precision: 11, scale: 2, comment: "1.12.a Practice affiliation/ownership"
+    t.string "ownerother", comment: "1.12.b Owner other Text"
+    t.string "p4_program_id", null: false, comment: "Unique P4 - Assigned Residency Program ID"
+    t.string "paysource", comment: "2.05.7 Source of payment method estimates"
+    t.bigint "pgy1", comment: "1.01.a Number of PGY 1 residents assigned to continuity patients in 2007/08"
+    t.decimal "pgy1acute", precision: 11, scale: 2, comment: "1.04.e Please estimate the percent of acute visits for PGY1 last year"
+    t.decimal "pgy1routine", precision: 11, scale: 2, comment: "1.04.a Please estimate the percent of routine visits for PGY1 last year"
+    t.bigint "pgy2", comment: "1.01.b Number of PGY 2 residents assigned to continuity patients in 2007/08"
+    t.decimal "pgy2acute", precision: 11, scale: 2, comment: "1.04.f Please estimate the percent of acute visits for PGY2 last year"
+    t.decimal "pgy2routine", precision: 11, scale: 2, comment: "1.04.b Please estimate the percent of routine visits for PGY2 last year"
+    t.bigint "pgy3", comment: "1.01.c Number of PGY 3 residents assigned to continuity patients in 2007/08"
+    t.decimal "pgy3acute", precision: 11, scale: 2, comment: "1.04.g Please estimate the percent of acute visits for PGY3 last year"
+    t.decimal "pgy3routine", precision: 11, scale: 2, comment: "1.04.c Please estimate the percent of routine visits for PGY3 last year"
+    t.bigint "pgy4", comment: "1.01.d Number of PGY 4 residents assigned to continuity patients in 2007/08"
+    t.decimal "pgy4acute", precision: 11, scale: 2, comment: "1.04.f Please estimate the percent of acute visits for PGY4 last year"
+    t.decimal "pgy4routine", precision: 11, scale: 2, comment: "1.04.d Please estimate the percent of routine visits for PGY4 last year"
+    t.decimal "prepaid", precision: 11, scale: 2, comment: "2.05.1 Percent Private Health Insurance (Prepaid)"
+    t.bigint "ptassigned", comment: "1.03 Are the patients in the clinic assigned to a personal physician?"
+    t.string "racesource", comment: "2.04.7 Source of patient race estimates"
+    t.string "settingid", null: false, comment: "Unique P4 - Assigned Continuity Clinic ID"
+    t.decimal "seventyfive", precision: 11, scale: 2, comment: "2.02.7 Percent of patients 75 years and older"
+    t.decimal "sixtyfive", precision: 11, scale: 2, comment: "2.02.6 Percent of patients between 65-74 years"
+    t.bigint "statbilling", comment: "Status of electronic billing"
+    t.bigint "statcasemgt", comment: "Status of integrated case management"
+    t.bigint "statdisregistry", comment: "Status of chronic disease management registries"
+    t.bigint "statemr", comment: "Status of EMR"
+    t.bigint "statexpandedhrs", comment: "Status of expanded hours"
+    t.bigint "statgroup", comment: "Status of group visits"
+    t.bigint "stathospemr", comment: "Status of hospital EMR"
+    t.bigint "statnetscheduling", comment: "Status of full asynchronous pateint-accessible scheduling"
+    t.bigint "statopenaccess", comment: "Status of open-access scheduling"
+    t.bigint "statorders", comment: "Status of electronic orders"
+    t.bigint "statpaperless", comment: "Status of paperless"
+    t.bigint "statparking", comment: "Status of adequate, free parking"
+    t.bigint "statpharm", comment: "Status of clinical pharmacy support"
+    t.bigint "statprevregistry", comment: "Status of EMB-based preventive services registries"
+    t.bigint "statprovcommunication", comment: "Status of asynchronous communication with other providers"
+    t.bigint "statpsych", comment: "Status of integrated behavioral health"
+    t.bigint "statptcentered", comment: "Overall status of practice as patient-centered vs. physician-centered"
+    t.bigint "statptcommunication", comment: "Status of asynchronous communication with patients"
+    t.bigint "statqa", comment: "Status of population-based QA using EMR"
+    t.bigint "statremote", comment: "Status of remote access"
+    t.bigint "statresearch", comment: "Status of practice-based research using EMR"
+    t.bigint "statscheduling", comment: "Status of electronic scheduling"
+    t.bigint "statspace", comment: "Status of sufficient and adequate physical space"
+    t.bigint "statsurvey", comment: "Status of patient satisfaction survey"
+    t.bigint "statteams", comment: "Status of using teams to manage patient care"
+    t.bigint "stattelephone", comment: "Status of functional quality monitoring telephone system"
+    t.bigint "stattranscription", comment: "Status of transcription expense"
+    t.bigint "stattransit", comment: "Status of convenient public transportation"
+    t.decimal "three", precision: 11, scale: 2, comment: "2.02.2 Percent of patients between 3-17 years"
+    t.bigint "totpgy", comment: "1.01.e Total # of residents at the clinic"
+    t.decimal "twentyfive", precision: 11, scale: 2, comment: "2.02.4 Percent of patients between 25-44 years"
+    t.decimal "uninsured", precision: 11, scale: 2, comment: "2.05.6 Percent Uninsured"
+    t.decimal "white", precision: 11, scale: 2, comment: "2.04.5 Percent White patients"
+    t.bigint "xrays", comment: "2.06 Where majority of patients go for routine x-rays"
+
+    t.unique_constraint ["settingid"], name: "y2_continuity_clinics_settingid_key"
+  end
+
+  create_table "source.y2_graduate_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last four of ABFM ID"
+    t.string "created_at", comment: "Date created"
+    t.bigint "finished", comment: "Web survey finished?"
+    t.bigint "grad_year", comment: "Graduation Year"
+    t.bigint "graduateid", comment: "Survey Login"
+    t.bigint "max_slide", comment: "Max slide reached"
+    t.string "p4_program_id", comment: "P4 ID"
+    t.integer "p4_resident_id"
+    t.bigint "paper", comment: "Paper survey?"
+    t.bigint "q101a", comment: "1.01a - Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "1.01b - In what year were you initially certified by the ABFM?"
+    t.bigint "q101c", comment: "1.01c - Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "1.01d - In what year are you planning to be certified by the ABFM?"
+    t.bigint "q102a", comment: "1.02a - CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "1.02b - CAQ in geriatrics?"
+    t.bigint "q102c", comment: "1.02c - CAQ in sports medicine?"
+    t.bigint "q102d", comment: "1.02d - Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "1.02e - For what other specialty / CAQ do you have a board certification?"
+    t.bigint "q103a", comment: "1.04 - Are you currently enrolled in or did you complete a fellowship after residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics / Maternity Care - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_10", comment: "Other - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_2", comment: "Geriatrics - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_3", comment: "Sports Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_4", comment: "Research - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_5", comment: "Faculty Development - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_6", comment: "Pain Management - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_7", comment: "Hospitalist - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_8", comment: "Emergency Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_9", comment: "Rural Medicine - 1.04a - What type of fellowship(s)?"
+    t.string "q103b_other", comment: "Other Text - 1.04a - What type of fellowship(s)?"
+    t.string "q104", comment: "1.03 - In what state(s) are you currently practicing?"
+    t.decimal "q105", comment: "1.05 - What is your age?"
+    t.bigint "q106", comment: "1.06 - What is your gender?"
+    t.bigint "q107_1", comment: "White - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_2", comment: "Black - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_3", comment: "Hispanic - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_4", comment: "Asian / Pacific Islander - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_5", comment: "American Indian or Alaska Native - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_6", comment: "Middle Eastern - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_7", comment: "Other - 1.07 - What is your race? (Check all that apply)"
+    t.string "q107_other", comment: "1.07 - What is your race? (Check all that apply)"
+    t.bigint "q108", comment: "1.08 - What is your marital status? (Choose only one)"
+    t.bigint "q201", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.string "q201_other", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.bigint "q202_a", comment: "HPSA: Federally designated health professional shortage area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_b", comment: "MUA: Federally designated medically underserved area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_c", comment: "MHC: Federally designated migrant health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_d", comment: "CHC: Federally designated community health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_e", comment: "RHC: Federally designated rural health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_f", comment: "NHSC: National Health Service Corps - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_g", comment: "IHS: Indian Health Service site - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_h", comment: "Other state or federally qualified health center / clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_none", comment: "None of the above - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.string "q202_other", comment: "Other state or federally qualified health center / clinic - Text - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q203", comment: "2.03 - Which of the following best describes the community in which you practice?"
+    t.decimal "q204", comment: "2.04 - How long in months have you been at your current practice location?"
+    t.bigint "q205", comment: "2.05 - Number of office visits in an average full day. If you only work in half-day increments, multiply by 2 to get the full-day number."
+    t.decimal "q206", comment: "2.06 - Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office."
+    t.decimal "q207a", comment: "Private Insurance - 2.07 - Payor Mix"
+    t.decimal "q207b", comment: "Medicaid - 2.07 - Payor Mix"
+    t.decimal "q207c", comment: "Medicare - 2.07 - Payor Mix"
+    t.decimal "q207d", comment: "HMO / Managed Care - 2.07 - Payor Mix"
+    t.decimal "q207e", comment: "Self-Pay - 2.07 - Payor Mix"
+    t.decimal "q207f", comment: "Other - 2.07 - Payor Mix"
+    t.string "q207f_other", comment: "Other - Text Description - 2.07 - Payor Mix"
+    t.bigint "q207f_other_present", comment: "Other - Is Checked? - 2.07 - Payor Mix"
+    t.bigint "q208", comment: "2.08 - What is your pre-tax yearly income, excluding benefits?"
+    t.bigint "q301a", comment: "3.01a - Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "3.01b - If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "3.01c - I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "3.01d - Overall, my residency prepared me well for my current clinical practice"
+    t.bigint "q401", comment: "4.01 - EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "4.02 - Paperless Practice (all interfaces and scanning work - no paper charts)"
+    t.bigint "q403", comment: "4.03 - Full secured remote access"
+    t.bigint "q404", comment: "4.04 - Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "4.05 - Electronic scheduling system Integrated with EMR"
+    t.bigint "q406", comment: "4.06 - Electronic billing system Integrated with EMR"
+    t.bigint "q407", comment: "4.07 - Electronic orders (e.g., lab, x-ray) Integrated with EMR"
+    t.bigint "q408", comment: "4.08 - Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "4.09 - Secure HIPAA-compliant asynchronous communication (e.g. e-mail or text messaging) with patients"
+    t.bigint "q410", comment: "4.10 - Asynchronous communication with other providers"
+    t.bigint "q411", comment: "4.11 - Ongoing population-based Quality Assurance using an EMR / registry"
+    t.bigint "q412", comment: "4.12 - Chronic disease management registries"
+    t.bigint "q413", comment: "4.13 - EMR-based preventive services registries"
+    t.bigint "q414", comment: "4.14 - Practice-based research using an EMR"
+    t.bigint "q415", comment: "4.15 - Advanced or open-access scheduling"
+    t.bigint "q416", comment: "4.16 - Expanded hours (e.g., clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "4.17 - Functional quality monitoring telephone system (system to monitor call abandonment / time to answer)"
+    t.bigint "q418", comment: "4.18 - Full asynchronous patient-accessible scheduling (e.g., Internet-based)"
+    t.bigint "q419", comment: "4.19 - Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "4.20 - Sufficient and adequate physical space"
+    t.bigint "q421", comment: "4.21 - Adequate, free parking"
+    t.bigint "q422", comment: "4.22 - Convenient public transportation access"
+    t.bigint "q423", comment: "4.23 - Using teams to manage patient care"
+    t.bigint "q424", comment: "4.24 - Integrated behavioral health"
+    t.bigint "q425", comment: "4.25 - Integrated "
+    t.bigint "q426", comment: "4.26 - Clinical pharmacy support"
+    t.bigint "q427", comment: "4.27 - Group visits"
+    t.bigint "q428", comment: "4.28 - Your practice as patient-centered versus physician-centered"
+    t.bigint "q429", comment: "4.29 - Using the scale below, please indicate what role you have played in office practice redesign toward the Patient-Centered Medical Home."
+    t.bigint "q430", comment: "4.30 - Did you play a role during your residency training in Patient-Centered Medical Home design/implementation?"
+    t.bigint "q501a", comment: "5.02a - Adult inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501b", comment: "5.02b - Adult ICU / CCU care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501c", comment: "5.02c - Nursing home care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501d", comment: "5.02d - Newborn nursery care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501e", comment: "5.02e - Pediatric inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501f", comment: "5.02f - Surgical inpatient procedures - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501g", comment: "5.02g - Emergency Room care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q502", comment: "5.02h - Prenatal care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q503", comment: "5.01 - Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "5.01c - Do other members of your practice group deliver babies?"
+    t.bigint "q503a", comment: "5.01a - Vaginal Deliveries"
+    t.bigint "q503b", comment: "5.01b - C-section deliveries - as primary surgeon"
+    t.bigint "q504", comment: "5.03 - Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "5.03a - Please describe the difficulties you've experienced:"
+    t.bigint "q505_1", comment: "Medical students - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_2", comment: "Residents - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_3", comment: "Fellows - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_4", comment: "Other health care professionals - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_none", comment: "None of the above - 5.04 - What kind of teaching activities do you participate in?"
+    t.string "q505_other", comment: "Other health care professionals - Other Text - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q506a", comment: "7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice? - 7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506b", comment: "7.01b - Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice? - 7.01b - Cryosurgery"
+    t.bigint "q506c", comment: "7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice? - 7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506d", comment: "7.01d - Incision & drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice? - 7.01d - Incision & drainage of abscess"
+    t.bigint "q506e", comment: "7.01e - Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice? - 7.01e - Simple laceration repair"
+    t.bigint "q507a", comment: "7.02a - IUD insertion / removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice? - 7.02a - IUD insertion / removal"
+    t.bigint "q507b", comment: "7.02b - Endometrial biopsy"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice? - 7.02b - Endometrial biopsy"
+    t.bigint "q507c", comment: "7.02c - Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice? - 7.02c - Remove cervical polyp"
+    t.bigint "q507d", comment: "7.02d - Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice? - 7.02d - Bartholin's cyst management"
+    t.bigint "q507e", comment: "7.02e - Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice? - 7.02e - Colposcopy"
+    t.bigint "q507f", comment: "7.02f - Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice? - 7.02f - Cervical cryotherapy"
+    t.bigint "q507g", comment: "7.02g - LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice? - 7.02g - LEEP"
+    t.bigint "q507h", comment: "7.02h - Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice? - 7.02h - Paracervical block"
+    t.bigint "q507i", comment: "7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice? - 7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507j", comment: "7.02j - Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice? - 7.02j - Tubal ligation"
+    t.bigint "q508a", comment: "7.03a - OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice? - 7.03a - OB ultrasound"
+    t.bigint "q508b", comment: "7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice? - 7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508c", comment: "7.03c - Labor induction / augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice? - 7.03c - Labor induction / augmentation"
+    t.bigint "q508d", comment: "7.03d - Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice? - 7.03d - Vacuum assisted delivery"
+    t.bigint "q508e", comment: "7.03e - 3 rd & 4 th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice? - 7.03e - 3rd & 4th degree laceration repair"
+    t.bigint "q508f", comment: "7.03f - C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice? - 7.03f - C-section assist"
+    t.bigint "q508g", comment: "7.03g - C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice? - 7.03g - C-section primary surgeon"
+    t.bigint "q509a", comment: "7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice? - 7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509b", comment: "7.04b - Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice? - 7.04b - Colonoscopy"
+    t.bigint "q509c", comment: "7.04c - Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice? - 7.04c - Upper endoscopy"
+    t.bigint "q510a", comment: "7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice? - 7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510b", comment: "7.05b - Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice? - 7.05b - Lumbar puncture"
+    t.bigint "q510c", comment: "7.05c - Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice? - 7.05c - Thoracentesis"
+    t.bigint "q510d", comment: "7.05d - Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice? - 7.05d - Paracentesis"
+    t.bigint "q510e", comment: "7.05e - Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice? - 7.05e - Central line"
+    t.bigint "q510f", comment: "7.05f - Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice? - 7.05f - Endotracheal intubation"
+    t.bigint "q510g", comment: "7.05g - Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice? - 7.05g - Ventilator management"
+    t.bigint "q510h", comment: "7.05h - Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice? - 7.05h - Chest tube placement"
+    t.bigint "q511a", comment: "7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice? - 7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511b", comment: "7.06b - Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice? - 7.06b - Splinting & casting"
+    t.bigint "q511c", comment: "7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice? - 7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q512a", comment: "7.07a - Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice? - 7.07a - Circumcision"
+    t.bigint "q512b", comment: "7.07b - Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice? - 7.07b - Vasectomy"
+    t.bigint "q513a", comment: "7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice? - 7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513b", comment: "7.08b - Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice? - 7.08b - Peripheral nerve block"
+    t.bigint "q513c", comment: "7.08c - Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice? - 7.08c - Conscious sedation"
+    t.bigint "q513d", comment: "7.08d - Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice? - 7.08d - Exercise Treadmill Testing"
+    t.bigint "q513e", comment: "7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice? - 7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q514a", comment: "6.06a - Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice? - 6.06a - Assess community health needs"
+    t.bigint "q514b", comment: "6.06b - Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice? - 6.06b - Use community resources"
+    t.bigint "q514c", comment: "6.06c - Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice? - 6.06c - Develop community intervention"
+    t.bigint "q514d", comment: "6.06d - Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice? - 6.06d - Use of information technology"
+    t.bigint "q514e", comment: "6.06e - Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice? - 6.06e - Quality improvement"
+    t.bigint "q514f", comment: "6.06f - Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice? - 6.06f - Team-based care"
+    t.bigint "q514g", comment: "6.06g - Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice? - 6.06g - Integration of evidence-based medicine"
+    t.bigint "q514h", comment: "6.06h - Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice? - 6.06h - Health behavior change counseling"
+    t.bigint "q514i", comment: "6.06i - Pain Management"
+    t.bigint "q514i_practiced", comment: "Currently part of your practice? - 6.06i - Pain Management"
+    t.bigint "q514j", comment: "6.06j - Alcohol / Substance Abuse"
+    t.bigint "q514j_practiced", comment: "Currently part of your practice? - 6.06j - Alcohol / Substance Abuse"
+    t.bigint "q601a", comment: "6.01a - Prenatal care"
+    t.bigint "q601a_practiced", comment: "Currently part of your practice? - 6.01a - Prenatal care"
+    t.bigint "q601b", comment: "6.01b - Labor Management"
+    t.bigint "q601b_practiced", comment: "Currently part of your practice? - 6.01b - Labor Management"
+    t.bigint "q601c", comment: "6.01c - Vaginal Deliveries"
+    t.bigint "q601c_practiced", comment: "Currently part of your practice? - 6.01c - Vaginal Deliveries"
+    t.bigint "q601d", comment: "6.01d - Post-partum care"
+    t.bigint "q601d_practiced", comment: "Currently part of your practice? - 6.01d - Post-partum care"
+    t.bigint "q601e", comment: "6.01e - Cesarean Section Assist"
+    t.bigint "q601e_practiced", comment: "Currently part of your practice? - 6.01e - Cesarean Section Assist"
+    t.bigint "q602a", comment: "6.02a - Ambulatory care"
+    t.bigint "q602a_practiced", comment: "Currently part of your practice? - 6.02a - Ambulatory care"
+    t.bigint "q602b", comment: "6.02b - Newborn resuscitation"
+    t.bigint "q602b_practiced", comment: "Currently part of your practice? - 6.02b - Newborn resuscitation"
+    t.bigint "q602c", comment: "6.02c - Newborn care in hospital"
+    t.bigint "q602c_practiced", comment: "Currently part of your practice? - 6.02c - Newborn care in hospital"
+    t.bigint "q602d", comment: "6.02d - Other hospital care"
+    t.bigint "q602d_practiced", comment: "Currently part of your practice? - 6.02d - Other hospital care"
+    t.bigint "q602e", comment: "6.02e - Teen care"
+    t.bigint "q602e_practiced", comment: "Currently part of your practice? - 6.02e - Teen care"
+    t.bigint "q603a", comment: "6.03a - Ambulatory care"
+    t.bigint "q603a_practiced", comment: "Currently part of your practice? - 6.03a - Ambulatory care"
+    t.bigint "q603b", comment: "6.03b - Inpatient care"
+    t.bigint "q603b_practiced", comment: "Currently part of your practice? - 6.03b - Inpatient care"
+    t.bigint "q603c", comment: "6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603c_practiced", comment: "Currently part of your practice? - 6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603d", comment: "6.03d - Nursing home care"
+    t.bigint "q603d_practiced", comment: "Currently part of your practice? - 6.03d - Nursing home care"
+    t.bigint "q603e", comment: "6.03e - Surgical assist"
+    t.bigint "q603e_practiced", comment: "Currently part of your practice? - 6.03e - Surgical assist"
+    t.bigint "q603f", comment: "6.03f - EKG interpretation"
+    t.bigint "q603f_practiced", comment: "Currently part of your practice? - 6.03f - EKG interpretation"
+    t.bigint "q604a", comment: "6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604a_practiced", comment: "Currently part of your practice? - 6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604b", comment: "6.04b - Ophthalmology"
+    t.bigint "q604b_practiced", comment: "Currently part of your practice? - 6.04b - Ophthalmology"
+    t.bigint "q604c", comment: "6.04c - Otolaryngology"
+    t.bigint "q604c_practiced", comment: "Currently part of your practice? - 6.04c - Otolaryngology"
+    t.bigint "q604d", comment: "6.04d - Urology"
+    t.bigint "q604d_practiced", comment: "Currently part of your practice? - 6.04d - Urology"
+    t.bigint "q605a", comment: "6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605a_practiced", comment: "Currently part of your practice? - 6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605b", comment: "6.05b - Counseling Individual / Family"
+    t.bigint "q605b_practiced", comment: "Currently part of your practice? - 6.05b - Counseling Individual / Family"
+    t.bigint "q606a", comment: "6.07a - Women's Health"
+    t.bigint "q606a_practiced", comment: "Currently part of your practice? - 6.07a - Women's Health"
+    t.bigint "q606b", comment: "6.07b - Gynecology"
+    t.bigint "q606b_practiced", comment: "Currently part of your practice? - 6.07b - Gynecology"
+    t.bigint "q606c", comment: "6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606c_practiced", comment: "Currently part of your practice? - 6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606d", comment: "6.07d - Sports Medicine"
+    t.bigint "q606d_practiced", comment: "Currently part of your practice? - 6.07d - Sports Medicine"
+    t.bigint "q606e", comment: "6.07e - Emergency Medicine"
+    t.bigint "q606e_practiced", comment: "Currently part of your practice? - 6.07e - Emergency Medicine"
+    t.bigint "q606f", comment: "6.07f - Dermatology"
+    t.bigint "q606f_practiced", comment: "Currently part of your practice? - 6.07f - Dermatology"
+    t.bigint "q606g", comment: "6.07g - Diagnostic Imaging"
+    t.bigint "q606g_practiced", comment: "Currently part of your practice? - 6.07g - Diagnostic Imaging"
+    t.bigint "q606h", comment: "6.07h - Geriatrics"
+    t.bigint "q606h_practiced", comment: "Currently part of your practice? - 6.07h - Geriatrics"
+    t.bigint "q606i", comment: "6.07i - End of Life Care"
+    t.bigint "q606i_practiced", comment: "Currently part of your practice? - 6.07i - End of Life Care"
+    t.string "q701", comment: "Do you have any additional comments to add?"
+    t.string "updated_at", comment: "Date updated"
+  end
+
+  create_table "source.y2_residency_programs", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.string "abfmresidencyid", null: false, comment: "ABFM-Assigned Residency ID"
+    t.string "assocprogdir", comment: "1.02c Assoc. Program Director reason for leaving"
+    t.decimal "billingisexp", precision: 11, scale: 2, comment: "Expense Billing/Information Systems"
+    t.decimal "capitalexp", precision: 11, scale: 2, comment: "Expense Capital Equipment Costs"
+    t.decimal "charitablerev", precision: 11, scale: 2, comment: "Revenue Charitable Contrubutions"
+    t.decimal "clinstaffexp", precision: 11, scale: 2, comment: "Expense Clinical Staff"
+    t.decimal "contractexp", precision: 11, scale: 2, comment: "Expense Contracted Services"
+    t.bigint "facleave", comment: "1.02 Members of core P4 team leave or transition during 2007/08 academic year?"
+    t.decimal "facsalaryexp", precision: 11, scale: 2, comment: "Expense Faculty Salary"
+    t.decimal "grantsrev", precision: 11, scale: 2, comment: "Revenue Grants"
+    t.decimal "nonclinstaffexp", precision: 11, scale: 2, comment: "Expense Non-Clinical Staff"
+    t.bigint "numqipgy1res", comment: "1.03a # PGY 1 Residents working on QI projects"
+    t.bigint "numqipgy2res", comment: "1.03b # PGY 2 Residents working on QI projects"
+    t.bigint "numqipgy3res", comment: "1.03c # PGY 3 Residents working on QI projects"
+    t.bigint "numqipgy4res", comment: "1.03d # PGY 4 Residents working on QI projects"
+    t.bigint "numrschpgy1res", comment: "1.03e # PGY 1 residents working on research projects"
+    t.bigint "numrschpgy2res", comment: "1.03f # PGY 2 residents working on research projects"
+    t.bigint "numrschpgy3res", comment: "1.03g # PGY 3 residents working on research projects"
+    t.bigint "numrschpgy4res", comment: "1.03h # PGY 4 residents working on research projects"
+    t.bigint "otherfacleave1", comment: "1.02e Other team member"
+    t.string "otherfacleave1txt", comment: "1.02e.1 Other team member reason for leaving"
+    t.bigint "otherfacleave2", comment: "1.02f Other team member"
+    t.string "otherfacleave2txt", comment: "1.02f.1 Other team member reason for leaving"
+    t.decimal "pctnonpeerreview", precision: 11, scale: 2, comment: "1.05 % Core faculty with at least one NON-peer-reviewed publication during 2007/08"
+    t.decimal "pctpeerreview", precision: 11, scale: 2, comment: "1.04 % Core faculty with at least one peer-reviewed publication during 2007/08"
+    t.decimal "pctpresenting", precision: 11, scale: 2, comment: "1.06 % Core faculty presenting at regional or national meetings during 2007/08"
+    t.string "progdir", comment: "1.02a Program director reason for leaving"
+    t.decimal "ptcarerev", precision: 11, scale: 2, comment: "Revenue Patient Care"
+    t.bigint "ratefacdevel", comment: "2.1a Rate faculty development"
+    t.bigint "ratefacmorale", comment: "2.1b Rate faculty morale"
+    t.bigint "rateresmorale", comment: "2.1c Rate resident morale"
+    t.bigint "ratesatisfaction", comment: "2.1d Rate residency program satisfaction"
+    t.decimal "recruitexp", precision: 11, scale: 2, comment: "Expense Recruitment"
+    t.string "rescoord", comment: "1.02d Residency Coordinator reason for leaving"
+    t.bigint "resleave", comment: "1.01 Residents leave program last year"
+    t.bigint "resleavepgy1", comment: "1.01a # residents leave from PGY 1"
+    t.bigint "resleavepgy2", comment: "1.01b # residents leave from PGY 2"
+    t.bigint "resleavepgy3", comment: "1.01c # residents leave from PGY 3"
+    t.bigint "resleavepgy4", comment: "1.01d # residents leave from PGY 4"
+    t.bigint "rps", comment: "1.07 Did program receive RPS training during 2007/08?"
+    t.string "siteeval", comment: "1.02b P4 Site Evaluator reason for leaving"
+    t.decimal "techancrev", precision: 11, scale: 2, comment: "Revenue Technical/Ancillary Fees"
+    t.decimal "volfacultyexp", precision: 11, scale: 2, comment: "Expense Volunteer Faculty"
+  end
+
+  create_table "source.y2_resident_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last 4 digits of residents 2008 ABFM ID"
+    t.bigint "age", comment: "1.01 Resident age in years"
+    t.bigint "children", comment: "1.06 Have children"
+    t.string "contclin", comment: "Residents Continuity Clinic Assignement for 2007-2008"
+    t.string "describebeforemed", comment: "If NO, Text for years before medical school"
+    t.bigint "ethnicity", comment: "1.04 Ethnicity: Of hispanic origin"
+    t.bigint "evaluatefaculty", comment: "2.06 Opportunity to evaluate faculty at least once per year"
+    t.bigint "evaluateprogram", comment: "2.07 Opportunity to evaluate program at least once per year"
+    t.bigint "facultysupervising", comment: "2.03 Faculty spend sufficient time supervising residents"
+    t.bigint "facultyteaching", comment: "2.03 Faculty spend sufficient time teaching residents"
+    t.bigint "feedback", comment: "2.05 Receive written feedback on performance for each rotation"
+    t.bigint "firstfamilyphysician", comment: "1.10 If NO, First family physician in family"
+    t.bigint "firstgenerationcollege", comment: "1.09 First generation college graduate"
+    t.bigint "firstgenphysician", comment: "1.10 First person in family to become a physician"
+    t.bigint "gender", comment: "1.02 Resident gender"
+    t.bigint "goals", comment: "2.01 Program provided access to written goals & objectives for each rotation"
+    t.bigint "importance1", comment: "New Model Importance: EMR"
+    t.bigint "importance10", comment: "New Model Importance: HIPPA-compliant asynchronous communication with patients"
+    t.bigint "importance11", comment: "New Model Importance: Asynchronous communication with other providers"
+    t.bigint "importance12", comment: "New Model Importance: Ongoing population-based QA using EMR"
+    t.bigint "importance13", comment: "New Model Importance: Chronic disease management registries"
+    t.bigint "importance14", comment: "New Model Importance: EMR-based preventive services"
+    t.bigint "importance15", comment: "New Model Importance: Doing any practice-based research"
+    t.bigint "importance16", comment: "New Model Importance: Doing practice-based research using EMR"
+    t.bigint "importance17", comment: "New Model Importance: Advanced or open-access scheduling"
+    t.bigint "importance18", comment: "New Model Importance: Expanded hours"
+    t.bigint "importance19", comment: "New Model Importance: Functional quality monitoring telephone system"
+    t.bigint "importance2", comment: "New Model Importance: Paperless practice"
+    t.bigint "importance20", comment: "New Model Importance: Full asynchronous patient-accessible scheduling"
+    t.bigint "importance21", comment: "New Model Importance: Credible, reliable patient satisfaction survey"
+    t.bigint "importance22", comment: "New Model Importance: Teams managing patient care"
+    t.bigint "importance23", comment: "New Model Importance: Integrated behavioral health"
+    t.bigint "importance24", comment: "New Model Importance: Integrated case management"
+    t.bigint "importance25", comment: "New Model Importance: Clinical pharmacy support"
+    t.bigint "importance26", comment: "New Model Importance: Group visits"
+    t.bigint "importance27", comment: "New Model Importance: Practice being patient-centered versus physician-centered"
+    t.bigint "importance3", comment: "New Model Importance: Secure remote access to clinical info"
+    t.bigint "importance4", comment: "New Model Importance: Integrated transcription"
+    t.bigint "importance5", comment: "New Model Importance: Electronic scheduling integrated with EMR"
+    t.bigint "importance6", comment: "New Model Importance: Electronic billing integrated with EMR"
+    t.bigint "importance7", comment: "New Model Importance: Electronic orders integrated with EMR"
+    t.bigint "importance8", comment: "New Model Importance: Electronic prescribing integrated with EMR"
+    t.bigint "importance9", comment: "New Model Importance: Hospital EMR w/full-computerized physician order entry"
+    t.bigint "influence", comment: "1.13 P4 Influence decision to rank program in match"
+    t.bigint "many", comment: "1.06 How many children"
+    t.bigint "marital", comment: "1.05 Current marital status"
+    t.bigint "masters", comment: "1.14 Working towards masters degree (MS, MPH, MBA)"
+    t.string "mastersdegree", comment: "If yes, type of masters degree"
+    t.string "mastersdegreeother", comment: "If yes, type of masters degree - other"
+    t.string "medgraddate", comment: "1.11 Date graduated from med school"
+    t.bigint "medicalafterbs", comment: "1.07 Enter med school immediately after completing bachelors"
+    t.string "otherprogramyear", comment: "Other program year text"
+    t.bigint "othertraineesinterfere", comment: "2.09 Other trainees interfere with or supplement education"
+    t.string "p4_program_id", null: false, comment: "P4-Assgined Residency ID"
+    t.integer "p4_resident_id"
+    t.string "p4resid", comment: "Unique P4-Assigned Resident ID"
+    t.string "p4residency_abfm_id", null: false, comment: "ABFM Residency Program ID"
+    t.bigint "participationconferences", comment: "2.04 Faculty participation in conferences"
+    t.bigint "participationjournalclub", comment: "2.04 Faculty participation in journal club"
+    t.bigint "programyear", comment: "1.12 Current Program Year"
+    t.bigint "race_aa", comment: "1.03 Race: Black"
+    t.bigint "race_ap", comment: "1.03 Race: Asian or Pacific Islander"
+    t.bigint "race_c", comment: "1.03 Race: White"
+    t.bigint "race_in", comment: "1.03 Race: American Indian or Alaska Native"
+    t.bigint "race_o", comment: "1.03 Race: Other"
+    t.string "raceothertxt", comment: "Race: Other text"
+    t.bigint "satisfied", comment: "2.11 Overall satisfaction with residency training thus far"
+    t.bigint "speakfreely", comment: "2.08 Able to speak freely about issues and problems without fear"
+    t.bigint "strengthscompetence", comment: "2.10 Strengths/weaknesses of program - Competence of faculty"
+    t.bigint "strengthscurrchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in curriculum change"
+    t.bigint "strengthsfacteaching", comment: "2.10 Strengths or weaknesses of program - Teaching"
+    t.bigint "strengthsoverallcurr", comment: "2.10 Strengths or weaknesses of program - Overall curriculum"
+    t.bigint "strengthsp4implement", comment: "2.10 Strengths/weaknesses of program - Success implementing P4 innovations"
+    t.bigint "strengthsp4innovations", comment: "2.10 Strengths/weaknesses of program - Success conveying what P4 innovations are to you"
+    t.bigint "strengthspracchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in clinical practice change"
+    t.bigint "usamedschool", comment: "1.08 Attend med school in United States"
+    t.bigint "yearsbeforemedschool", comment: "If NO, Years between undergrad and medical school"
+  end
+
+  create_table "source.y2_webads_responses", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.string "abfmresidencyid", null: false, comment: "ABFM-Assigned Residency ID"
+    t.decimal "dailyptsadultyr1", comment: "Average # Adult patients managed daily - Y1"
+    t.decimal "dailyptsadultyr2", comment: "Average # Adult patients managed daily - Y2"
+    t.decimal "dailyptsadultyr3", comment: "Average # Adult patients managed daily - Y3"
+    t.decimal "dailyptsnewbornyr1", comment: "Average # Newborn patients managed daily - Y1"
+    t.decimal "dailyptsnewbornyr2", comment: "Average # Newborn patients managed daily - Y2"
+    t.decimal "dailyptsnewbornyr3", comment: "Average # Newborn patients managed daily - Y3"
+    t.decimal "dailyptspedsyr1", comment: "Average # Pediatric patients managed daily - Y1"
+    t.decimal "dailyptspedsyr2", comment: "Average # Pediatric patients managed daily - Y2"
+    t.decimal "dailyptspedsyr3", comment: "Average # Pediatric patients managed daily - Y3"
+    t.string "id", null: false, comment: "Opaque internal identifier"
+    t.bigint "pgy1activefulltime", comment: "# PGY 1 residents active full time"
+    t.bigint "pgy1activeparttime", comment: "# PGY 1 residents active part time"
+    t.bigint "pgy1completed", comment: "# PGY 1 residents completed all training"
+    t.bigint "pgy2activefulltime", comment: "# PGY 2 residents active full time"
+    t.bigint "pgy2activeparttime", comment: "# PGY 2 residents active part time"
+    t.bigint "pgy2completed", comment: "# PGY 2 residents completed all training"
+    t.bigint "pgy3activefulltime", comment: "# PGY 3 residents active full time"
+    t.bigint "pgy3activeparttime", comment: "# PGY 3 residents active part time"
+    t.bigint "pgy3completed", comment: "# PGY 3 residents completed all training"
+    t.bigint "pgy4activefulltime", comment: "# PGY 4 residents active full time"
+    t.bigint "pgy4activeparttime", comment: "# PGY 4 residents active part time"
+    t.bigint "pgy4completed", comment: "# PGY 4 residents completed all training"
+  end
+
+  create_table "source.y3_continuity_clinics", primary_key: ["p4_program_id", "settingid"], force: :cascade do |t|
+    t.text "agesource", comment: "2.02.8 Source of patient age estimates"
+    t.decimal "asian", comment: "2.04.2 Percent Asian patients"
+    t.decimal "black", comment: "2.04.3 Percent Black/African American patients"
+    t.string "created_at", comment: "Response Creation Date"
+    t.decimal "daysacuteapptfac3", comment: "1.05.f Number of days to acute 3rd available appointment for faculty"
+    t.bigint "daysacuteapptfac3_unknown", comment: "1.05.f Unknown number of days to acute 3rd available appointment for faculty"
+    t.decimal "daysacuteapptres3", comment: "1.05.l Number of days to acute 3rd available appointment for residents"
+    t.bigint "daysacuteapptres3_unknown", comment: "1.05.l Unknown number of days to acute 3rd available appointment for residents"
+    t.decimal "daysfuapptfac3", comment: "1.05.d Number of days to follow up 3rd available appointment for faculty"
+    t.bigint "daysfuapptfac3_unknown", comment: "1.05.d Unknown number of days to follow up 3rd available appointment for faculty"
+    t.decimal "daysfuapptres3", comment: "1.05.j Number of days to follow up 3rd available appointment for residents"
+    t.bigint "daysfuapptres3_unknown", comment: "1.05.j Unknown number of days to follow up 3rd available appointment for residents"
+    t.decimal "daysnewapptfac3", comment: "1.05.b Number of days to new patient 3rd available appointment for faculty"
+    t.bigint "daysnewapptfac3_unknown", comment: "1.05.b Unknown number of days to new patient 3rd available appointment for faculty"
+    t.decimal "daysnewapptres3", comment: "1.05.h Number of days to new patient 3rd available appointment for residents"
+    t.bigint "daysnewapptres3_unknown", comment: "1.05.h Unknown number of days to new patient 3rd available appointment for residents"
+    t.decimal "eighteen", comment: "2.02.3 Percent of patients between 18-24 years"
+    t.text "emrexplain", comment: "Why has your practice not implemented an EMR system?"
+    t.bigint "emrimplemented", comment: "Has your practice implemented an Electronic Medical Record (EMR) system?"
+    t.bigint "emrptsafety", comment: "Is your practice using its EMR system for patient safety?"
+    t.text "emrptsafetytxt", comment: "How is your practice using its EMR system for patient safety?"
+    t.decimal "emryears", comment: "For how many years has your practice had an Electronic Medical Record (EMR) system?"
+    t.text "ethnicitysource", comment: "2.03.3 Source of Ethnicity Data"
+    t.decimal "female", comment: "2.01.b Percent female patients"
+    t.decimal "ffs", comment: "2.05.2 Percent Private Health Insurance (Fee for service)"
+    t.decimal "fortyfive", comment: "2.02.5 Percent of patients between 45-64 years"
+    t.decimal "fteadmin", comment: "1.09.f Number of clinical staff FTEs for Administrative Staff"
+    t.decimal "fteallied", comment: "1.09.e Number of clinical staff FTEs for Allied Health Staff"
+    t.decimal "ftediet", comment: "1.09.i Number of clinical staff FTEs for Dieticians"
+    t.decimal "ftefmres", comment: "1.08.b Number of physician FTEs for Family Medicine Residents"
+    t.decimal "ftefp", comment: "1.08.a Number of physician FTEs for Family Physicians"
+    t.decimal "fteim", comment: "1.08.e Number of physician FTEs for Internists"
+    t.decimal "fteimres", comment: "1.08.f Number of physician FTEs for Internal Medicine Residents"
+    t.decimal "ftema", comment: "1.09.d Number of clinical staff FTEs for Medical Assistants"
+    t.decimal "ftenp", comment: "1.09.a Number of clinical staff FTEs for Nurse Practioners"
+    t.decimal "fteob", comment: "1.08.g Number of physician FTEs for OBGYN Physicians"
+    t.decimal "fteobres", comment: "1.08.h Number of physician FTEs for OBGYN Residents"
+    t.decimal "fteotherphys1", comment: "1.08.i Number of physician FTEs for Other Specialty 1"
+    t.bigint "fteotherphys1_present", comment: "1.08.i Entry Present? - Physician for Other Specialty 1"
+    t.text "fteotherphys1txt", comment: "1.08.j Number of physician FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherphys2", comment: "1.08.k Number of physician FTEs for Other Specialty 2"
+    t.bigint "fteotherphys2_present", comment: "1.08.k Entry Present? - Physician for Other Specialty 2"
+    t.text "fteotherphys2txt", comment: "1.08.l Number of physician FTEs for Other Specialty 2 Text"
+    t.decimal "fteotherspec1", comment: "1.09.l Number of clinical staff FTEs for Other Specialty 1"
+    t.bigint "fteotherspec1_present", comment: "1.09.l Entry Present? - FTE for Other Specialty 1"
+    t.text "fteotherspec1txt", comment: "1.09.m Number of clinical staff FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherspec2", comment: "1.09.n Number of clinical staff FTEs for Other Specialty 2"
+    t.bigint "fteotherspec2_present", comment: "1.09.n Entry Present? - FTE for Other Specialty 2"
+    t.text "fteotherspec2txt", comment: "1.09.o Number of clinical staff FTEs for Other Specialty 2 Text"
+    t.decimal "ftepa", comment: "1.09.b Number of clinical staff FTEs for Physicians Assistants"
+    t.decimal "fteped", comment: "1.08.c Number of physician FTEs for Pediatricians"
+    t.decimal "ftepedres", comment: "1.08.d Number of physician FTEs for Pediatric Residents"
+    t.decimal "ftepharm", comment: "1.09.k Number of clinical staff FTEs for Pharmacy"
+    t.decimal "ftepsych", comment: "1.09.g Number of clinical staff FTEs for Psychologists"
+    t.decimal "ftepteduc", comment: "1.09.j Number of clinical staff FTEs for Patient Educators"
+    t.decimal "fternlpn", comment: "1.09.c Number of clinical staff FTEs for Nursing Staff RN/LPN"
+    t.decimal "ftesocial", comment: "1.09.h Number of clinical staff FTEs for Social Workers"
+    t.text "gendersource", comment: "2.01.c Source of patient gender estimates"
+    t.decimal "hawaiian", comment: "2.04.4 Percent Hawaiian patients"
+    t.decimal "hispanic", comment: "2.03.1 Percent Hispanic or Latino patients"
+    t.bigint "id", null: false, comment: "Internal Response ID"
+    t.decimal "indian", comment: "2.04.1 Percent American Indian/Native American patients"
+    t.bigint "integrated", comment: "1.11 Currently part of an integrated health system (with specialists in hospital)"
+    t.decimal "lt3", comment: "2.02.1 Percent of patients under 3 years"
+    t.decimal "male", comment: "2.01.a Percent male patients"
+    t.decimal "medicaid", comment: "2.05.4 Percent Medicaid"
+    t.decimal "medicare", comment: "2.05.3 Percent Medicare"
+    t.decimal "nonhispanic", comment: "2.03.2 Percent Not Hispanic or Latino patients"
+    t.bigint "nopgy4", comment: "1.02 Program does not have a PGY 4"
+    t.bigint "numallied", comment: "1.10.e Number of Allied Health Staff taught in clinic over the past year"
+    t.bigint "numdiet", comment: "1.10.h Number of Dieticians taught in clinic over the past year"
+    t.bigint "numexamrooms", comment: "1.06 Total number of exam rooms"
+    t.bigint "numma", comment: "1.10.d Number of Medical Assistants taught in clinic over the past year"
+    t.bigint "numnp", comment: "1.10.a Number of Nurse Practioners taught in clinic over the past year"
+    t.bigint "numotherspec", comment: "1.10.j Number of Other Specialty taught in clinic over the past year"
+    t.decimal "numotherspec_present", comment: "1.10.j Entry Present? - Number of Other Specialty taught in clinic over past year"
+    t.text "numotherspectxt", comment: "1.10.k Other Specialty taught in clinic over the past year Text"
+    t.bigint "numpa", comment: "1.10.b Number of Physicians Assistants taught in clinic over the past year"
+    t.bigint "numpsych", comment: "1.10.f Number of Psychologists taught in clinic over the past year"
+    t.bigint "numpteduc", comment: "1.10.i Number of Patient Educators taught in clinic over the past year"
+    t.bigint "numptfac", comment: "1.07.a Total # of patients seen by faculty in 2008/09"
+    t.bigint "numptmid", comment: "1.07.b Total # of patients seen by Mid-level clinicians in 2008/09"
+    t.bigint "numptres", comment: "1.07.c Total # of patients seen by residents in 2008/09"
+    t.bigint "numrnlpn", comment: "1.10.c Number of Nursing Staff RN/LPN taught in clinic over the past year"
+    t.bigint "numsocial", comment: "1.10.g Number of Social Workers taught in clinic over the past year"
+    t.decimal "otherpay", comment: "2.05.5 Percent Other Payment Method"
+    t.bigint "otherpay_present", comment: "2.05.5 Entry Present? - Percent Other Payment Method"
+    t.text "otherpaytxt", comment: "2.05.5 Name of Other Payment Method"
+    t.decimal "otherrace", comment: "2.04.6 Percent Other Race patients"
+    t.bigint "otherrace_present", comment: "2.04.6 Entry Present? - Percent Other Race patients"
+    t.text "otherracetxt", comment: "2.04.6 Name of Other Race"
+    t.bigint "owner", comment: "1.12.a Practice affiliation/ownership"
+    t.text "ownerother", comment: "1.12.b Owner other Text"
+    t.string "p4_program_id", null: false, comment: "Unique P4-Assigned Residency Program ID"
+    t.bigint "participant_id", comment: "Internal Participant ID"
+    t.text "paysource", comment: "2.05.7 Source of payment method estimates"
+    t.bigint "pgy1", comment: "1.01.a Number of PGY 1 residents assigned to continuity patients in 2008/09"
+    t.decimal "pgy1acute", comment: "1.04.e Please estimate the percent of acute visits for PGY1 last year"
+    t.decimal "pgy1routine", comment: "1.04.a Please estimate the percent of routine visits for PGY1 last year"
+    t.bigint "pgy2", comment: "1.01.b Number of PGY 2 residents assigned to continuity patients in 2008/09"
+    t.decimal "pgy2acute", comment: "1.04.f Please estimate the percent of acute visits for PGY2 last year"
+    t.decimal "pgy2routine", comment: "1.04.b Please estimate the percent of routine visits for PGY2 last year"
+    t.bigint "pgy3", comment: "1.01.c Number of PGY 3 residents assigned to continuity patients in 2008/09"
+    t.decimal "pgy3acute", comment: "1.04.g Please estimate the percent of acute visits for PGY3 last year"
+    t.decimal "pgy3routine", comment: "1.04.c Please estimate the percent of routine visits for PGY3 last year"
+    t.bigint "pgy4", comment: "1.01.d Number of PGY 4 residents assigned to continuity patients in 2008/09"
+    t.decimal "pgy4acute", comment: "1.04.f Please estimate the percent of acute visits for PGY4 last year"
+    t.decimal "pgy4routine", comment: "1.04.d Please estimate the percent of routine visits for PGY4 last year"
+    t.decimal "prepaid", comment: "2.05.1 Percent Private Health Insurance (Prepaid)"
+    t.bigint "ptassigned", comment: "1.03 Are the patients in the clinic assigned to a personal physician?"
+    t.text "racesource", comment: "2.04.7 Source of patient race estimates"
+    t.string "settingid", null: false, comment: "Unique P4 - Assigned Continuity Clinic ID"
+    t.decimal "seventyfive", comment: "2.02.7 Percent of patients 75 years and older"
+    t.decimal "sixtyfive", comment: "2.02.6 Percent of patients between 65-74 years"
+    t.bigint "statbilling", comment: "Status of electronic billing"
+    t.bigint "statcasemgt", comment: "Status of integrated case management"
+    t.bigint "statdisregistry", comment: "Status of chronic disease management registries"
+    t.bigint "statemr", comment: "Status of EMR"
+    t.bigint "statexpandedhrs", comment: "Status of expanded hours"
+    t.bigint "statgroup", comment: "Status of group visits"
+    t.bigint "stathospemr", comment: "Status of hospital EMR"
+    t.bigint "statnetscheduling", comment: "Status of full asynchronous pateint-accessible scheduling"
+    t.bigint "statopenaccess", comment: "Status of open-access scheduling"
+    t.bigint "statorders", comment: "Status of electronic orders"
+    t.bigint "statpaperless", comment: "Status of paperless"
+    t.bigint "statparking", comment: "Status of adequate, free parking"
+    t.bigint "statpharm", comment: "Status of clinical pharmacy support"
+    t.bigint "statprevregistry", comment: "Status of EMB-based preventive services registries"
+    t.bigint "statprovcommunication", comment: "Status of asynchronous communication with other providers"
+    t.bigint "statpsych", comment: "Status of integrated behavioral health"
+    t.bigint "statptcentered", comment: "Overall status of practice as patient-centered vs. physician-centered"
+    t.bigint "statptcommunication", comment: "Status of asynchronous communication with patients"
+    t.bigint "statqa", comment: "Status of population-based QA using EMR"
+    t.bigint "statremote", comment: "Status of remote access"
+    t.bigint "statresearch", comment: "Status of practice-based research using EMR"
+    t.bigint "statscheduling", comment: "Status of electronic scheduling"
+    t.bigint "statspace", comment: "Status of sufficient and adequate physical space"
+    t.bigint "statsurvey", comment: "Status of patient satisfaction survey"
+    t.bigint "statteams", comment: "Status of using teams to manage patient care"
+    t.bigint "stattelephone", comment: "Status of functional quality monitoring telephone system"
+    t.bigint "stattranscription", comment: "Status of transcription expense"
+    t.bigint "stattransit", comment: "Status of convenient public transportation"
+    t.decimal "three", comment: "2.02.2 Percent of patients between 3-17 years"
+    t.decimal "twentyfive", comment: "2.02.4 Percent of patients between 25-44 years"
+    t.decimal "uninsured", comment: "2.05.6 Percent Uninsured"
+    t.string "updated_at", comment: "Response Completion Date"
+    t.decimal "white", comment: "2.04.5 Percent White patients"
+    t.bigint "xrays", comment: "2.06 Where majority of patients go for routine x-rays"
+
+    t.unique_constraint ["settingid"], name: "y3_continuity_clinics_settingid_key"
+  end
+
+  create_table "source.y3_graduate_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last four of ABFM ID"
+    t.string "created_at", comment: "Date created"
+    t.bigint "finished", comment: "Web survey finished?"
+    t.bigint "grad_year", comment: "Graduation Year"
+    t.bigint "graduateid", comment: "Survey Login"
+    t.bigint "max_slide", comment: "Max slide reached"
+    t.string "p4_program_id", comment: "P4 ID"
+    t.integer "p4_resident_id"
+    t.bigint "paper", comment: "Paper survey?"
+    t.bigint "q101a", comment: "1.01a - Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "1.01b - In what year were you initially certified by the ABFM?"
+    t.bigint "q101c", comment: "1.01c - Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "1.01d - In what year are you planning to be certified by the ABFM?"
+    t.bigint "q102a", comment: "1.02a - CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "1.02b - CAQ in geriatrics?"
+    t.bigint "q102c", comment: "1.02c - CAQ in sports medicine?"
+    t.bigint "q102d", comment: "1.02d - Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "1.02e - For what other specialty / CAQ do you have a board certification?"
+    t.bigint "q103a", comment: "1.04 - Are you currently enrolled in or did you complete a fellowship after residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics / Maternity Care - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_10", comment: "Other - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_2", comment: "Geriatrics - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_3", comment: "Sports Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_4", comment: "Research - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_5", comment: "Faculty Development - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_6", comment: "Pain Management - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_7", comment: "Hospitalist - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_8", comment: "Emergency Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_9", comment: "Rural Medicine - 1.04a - What type of fellowship(s)?"
+    t.string "q103b_other", comment: "Other Text - 1.04a - What type of fellowship(s)?"
+    t.string "q104", comment: "1.03 - In what state(s) are you currently practicing?"
+    t.decimal "q105", comment: "1.05 - What is your age?"
+    t.bigint "q106", comment: "1.06 - What is your gender?"
+    t.bigint "q107_1", comment: "White - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_2", comment: "Black - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_3", comment: "Hispanic - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_4", comment: "Asian / Pacific Islander - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_5", comment: "American Indian or Alaska Native - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_6", comment: "Middle Eastern - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_7", comment: "Other - 1.07 - What is your race? (Check all that apply)"
+    t.string "q107_other", comment: "1.07 - What is your race? (Check all that apply)"
+    t.bigint "q108", comment: "1.08 - What is your marital status? (Choose only one)"
+    t.bigint "q201", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.string "q201_other", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.bigint "q202_a", comment: "HPSA: Federally designated health professional shortage area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_b", comment: "MUA: Federally designated medically underserved area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_c", comment: "MHC: Federally designated migrant health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_d", comment: "CHC: Federally designated community health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_e", comment: "RHC: Federally designated rural health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_f", comment: "NHSC: National Health Service Corps - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_g", comment: "IHS: Indian Health Service site - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_h", comment: "Other state or federally qualified health center / clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_none", comment: "None of the above - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.string "q202_other", comment: "Other state or federally qualified health center / clinic - Text - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q203", comment: "2.03 - Which of the following best describes the community in which you practice?"
+    t.decimal "q204", comment: "2.04 - How long in months have you been at your current practice location?"
+    t.bigint "q205", comment: "2.05 - Number of office visits in an average full day. If you only work in half-day increments, multiply by 2 to get the full-day number."
+    t.decimal "q206", comment: "2.06 - Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office."
+    t.decimal "q207a", comment: "Private Insurance - 2.07 - Payor Mix"
+    t.decimal "q207b", comment: "Medicaid - 2.07 - Payor Mix"
+    t.decimal "q207c", comment: "Medicare - 2.07 - Payor Mix"
+    t.decimal "q207d", comment: "HMO / Managed Care - 2.07 - Payor Mix"
+    t.decimal "q207e", comment: "Self-Pay - 2.07 - Payor Mix"
+    t.decimal "q207f", comment: "Other - 2.07 - Payor Mix"
+    t.string "q207f_other", comment: "Other - Text Description - 2.07 - Payor Mix"
+    t.bigint "q207f_other_present", comment: "Other - Is Checked? - 2.07 - Payor Mix"
+    t.bigint "q208", comment: "2.08 - What is your pre-tax yearly income, excluding benefits?"
+    t.bigint "q301a", comment: "3.01a - Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "3.01b - If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "3.01c - I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "3.01d - Overall, my residency prepared me well for my current clinical practice"
+    t.bigint "q401", comment: "4.01 - EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "4.02 - Paperless Practice (all interfaces and scanning work - no paper charts)"
+    t.bigint "q403", comment: "4.03 - Full secured remote access"
+    t.bigint "q404", comment: "4.04 - Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "4.05 - Electronic scheduling system Integrated with EMR"
+    t.bigint "q406", comment: "4.06 - Electronic billing system Integrated with EMR"
+    t.bigint "q407", comment: "4.07 - Electronic orders (e.g., lab, x-ray) Integrated with EMR"
+    t.bigint "q408", comment: "4.08 - Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "4.09 - Secure HIPAA-compliant asynchronous communication (e.g. e-mail or text messaging) with patients"
+    t.bigint "q410", comment: "4.10 - Asynchronous communication with other providers"
+    t.bigint "q411", comment: "4.11 - Ongoing population-based Quality Assurance using an EMR / registry"
+    t.bigint "q412", comment: "4.12 - Chronic disease management registries"
+    t.bigint "q413", comment: "4.13 - EMR-based preventive services registries"
+    t.bigint "q414", comment: "4.14 - Practice-based research using an EMR"
+    t.bigint "q415", comment: "4.15 - Advanced or open-access scheduling"
+    t.bigint "q416", comment: "4.16 - Expanded hours (e.g., clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "4.17 - Functional quality monitoring telephone system (system to monitor call abandonment / time to answer)"
+    t.bigint "q418", comment: "4.18 - Full asynchronous patient-accessible scheduling (e.g., Internet-based)"
+    t.bigint "q419", comment: "4.19 - Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "4.20 - Sufficient and adequate physical space"
+    t.bigint "q421", comment: "4.21 - Adequate, free parking"
+    t.bigint "q422", comment: "4.22 - Convenient public transportation access"
+    t.bigint "q423", comment: "4.23 - Using teams to manage patient care"
+    t.bigint "q424", comment: "4.24 - Integrated behavioral health"
+    t.bigint "q425", comment: "4.25 - Integrated "
+    t.bigint "q426", comment: "4.26 - Clinical pharmacy support"
+    t.bigint "q427", comment: "4.27 - Group visits"
+    t.bigint "q428", comment: "4.28 - Your practice as patient-centered versus physician-centered"
+    t.bigint "q429", comment: "4.29 - Using the scale below, please indicate what role you have played in office practice redesign toward the Patient-Centered Medical Home."
+    t.bigint "q430", comment: "4.30 - Did you play a role during your residency training in Patient-Centered Medical Home design/implementation?"
+    t.bigint "q501a", comment: "5.02a - Adult inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501b", comment: "5.02b - Adult ICU / CCU care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501c", comment: "5.02c - Nursing home care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501d", comment: "5.02d - Newborn nursery care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501e", comment: "5.02e - Pediatric inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501f", comment: "5.02f - Surgical inpatient procedures - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501g", comment: "5.02g - Emergency Room care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q502", comment: "5.02h - Prenatal care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q503", comment: "5.01 - Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "5.01c - Do other members of your practice group deliver babies?"
+    t.bigint "q503a", comment: "5.01a - Vaginal Deliveries"
+    t.bigint "q503b", comment: "5.01b - C-section deliveries - as primary surgeon"
+    t.bigint "q504", comment: "5.03 - Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "5.03a - Please describe the difficulties you've experienced:"
+    t.bigint "q505_1", comment: "Medical students - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_2", comment: "Residents - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_3", comment: "Fellows - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_4", comment: "Other health care professionals - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_none", comment: "None of the above - 5.04 - What kind of teaching activities do you participate in?"
+    t.string "q505_other", comment: "Other health care professionals - Other Text - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q506a", comment: "7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice? - 7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506b", comment: "7.01b - Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice? - 7.01b - Cryosurgery"
+    t.bigint "q506c", comment: "7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice? - 7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506d", comment: "7.01d - Incision & drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice? - 7.01d - Incision & drainage of abscess"
+    t.bigint "q506e", comment: "7.01e - Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice? - 7.01e - Simple laceration repair"
+    t.bigint "q507a", comment: "7.02a - IUD insertion / removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice? - 7.02a - IUD insertion / removal"
+    t.bigint "q507b", comment: "7.02b - Endometrial biopsy"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice? - 7.02b - Endometrial biopsy"
+    t.bigint "q507c", comment: "7.02c - Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice? - 7.02c - Remove cervical polyp"
+    t.bigint "q507d", comment: "7.02d - Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice? - 7.02d - Bartholin's cyst management"
+    t.bigint "q507e", comment: "7.02e - Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice? - 7.02e - Colposcopy"
+    t.bigint "q507f", comment: "7.02f - Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice? - 7.02f - Cervical cryotherapy"
+    t.bigint "q507g", comment: "7.02g - LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice? - 7.02g - LEEP"
+    t.bigint "q507h", comment: "7.02h - Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice? - 7.02h - Paracervical block"
+    t.bigint "q507i", comment: "7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice? - 7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507j", comment: "7.02j - Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice? - 7.02j - Tubal ligation"
+    t.bigint "q508a", comment: "7.03a - OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice? - 7.03a - OB ultrasound"
+    t.bigint "q508b", comment: "7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice? - 7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508c", comment: "7.03c - Labor induction / augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice? - 7.03c - Labor induction / augmentation"
+    t.bigint "q508d", comment: "7.03d - Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice? - 7.03d - Vacuum assisted delivery"
+    t.bigint "q508e", comment: "7.03e - 3 rd & 4 th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice? - 7.03e - 3rd & 4th degree laceration repair"
+    t.bigint "q508f", comment: "7.03f - C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice? - 7.03f - C-section assist"
+    t.bigint "q508g", comment: "7.03g - C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice? - 7.03g - C-section primary surgeon"
+    t.bigint "q509a", comment: "7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice? - 7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509b", comment: "7.04b - Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice? - 7.04b - Colonoscopy"
+    t.bigint "q509c", comment: "7.04c - Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice? - 7.04c - Upper endoscopy"
+    t.bigint "q510a", comment: "7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice? - 7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510b", comment: "7.05b - Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice? - 7.05b - Lumbar puncture"
+    t.bigint "q510c", comment: "7.05c - Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice? - 7.05c - Thoracentesis"
+    t.bigint "q510d", comment: "7.05d - Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice? - 7.05d - Paracentesis"
+    t.bigint "q510e", comment: "7.05e - Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice? - 7.05e - Central line"
+    t.bigint "q510f", comment: "7.05f - Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice? - 7.05f - Endotracheal intubation"
+    t.bigint "q510g", comment: "7.05g - Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice? - 7.05g - Ventilator management"
+    t.bigint "q510h", comment: "7.05h - Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice? - 7.05h - Chest tube placement"
+    t.bigint "q511a", comment: "7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice? - 7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511b", comment: "7.06b - Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice? - 7.06b - Splinting & casting"
+    t.bigint "q511c", comment: "7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice? - 7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q512a", comment: "7.07a - Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice? - 7.07a - Circumcision"
+    t.bigint "q512b", comment: "7.07b - Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice? - 7.07b - Vasectomy"
+    t.bigint "q513a", comment: "7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice? - 7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513b", comment: "7.08b - Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice? - 7.08b - Peripheral nerve block"
+    t.bigint "q513c", comment: "7.08c - Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice? - 7.08c - Conscious sedation"
+    t.bigint "q513d", comment: "7.08d - Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice? - 7.08d - Exercise Treadmill Testing"
+    t.bigint "q513e", comment: "7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice? - 7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q514a", comment: "6.06a - Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice? - 6.06a - Assess community health needs"
+    t.bigint "q514b", comment: "6.06b - Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice? - 6.06b - Use community resources"
+    t.bigint "q514c", comment: "6.06c - Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice? - 6.06c - Develop community intervention"
+    t.bigint "q514d", comment: "6.06d - Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice? - 6.06d - Use of information technology"
+    t.bigint "q514e", comment: "6.06e - Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice? - 6.06e - Quality improvement"
+    t.bigint "q514f", comment: "6.06f - Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice? - 6.06f - Team-based care"
+    t.bigint "q514g", comment: "6.06g - Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice? - 6.06g - Integration of evidence-based medicine"
+    t.bigint "q514h", comment: "6.06h - Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice? - 6.06h - Health behavior change counseling"
+    t.bigint "q514i", comment: "6.06i - Pain Management"
+    t.bigint "q514i_practiced", comment: "Currently part of your practice? - 6.06i - Pain Management"
+    t.bigint "q514j", comment: "6.06j - Alcohol / Substance Abuse"
+    t.bigint "q514j_practiced", comment: "Currently part of your practice? - 6.06j - Alcohol / Substance Abuse"
+    t.bigint "q601a", comment: "6.01a - Prenatal care"
+    t.bigint "q601a_practiced", comment: "Currently part of your practice? - 6.01a - Prenatal care"
+    t.bigint "q601b", comment: "6.01b - Labor Management"
+    t.bigint "q601b_practiced", comment: "Currently part of your practice? - 6.01b - Labor Management"
+    t.bigint "q601c", comment: "6.01c - Vaginal Deliveries"
+    t.bigint "q601c_practiced", comment: "Currently part of your practice? - 6.01c - Vaginal Deliveries"
+    t.bigint "q601d", comment: "6.01d - Post-partum care"
+    t.bigint "q601d_practiced", comment: "Currently part of your practice? - 6.01d - Post-partum care"
+    t.bigint "q601e", comment: "6.01e - Cesarean Section Assist"
+    t.bigint "q601e_practiced", comment: "Currently part of your practice? - 6.01e - Cesarean Section Assist"
+    t.bigint "q602a", comment: "6.02a - Ambulatory care"
+    t.bigint "q602a_practiced", comment: "Currently part of your practice? - 6.02a - Ambulatory care"
+    t.bigint "q602b", comment: "6.02b - Newborn resuscitation"
+    t.bigint "q602b_practiced", comment: "Currently part of your practice? - 6.02b - Newborn resuscitation"
+    t.bigint "q602c", comment: "6.02c - Newborn care in hospital"
+    t.bigint "q602c_practiced", comment: "Currently part of your practice? - 6.02c - Newborn care in hospital"
+    t.bigint "q602d", comment: "6.02d - Other hospital care"
+    t.bigint "q602d_practiced", comment: "Currently part of your practice? - 6.02d - Other hospital care"
+    t.bigint "q602e", comment: "6.02e - Teen care"
+    t.bigint "q602e_practiced", comment: "Currently part of your practice? - 6.02e - Teen care"
+    t.bigint "q603a", comment: "6.03a - Ambulatory care"
+    t.bigint "q603a_practiced", comment: "Currently part of your practice? - 6.03a - Ambulatory care"
+    t.bigint "q603b", comment: "6.03b - Inpatient care"
+    t.bigint "q603b_practiced", comment: "Currently part of your practice? - 6.03b - Inpatient care"
+    t.bigint "q603c", comment: "6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603c_practiced", comment: "Currently part of your practice? - 6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603d", comment: "6.03d - Nursing home care"
+    t.bigint "q603d_practiced", comment: "Currently part of your practice? - 6.03d - Nursing home care"
+    t.bigint "q603e", comment: "6.03e - Surgical assist"
+    t.bigint "q603e_practiced", comment: "Currently part of your practice? - 6.03e - Surgical assist"
+    t.bigint "q603f", comment: "6.03f - EKG interpretation"
+    t.bigint "q603f_practiced", comment: "Currently part of your practice? - 6.03f - EKG interpretation"
+    t.bigint "q604a", comment: "6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604a_practiced", comment: "Currently part of your practice? - 6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604b", comment: "6.04b - Ophthalmology"
+    t.bigint "q604b_practiced", comment: "Currently part of your practice? - 6.04b - Ophthalmology"
+    t.bigint "q604c", comment: "6.04c - Otolaryngology"
+    t.bigint "q604c_practiced", comment: "Currently part of your practice? - 6.04c - Otolaryngology"
+    t.bigint "q604d", comment: "6.04d - Urology"
+    t.bigint "q604d_practiced", comment: "Currently part of your practice? - 6.04d - Urology"
+    t.bigint "q605a", comment: "6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605a_practiced", comment: "Currently part of your practice? - 6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605b", comment: "6.05b - Counseling Individual / Family"
+    t.bigint "q605b_practiced", comment: "Currently part of your practice? - 6.05b - Counseling Individual / Family"
+    t.bigint "q606a", comment: "6.07a - Women's Health"
+    t.bigint "q606a_practiced", comment: "Currently part of your practice? - 6.07a - Women's Health"
+    t.bigint "q606b", comment: "6.07b - Gynecology"
+    t.bigint "q606b_practiced", comment: "Currently part of your practice? - 6.07b - Gynecology"
+    t.bigint "q606c", comment: "6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606c_practiced", comment: "Currently part of your practice? - 6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606d", comment: "6.07d - Sports Medicine"
+    t.bigint "q606d_practiced", comment: "Currently part of your practice? - 6.07d - Sports Medicine"
+    t.bigint "q606e", comment: "6.07e - Emergency Medicine"
+    t.bigint "q606e_practiced", comment: "Currently part of your practice? - 6.07e - Emergency Medicine"
+    t.bigint "q606f", comment: "6.07f - Dermatology"
+    t.bigint "q606f_practiced", comment: "Currently part of your practice? - 6.07f - Dermatology"
+    t.bigint "q606g", comment: "6.07g - Diagnostic Imaging"
+    t.bigint "q606g_practiced", comment: "Currently part of your practice? - 6.07g - Diagnostic Imaging"
+    t.bigint "q606h", comment: "6.07h - Geriatrics"
+    t.bigint "q606h_practiced", comment: "Currently part of your practice? - 6.07h - Geriatrics"
+    t.bigint "q606i", comment: "6.07i - End of Life Care"
+    t.bigint "q606i_practiced", comment: "Currently part of your practice? - 6.07i - End of Life Care"
+    t.string "q701", comment: "Do you have any additional comments to add?"
+    t.string "updated_at", comment: "Date updated"
+  end
+
+  create_table "source.y3_residency_programs", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.text "assocprogdir", comment: "1.02c Assoc. Program Director reason for leaving"
+    t.bigint "assocprogdir_leave", comment: "1.02c Did a Assoc. Program Director leave?"
+    t.string "created_at", comment: "Response Creation Date"
+    t.bigint "facleave", comment: "1.02 Members of core P4 team leave or transition during 2008/09 academic year?"
+    t.bigint "id", null: false, comment: "Internal Response ID"
+    t.bigint "nopgy4", comment: "1.03i Program does not have a PGY 4"
+    t.bigint "numqipgy1res", comment: "1.03a # PGY 1 Residents working on QI projects"
+    t.bigint "numqipgy2res", comment: "1.03b # PGY 2 Residents working on QI projects"
+    t.bigint "numqipgy3res", comment: "1.03c # PGY 3 Residents working on QI projects"
+    t.bigint "numqipgy4res", comment: "1.03d # PGY 4 Residents working on QI projects"
+    t.bigint "numrschpgy1res", comment: "1.03e # PGY 1 residents working on research projects"
+    t.bigint "numrschpgy2res", comment: "1.03f # PGY 2 residents working on research projects"
+    t.bigint "numrschpgy3res", comment: "1.03g # PGY 3 residents working on research projects"
+    t.bigint "numrschpgy4res", comment: "1.03h # PGY 4 residents working on research projects"
+    t.text "otherfacleave1", comment: "1.02e Other team member"
+    t.bigint "otherfacleave1_leave", comment: "1.02e Did another team member leave (#1)?"
+    t.text "otherfacleave1txt", comment: "1.02e.1 Other team member reason for leaving"
+    t.text "otherfacleave2", comment: "1.02f Other team member"
+    t.bigint "otherfacleave2_leave", comment: "1.02f Did another team member leave (#2)?"
+    t.text "otherfacleave2txt", comment: "1.02f.1 Other team member reason for leaving"
+    t.bigint "participant_id", comment: "Internal Participant ID"
+    t.decimal "pctnonpeerreview", comment: "1.05 % Core faculty with at least one NON-peer-reviewed publication during 2008/09"
+    t.decimal "pctpeerreview", comment: "1.04 % Core faculty with at least one peer-reviewed publication during 2008/09"
+    t.decimal "pctpresenting", comment: "1.06 % Core faculty presenting at regional or national meetings during 2008/09"
+    t.text "progdir", comment: "1.02a Program director reason for leaving"
+    t.bigint "progdir_leave", comment: "1.02a Did a Program director leave?"
+    t.bigint "ratefacdevel", comment: "2.1a Rate faculty development"
+    t.bigint "ratefacmorale", comment: "2.1b Rate faculty morale"
+    t.bigint "rateresmorale", comment: "2.1c Rate resident morale"
+    t.bigint "ratesatisfaction", comment: "2.1d Rate residency program satisfaction"
+    t.text "rescoord", comment: "1.02d Residency Coordinator reason for leaving"
+    t.bigint "rescoord_leave", comment: "1.02d Did a Residency Coordinator leave?"
+    t.bigint "resleave", comment: "1.01 Residents leave program last year"
+    t.bigint "resleavepgy1", comment: "1.01a # residents leave from PGY 1"
+    t.bigint "resleavepgy2", comment: "1.01b # residents leave from PGY 2"
+    t.bigint "resleavepgy3", comment: "1.01c # residents leave from PGY 3"
+    t.bigint "resleavepgy4", comment: "1.01d # residents leave from PGY 4"
+    t.bigint "rps", comment: "1.07 Did program receive RPS training during 2008/09?"
+    t.text "siteeval", comment: "1.02b P4 Site Evaluator reason for leaving"
+    t.bigint "siteeval_leave", comment: "1.02b Did a P4 Site Evaluator leave?"
+    t.string "updated_at", comment: "Response Completion Date"
+  end
+
+  create_table "source.y3_resident_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last 4 digits of residents 2008 ABFM ID"
+    t.string "abfm_resident_responses"
+    t.bigint "age", comment: "1.01 Resident age in years"
+    t.bigint "children", comment: "1.06 Have children"
+    t.string "contclin", comment: "Residents Continuity Clinic Assignement for 2007-2008"
+    t.string "describebeforemed", comment: "If NO, Text for years before medical school"
+    t.bigint "ethnicity", comment: "1.04 Ethnicity: Of hispanic origin"
+    t.bigint "evaluatefaculty", comment: "2.06 Opportunity to evaluate faculty at least once per year"
+    t.bigint "evaluateprogram", comment: "2.07 Opportunity to evaluate program at least once per year"
+    t.bigint "facultysupervising", comment: "2.03 Faculty spend sufficient time supervising residents"
+    t.bigint "facultyteaching", comment: "2.03 Faculty spend sufficient time teaching residents"
+    t.bigint "feedback", comment: "2.05 Receive written feedback on performance for each rotation"
+    t.bigint "firstfamilyphysician", comment: "1.10 If NO, First family physician in family"
+    t.bigint "firstgenerationcollege", comment: "1.09 First generation college graduate"
+    t.bigint "firstgenphysician", comment: "1.10 First person in family to become a physician"
+    t.bigint "gender", comment: "1.02 Resident gender"
+    t.bigint "goals", comment: "2.01 Program provided access to written goals & objectives for each rotation"
+    t.bigint "importance1", comment: "New Model Importance: EMR"
+    t.bigint "importance10", comment: "New Model Importance: HIPPA-compliant asynchronous communication with patients"
+    t.bigint "importance11", comment: "New Model Importance: Asynchronous communication with other providers"
+    t.bigint "importance12", comment: "New Model Importance: Ongoing population-based QA using EMR"
+    t.bigint "importance13", comment: "New Model Importance: Chronic disease management registries"
+    t.bigint "importance14", comment: "New Model Importance: EMR-based preventive services"
+    t.bigint "importance15", comment: "New Model Importance: Doing any practice-based research"
+    t.bigint "importance16", comment: "New Model Importance: Doing practice-based research using EMR"
+    t.bigint "importance17", comment: "New Model Importance: Advanced or open-access scheduling"
+    t.bigint "importance18", comment: "New Model Importance: Expanded hours"
+    t.bigint "importance19", comment: "New Model Importance: Functional quality monitoring telephone system"
+    t.bigint "importance2", comment: "New Model Importance: Paperless practice"
+    t.bigint "importance20", comment: "New Model Importance: Full asynchronous patient-accessible scheduling"
+    t.bigint "importance21", comment: "New Model Importance: Credible, reliable patient satisfaction survey"
+    t.bigint "importance22", comment: "New Model Importance: Teams managing patient care"
+    t.bigint "importance23", comment: "New Model Importance: Integrated behavioral health"
+    t.bigint "importance24", comment: "New Model Importance: Integrated case management"
+    t.bigint "importance25", comment: "New Model Importance: Clinical pharmacy support"
+    t.bigint "importance26", comment: "New Model Importance: Group visits"
+    t.bigint "importance27", comment: "New Model Importance: Practice being patient-centered versus physician-centered"
+    t.bigint "importance3", comment: "New Model Importance: Secure remote access to clinical info"
+    t.bigint "importance4", comment: "New Model Importance: Integrated transcription"
+    t.bigint "importance5", comment: "New Model Importance: Electronic scheduling integrated with EMR"
+    t.bigint "importance6", comment: "New Model Importance: Electronic billing integrated with EMR"
+    t.bigint "importance7", comment: "New Model Importance: Electronic orders integrated with EMR"
+    t.bigint "importance8", comment: "New Model Importance: Electronic prescribing integrated with EMR"
+    t.bigint "importance9", comment: "New Model Importance: Hospital EMR w/full-computerized physician order entry"
+    t.bigint "influence", comment: "1.13 P4 Influence decision to rank program in match"
+    t.bigint "many", comment: "1.06 How many children"
+    t.bigint "marital", comment: "1.05 Current marital status"
+    t.bigint "masters", comment: "1.14 Working towards masters degree (MS, MPH, MBA)"
+    t.string "mastersdegree", comment: "If yes, type of masters degree"
+    t.string "mastersdegreeother", comment: "If yes, type of masters degree - other"
+    t.string "medgraddate", comment: "1.11 Date graduated from med school"
+    t.bigint "medicalafterbs", comment: "1.07 Enter med school immediately after completing bachelors"
+    t.string "otherprogramyear", comment: "Other program year text"
+    t.bigint "othertraineesinterfere", comment: "2.09 Other trainees interfere with or supplement education"
+    t.string "p4_program_id", comment: "P4-Assgined Residency ID"
+    t.integer "p4_resident_id"
+    t.string "p4resid", comment: "Unique P4-Assigned Resident ID"
+    t.string "p4residency_abfm_id", null: false, comment: "ABFM Residency Program ID"
+    t.bigint "participationconferences", comment: "2.04 Faculty participation in conferences"
+    t.bigint "participationjournalclub", comment: "2.04 Faculty participation in journal club"
+    t.bigint "programyear", comment: "1.12 Current Program Year"
+    t.bigint "race_aa", comment: "1.03 Race: Black"
+    t.bigint "race_ap", comment: "1.03 Race: Asian or Pacific Islander"
+    t.bigint "race_c", comment: "1.03 Race: White"
+    t.bigint "race_in", comment: "1.03 Race: American Indian or Alaska Native"
+    t.bigint "race_o", comment: "1.03 Race: Other"
+    t.string "raceothertxt", comment: "Race: Other text"
+    t.bigint "satisfied", comment: "2.11 Overall satisfaction with residency training thus far"
+    t.bigint "speakfreely", comment: "2.08 Able to speak freely about issues and problems without fear"
+    t.bigint "strengthscompetence", comment: "2.10 Strengths/weaknesses of program - Competence of faculty"
+    t.bigint "strengthscurrchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in curriculum change"
+    t.bigint "strengthsfacteaching", comment: "2.10 Strengths or weaknesses of program - Teaching"
+    t.bigint "strengthsoverallcurr", comment: "2.10 Strengths or weaknesses of program - Overall curriculum"
+    t.bigint "strengthsp4implement", comment: "2.10 Strengths/weaknesses of program - Success implementing P4 innovations"
+    t.bigint "strengthsp4innovations", comment: "2.10 Strengths/weaknesses of program - Success conveying what P4 innovations are to you"
+    t.bigint "strengthspracchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in clinical practice change"
+    t.bigint "usamedschool", comment: "1.08 Attend med school in United States"
+    t.decimal "yearsbeforemedschool", comment: "If NO, Years between undergrad and medical school"
+  end
+
+  create_table "source.y4_continuity_clinics", primary_key: ["p4_program_id", "settingid"], force: :cascade do |t|
+    t.text "agesource", comment: "2.02.8 Source of patient age estimates"
+    t.decimal "asian", comment: "2.04.2 Percent Asian patients"
+    t.decimal "black", comment: "2.04.3 Percent Black/African American patients"
+    t.decimal "daysacuteapptfac3", comment: "1.05.f Number of days to acute 3rd available appointment for faculty"
+    t.bigint "daysacuteapptfac3_unknown", comment: "1.05.f Unknown number of days to acute 3rd available appointment for faculty"
+    t.decimal "daysacuteapptres3", comment: "1.05.l Number of days to acute 3rd available appointment for residents"
+    t.bigint "daysacuteapptres3_unknown", comment: "1.05.l Unknown number of days to acute 3rd available appointment for residents"
+    t.decimal "daysfuapptfac3", comment: "1.05.d Number of days to follow up 3rd available appointment for faculty"
+    t.bigint "daysfuapptfac3_unknown", comment: "1.05.d Unknown number of days to follow up 3rd available appointment for faculty"
+    t.decimal "daysfuapptres3", comment: "1.05.j Number of days to follow up 3rd available appointment for residents"
+    t.bigint "daysfuapptres3_unknown", comment: "1.05.j Unknown number of days to follow up 3rd available appointment for residents"
+    t.decimal "daysnewapptfac3", comment: "1.05.b Number of days to new patient 3rd available appointment for faculty"
+    t.bigint "daysnewapptfac3_unknown", comment: "1.05.b Unknown number of days to new patient 3rd available appointment for faculty"
+    t.decimal "daysnewapptres3", comment: "1.05.h Number of days to new patient 3rd available appointment for residents"
+    t.bigint "daysnewapptres3_unknown", comment: "1.05.h Unknown number of days to new patient 3rd available appointment for residents"
+    t.decimal "eighteen", comment: "2.02.3 Percent of patients between 18-24 years"
+    t.bigint "emr_active_meds", comment: ">80% of eligible patients (those taking any medications) with at least one entry for active medications - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_advance_dir", comment: ">50% of patients aged 65 and older have an indication of advanced directives status recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_aggregate_cqm", comment: "Capability to provide aggregate numerator and denominator clinical quality measures to CMS or states - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_allergies", comment: ">80% of eligible patients (those taking any medications) with at least one entry for medication allergies (or NKDA) - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_appt_reminders", comment: ">20% of patients under age 5 and aged 65 or older send appropriate reminders for preventive or follow-up care - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_demographic", comment: ">50% of your patients' demographic information (sex, race ethnicity, date of birth, preferred language) recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_ds_compliance", comment: "Capability to implement one decision support rule and ability to track compliance with this rule - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_dxlist", comment: ">80% of patients with at least one current/active diagnosis recorded on the problem list - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_electronic_copy", comment: ">50% of requesting patients receiving electronic copy of their health information (diagnostic test results, problem list, medication list, medication allergies, and procedure summaries) - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_electronic_exchange", comment: "Capability to electronically exchange key clinical information among providers and patient-authorized entities - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_electronic_rx", comment: ">40% permissible prescriptions transmitted electronically - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_formulary_check", comment: "Capability to implement drug formulary checks with access to at least one internal or external formulary - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_ht_wt", comment: ">50% of patients aged 2 and older having height, weight, blood pressure, BMI and growth charts for children recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_immunization", comment: "Submission of electronic immunization data to immunization registries or other information systems done at least once - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_interaction_check", comment: "Capability of checking drug-drug and drug-allergy interactions - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_labs_numerical", comment: ">40% of clinical laboratory test results recorded in \"+\", \"-\" or numerical formats - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_med_reconciliation", comment: ">50% of patients undergoing transitions in care receive medication reconciliation - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_privacy_security", comment: "Capability to protect privacy and security of patient data, review security risks and correct security deficiencies - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_pt_education", comment: ">10% of patients receiving patient-specific educational resources - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_pt_electronic", comment: ">10% of patients provided with electronic access to information (lab test results, problem list, medication lists, medication allergies) within 4 days of it being updated in the EHR - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_ptlist_by_condition", comment: "Capability of generating lists of patients by specific condition to use for quality improvement, reduction of disparities, research or outreach - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_reportable_labs", comment: "Submission of electronic data on reportable laboratory tests to public health agencies done at least once - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_rx_cpoe", comment: ">30% of eligible patients (those taking any medications) with at least one medication ordered using computer provider order entry - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_smoking", comment: ">50% of patients aged 13 or older having smoking status recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_summary_of_care", comment: ">50% of patients referred or transitioned to another setting or physician have a summary of care record provided - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_syndromic_surveil", comment: "Submission of electronic syndromic surveillance data to public health agencies done at least once - EMR \"Meaningful Use\" Questions"
+    t.text "emrexplain", comment: "Why has your practice not implemented an EMR system?"
+    t.bigint "emrimplemented", comment: "Has your practice implemented an Electronic Medical Record (EMR) system?"
+    t.bigint "emrptsafety", comment: "Is your practice using its EMR system for patient safety?"
+    t.text "emrptsafetytxt", comment: "How is your practice using its EMR system for patient safety?"
+    t.decimal "emryears", comment: "For how many years has your practice had an Electronic Medical Record (EMR) system?"
+    t.text "ethnicitysource", comment: "2.03.3 Source of Ethnicity Data"
+    t.decimal "female", comment: "2.01.b Percent female patients"
+    t.decimal "ffs", comment: "2.05.2 Percent Private Health Insurance (Fee for service)"
+    t.decimal "fortyfive", comment: "2.02.5 Percent of patients between 45-64 years"
+    t.decimal "fteadmin", comment: "1.09.f Number of clinical staff FTEs for Administrative Staff"
+    t.decimal "fteallied", comment: "1.09.e Number of clinical staff FTEs for Allied Health Staff"
+    t.decimal "ftediet", comment: "1.09.i Number of clinical staff FTEs for Dieticians"
+    t.decimal "ftefmres", comment: "1.08.b Number of physician FTEs for Family Medicine Residents"
+    t.decimal "ftefp", comment: "1.08.a Number of physician FTEs for Family Physicians"
+    t.decimal "fteim", comment: "1.08.e Number of physician FTEs for Internists"
+    t.decimal "fteimres", comment: "1.08.f Number of physician FTEs for Internal Medicine Residents"
+    t.decimal "ftema", comment: "1.09.d Number of clinical staff FTEs for Medical Assistants"
+    t.decimal "ftenp", comment: "1.09.a Number of clinical staff FTEs for Nurse Practioners"
+    t.decimal "fteob", comment: "1.08.g Number of physician FTEs for OBGYN Physicians"
+    t.decimal "fteobres", comment: "1.08.h Number of physician FTEs for OBGYN Residents"
+    t.decimal "fteotherphys1", comment: "1.08.i Number of physician FTEs for Other Specialty 1"
+    t.bigint "fteotherphys1_present", comment: "1.08.i Entry Present? - Physician for Other Specialty 1"
+    t.text "fteotherphys1txt", comment: "1.08.j Number of physician FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherphys2", comment: "1.08.k Number of physician FTEs for Other Specialty 2"
+    t.bigint "fteotherphys2_present", comment: "1.08.k Entry Present? - Physician for Other Specialty 2"
+    t.text "fteotherphys2txt", comment: "1.08.l Number of physician FTEs for Other Specialty 2 Text"
+    t.decimal "fteotherspec1", comment: "1.09.l Number of clinical staff FTEs for Other Specialty 1"
+    t.bigint "fteotherspec1_present", comment: "1.09.l Entry Present? - FTE for Other Specialty 1"
+    t.text "fteotherspec1txt", comment: "1.09.m Number of clinical staff FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherspec2", comment: "1.09.n Number of clinical staff FTEs for Other Specialty 2"
+    t.bigint "fteotherspec2_present", comment: "1.09.n Entry Present? - FTE for Other Specialty 2"
+    t.text "fteotherspec2txt", comment: "1.09.o Number of clinical staff FTEs for Other Specialty 2 Text"
+    t.decimal "ftepa", comment: "1.09.b Number of clinical staff FTEs for Physicians Assistants"
+    t.decimal "fteped", comment: "1.08.c Number of physician FTEs for Pediatricians"
+    t.decimal "ftepedres", comment: "1.08.d Number of physician FTEs for Pediatric Residents"
+    t.decimal "ftepharm", comment: "1.09.k Number of clinical staff FTEs for Pharmacy"
+    t.decimal "ftepsych", comment: "1.09.g Number of clinical staff FTEs for Psychologists"
+    t.decimal "ftepteduc", comment: "1.09.j Number of clinical staff FTEs for Patient Educators"
+    t.decimal "fternlpn", comment: "1.09.c Number of clinical staff FTEs for Nursing Staff RN/LPN"
+    t.decimal "ftesocial", comment: "1.09.h Number of clinical staff FTEs for Social Workers"
+    t.text "gendersource", comment: "2.01.c Source of patient gender estimates"
+    t.decimal "hawaiian", comment: "2.04.4 Percent Hawaiian patients"
+    t.decimal "hispanic", comment: "2.03.1 Percent Hispanic or Latino patients"
+    t.decimal "indian", comment: "2.04.1 Percent American Indian/Native American patients"
+    t.bigint "integrated", comment: "1.11 Currently part of an integrated health system (with specialists in hospital)"
+    t.decimal "lt3", comment: "2.02.1 Percent of patients under 3 years"
+    t.decimal "male", comment: "2.01.a Percent male patients"
+    t.decimal "medicaid", comment: "2.05.4 Percent Medicaid"
+    t.decimal "medicare", comment: "2.05.3 Percent Medicare"
+    t.decimal "nonhispanic", comment: "2.03.2 Percent Not Hispanic or Latino patients"
+    t.bigint "nopgy4", comment: "1.02 Program does not have a PGY 4"
+    t.bigint "numallied", comment: "1.10.e Number of Allied Health Staff taught in clinic over the past year"
+    t.bigint "numdiet", comment: "1.10.h Number of Dieticians taught in clinic over the past year"
+    t.bigint "numexamrooms", comment: "1.06 Total number of exam rooms"
+    t.bigint "numma", comment: "1.10.d Number of Medical Assistants taught in clinic over the past year"
+    t.bigint "numnp", comment: "1.10.a Number of Nurse Practioners taught in clinic over the past year"
+    t.bigint "numotherspec", comment: "1.10.j Number of Other Specialty taught in clinic over the past year"
+    t.bigint "numotherspec2", comment: "1.10.j Number of Other Specialty taught in clinic over the past year"
+    t.decimal "numotherspec2_present", comment: "1.10.j Entry Present? - Number of Other Specialty taught in clinic over past year"
+    t.text "numotherspec2txt", comment: "1.10.k Other Specialty taught in clinic over the past year Text"
+    t.decimal "numotherspec_present", comment: "1.10.j Entry Present? - Number of Other Specialty taught in clinic over past year"
+    t.text "numotherspectxt", comment: "1.10.k Other Specialty taught in clinic over the past year Text"
+    t.bigint "numpa", comment: "1.10.b Number of Physicians Assistants taught in clinic over the past year"
+    t.bigint "numpsych", comment: "1.10.f Number of Psychologists taught in clinic over the past year"
+    t.bigint "numpteduc", comment: "1.10.i Number of Patient Educators taught in clinic over the past year"
+    t.bigint "numptfac", comment: "1.07.a Total # of patients seen by faculty in 2009/10"
+    t.bigint "numptmid", comment: "1.07.b Total # of patients seen by Mid-level clinicians in 2009/10"
+    t.bigint "numptres", comment: "1.07.c Total # of patients seen by residents in 2009/10"
+    t.bigint "numrnlpn", comment: "1.10.c Number of Nursing Staff RN/LPN taught in clinic over the past year"
+    t.bigint "numsocial", comment: "1.10.g Number of Social Workers taught in clinic over the past year"
+    t.decimal "otherpay", comment: "2.05.5 Percent Other Payment Method"
+    t.bigint "otherpay_present", comment: "2.05.5 Entry Present? - Percent Other Payment Method"
+    t.text "otherpaytxt", comment: "2.05.5 Name of Other Payment Method"
+    t.decimal "otherrace", comment: "2.04.6 Percent Other Race patients"
+    t.bigint "otherrace_present", comment: "2.04.6 Entry Present? - Percent Other Race patients"
+    t.text "otherracetxt", comment: "2.04.6 Name of Other Race"
+    t.bigint "owner", comment: "1.12.a Practice affiliation/ownership"
+    t.text "ownerother", comment: "1.12.b Owner other Text"
+    t.string "p4_program_id", null: false, comment: "Unique P4-Assigned Residency Program ID"
+    t.text "paysource", comment: "2.05.7 Source of payment method estimates"
+    t.string "pcmhactiondate", comment: "Action Date - NCQA PPC-PCMH Recognition Application"
+    t.string "pcmhapplied", comment: "Applied for PCMH Certification?"
+    t.string "pcmhobtaindate", comment: "Certification Date - NCQA PPC-PCMH Recognition Application"
+    t.string "pcmhstatus", comment: "Status of Application for NCQA PPC-PCMH Recognition"
+    t.string "pcmhsubmitdate", comment: "Submission Date - NCQA PPC-PCMH Recognition Application"
+    t.bigint "pgy1", comment: "1.01.a Number of PGY 1 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy1acute", comment: "1.04.e Please estimate the percent of acute visits for PGY1 last year"
+    t.decimal "pgy1routine", comment: "1.04.a Please estimate the percent of routine visits for PGY1 last year"
+    t.bigint "pgy2", comment: "1.01.b Number of PGY 2 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy2acute", comment: "1.04.f Please estimate the percent of acute visits for PGY2 last year"
+    t.decimal "pgy2routine", comment: "1.04.b Please estimate the percent of routine visits for PGY2 last year"
+    t.bigint "pgy3", comment: "1.01.c Number of PGY 3 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy3acute", comment: "1.04.g Please estimate the percent of acute visits for PGY3 last year"
+    t.decimal "pgy3routine", comment: "1.04.c Please estimate the percent of routine visits for PGY3 last year"
+    t.bigint "pgy4", comment: "1.01.d Number of PGY 4 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy4acute", comment: "1.04.f Please estimate the percent of acute visits for PGY4 last year"
+    t.decimal "pgy4routine", comment: "1.04.d Please estimate the percent of routine visits for PGY4 last year"
+    t.decimal "prepaid", comment: "2.05.1 Percent Private Health Insurance (Prepaid)"
+    t.bigint "ptassigned", comment: "1.03 Are the patients in the clinic assigned to a personal physician?"
+    t.text "racesource", comment: "2.04.7 Source of patient race estimates"
+    t.string "settingid", null: false, comment: "Unique P4 - Assigned Continuity Clinic ID"
+    t.decimal "seventyfive", comment: "2.02.7 Percent of patients 75 years and older"
+    t.decimal "sixtyfive", comment: "2.02.6 Percent of patients between 65-74 years"
+    t.bigint "statbilling", comment: "Status of electronic billing"
+    t.bigint "statcasemgt", comment: "Status of integrated case management"
+    t.bigint "statdisregistry", comment: "Status of chronic disease management registries"
+    t.bigint "statemr", comment: "Status of EMR"
+    t.bigint "statexpandedhrs", comment: "Status of expanded hours"
+    t.bigint "statgroup", comment: "Status of group visits"
+    t.bigint "stathospemr", comment: "Status of hospital EMR"
+    t.bigint "statnetscheduling", comment: "Status of full asynchronous pateint-accessible scheduling"
+    t.bigint "statopenaccess", comment: "Status of open-access scheduling"
+    t.bigint "statorders", comment: "Status of electronic orders"
+    t.bigint "statpaperless", comment: "Status of paperless"
+    t.bigint "statparking", comment: "Status of adequate, free parking"
+    t.bigint "statpharm", comment: "Status of clinical pharmacy support"
+    t.bigint "statprevregistry", comment: "Status of EMB-based preventive services registries"
+    t.bigint "statprovcommunication", comment: "Status of asynchronous communication with other providers"
+    t.bigint "statpsych", comment: "Status of integrated behavioral health"
+    t.bigint "statptcentered", comment: "Overall status of practice as patient-centered vs. physician-centered"
+    t.bigint "statptcommunication", comment: "Status of asynchronous communication with patients"
+    t.bigint "statqa", comment: "Status of population-based QA using EMR"
+    t.bigint "statremote", comment: "Status of remote access"
+    t.bigint "statresearch", comment: "Status of practice-based research using EMR"
+    t.bigint "statscheduling", comment: "Status of electronic scheduling"
+    t.bigint "statspace", comment: "Status of sufficient and adequate physical space"
+    t.bigint "statsurvey", comment: "Status of patient satisfaction survey"
+    t.bigint "statteams", comment: "Status of using teams to manage patient care"
+    t.bigint "stattelephone", comment: "Status of functional quality monitoring telephone system"
+    t.bigint "stattranscription", comment: "Status of transcription expense"
+    t.bigint "stattransit", comment: "Status of convenient public transportation"
+    t.decimal "three", comment: "2.02.2 Percent of patients between 3-17 years"
+    t.decimal "twentyfive", comment: "2.02.4 Percent of patients between 25-44 years"
+    t.decimal "uninsured", comment: "2.05.6 Percent Uninsured"
+    t.decimal "white", comment: "2.04.5 Percent White patients"
+    t.bigint "xrays", comment: "2.06 Where majority of patients go for routine x-rays"
+
+    t.unique_constraint ["settingid"], name: "y4_continuity_clinics_settingid_key"
+  end
+
+  create_table "source.y4_graduate_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last four of ABFM ID"
+    t.string "created_at", comment: "Date created"
+    t.bigint "finished", comment: "Web survey finished?"
+    t.bigint "grad_year", comment: "Graduation Year"
+    t.bigint "graduateid", comment: "Survey Login"
+    t.bigint "max_slide", comment: "Max slide reached"
+    t.string "p4_program_id", comment: "P4 ID"
+    t.integer "p4_resident_id"
+    t.bigint "paper", comment: "Paper survey?"
+    t.bigint "q101a", comment: "1.01a - Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "1.01b - In what year were you initially certified by the ABFM?"
+    t.bigint "q101c", comment: "1.01c - Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "1.01d - In what year are you planning to be certified by the ABFM?"
+    t.bigint "q102a", comment: "1.02a - CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "1.02b - CAQ in geriatrics?"
+    t.bigint "q102c", comment: "1.02c - CAQ in sports medicine?"
+    t.bigint "q102d", comment: "1.02d - Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "1.02e - For what other specialty / CAQ do you have a board certification?"
+    t.bigint "q103a", comment: "1.04 - Are you currently enrolled in or did you complete a fellowship after residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics / Maternity Care - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_10", comment: "Other - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_2", comment: "Geriatrics - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_3", comment: "Sports Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_4", comment: "Research - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_5", comment: "Faculty Development - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_6", comment: "Pain Management - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_7", comment: "Hospitalist - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_8", comment: "Emergency Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_9", comment: "Rural Medicine - 1.04a - What type of fellowship(s)?"
+    t.string "q103b_other", comment: "Other Text - 1.04a - What type of fellowship(s)?"
+    t.string "q104", comment: "1.03 - In what state(s) are you currently practicing?"
+    t.decimal "q105", comment: "1.05 - What is your age?"
+    t.bigint "q106", comment: "1.06 - What is your gender?"
+    t.bigint "q107_1", comment: "White - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_2", comment: "Black - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_3", comment: "Hispanic - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_4", comment: "Asian / Pacific Islander - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_5", comment: "American Indian or Alaska Native - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_6", comment: "Middle Eastern - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_7", comment: "Other - 1.07 - What is your race? (Check all that apply)"
+    t.string "q107_other", comment: "1.07 - What is your race? (Check all that apply)"
+    t.bigint "q108", comment: "1.08 - What is your marital status? (Choose only one)"
+    t.bigint "q201", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.string "q201_other", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.bigint "q202_a", comment: "HPSA: Federally designated health professional shortage area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_b", comment: "MUA: Federally designated medically underserved area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_c", comment: "MHC: Federally designated migrant health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_d", comment: "CHC: Federally designated community health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_e", comment: "RHC: Federally designated rural health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_f", comment: "NHSC: National Health Service Corps - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_g", comment: "IHS: Indian Health Service site - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_h", comment: "Other state or federally qualified health center / clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_none", comment: "None of the above - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.string "q202_other", comment: "Other state or federally qualified health center / clinic - Text - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q203", comment: "2.03 - Which of the following best describes the community in which you practice?"
+    t.decimal "q204", comment: "2.04 - How long in months have you been at your current practice location?"
+    t.bigint "q205", comment: "2.05 - Number of office visits in an average full day. If you only work in half-day increments, multiply by 2 to get the full-day number."
+    t.decimal "q206", comment: "2.06 - Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office."
+    t.decimal "q207a", comment: "Private Insurance - 2.07 - Payor Mix"
+    t.decimal "q207b", comment: "Medicaid - 2.07 - Payor Mix"
+    t.decimal "q207c", comment: "Medicare - 2.07 - Payor Mix"
+    t.decimal "q207d", comment: "HMO / Managed Care - 2.07 - Payor Mix"
+    t.decimal "q207e", comment: "Self-Pay - 2.07 - Payor Mix"
+    t.decimal "q207f", comment: "Other - 2.07 - Payor Mix"
+    t.string "q207f_other", comment: "Other - Text Description - 2.07 - Payor Mix"
+    t.bigint "q207f_other_present", comment: "Other - Is Checked? - 2.07 - Payor Mix"
+    t.bigint "q208", comment: "2.08 - What is your pre-tax yearly income, excluding benefits?"
+    t.bigint "q301a", comment: "3.01a - Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "3.01b - If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "3.01c - I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "3.01d - Overall, my residency prepared me well for my current clinical practice"
+    t.bigint "q401", comment: "4.01 - EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "4.02 - Paperless Practice (all interfaces and scanning work - no paper charts)"
+    t.bigint "q403", comment: "4.03 - Full secured remote access"
+    t.bigint "q404", comment: "4.04 - Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "4.05 - Electronic scheduling system Integrated with EMR"
+    t.bigint "q406", comment: "4.06 - Electronic billing system Integrated with EMR"
+    t.bigint "q407", comment: "4.07 - Electronic orders (e.g., lab, x-ray) Integrated with EMR"
+    t.bigint "q408", comment: "4.08 - Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "4.09 - Secure HIPAA-compliant asynchronous communication (e.g. e-mail or text messaging) with patients"
+    t.bigint "q410", comment: "4.10 - Asynchronous communication with other providers"
+    t.bigint "q411", comment: "4.11 - Ongoing population-based Quality Assurance using an EMR / registry"
+    t.bigint "q412", comment: "4.12 - Chronic disease management registries"
+    t.bigint "q413", comment: "4.13 - EMR-based preventive services registries"
+    t.bigint "q414", comment: "4.14 - Practice-based research using an EMR"
+    t.bigint "q415", comment: "4.15 - Advanced or open-access scheduling"
+    t.bigint "q416", comment: "4.16 - Expanded hours (e.g., clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "4.17 - Functional quality monitoring telephone system (system to monitor call abandonment / time to answer)"
+    t.bigint "q418", comment: "4.18 - Full asynchronous patient-accessible scheduling (e.g., Internet-based)"
+    t.bigint "q419", comment: "4.19 - Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "4.20 - Sufficient and adequate physical space"
+    t.bigint "q421", comment: "4.21 - Adequate, free parking"
+    t.bigint "q422", comment: "4.22 - Convenient public transportation access"
+    t.bigint "q423", comment: "4.23 - Using teams to manage patient care"
+    t.bigint "q424", comment: "4.24 - Integrated behavioral health"
+    t.bigint "q425", comment: "4.25 - Integrated "
+    t.bigint "q426", comment: "4.26 - Clinical pharmacy support"
+    t.bigint "q427", comment: "4.27 - Group visits"
+    t.bigint "q428", comment: "4.28 - Your practice as patient-centered versus physician-centered"
+    t.bigint "q429", comment: "4.29 - Using the scale below, please indicate what role you have played in office practice redesign toward the Patient-Centered Medical Home."
+    t.bigint "q430", comment: "4.30 - Did you play a role during your residency training in Patient-Centered Medical Home design/implementation?"
+    t.bigint "q501a", comment: "5.02a - Adult inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501b", comment: "5.02b - Adult ICU / CCU care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501c", comment: "5.02c - Nursing home care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501d", comment: "5.02d - Newborn nursery care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501e", comment: "5.02e - Pediatric inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501f", comment: "5.02f - Surgical inpatient procedures - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501g", comment: "5.02g - Emergency Room care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q502", comment: "5.02h - Prenatal care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q503", comment: "5.01 - Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "5.01c - Do other members of your practice group deliver babies?"
+    t.bigint "q503a", comment: "5.01a - Vaginal Deliveries"
+    t.bigint "q503b", comment: "5.01b - C-section deliveries - as primary surgeon"
+    t.bigint "q504", comment: "5.03 - Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "5.03a - Please describe the difficulties you've experienced:"
+    t.bigint "q505_1", comment: "Medical students - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_2", comment: "Residents - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_3", comment: "Fellows - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_4", comment: "Other health care professionals - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_none", comment: "None of the above - 5.04 - What kind of teaching activities do you participate in?"
+    t.string "q505_other", comment: "Other health care professionals - Other Text - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q506a", comment: "7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice? - 7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506b", comment: "7.01b - Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice? - 7.01b - Cryosurgery"
+    t.bigint "q506c", comment: "7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice? - 7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506d", comment: "7.01d - Incision & drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice? - 7.01d - Incision & drainage of abscess"
+    t.bigint "q506e", comment: "7.01e - Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice? - 7.01e - Simple laceration repair"
+    t.bigint "q507a", comment: "7.02a - IUD insertion / removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice? - 7.02a - IUD insertion / removal"
+    t.bigint "q507b", comment: "7.02b - Endometrial biopsy"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice? - 7.02b - Endometrial biopsy"
+    t.bigint "q507c", comment: "7.02c - Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice? - 7.02c - Remove cervical polyp"
+    t.bigint "q507d", comment: "7.02d - Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice? - 7.02d - Bartholin's cyst management"
+    t.bigint "q507e", comment: "7.02e - Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice? - 7.02e - Colposcopy"
+    t.bigint "q507f", comment: "7.02f - Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice? - 7.02f - Cervical cryotherapy"
+    t.bigint "q507g", comment: "7.02g - LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice? - 7.02g - LEEP"
+    t.bigint "q507h", comment: "7.02h - Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice? - 7.02h - Paracervical block"
+    t.bigint "q507i", comment: "7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice? - 7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507j", comment: "7.02j - Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice? - 7.02j - Tubal ligation"
+    t.bigint "q508a", comment: "7.03a - OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice? - 7.03a - OB ultrasound"
+    t.bigint "q508b", comment: "7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice? - 7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508c", comment: "7.03c - Labor induction / augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice? - 7.03c - Labor induction / augmentation"
+    t.bigint "q508d", comment: "7.03d - Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice? - 7.03d - Vacuum assisted delivery"
+    t.bigint "q508e", comment: "7.03e - 3 rd & 4 th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice? - 7.03e - 3rd & 4th degree laceration repair"
+    t.bigint "q508f", comment: "7.03f - C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice? - 7.03f - C-section assist"
+    t.bigint "q508g", comment: "7.03g - C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice? - 7.03g - C-section primary surgeon"
+    t.bigint "q509a", comment: "7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice? - 7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509b", comment: "7.04b - Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice? - 7.04b - Colonoscopy"
+    t.bigint "q509c", comment: "7.04c - Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice? - 7.04c - Upper endoscopy"
+    t.bigint "q510a", comment: "7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice? - 7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510b", comment: "7.05b - Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice? - 7.05b - Lumbar puncture"
+    t.bigint "q510c", comment: "7.05c - Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice? - 7.05c - Thoracentesis"
+    t.bigint "q510d", comment: "7.05d - Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice? - 7.05d - Paracentesis"
+    t.bigint "q510e", comment: "7.05e - Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice? - 7.05e - Central line"
+    t.bigint "q510f", comment: "7.05f - Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice? - 7.05f - Endotracheal intubation"
+    t.bigint "q510g", comment: "7.05g - Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice? - 7.05g - Ventilator management"
+    t.bigint "q510h", comment: "7.05h - Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice? - 7.05h - Chest tube placement"
+    t.bigint "q511a", comment: "7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice? - 7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511b", comment: "7.06b - Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice? - 7.06b - Splinting & casting"
+    t.bigint "q511c", comment: "7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice? - 7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q512a", comment: "7.07a - Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice? - 7.07a - Circumcision"
+    t.bigint "q512b", comment: "7.07b - Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice? - 7.07b - Vasectomy"
+    t.bigint "q513a", comment: "7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice? - 7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513b", comment: "7.08b - Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice? - 7.08b - Peripheral nerve block"
+    t.bigint "q513c", comment: "7.08c - Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice? - 7.08c - Conscious sedation"
+    t.bigint "q513d", comment: "7.08d - Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice? - 7.08d - Exercise Treadmill Testing"
+    t.bigint "q513e", comment: "7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice? - 7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q514a", comment: "6.06a - Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice? - 6.06a - Assess community health needs"
+    t.bigint "q514b", comment: "6.06b - Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice? - 6.06b - Use community resources"
+    t.bigint "q514c", comment: "6.06c - Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice? - 6.06c - Develop community intervention"
+    t.bigint "q514d", comment: "6.06d - Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice? - 6.06d - Use of information technology"
+    t.bigint "q514e", comment: "6.06e - Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice? - 6.06e - Quality improvement"
+    t.bigint "q514f", comment: "6.06f - Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice? - 6.06f - Team-based care"
+    t.bigint "q514g", comment: "6.06g - Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice? - 6.06g - Integration of evidence-based medicine"
+    t.bigint "q514h", comment: "6.06h - Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice? - 6.06h - Health behavior change counseling"
+    t.bigint "q514i", comment: "6.06i - Pain Management"
+    t.bigint "q514i_practiced", comment: "Currently part of your practice? - 6.06i - Pain Management"
+    t.bigint "q514j", comment: "6.06j - Alcohol / Substance Abuse"
+    t.bigint "q514j_practiced", comment: "Currently part of your practice? - 6.06j - Alcohol / Substance Abuse"
+    t.bigint "q601a", comment: "6.01a - Prenatal care"
+    t.bigint "q601a_practiced", comment: "Currently part of your practice? - 6.01a - Prenatal care"
+    t.bigint "q601b", comment: "6.01b - Labor Management"
+    t.bigint "q601b_practiced", comment: "Currently part of your practice? - 6.01b - Labor Management"
+    t.bigint "q601c", comment: "6.01c - Vaginal Deliveries"
+    t.bigint "q601c_practiced", comment: "Currently part of your practice? - 6.01c - Vaginal Deliveries"
+    t.bigint "q601d", comment: "6.01d - Post-partum care"
+    t.bigint "q601d_practiced", comment: "Currently part of your practice? - 6.01d - Post-partum care"
+    t.bigint "q601e", comment: "6.01e - Cesarean Section Assist"
+    t.bigint "q601e_practiced", comment: "Currently part of your practice? - 6.01e - Cesarean Section Assist"
+    t.bigint "q602a", comment: "6.02a - Ambulatory care"
+    t.bigint "q602a_practiced", comment: "Currently part of your practice? - 6.02a - Ambulatory care"
+    t.bigint "q602b", comment: "6.02b - Newborn resuscitation"
+    t.bigint "q602b_practiced", comment: "Currently part of your practice? - 6.02b - Newborn resuscitation"
+    t.bigint "q602c", comment: "6.02c - Newborn care in hospital"
+    t.bigint "q602c_practiced", comment: "Currently part of your practice? - 6.02c - Newborn care in hospital"
+    t.bigint "q602d", comment: "6.02d - Other hospital care"
+    t.bigint "q602d_practiced", comment: "Currently part of your practice? - 6.02d - Other hospital care"
+    t.bigint "q602e", comment: "6.02e - Teen care"
+    t.bigint "q602e_practiced", comment: "Currently part of your practice? - 6.02e - Teen care"
+    t.bigint "q603a", comment: "6.03a - Ambulatory care"
+    t.bigint "q603a_practiced", comment: "Currently part of your practice? - 6.03a - Ambulatory care"
+    t.bigint "q603b", comment: "6.03b - Inpatient care"
+    t.bigint "q603b_practiced", comment: "Currently part of your practice? - 6.03b - Inpatient care"
+    t.bigint "q603c", comment: "6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603c_practiced", comment: "Currently part of your practice? - 6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603d", comment: "6.03d - Nursing home care"
+    t.bigint "q603d_practiced", comment: "Currently part of your practice? - 6.03d - Nursing home care"
+    t.bigint "q603e", comment: "6.03e - Surgical assist"
+    t.bigint "q603e_practiced", comment: "Currently part of your practice? - 6.03e - Surgical assist"
+    t.bigint "q603f", comment: "6.03f - EKG interpretation"
+    t.bigint "q603f_practiced", comment: "Currently part of your practice? - 6.03f - EKG interpretation"
+    t.bigint "q604a", comment: "6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604a_practiced", comment: "Currently part of your practice? - 6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604b", comment: "6.04b - Ophthalmology"
+    t.bigint "q604b_practiced", comment: "Currently part of your practice? - 6.04b - Ophthalmology"
+    t.bigint "q604c", comment: "6.04c - Otolaryngology"
+    t.bigint "q604c_practiced", comment: "Currently part of your practice? - 6.04c - Otolaryngology"
+    t.bigint "q604d", comment: "6.04d - Urology"
+    t.bigint "q604d_practiced", comment: "Currently part of your practice? - 6.04d - Urology"
+    t.bigint "q605a", comment: "6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605a_practiced", comment: "Currently part of your practice? - 6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605b", comment: "6.05b - Counseling Individual / Family"
+    t.bigint "q605b_practiced", comment: "Currently part of your practice? - 6.05b - Counseling Individual / Family"
+    t.bigint "q606a", comment: "6.07a - Women's Health"
+    t.bigint "q606a_practiced", comment: "Currently part of your practice? - 6.07a - Women's Health"
+    t.bigint "q606b", comment: "6.07b - Gynecology"
+    t.bigint "q606b_practiced", comment: "Currently part of your practice? - 6.07b - Gynecology"
+    t.bigint "q606c", comment: "6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606c_practiced", comment: "Currently part of your practice? - 6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606d", comment: "6.07d - Sports Medicine"
+    t.bigint "q606d_practiced", comment: "Currently part of your practice? - 6.07d - Sports Medicine"
+    t.bigint "q606e", comment: "6.07e - Emergency Medicine"
+    t.bigint "q606e_practiced", comment: "Currently part of your practice? - 6.07e - Emergency Medicine"
+    t.bigint "q606f", comment: "6.07f - Dermatology"
+    t.bigint "q606f_practiced", comment: "Currently part of your practice? - 6.07f - Dermatology"
+    t.bigint "q606g", comment: "6.07g - Diagnostic Imaging"
+    t.bigint "q606g_practiced", comment: "Currently part of your practice? - 6.07g - Diagnostic Imaging"
+    t.bigint "q606h", comment: "6.07h - Geriatrics"
+    t.bigint "q606h_practiced", comment: "Currently part of your practice? - 6.07h - Geriatrics"
+    t.bigint "q606i", comment: "6.07i - End of Life Care"
+    t.bigint "q606i_practiced", comment: "Currently part of your practice? - 6.07i - End of Life Care"
+    t.string "q701", comment: "Do you have any additional comments to add?"
+    t.string "updated_at", comment: "Date updated"
+  end
+
+  create_table "source.y4_residency_programs", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.text "assocprogdir", comment: "1.02c Assoc. Program Director reason for leaving"
+    t.bigint "assocprogdir_leave", comment: "1.02c Did a Assoc. Program Director leave?"
+    t.bigint "facleave", comment: "1.02 Members of core P4 team leave or transition during 2009/10 academic year?"
+    t.bigint "nopgy4", comment: "1.03i Program does not have a PGY 4"
+    t.bigint "numqipgy1res", comment: "1.03a # PGY 1 Residents working on QI projects"
+    t.bigint "numqipgy2res", comment: "1.03b # PGY 2 Residents working on QI projects"
+    t.bigint "numqipgy3res", comment: "1.03c # PGY 3 Residents working on QI projects"
+    t.bigint "numqipgy4res", comment: "1.03d # PGY 4 Residents working on QI projects"
+    t.bigint "numrschpgy1res", comment: "1.03e # PGY 1 residents working on research projects"
+    t.bigint "numrschpgy2res", comment: "1.03f # PGY 2 residents working on research projects"
+    t.bigint "numrschpgy3res", comment: "1.03g # PGY 3 residents working on research projects"
+    t.bigint "numrschpgy4res", comment: "1.03h # PGY 4 residents working on research projects"
+    t.text "otherfacleave1", comment: "1.02e Other team member"
+    t.bigint "otherfacleave1_leave", comment: "1.02e Did another team member leave (#1)?"
+    t.text "otherfacleave1txt", comment: "1.02e.1 Other team member reason for leaving"
+    t.text "otherfacleave2", comment: "1.02f Other team member"
+    t.bigint "otherfacleave2_leave", comment: "1.02f Did another team member leave (#2)?"
+    t.text "otherfacleave2txt", comment: "1.02f.1 Other team member reason for leaving"
+    t.decimal "pctnonpeerreview", comment: "1.05 % Core faculty with at least one NON-peer-reviewed publication during 2009/10"
+    t.decimal "pctpeerreview", comment: "1.04 % Core faculty with at least one peer-reviewed publication during 2009/10"
+    t.decimal "pctpresenting", comment: "1.06 % Core faculty presenting at regional or national meetings during 2009/10"
+    t.text "progdir", comment: "1.02a Program director reason for leaving"
+    t.bigint "progdir_leave", comment: "1.02a Did a Program director leave?"
+    t.bigint "ratefacdevel", comment: "2.1a Rate faculty development"
+    t.bigint "ratefacmorale", comment: "2.1b Rate faculty morale"
+    t.bigint "rateresmorale", comment: "2.1c Rate resident morale"
+    t.bigint "ratesatisfaction", comment: "2.1d Rate residency program satisfaction"
+    t.text "rescoord", comment: "1.02d Residency Coordinator reason for leaving"
+    t.bigint "rescoord_leave", comment: "1.02d Did a Residency Coordinator leave?"
+    t.bigint "resleave", comment: "1.01 Residents leave program last year"
+    t.bigint "resleavepgy1", comment: "1.01a # residents leave from PGY 1"
+    t.bigint "resleavepgy2", comment: "1.01b # residents leave from PGY 2"
+    t.bigint "resleavepgy3", comment: "1.01c # residents leave from PGY 3"
+    t.bigint "resleavepgy4", comment: "1.01d # residents leave from PGY 4"
+    t.bigint "rps", comment: "1.07 Did program receive RPS training during 2009/10?"
+    t.text "siteeval", comment: "1.02b P4 Site Evaluator reason for leaving"
+    t.bigint "siteeval_leave", comment: "1.02b Did a P4 Site Evaluator leave?"
+  end
+
+  create_table "source.y4_resident_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last 4 digits of residents 2008 ABFM ID"
+    t.bigint "age", comment: "1.01 Resident age in years"
+    t.bigint "children", comment: "1.06 Have children"
+    t.string "contclin"
+    t.string "describebeforemed", comment: "If NO, Text for years before medical school"
+    t.bigint "ethnicity", comment: "1.04 Ethnicity: Of hispanic origin"
+    t.bigint "evaluatefaculty", comment: "2.06 Opportunity to evaluate faculty at least once per year"
+    t.bigint "evaluateprogram", comment: "2.07 Opportunity to evaluate program at least once per year"
+    t.bigint "facultysupervising", comment: "2.03 Faculty spend sufficient time supervising residents"
+    t.bigint "facultyteaching", comment: "2.03 Faculty spend sufficient time teaching residents"
+    t.bigint "feedback", comment: "2.05 Receive written feedback on performance for each rotation"
+    t.bigint "firstfamilyphysician", comment: "1.10 If NO, First family physician in family"
+    t.bigint "firstgenerationcollege", comment: "1.09 First generation college graduate"
+    t.bigint "firstgenphysician", comment: "1.10 First person in family to become a physician"
+    t.bigint "gender", comment: "1.02 Resident gender"
+    t.bigint "goals", comment: "2.01 Program provided access to written goals & objectives for each rotation"
+    t.bigint "importance1", comment: "New Model Importance: EMR"
+    t.bigint "importance10", comment: "New Model Importance: HIPPA-compliant asynchronous communication with patients"
+    t.bigint "importance11", comment: "New Model Importance: Asynchronous communication with other providers"
+    t.bigint "importance12", comment: "New Model Importance: Ongoing population-based QA using EMR"
+    t.bigint "importance13", comment: "New Model Importance: Chronic disease management registries"
+    t.bigint "importance14", comment: "New Model Importance: EMR-based preventive services"
+    t.bigint "importance15", comment: "New Model Importance: Doing any practice-based research"
+    t.bigint "importance16", comment: "New Model Importance: Doing practice-based research using EMR"
+    t.bigint "importance17", comment: "New Model Importance: Advanced or open-access scheduling"
+    t.bigint "importance18", comment: "New Model Importance: Expanded hours"
+    t.bigint "importance19", comment: "New Model Importance: Functional quality monitoring telephone system"
+    t.bigint "importance2", comment: "New Model Importance: Paperless practice"
+    t.bigint "importance20", comment: "New Model Importance: Full asynchronous patient-accessible scheduling"
+    t.bigint "importance21", comment: "New Model Importance: Credible, reliable patient satisfaction survey"
+    t.bigint "importance22", comment: "New Model Importance: Teams managing patient care"
+    t.bigint "importance23", comment: "New Model Importance: Integrated behavioral health"
+    t.bigint "importance24", comment: "New Model Importance: Integrated case management"
+    t.bigint "importance25", comment: "New Model Importance: Clinical pharmacy support"
+    t.bigint "importance26", comment: "New Model Importance: Group visits"
+    t.bigint "importance27", comment: "New Model Importance: Practice being patient-centered versus physician-centered"
+    t.bigint "importance3", comment: "New Model Importance: Secure remote access to clinical info"
+    t.bigint "importance4", comment: "New Model Importance: Integrated transcription"
+    t.bigint "importance5", comment: "New Model Importance: Electronic scheduling integrated with EMR"
+    t.bigint "importance6", comment: "New Model Importance: Electronic billing integrated with EMR"
+    t.bigint "importance7", comment: "New Model Importance: Electronic orders integrated with EMR"
+    t.bigint "importance8", comment: "New Model Importance: Electronic prescribing integrated with EMR"
+    t.bigint "importance9", comment: "New Model Importance: Hospital EMR w/full-computerized physician order entry"
+    t.bigint "influence", comment: "1.13 P4 Influence decision to rank program in match"
+    t.bigint "many", comment: "1.06 How many children"
+    t.bigint "marital", comment: "1.05 Current marital status"
+    t.bigint "masters", comment: "1.14 Working towards masters degree (MS, MPH, MBA)"
+    t.string "mastersdegree", comment: "If yes, type of masters degree"
+    t.string "mastersdegreeother", comment: "If yes, type of masters degree - other"
+    t.string "medgraddate", comment: "1.11 Date graduated from med school"
+    t.bigint "medicalafterbs", comment: "1.07 Enter med school immediately after completing bachelors"
+    t.string "otherprogramyear", comment: "Other program year text"
+    t.bigint "othertraineesinterfere", comment: "2.09 Other trainees interfere with or supplement education"
+    t.string "p4_program_id", comment: "P4-Assigined Residency ID"
+    t.integer "p4_resident_id"
+    t.string "p4residency_abfm_id", null: false, comment: "ABFM-Assigned Residency ID"
+    t.bigint "participationconferences", comment: "2.04 Faculty participation in conferences"
+    t.bigint "participationjournalclub", comment: "2.04 Faculty participation in journal club"
+    t.bigint "programyear", comment: "1.12 Current Program Year"
+    t.bigint "race_aa", comment: "1.03 Race: Black"
+    t.bigint "race_ap", comment: "1.03 Race: Asian or Pacific Islander"
+    t.bigint "race_c", comment: "1.03 Race: White"
+    t.bigint "race_in", comment: "1.03 Race: American Indian or Alaska Native"
+    t.bigint "race_o", comment: "1.03 Race: Other"
+    t.string "raceothertxt", comment: "Race: Other text"
+    t.bigint "satisfied", comment: "2.11 Overall satisfaction with residency training thus far"
+    t.bigint "speakfreely", comment: "2.08 Able to speak freely about issues and problems without fear"
+    t.bigint "strengthscompetence", comment: "2.10 Strengths/weaknesses of program - Competence of faculty"
+    t.bigint "strengthscurrchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in curriculum change"
+    t.bigint "strengthsfacteaching", comment: "2.10 Strengths or weaknesses of program - Teaching"
+    t.bigint "strengthsoverallcurr", comment: "2.10 Strengths or weaknesses of program - Overall curriculum"
+    t.bigint "strengthsp4implement", comment: "2.10 Strengths/weaknesses of program - Success implementing P4 innovations"
+    t.bigint "strengthsp4innovations", comment: "2.10 Strengths/weaknesses of program - Success conveying what P4 innovations are to you"
+    t.bigint "strengthspracchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in clinical practice change"
+    t.bigint "usamedschool", comment: "1.08 Attend med school in United States"
+    t.decimal "yearsbeforemedschool", comment: "If NO, Years between undergrad and medical school"
+  end
+
+  create_table "source.y5_continuity_clinics", primary_key: ["p4_program_id", "settingid"], force: :cascade do |t|
+    t.text "agesource", comment: "2.02.8 Source of patient age estimates"
+    t.decimal "asian", comment: "2.04.2 Percent Asian patients"
+    t.decimal "black", comment: "2.04.3 Percent Black/African American patients"
+    t.decimal "daysacuteapptfac3", comment: "1.05.f Number of days to acute 3rd available appointment for faculty"
+    t.bigint "daysacuteapptfac3_unknown", comment: "1.05.f Unknown number of days to acute 3rd available appointment for faculty"
+    t.decimal "daysacuteapptres3", comment: "1.05.l Number of days to acute 3rd available appointment for residents"
+    t.bigint "daysacuteapptres3_unknown", comment: "1.05.l Unknown number of days to acute 3rd available appointment for residents"
+    t.decimal "daysfuapptfac3", comment: "1.05.d Number of days to follow up 3rd available appointment for faculty"
+    t.bigint "daysfuapptfac3_unknown", comment: "1.05.d Unknown number of days to follow up 3rd available appointment for faculty"
+    t.decimal "daysfuapptres3", comment: "1.05.j Number of days to follow up 3rd available appointment for residents"
+    t.bigint "daysfuapptres3_unknown", comment: "1.05.j Unknown number of days to follow up 3rd available appointment for residents"
+    t.decimal "daysnewapptfac3", comment: "1.05.b Number of days to new patient 3rd available appointment for faculty"
+    t.bigint "daysnewapptfac3_unknown", comment: "1.05.b Unknown number of days to new patient 3rd available appointment for faculty"
+    t.decimal "daysnewapptres3", comment: "1.05.h Number of days to new patient 3rd available appointment for residents"
+    t.bigint "daysnewapptres3_unknown", comment: "1.05.h Unknown number of days to new patient 3rd available appointment for residents"
+    t.decimal "eighteen", comment: "2.02.3 Percent of patients between 18-24 years"
+    t.bigint "emr_active_meds", comment: ">80% of eligible patients (those taking any medications) with at least one entry for active medications - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_advance_dir", comment: ">50% of patients aged 65 and older have an indication of advanced directives status recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_aggregate_cqm", comment: "Capability to provide aggregate numerator and denominator clinical quality measures to CMS or states - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_allergies", comment: ">80% of eligible patients (those taking any medications) with at least one entry for medication allergies (or NKDA) - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_appt_reminders", comment: ">20% of patients under age 5 and aged 65 or older send appropriate reminders for preventive or follow-up care - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_demographic", comment: ">50% of your patients' demographic information (sex, race ethnicity, date of birth, preferred language) recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_ds_compliance", comment: "Capability to implement one decision support rule and ability to track compliance with this rule - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_dxlist", comment: ">80% of patients with at least one current/active diagnosis recorded on the problem list - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_electronic_copy", comment: ">50% of requesting patients receiving electronic copy of their health information (diagnostic test results, problem list, medication list, medication allergies, and procedure summaries) - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_electronic_exchange", comment: "Capability to electronically exchange key clinical information among providers and patient-authorized entities - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_electronic_rx", comment: ">40% permissible prescriptions transmitted electronically - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_formulary_check", comment: "Capability to implement drug formulary checks with access to at least one internal or external formulary - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_ht_wt", comment: ">50% of patients aged 2 and older having height, weight, blood pressure, BMI and growth charts for children recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_immunization", comment: "Submission of electronic immunization data to immunization registries or other information systems done at least once - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_interaction_check", comment: "Capability of checking drug-drug and drug-allergy interactions - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_labs_numerical", comment: ">40% of clinical laboratory test results recorded in \"+\", \"-\" or numerical formats - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_med_reconciliation", comment: ">50% of patients undergoing transitions in care receive medication reconciliation - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_privacy_security", comment: "Capability to protect privacy and security of patient data, review security risks and correct security deficiencies - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_pt_education", comment: ">10% of patients receiving patient-specific educational resources - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_pt_electronic", comment: ">10% of patients provided with electronic access to information (lab test results, problem list, medication lists, medication allergies) within 4 days of it being updated in the EHR - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_ptlist_by_condition", comment: "Capability of generating lists of patients by specific condition to use for quality improvement, reduction of disparities, research or outreach - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_reportable_labs", comment: "Submission of electronic data on reportable laboratory tests to public health agencies done at least once - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_rx_cpoe", comment: ">30% of eligible patients (those taking any medications) with at least one medication ordered using computer provider order entry - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_smoking", comment: ">50% of patients aged 13 or older having smoking status recorded - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_summary_of_care", comment: ">50% of patients referred or transitioned to another setting or physician have a summary of care record provided - EMR \"Meaningful Use\" Questions"
+    t.bigint "emr_syndromic_surveil", comment: "Submission of electronic syndromic surveillance data to public health agencies done at least once - EMR \"Meaningful Use\" Questions"
+    t.text "emrexplain", comment: "Why has your practice not implemented an EMR system?"
+    t.bigint "emrimplemented", comment: "Has your practice implemented an Electronic Medical Record (EMR) system?"
+    t.bigint "emrptsafety", comment: "Is your practice using its EMR system for patient safety?"
+    t.text "emrptsafetytxt", comment: "How is your practice using its EMR system for patient safety?"
+    t.decimal "emryears", comment: "For how many years has your practice had an Electronic Medical Record (EMR) system?"
+    t.text "ethnicitysource", comment: "2.03.3 Source of Ethnicity Data"
+    t.decimal "female", comment: "2.01.b Percent female patients"
+    t.decimal "ffs", comment: "2.05.2 Percent Private Health Insurance (Fee for service)"
+    t.decimal "fortyfive", comment: "2.02.5 Percent of patients between 45-64 years"
+    t.decimal "fteadmin", comment: "1.09.f Number of clinical staff FTEs for Administrative Staff"
+    t.decimal "fteallied", comment: "1.09.e Number of clinical staff FTEs for Allied Health Staff"
+    t.decimal "ftediet", comment: "1.09.i Number of clinical staff FTEs for Dieticians"
+    t.decimal "ftefmres", comment: "1.08.b Number of physician FTEs for Family Medicine Residents"
+    t.decimal "ftefp", comment: "1.08.a Number of physician FTEs for Family Physicians"
+    t.decimal "fteim", comment: "1.08.e Number of physician FTEs for Internists"
+    t.decimal "fteimres", comment: "1.08.f Number of physician FTEs for Internal Medicine Residents"
+    t.decimal "ftema", comment: "1.09.d Number of clinical staff FTEs for Medical Assistants"
+    t.decimal "ftenp", comment: "1.09.a Number of clinical staff FTEs for Nurse Practioners"
+    t.decimal "fteob", comment: "1.08.g Number of physician FTEs for OBGYN Physicians"
+    t.decimal "fteobres", comment: "1.08.h Number of physician FTEs for OBGYN Residents"
+    t.decimal "fteotherphys1", comment: "1.08.i Number of physician FTEs for Other Specialty 1"
+    t.bigint "fteotherphys1_present", comment: "1.08.i Entry Present? - Physician for Other Specialty 1"
+    t.text "fteotherphys1txt", comment: "1.08.j Number of physician FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherphys2", comment: "1.08.k Number of physician FTEs for Other Specialty 2"
+    t.bigint "fteotherphys2_present", comment: "1.08.k Entry Present? - Physician for Other Specialty 2"
+    t.text "fteotherphys2txt", comment: "1.08.l Number of physician FTEs for Other Specialty 2 Text"
+    t.decimal "fteotherspec1", comment: "1.09.l Number of clinical staff FTEs for Other Specialty 1"
+    t.bigint "fteotherspec1_present", comment: "1.09.l Entry Present? - FTE for Other Specialty 1"
+    t.text "fteotherspec1txt", comment: "1.09.m Number of clinical staff FTEs for Other Specialty 1 Text"
+    t.decimal "fteotherspec2", comment: "1.09.n Number of clinical staff FTEs for Other Specialty 2"
+    t.bigint "fteotherspec2_present", comment: "1.09.n Entry Present? - FTE for Other Specialty 2"
+    t.text "fteotherspec2txt", comment: "1.09.o Number of clinical staff FTEs for Other Specialty 2 Text"
+    t.decimal "ftepa", comment: "1.09.b Number of clinical staff FTEs for Physicians Assistants"
+    t.decimal "fteped", comment: "1.08.c Number of physician FTEs for Pediatricians"
+    t.decimal "ftepedres", comment: "1.08.d Number of physician FTEs for Pediatric Residents"
+    t.decimal "ftepharm", comment: "1.09.k Number of clinical staff FTEs for Pharmacy"
+    t.decimal "ftepsych", comment: "1.09.g Number of clinical staff FTEs for Psychologists"
+    t.decimal "ftepteduc", comment: "1.09.j Number of clinical staff FTEs for Patient Educators"
+    t.decimal "fternlpn", comment: "1.09.c Number of clinical staff FTEs for Nursing Staff RN/LPN"
+    t.decimal "ftesocial", comment: "1.09.h Number of clinical staff FTEs for Social Workers"
+    t.text "gendersource", comment: "2.01.c Source of patient gender estimates"
+    t.decimal "hawaiian", comment: "2.04.4 Percent Hawaiian patients"
+    t.decimal "hispanic", comment: "2.03.1 Percent Hispanic or Latino patients"
+    t.decimal "indian", comment: "2.04.1 Percent American Indian/Native American patients"
+    t.bigint "integrated", comment: "1.11 Currently part of an integrated health system (with specialists in hospital)"
+    t.decimal "lt3", comment: "2.02.1 Percent of patients under 3 years"
+    t.decimal "male", comment: "2.01.a Percent male patients"
+    t.decimal "medicaid", comment: "2.05.4 Percent Medicaid"
+    t.decimal "medicare", comment: "2.05.3 Percent Medicare"
+    t.decimal "nonhispanic", comment: "2.03.2 Percent Not Hispanic or Latino patients"
+    t.bigint "nopgy4", comment: "1.02 Program does not have a PGY 4"
+    t.bigint "numallied", comment: "1.10.e Number of Allied Health Staff taught in clinic over the past year"
+    t.bigint "numdiet", comment: "1.10.h Number of Dieticians taught in clinic over the past year"
+    t.bigint "numexamrooms", comment: "1.06 Total number of exam rooms"
+    t.bigint "numma", comment: "1.10.d Number of Medical Assistants taught in clinic over the past year"
+    t.bigint "numnp", comment: "1.10.a Number of Nurse Practioners taught in clinic over the past year"
+    t.bigint "numotherspec", comment: "1.10.j Number of Other Specialty taught in clinic over the past year"
+    t.bigint "numotherspec2", comment: "1.10.j Number of Other Specialty taught in clinic over the past year"
+    t.decimal "numotherspec2_present", comment: "1.10.j Entry Present? - Number of Other Specialty taught in clinic over past year"
+    t.text "numotherspec2txt", comment: "1.10.k Other Specialty taught in clinic over the past year Text"
+    t.decimal "numotherspec_present", comment: "1.10.j Entry Present? - Number of Other Specialty taught in clinic over past year"
+    t.text "numotherspectxt", comment: "1.10.k Other Specialty taught in clinic over the past year Text"
+    t.bigint "numpa", comment: "1.10.b Number of Physicians Assistants taught in clinic over the past year"
+    t.bigint "numpsych", comment: "1.10.f Number of Psychologists taught in clinic over the past year"
+    t.bigint "numpteduc", comment: "1.10.i Number of Patient Educators taught in clinic over the past year"
+    t.bigint "numptfac", comment: "1.07.a Total # of patients seen by faculty in 2009/10"
+    t.bigint "numptmid", comment: "1.07.b Total # of patients seen by Mid-level clinicians in 2009/10"
+    t.bigint "numptres", comment: "1.07.c Total # of patients seen by residents in 2009/10"
+    t.bigint "numrnlpn", comment: "1.10.c Number of Nursing Staff RN/LPN taught in clinic over the past year"
+    t.bigint "numsocial", comment: "1.10.g Number of Social Workers taught in clinic over the past year"
+    t.decimal "otherpay", comment: "2.05.5 Percent Other Payment Method"
+    t.bigint "otherpay_present", comment: "2.05.5 Entry Present? - Percent Other Payment Method"
+    t.text "otherpaytxt", comment: "2.05.5 Name of Other Payment Method"
+    t.decimal "otherrace", comment: "2.04.6 Percent Other Race patients"
+    t.bigint "otherrace_present", comment: "2.04.6 Entry Present? - Percent Other Race patients"
+    t.text "otherracetxt", comment: "2.04.6 Name of Other Race"
+    t.bigint "owner", comment: "1.12.a Practice affiliation/ownership"
+    t.text "ownerother", comment: "1.12.b Owner other Text"
+    t.string "p4_program_id", null: false, comment: "Unique P4-Assigned Residency Program ID"
+    t.text "paysource", comment: "2.05.7 Source of payment method estimates"
+    t.string "pcmhactiondate", comment: "Action Date - NCQA PPC-PCMH Recognition Application"
+    t.string "pcmhapplied", comment: "Applied for PCMH Certification?"
+    t.string "pcmhobtaindate", comment: "Certification Date - NCQA PPC-PCMH Recognition Application"
+    t.string "pcmhstatus", comment: "Status of Application for NCQA PPC-PCMH Recognition"
+    t.string "pcmhsubmitdate", comment: "Submission Date - NCQA PPC-PCMH Recognition Application"
+    t.bigint "pgy1", comment: "1.01.a Number of PGY 1 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy1acute", comment: "1.04.e Please estimate the percent of acute visits for PGY1 last year"
+    t.decimal "pgy1routine", comment: "1.04.a Please estimate the percent of routine visits for PGY1 last year"
+    t.bigint "pgy2", comment: "1.01.b Number of PGY 2 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy2acute", comment: "1.04.f Please estimate the percent of acute visits for PGY2 last year"
+    t.decimal "pgy2routine", comment: "1.04.b Please estimate the percent of routine visits for PGY2 last year"
+    t.bigint "pgy3", comment: "1.01.c Number of PGY 3 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy3acute", comment: "1.04.g Please estimate the percent of acute visits for PGY3 last year"
+    t.decimal "pgy3routine", comment: "1.04.c Please estimate the percent of routine visits for PGY3 last year"
+    t.bigint "pgy4", comment: "1.01.d Number of PGY 4 residents assigned to continuity patients in 2009/10"
+    t.decimal "pgy4acute", comment: "1.04.f Please estimate the percent of acute visits for PGY4 last year"
+    t.decimal "pgy4routine", comment: "1.04.d Please estimate the percent of routine visits for PGY4 last year"
+    t.decimal "prepaid", comment: "2.05.1 Percent Private Health Insurance (Prepaid)"
+    t.bigint "ptassigned", comment: "1.03 Are the patients in the clinic assigned to a personal physician?"
+    t.text "racesource", comment: "2.04.7 Source of patient race estimates"
+    t.string "settingid", null: false, comment: "Unique P4 - Assigned Continuity Clinic ID"
+    t.decimal "seventyfive", comment: "2.02.7 Percent of patients 75 years and older"
+    t.decimal "sixtyfive", comment: "2.02.6 Percent of patients between 65-74 years"
+    t.bigint "statbilling", comment: "Status of electronic billing"
+    t.bigint "statcasemgt", comment: "Status of integrated case management"
+    t.bigint "statdisregistry", comment: "Status of chronic disease management registries"
+    t.bigint "statemr", comment: "Status of EMR"
+    t.bigint "statexpandedhrs", comment: "Status of expanded hours"
+    t.bigint "statgroup", comment: "Status of group visits"
+    t.bigint "stathospemr", comment: "Status of hospital EMR"
+    t.bigint "statnetscheduling", comment: "Status of full asynchronous pateint-accessible scheduling"
+    t.bigint "statopenaccess", comment: "Status of open-access scheduling"
+    t.bigint "statorders", comment: "Status of electronic orders"
+    t.bigint "statpaperless", comment: "Status of paperless"
+    t.bigint "statparking", comment: "Status of adequate, free parking"
+    t.bigint "statpharm", comment: "Status of clinical pharmacy support"
+    t.bigint "statprevregistry", comment: "Status of EMB-based preventive services registries"
+    t.bigint "statprovcommunication", comment: "Status of asynchronous communication with other providers"
+    t.bigint "statpsych", comment: "Status of integrated behavioral health"
+    t.bigint "statptcentered", comment: "Overall status of practice as patient-centered vs. physician-centered"
+    t.bigint "statptcommunication", comment: "Status of asynchronous communication with patients"
+    t.bigint "statqa", comment: "Status of population-based QA using EMR"
+    t.bigint "statremote", comment: "Status of remote access"
+    t.bigint "statresearch", comment: "Status of practice-based research using EMR"
+    t.bigint "statscheduling", comment: "Status of electronic scheduling"
+    t.bigint "statspace", comment: "Status of sufficient and adequate physical space"
+    t.bigint "statsurvey", comment: "Status of patient satisfaction survey"
+    t.bigint "statteams", comment: "Status of using teams to manage patient care"
+    t.bigint "stattelephone", comment: "Status of functional quality monitoring telephone system"
+    t.bigint "stattranscription", comment: "Status of transcription expense"
+    t.bigint "stattransit", comment: "Status of convenient public transportation"
+    t.decimal "three", comment: "2.02.2 Percent of patients between 3-17 years"
+    t.decimal "twentyfive", comment: "2.02.4 Percent of patients between 25-44 years"
+    t.decimal "uninsured", comment: "2.05.6 Percent Uninsured"
+    t.decimal "white", comment: "2.04.5 Percent White patients"
+    t.bigint "xrays", comment: "2.06 Where majority of patients go for routine x-rays"
+
+    t.unique_constraint ["settingid"], name: "y5_continuity_clinics_settingid_key"
+  end
+
+  create_table "source.y5_graduate_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last four of ABFM ID"
+    t.string "created_at", comment: "Date created"
+    t.bigint "finished", comment: "Web survey finished?"
+    t.bigint "grad_year", comment: "Graduation Year"
+    t.bigint "graduateid", comment: "Survey Login"
+    t.bigint "max_slide", comment: "Max slide reached"
+    t.string "p4_program_id", comment: "P4 ID"
+    t.integer "p4_resident_id"
+    t.bigint "paper", comment: "Paper survey?"
+    t.bigint "q101a", comment: "1.01a - Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "1.01b - In what year were you initially certified by the ABFM?"
+    t.bigint "q101c", comment: "1.01c - Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "1.01d - In what year are you planning to be certified by the ABFM?"
+    t.bigint "q102a", comment: "1.02a - CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "1.02b - CAQ in geriatrics?"
+    t.bigint "q102c", comment: "1.02c - CAQ in sports medicine?"
+    t.bigint "q102d", comment: "1.02d - Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "1.02e - For what other specialty / CAQ do you have a board certification?"
+    t.bigint "q103a", comment: "1.04 - Are you currently enrolled in or did you complete a fellowship after residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics / Maternity Care - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_10", comment: "Other - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_2", comment: "Geriatrics - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_3", comment: "Sports Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_4", comment: "Research - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_5", comment: "Faculty Development - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_6", comment: "Pain Management - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_7", comment: "Hospitalist - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_8", comment: "Emergency Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_9", comment: "Rural Medicine - 1.04a - What type of fellowship(s)?"
+    t.string "q103b_other", comment: "Other Text - 1.04a - What type of fellowship(s)?"
+    t.string "q104", comment: "1.03 - In what state(s) are you currently practicing?"
+    t.decimal "q105", comment: "1.05 - What is your age?"
+    t.bigint "q106", comment: "1.06 - What is your gender?"
+    t.bigint "q107_1", comment: "White - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_2", comment: "Black - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_3", comment: "Hispanic - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_4", comment: "Asian / Pacific Islander - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_5", comment: "American Indian or Alaska Native - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_6", comment: "Middle Eastern - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_7", comment: "Other - 1.07 - What is your race? (Check all that apply)"
+    t.string "q107_other", comment: "1.07 - What is your race? (Check all that apply)"
+    t.bigint "q108", comment: "1.08 - What is your marital status? (Choose only one)"
+    t.bigint "q201", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.string "q201_other", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.bigint "q202_a", comment: "HPSA: Federally designated health professional shortage area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_b", comment: "MUA: Federally designated medically underserved area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_c", comment: "MHC: Federally designated migrant health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_d", comment: "CHC: Federally designated community health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_e", comment: "RHC: Federally designated rural health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_f", comment: "NHSC: National Health Service Corps - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_g", comment: "IHS: Indian Health Service site - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_h", comment: "Other state or federally qualified health center / clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_none", comment: "None of the above - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.string "q202_other", comment: "Other state or federally qualified health center / clinic - Text - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q203", comment: "2.03 - Which of the following best describes the community in which you practice?"
+    t.decimal "q204", comment: "2.04 - How long in months have you been at your current practice location?"
+    t.bigint "q205", comment: "2.05 - Number of office visits in an average full day. If you only work in half-day increments, multiply by 2 to get the full-day number."
+    t.decimal "q206", comment: "2.06 - Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office."
+    t.decimal "q207a", comment: "Private Insurance - 2.07 - Payor Mix"
+    t.decimal "q207b", comment: "Medicaid - 2.07 - Payor Mix"
+    t.decimal "q207c", comment: "Medicare - 2.07 - Payor Mix"
+    t.decimal "q207d", comment: "HMO / Managed Care - 2.07 - Payor Mix"
+    t.decimal "q207e", comment: "Self-Pay - 2.07 - Payor Mix"
+    t.decimal "q207f", comment: "Other - 2.07 - Payor Mix"
+    t.string "q207f_other", comment: "Other - Text Description - 2.07 - Payor Mix"
+    t.bigint "q207f_other_present", comment: "Other - Is Checked? - 2.07 - Payor Mix"
+    t.bigint "q208", comment: "2.08 - What is your pre-tax yearly income, excluding benefits?"
+    t.bigint "q301a", comment: "3.01a - Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "3.01b - If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "3.01c - I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "3.01d - Overall, my residency prepared me well for my current clinical practice"
+    t.bigint "q401", comment: "4.01 - EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "4.02 - Paperless Practice (all interfaces and scanning work - no paper charts)"
+    t.bigint "q403", comment: "4.03 - Full secured remote access"
+    t.bigint "q404", comment: "4.04 - Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "4.05 - Electronic scheduling system Integrated with EMR"
+    t.bigint "q406", comment: "4.06 - Electronic billing system Integrated with EMR"
+    t.bigint "q407", comment: "4.07 - Electronic orders (e.g., lab, x-ray) Integrated with EMR"
+    t.bigint "q408", comment: "4.08 - Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "4.09 - Secure HIPAA-compliant asynchronous communication (e.g. e-mail or text messaging) with patients"
+    t.bigint "q410", comment: "4.10 - Asynchronous communication with other providers"
+    t.bigint "q411", comment: "4.11 - Ongoing population-based Quality Assurance using an EMR / registry"
+    t.bigint "q412", comment: "4.12 - Chronic disease management registries"
+    t.bigint "q413", comment: "4.13 - EMR-based preventive services registries"
+    t.bigint "q414", comment: "4.14 - Practice-based research using an EMR"
+    t.bigint "q415", comment: "4.15 - Advanced or open-access scheduling"
+    t.bigint "q416", comment: "4.16 - Expanded hours (e.g., clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "4.17 - Functional quality monitoring telephone system (system to monitor call abandonment / time to answer)"
+    t.bigint "q418", comment: "4.18 - Full asynchronous patient-accessible scheduling (e.g., Internet-based)"
+    t.bigint "q419", comment: "4.19 - Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "4.20 - Sufficient and adequate physical space"
+    t.bigint "q421", comment: "4.21 - Adequate, free parking"
+    t.bigint "q422", comment: "4.22 - Convenient public transportation access"
+    t.bigint "q423", comment: "4.23 - Using teams to manage patient care"
+    t.bigint "q424", comment: "4.24 - Integrated behavioral health"
+    t.bigint "q425", comment: "4.25 - Integrated "
+    t.bigint "q426", comment: "4.26 - Clinical pharmacy support"
+    t.bigint "q427", comment: "4.27 - Group visits"
+    t.bigint "q428", comment: "4.28 - Your practice as patient-centered versus physician-centered"
+    t.bigint "q429", comment: "4.29 - Using the scale below, please indicate what role you have played in office practice redesign toward the Patient-Centered Medical Home."
+    t.bigint "q430", comment: "4.30 - Did you play a role during your residency training in Patient-Centered Medical Home design/implementation?"
+    t.bigint "q501a", comment: "5.02a - Adult inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501b", comment: "5.02b - Adult ICU / CCU care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501c", comment: "5.02c - Nursing home care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501d", comment: "5.02d - Newborn nursery care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501e", comment: "5.02e - Pediatric inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501f", comment: "5.02f - Surgical inpatient procedures - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501g", comment: "5.02g - Emergency Room care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q502", comment: "5.02h - Prenatal care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q503", comment: "5.01 - Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "5.01c - Do other members of your practice group deliver babies?"
+    t.bigint "q503a", comment: "5.01a - Vaginal Deliveries"
+    t.bigint "q503b", comment: "5.01b - C-section deliveries - as primary surgeon"
+    t.bigint "q504", comment: "5.03 - Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "5.03a - Please describe the difficulties you've experienced:"
+    t.bigint "q505_1", comment: "Medical students - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_2", comment: "Residents - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_3", comment: "Fellows - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_4", comment: "Other health care professionals - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_none", comment: "None of the above - 5.04 - What kind of teaching activities do you participate in?"
+    t.string "q505_other", comment: "Other health care professionals - Other Text - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q506a", comment: "7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice? - 7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506b", comment: "7.01b - Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice? - 7.01b - Cryosurgery"
+    t.bigint "q506c", comment: "7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice? - 7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506d", comment: "7.01d - Incision & drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice? - 7.01d - Incision & drainage of abscess"
+    t.bigint "q506e", comment: "7.01e - Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice? - 7.01e - Simple laceration repair"
+    t.bigint "q507a", comment: "7.02a - IUD insertion / removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice? - 7.02a - IUD insertion / removal"
+    t.bigint "q507b", comment: "7.02b - Endometrial biopsy"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice? - 7.02b - Endometrial biopsy"
+    t.bigint "q507c", comment: "7.02c - Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice? - 7.02c - Remove cervical polyp"
+    t.bigint "q507d", comment: "7.02d - Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice? - 7.02d - Bartholin's cyst management"
+    t.bigint "q507e", comment: "7.02e - Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice? - 7.02e - Colposcopy"
+    t.bigint "q507f", comment: "7.02f - Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice? - 7.02f - Cervical cryotherapy"
+    t.bigint "q507g", comment: "7.02g - LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice? - 7.02g - LEEP"
+    t.bigint "q507h", comment: "7.02h - Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice? - 7.02h - Paracervical block"
+    t.bigint "q507i", comment: "7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice? - 7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507j", comment: "7.02j - Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice? - 7.02j - Tubal ligation"
+    t.bigint "q508a", comment: "7.03a - OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice? - 7.03a - OB ultrasound"
+    t.bigint "q508b", comment: "7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice? - 7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508c", comment: "7.03c - Labor induction / augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice? - 7.03c - Labor induction / augmentation"
+    t.bigint "q508d", comment: "7.03d - Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice? - 7.03d - Vacuum assisted delivery"
+    t.bigint "q508e", comment: "7.03e - 3 rd & 4 th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice? - 7.03e - 3rd & 4th degree laceration repair"
+    t.bigint "q508f", comment: "7.03f - C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice? - 7.03f - C-section assist"
+    t.bigint "q508g", comment: "7.03g - C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice? - 7.03g - C-section primary surgeon"
+    t.bigint "q509a", comment: "7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice? - 7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509b", comment: "7.04b - Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice? - 7.04b - Colonoscopy"
+    t.bigint "q509c", comment: "7.04c - Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice? - 7.04c - Upper endoscopy"
+    t.bigint "q510a", comment: "7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice? - 7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510b", comment: "7.05b - Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice? - 7.05b - Lumbar puncture"
+    t.bigint "q510c", comment: "7.05c - Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice? - 7.05c - Thoracentesis"
+    t.bigint "q510d", comment: "7.05d - Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice? - 7.05d - Paracentesis"
+    t.bigint "q510e", comment: "7.05e - Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice? - 7.05e - Central line"
+    t.bigint "q510f", comment: "7.05f - Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice? - 7.05f - Endotracheal intubation"
+    t.bigint "q510g", comment: "7.05g - Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice? - 7.05g - Ventilator management"
+    t.bigint "q510h", comment: "7.05h - Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice? - 7.05h - Chest tube placement"
+    t.bigint "q511a", comment: "7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice? - 7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511b", comment: "7.06b - Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice? - 7.06b - Splinting & casting"
+    t.bigint "q511c", comment: "7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice? - 7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q512a", comment: "7.07a - Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice? - 7.07a - Circumcision"
+    t.bigint "q512b", comment: "7.07b - Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice? - 7.07b - Vasectomy"
+    t.bigint "q513a", comment: "7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice? - 7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513b", comment: "7.08b - Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice? - 7.08b - Peripheral nerve block"
+    t.bigint "q513c", comment: "7.08c - Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice? - 7.08c - Conscious sedation"
+    t.bigint "q513d", comment: "7.08d - Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice? - 7.08d - Exercise Treadmill Testing"
+    t.bigint "q513e", comment: "7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice? - 7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q514a", comment: "6.06a - Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice? - 6.06a - Assess community health needs"
+    t.bigint "q514b", comment: "6.06b - Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice? - 6.06b - Use community resources"
+    t.bigint "q514c", comment: "6.06c - Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice? - 6.06c - Develop community intervention"
+    t.bigint "q514d", comment: "6.06d - Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice? - 6.06d - Use of information technology"
+    t.bigint "q514e", comment: "6.06e - Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice? - 6.06e - Quality improvement"
+    t.bigint "q514f", comment: "6.06f - Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice? - 6.06f - Team-based care"
+    t.bigint "q514g", comment: "6.06g - Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice? - 6.06g - Integration of evidence-based medicine"
+    t.bigint "q514h", comment: "6.06h - Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice? - 6.06h - Health behavior change counseling"
+    t.bigint "q514i", comment: "6.06i - Pain Management"
+    t.bigint "q514i_practiced", comment: "Currently part of your practice? - 6.06i - Pain Management"
+    t.bigint "q514j", comment: "6.06j - Alcohol / Substance Abuse"
+    t.bigint "q514j_practiced", comment: "Currently part of your practice? - 6.06j - Alcohol / Substance Abuse"
+    t.bigint "q601a", comment: "6.01a - Prenatal care"
+    t.bigint "q601a_practiced", comment: "Currently part of your practice? - 6.01a - Prenatal care"
+    t.bigint "q601b", comment: "6.01b - Labor Management"
+    t.bigint "q601b_practiced", comment: "Currently part of your practice? - 6.01b - Labor Management"
+    t.bigint "q601c", comment: "6.01c - Vaginal Deliveries"
+    t.bigint "q601c_practiced", comment: "Currently part of your practice? - 6.01c - Vaginal Deliveries"
+    t.bigint "q601d", comment: "6.01d - Post-partum care"
+    t.bigint "q601d_practiced", comment: "Currently part of your practice? - 6.01d - Post-partum care"
+    t.bigint "q601e", comment: "6.01e - Cesarean Section Assist"
+    t.bigint "q601e_practiced", comment: "Currently part of your practice? - 6.01e - Cesarean Section Assist"
+    t.bigint "q602a", comment: "6.02a - Ambulatory care"
+    t.bigint "q602a_practiced", comment: "Currently part of your practice? - 6.02a - Ambulatory care"
+    t.bigint "q602b", comment: "6.02b - Newborn resuscitation"
+    t.bigint "q602b_practiced", comment: "Currently part of your practice? - 6.02b - Newborn resuscitation"
+    t.bigint "q602c", comment: "6.02c - Newborn care in hospital"
+    t.bigint "q602c_practiced", comment: "Currently part of your practice? - 6.02c - Newborn care in hospital"
+    t.bigint "q602d", comment: "6.02d - Other hospital care"
+    t.bigint "q602d_practiced", comment: "Currently part of your practice? - 6.02d - Other hospital care"
+    t.bigint "q602e", comment: "6.02e - Teen care"
+    t.bigint "q602e_practiced", comment: "Currently part of your practice? - 6.02e - Teen care"
+    t.bigint "q603a", comment: "6.03a - Ambulatory care"
+    t.bigint "q603a_practiced", comment: "Currently part of your practice? - 6.03a - Ambulatory care"
+    t.bigint "q603b", comment: "6.03b - Inpatient care"
+    t.bigint "q603b_practiced", comment: "Currently part of your practice? - 6.03b - Inpatient care"
+    t.bigint "q603c", comment: "6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603c_practiced", comment: "Currently part of your practice? - 6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603d", comment: "6.03d - Nursing home care"
+    t.bigint "q603d_practiced", comment: "Currently part of your practice? - 6.03d - Nursing home care"
+    t.bigint "q603e", comment: "6.03e - Surgical assist"
+    t.bigint "q603e_practiced", comment: "Currently part of your practice? - 6.03e - Surgical assist"
+    t.bigint "q603f", comment: "6.03f - EKG interpretation"
+    t.bigint "q603f_practiced", comment: "Currently part of your practice? - 6.03f - EKG interpretation"
+    t.bigint "q604a", comment: "6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604a_practiced", comment: "Currently part of your practice? - 6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604b", comment: "6.04b - Ophthalmology"
+    t.bigint "q604b_practiced", comment: "Currently part of your practice? - 6.04b - Ophthalmology"
+    t.bigint "q604c", comment: "6.04c - Otolaryngology"
+    t.bigint "q604c_practiced", comment: "Currently part of your practice? - 6.04c - Otolaryngology"
+    t.bigint "q604d", comment: "6.04d - Urology"
+    t.bigint "q604d_practiced", comment: "Currently part of your practice? - 6.04d - Urology"
+    t.bigint "q605a", comment: "6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605a_practiced", comment: "Currently part of your practice? - 6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605b", comment: "6.05b - Counseling Individual / Family"
+    t.bigint "q605b_practiced", comment: "Currently part of your practice? - 6.05b - Counseling Individual / Family"
+    t.bigint "q606a", comment: "6.07a - Women's Health"
+    t.bigint "q606a_practiced", comment: "Currently part of your practice? - 6.07a - Women's Health"
+    t.bigint "q606b", comment: "6.07b - Gynecology"
+    t.bigint "q606b_practiced", comment: "Currently part of your practice? - 6.07b - Gynecology"
+    t.bigint "q606c", comment: "6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606c_practiced", comment: "Currently part of your practice? - 6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606d", comment: "6.07d - Sports Medicine"
+    t.bigint "q606d_practiced", comment: "Currently part of your practice? - 6.07d - Sports Medicine"
+    t.bigint "q606e", comment: "6.07e - Emergency Medicine"
+    t.bigint "q606e_practiced", comment: "Currently part of your practice? - 6.07e - Emergency Medicine"
+    t.bigint "q606f", comment: "6.07f - Dermatology"
+    t.bigint "q606f_practiced", comment: "Currently part of your practice? - 6.07f - Dermatology"
+    t.bigint "q606g", comment: "6.07g - Diagnostic Imaging"
+    t.bigint "q606g_practiced", comment: "Currently part of your practice? - 6.07g - Diagnostic Imaging"
+    t.bigint "q606h", comment: "6.07h - Geriatrics"
+    t.bigint "q606h_practiced", comment: "Currently part of your practice? - 6.07h - Geriatrics"
+    t.bigint "q606i", comment: "6.07i - End of Life Care"
+    t.bigint "q606i_practiced", comment: "Currently part of your practice? - 6.07i - End of Life Care"
+    t.string "q701", comment: "Do you have any additional comments to add?"
+    t.string "updated_at", comment: "Date updated"
+  end
+
+  create_table "source.y5_residency_programs", primary_key: "p4_program_id", id: { type: :string, comment: "P4-Assigned Residency ID" }, force: :cascade do |t|
+    t.text "assocprogdir", comment: "1.02c Assoc. Program Director reason for leaving"
+    t.bigint "assocprogdir_leave", comment: "1.02c Did a Assoc. Program Director leave?"
+    t.bigint "facleave", comment: "1.02 Members of core P4 team leave or transition during 2009/10 academic year?"
+    t.bigint "nopgy4", comment: "1.03i Program does not have a PGY 4"
+    t.bigint "numqipgy1res", comment: "1.03a # PGY 1 Residents working on QI projects"
+    t.bigint "numqipgy2res", comment: "1.03b # PGY 2 Residents working on QI projects"
+    t.bigint "numqipgy3res", comment: "1.03c # PGY 3 Residents working on QI projects"
+    t.bigint "numqipgy4res", comment: "1.03d # PGY 4 Residents working on QI projects"
+    t.bigint "numrschpgy1res", comment: "1.03e # PGY 1 residents working on research projects"
+    t.bigint "numrschpgy2res", comment: "1.03f # PGY 2 residents working on research projects"
+    t.bigint "numrschpgy3res", comment: "1.03g # PGY 3 residents working on research projects"
+    t.bigint "numrschpgy4res", comment: "1.03h # PGY 4 residents working on research projects"
+    t.text "otherfacleave1", comment: "1.02e Other team member"
+    t.bigint "otherfacleave1_leave", comment: "1.02e Did another team member leave (#1)?"
+    t.text "otherfacleave1txt", comment: "1.02e.1 Other team member reason for leaving"
+    t.text "otherfacleave2", comment: "1.02f Other team member"
+    t.bigint "otherfacleave2_leave", comment: "1.02f Did another team member leave (#2)?"
+    t.text "otherfacleave2txt", comment: "1.02f.1 Other team member reason for leaving"
+    t.decimal "pctnonpeerreview", comment: "1.05 % Core faculty with at least one NON-peer-reviewed publication during 2009/10"
+    t.decimal "pctpeerreview", comment: "1.04 % Core faculty with at least one peer-reviewed publication during 2009/10"
+    t.decimal "pctpresenting", comment: "1.06 % Core faculty presenting at regional or national meetings during 2009/10"
+    t.text "progdir", comment: "1.02a Program director reason for leaving"
+    t.bigint "progdir_leave", comment: "1.02a Did a Program director leave?"
+    t.bigint "ratefacdevel", comment: "2.1a Rate faculty development"
+    t.bigint "ratefacmorale", comment: "2.1b Rate faculty morale"
+    t.bigint "rateresmorale", comment: "2.1c Rate resident morale"
+    t.bigint "ratesatisfaction", comment: "2.1d Rate residency program satisfaction"
+    t.text "rescoord", comment: "1.02d Residency Coordinator reason for leaving"
+    t.bigint "rescoord_leave", comment: "1.02d Did a Residency Coordinator leave?"
+    t.bigint "resleave", comment: "1.01 Residents leave program last year"
+    t.bigint "resleavepgy1", comment: "1.01a # residents leave from PGY 1"
+    t.bigint "resleavepgy2", comment: "1.01b # residents leave from PGY 2"
+    t.bigint "resleavepgy3", comment: "1.01c # residents leave from PGY 3"
+    t.bigint "resleavepgy4", comment: "1.01d # residents leave from PGY 4"
+    t.bigint "rps", comment: "1.07 Did program receive RPS training during 2009/10?"
+    t.text "siteeval", comment: "1.02b P4 Site Evaluator reason for leaving"
+    t.bigint "siteeval_leave", comment: "1.02b Did a P4 Site Evaluator leave?"
+  end
+
+  create_table "source.y5_resident_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last 4 digits of residents 2008 ABFM ID"
+    t.bigint "age", comment: "1.01 Resident age in years"
+    t.bigint "children", comment: "1.06 Have children"
+    t.string "contclin"
+    t.string "describebeforemed", comment: "If NO, Text for years before medical school"
+    t.bigint "ethnicity", comment: "1.04 Ethnicity: Of hispanic origin"
+    t.bigint "evaluatefaculty", comment: "2.06 Opportunity to evaluate faculty at least once per year"
+    t.bigint "evaluateprogram", comment: "2.07 Opportunity to evaluate program at least once per year"
+    t.bigint "facultysupervising", comment: "2.03 Faculty spend sufficient time supervising residents"
+    t.bigint "facultyteaching", comment: "2.03 Faculty spend sufficient time teaching residents"
+    t.bigint "feedback", comment: "2.05 Receive written feedback on performance for each rotation"
+    t.bigint "firstfamilyphysician", comment: "1.10 If NO, First family physician in family"
+    t.bigint "firstgenerationcollege", comment: "1.09 First generation college graduate"
+    t.bigint "firstgenphysician", comment: "1.10 First person in family to become a physician"
+    t.bigint "gender", comment: "1.02 Resident gender"
+    t.bigint "goals", comment: "2.01 Program provided access to written goals & objectives for each rotation"
+    t.bigint "importance1", comment: "New Model Importance: EMR"
+    t.bigint "importance10", comment: "New Model Importance: HIPPA-compliant asynchronous communication with patients"
+    t.bigint "importance11", comment: "New Model Importance: Asynchronous communication with other providers"
+    t.bigint "importance12", comment: "New Model Importance: Ongoing population-based QA using EMR"
+    t.bigint "importance13", comment: "New Model Importance: Chronic disease management registries"
+    t.bigint "importance14", comment: "New Model Importance: EMR-based preventive services"
+    t.bigint "importance15", comment: "New Model Importance: Doing any practice-based research"
+    t.bigint "importance16", comment: "New Model Importance: Doing practice-based research using EMR"
+    t.bigint "importance17", comment: "New Model Importance: Advanced or open-access scheduling"
+    t.bigint "importance18", comment: "New Model Importance: Expanded hours"
+    t.bigint "importance19", comment: "New Model Importance: Functional quality monitoring telephone system"
+    t.bigint "importance2", comment: "New Model Importance: Paperless practice"
+    t.bigint "importance20", comment: "New Model Importance: Full asynchronous patient-accessible scheduling"
+    t.bigint "importance21", comment: "New Model Importance: Credible, reliable patient satisfaction survey"
+    t.bigint "importance22", comment: "New Model Importance: Teams managing patient care"
+    t.bigint "importance23", comment: "New Model Importance: Integrated behavioral health"
+    t.bigint "importance24", comment: "New Model Importance: Integrated case management"
+    t.bigint "importance25", comment: "New Model Importance: Clinical pharmacy support"
+    t.bigint "importance26", comment: "New Model Importance: Group visits"
+    t.bigint "importance27", comment: "New Model Importance: Practice being patient-centered versus physician-centered"
+    t.bigint "importance3", comment: "New Model Importance: Secure remote access to clinical info"
+    t.bigint "importance4", comment: "New Model Importance: Integrated transcription"
+    t.bigint "importance5", comment: "New Model Importance: Electronic scheduling integrated with EMR"
+    t.bigint "importance6", comment: "New Model Importance: Electronic billing integrated with EMR"
+    t.bigint "importance7", comment: "New Model Importance: Electronic orders integrated with EMR"
+    t.bigint "importance8", comment: "New Model Importance: Electronic prescribing integrated with EMR"
+    t.bigint "importance9", comment: "New Model Importance: Hospital EMR w/full-computerized physician order entry"
+    t.bigint "influence", comment: "1.13 P4 Influence decision to rank program in match"
+    t.bigint "many", comment: "1.06 How many children"
+    t.bigint "marital", comment: "1.05 Current marital status"
+    t.bigint "masters", comment: "1.14 Working towards masters degree (MS, MPH, MBA)"
+    t.string "mastersdegree", comment: "If yes, type of masters degree"
+    t.string "mastersdegreeother", comment: "If yes, type of masters degree - other"
+    t.string "medgraddate", comment: "1.11 Date graduated from med school"
+    t.bigint "medicalafterbs", comment: "1.07 Enter med school immediately after completing bachelors"
+    t.string "otherprogramyear", comment: "Other program year text"
+    t.bigint "othertraineesinterfere", comment: "2.09 Other trainees interfere with or supplement education"
+    t.string "p4_program_id", comment: "P4-Assigined Residency ID"
+    t.integer "p4_resident_id"
+    t.string "p4residency_abfm_id", null: false, comment: "ABFM-Assigned Residency ID"
+    t.bigint "participationconferences", comment: "2.04 Faculty participation in conferences"
+    t.bigint "participationjournalclub", comment: "2.04 Faculty participation in journal club"
+    t.bigint "programyear", comment: "1.12 Current Program Year"
+    t.bigint "race_aa", comment: "1.03 Race: Black"
+    t.bigint "race_ap", comment: "1.03 Race: Asian or Pacific Islander"
+    t.bigint "race_c", comment: "1.03 Race: White"
+    t.bigint "race_in", comment: "1.03 Race: American Indian or Alaska Native"
+    t.bigint "race_o", comment: "1.03 Race: Other"
+    t.string "raceothertxt", comment: "Race: Other text"
+    t.bigint "satisfied", comment: "2.11 Overall satisfaction with residency training thus far"
+    t.bigint "speakfreely", comment: "2.08 Able to speak freely about issues and problems without fear"
+    t.bigint "strengthscompetence", comment: "2.10 Strengths/weaknesses of program - Competence of faculty"
+    t.bigint "strengthscurrchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in curriculum change"
+    t.bigint "strengthsfacteaching", comment: "2.10 Strengths or weaknesses of program - Teaching"
+    t.bigint "strengthsoverallcurr", comment: "2.10 Strengths or weaknesses of program - Overall curriculum"
+    t.bigint "strengthsp4implement", comment: "2.10 Strengths/weaknesses of program - Success implementing P4 innovations"
+    t.bigint "strengthsp4innovations", comment: "2.10 Strengths/weaknesses of program - Success conveying what P4 innovations are to you"
+    t.bigint "strengthspracchange", comment: "2.10 Strengths/weaknesses of program - Resident involvement in clinical practice change"
+    t.bigint "usamedschool", comment: "1.08 Attend med school in United States"
+    t.decimal "yearsbeforemedschool", comment: "If NO, Years between undergrad and medical school"
+  end
+
+  create_table "source.y6_graduate_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last four of ABFM ID"
+    t.string "created_at", comment: "Date created"
+    t.bigint "finished", comment: "Web survey finished?"
+    t.bigint "grad_year", comment: "Graduation Year"
+    t.bigint "graduateid", comment: "Survey Login"
+    t.bigint "max_slide", comment: "Max slide reached"
+    t.string "p4_program_id", comment: "P4 ID"
+    t.integer "p4_resident_id"
+    t.bigint "paper", comment: "Paper survey?"
+    t.bigint "q101a", comment: "1.01a - Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "1.01b - In what year were you initially certified by the ABFM?"
+    t.bigint "q101c", comment: "1.01c - Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "1.01d - In what year are you planning to be certified by the ABFM?"
+    t.bigint "q102a", comment: "1.02a - CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "1.02b - CAQ in geriatrics?"
+    t.bigint "q102c", comment: "1.02c - CAQ in sports medicine?"
+    t.bigint "q102d", comment: "1.02d - Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "1.02e - For what other specialty / CAQ do you have a board certification?"
+    t.bigint "q103a", comment: "1.04 - Are you currently enrolled in or did you complete a fellowship after residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics / Maternity Care - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_10", comment: "Other - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_2", comment: "Geriatrics - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_3", comment: "Sports Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_4", comment: "Research - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_5", comment: "Faculty Development - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_6", comment: "Pain Management - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_7", comment: "Hospitalist - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_8", comment: "Emergency Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_9", comment: "Rural Medicine - 1.04a - What type of fellowship(s)?"
+    t.string "q103b_other", comment: "Other Text - 1.04a - What type of fellowship(s)?"
+    t.string "q104", comment: "1.03 - In what state(s) are you currently practicing?"
+    t.decimal "q105", comment: "1.05 - What is your age?"
+    t.bigint "q106", comment: "1.06 - What is your gender?"
+    t.bigint "q107_1", comment: "White - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_2", comment: "Black - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_3", comment: "Hispanic - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_4", comment: "Asian / Pacific Islander - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_5", comment: "American Indian or Alaska Native - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_6", comment: "Middle Eastern - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_7", comment: "Other - 1.07 - What is your race? (Check all that apply)"
+    t.string "q107_other", comment: "1.07 - What is your race? (Check all that apply)"
+    t.bigint "q108", comment: "1.08 - What is your marital status? (Choose only one)"
+    t.bigint "q201", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.string "q201_other", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.bigint "q202_a", comment: "HPSA: Federally designated health professional shortage area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_b", comment: "MUA: Federally designated medically underserved area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_c", comment: "MHC: Federally designated migrant health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_d", comment: "CHC: Federally designated community health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_e", comment: "RHC: Federally designated rural health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_f", comment: "NHSC: National Health Service Corps - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_g", comment: "IHS: Indian Health Service site - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_h", comment: "Other state or federally qualified health center / clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_none", comment: "None of the above - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.string "q202_other", comment: "Other state or federally qualified health center / clinic - Text - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q203", comment: "2.03 - Which of the following best describes the community in which you practice?"
+    t.decimal "q204", comment: "2.04 - How long in months have you been at your current practice location?"
+    t.bigint "q205", comment: "2.05 - Number of office visits in an average full day. If you only work in half-day increments, multiply by 2 to get the full-day number."
+    t.decimal "q206", comment: "2.06 - Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office."
+    t.decimal "q207a", comment: "Private Insurance - 2.07 - Payor Mix"
+    t.decimal "q207b", comment: "Medicaid - 2.07 - Payor Mix"
+    t.decimal "q207c", comment: "Medicare - 2.07 - Payor Mix"
+    t.decimal "q207d", comment: "HMO / Managed Care - 2.07 - Payor Mix"
+    t.decimal "q207e", comment: "Self-Pay - 2.07 - Payor Mix"
+    t.decimal "q207f", comment: "Other - 2.07 - Payor Mix"
+    t.string "q207f_other", comment: "Other - Text Description - 2.07 - Payor Mix"
+    t.bigint "q207f_other_present", comment: "Other - Is Checked? - 2.07 - Payor Mix"
+    t.bigint "q208", comment: "2.08 - What is your pre-tax yearly income, excluding benefits?"
+    t.bigint "q301a", comment: "3.01a - Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "3.01b - If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "3.01c - I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "3.01d - Overall, my residency prepared me well for my current clinical practice"
+    t.bigint "q401", comment: "4.01 - EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "4.02 - Paperless Practice (all interfaces and scanning work - no paper charts)"
+    t.bigint "q403", comment: "4.03 - Full secured remote access"
+    t.bigint "q404", comment: "4.04 - Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "4.05 - Electronic scheduling system Integrated with EMR"
+    t.bigint "q406", comment: "4.06 - Electronic billing system Integrated with EMR"
+    t.bigint "q407", comment: "4.07 - Electronic orders (e.g., lab, x-ray) Integrated with EMR"
+    t.bigint "q408", comment: "4.08 - Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "4.09 - Secure HIPAA-compliant asynchronous communication (e.g. e-mail or text messaging) with patients"
+    t.bigint "q410", comment: "4.10 - Asynchronous communication with other providers"
+    t.bigint "q411", comment: "4.11 - Ongoing population-based Quality Assurance using an EMR / registry"
+    t.bigint "q412", comment: "4.12 - Chronic disease management registries"
+    t.bigint "q413", comment: "4.13 - EMR-based preventive services registries"
+    t.bigint "q414", comment: "4.14 - Practice-based research using an EMR"
+    t.bigint "q415", comment: "4.15 - Advanced or open-access scheduling"
+    t.bigint "q416", comment: "4.16 - Expanded hours (e.g., clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "4.17 - Functional quality monitoring telephone system (system to monitor call abandonment / time to answer)"
+    t.bigint "q418", comment: "4.18 - Full asynchronous patient-accessible scheduling (e.g., Internet-based)"
+    t.bigint "q419", comment: "4.19 - Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "4.20 - Sufficient and adequate physical space"
+    t.bigint "q421", comment: "4.21 - Adequate, free parking"
+    t.bigint "q422", comment: "4.22 - Convenient public transportation access"
+    t.bigint "q423", comment: "4.23 - Using teams to manage patient care"
+    t.bigint "q424", comment: "4.24 - Integrated behavioral health"
+    t.bigint "q425", comment: "4.25 - Integrated "
+    t.bigint "q426", comment: "4.26 - Clinical pharmacy support"
+    t.bigint "q427", comment: "4.27 - Group visits"
+    t.bigint "q428", comment: "4.28 - Your practice as patient-centered versus physician-centered"
+    t.bigint "q429", comment: "4.29 - Using the scale below, please indicate what role you have played in office practice redesign toward the Patient-Centered Medical Home."
+    t.bigint "q430", comment: "4.30 - Did you play a role during your residency training in Patient-Centered Medical Home design/implementation?"
+    t.bigint "q501a", comment: "5.02a - Adult inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501b", comment: "5.02b - Adult ICU / CCU care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501c", comment: "5.02c - Nursing home care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501d", comment: "5.02d - Newborn nursery care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501e", comment: "5.02e - Pediatric inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501f", comment: "5.02f - Surgical inpatient procedures - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501g", comment: "5.02g - Emergency Room care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q502", comment: "5.02h - Prenatal care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q503", comment: "5.01 - Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "5.01c - Do other members of your practice group deliver babies?"
+    t.bigint "q503a", comment: "5.01a - Vaginal Deliveries"
+    t.bigint "q503b", comment: "5.01b - C-section deliveries - as primary surgeon"
+    t.bigint "q504", comment: "5.03 - Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "5.03a - Please describe the difficulties you've experienced:"
+    t.bigint "q505_1", comment: "Medical students - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_2", comment: "Residents - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_3", comment: "Fellows - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_4", comment: "Other health care professionals - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_none", comment: "None of the above - 5.04 - What kind of teaching activities do you participate in?"
+    t.string "q505_other", comment: "Other health care professionals - Other Text - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q506a", comment: "7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice? - 7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506b", comment: "7.01b - Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice? - 7.01b - Cryosurgery"
+    t.bigint "q506c", comment: "7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice? - 7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506d", comment: "7.01d - Incision & drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice? - 7.01d - Incision & drainage of abscess"
+    t.bigint "q506e", comment: "7.01e - Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice? - 7.01e - Simple laceration repair"
+    t.bigint "q507a", comment: "7.02a - IUD insertion / removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice? - 7.02a - IUD insertion / removal"
+    t.bigint "q507b", comment: "7.02b - Endometrial biopsy"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice? - 7.02b - Endometrial biopsy"
+    t.bigint "q507c", comment: "7.02c - Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice? - 7.02c - Remove cervical polyp"
+    t.bigint "q507d", comment: "7.02d - Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice? - 7.02d - Bartholin's cyst management"
+    t.bigint "q507e", comment: "7.02e - Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice? - 7.02e - Colposcopy"
+    t.bigint "q507f", comment: "7.02f - Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice? - 7.02f - Cervical cryotherapy"
+    t.bigint "q507g", comment: "7.02g - LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice? - 7.02g - LEEP"
+    t.bigint "q507h", comment: "7.02h - Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice? - 7.02h - Paracervical block"
+    t.bigint "q507i", comment: "7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice? - 7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507j", comment: "7.02j - Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice? - 7.02j - Tubal ligation"
+    t.bigint "q508a", comment: "7.03a - OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice? - 7.03a - OB ultrasound"
+    t.bigint "q508b", comment: "7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice? - 7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508c", comment: "7.03c - Labor induction / augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice? - 7.03c - Labor induction / augmentation"
+    t.bigint "q508d", comment: "7.03d - Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice? - 7.03d - Vacuum assisted delivery"
+    t.bigint "q508e", comment: "7.03e - 3 rd & 4 th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice? - 7.03e - 3rd & 4th degree laceration repair"
+    t.bigint "q508f", comment: "7.03f - C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice? - 7.03f - C-section assist"
+    t.bigint "q508g", comment: "7.03g - C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice? - 7.03g - C-section primary surgeon"
+    t.bigint "q509a", comment: "7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice? - 7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509b", comment: "7.04b - Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice? - 7.04b - Colonoscopy"
+    t.bigint "q509c", comment: "7.04c - Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice? - 7.04c - Upper endoscopy"
+    t.bigint "q510a", comment: "7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice? - 7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510b", comment: "7.05b - Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice? - 7.05b - Lumbar puncture"
+    t.bigint "q510c", comment: "7.05c - Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice? - 7.05c - Thoracentesis"
+    t.bigint "q510d", comment: "7.05d - Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice? - 7.05d - Paracentesis"
+    t.bigint "q510e", comment: "7.05e - Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice? - 7.05e - Central line"
+    t.bigint "q510f", comment: "7.05f - Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice? - 7.05f - Endotracheal intubation"
+    t.bigint "q510g", comment: "7.05g - Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice? - 7.05g - Ventilator management"
+    t.bigint "q510h", comment: "7.05h - Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice? - 7.05h - Chest tube placement"
+    t.bigint "q511a", comment: "7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice? - 7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511b", comment: "7.06b - Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice? - 7.06b - Splinting & casting"
+    t.bigint "q511c", comment: "7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice? - 7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q512a", comment: "7.07a - Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice? - 7.07a - Circumcision"
+    t.bigint "q512b", comment: "7.07b - Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice? - 7.07b - Vasectomy"
+    t.bigint "q513a", comment: "7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice? - 7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513b", comment: "7.08b - Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice? - 7.08b - Peripheral nerve block"
+    t.bigint "q513c", comment: "7.08c - Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice? - 7.08c - Conscious sedation"
+    t.bigint "q513d", comment: "7.08d - Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice? - 7.08d - Exercise Treadmill Testing"
+    t.bigint "q513e", comment: "7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice? - 7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q514a", comment: "6.06a - Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice? - 6.06a - Assess community health needs"
+    t.bigint "q514b", comment: "6.06b - Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice? - 6.06b - Use community resources"
+    t.bigint "q514c", comment: "6.06c - Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice? - 6.06c - Develop community intervention"
+    t.bigint "q514d", comment: "6.06d - Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice? - 6.06d - Use of information technology"
+    t.bigint "q514e", comment: "6.06e - Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice? - 6.06e - Quality improvement"
+    t.bigint "q514f", comment: "6.06f - Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice? - 6.06f - Team-based care"
+    t.bigint "q514g", comment: "6.06g - Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice? - 6.06g - Integration of evidence-based medicine"
+    t.bigint "q514h", comment: "6.06h - Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice? - 6.06h - Health behavior change counseling"
+    t.bigint "q514i", comment: "6.06i - Pain Management"
+    t.bigint "q514i_practiced", comment: "Currently part of your practice? - 6.06i - Pain Management"
+    t.bigint "q514j", comment: "6.06j - Alcohol / Substance Abuse"
+    t.bigint "q514j_practiced", comment: "Currently part of your practice? - 6.06j - Alcohol / Substance Abuse"
+    t.bigint "q601a", comment: "6.01a - Prenatal care"
+    t.bigint "q601a_practiced", comment: "Currently part of your practice? - 6.01a - Prenatal care"
+    t.bigint "q601b", comment: "6.01b - Labor Management"
+    t.bigint "q601b_practiced", comment: "Currently part of your practice? - 6.01b - Labor Management"
+    t.bigint "q601c", comment: "6.01c - Vaginal Deliveries"
+    t.bigint "q601c_practiced", comment: "Currently part of your practice? - 6.01c - Vaginal Deliveries"
+    t.bigint "q601d", comment: "6.01d - Post-partum care"
+    t.bigint "q601d_practiced", comment: "Currently part of your practice? - 6.01d - Post-partum care"
+    t.bigint "q601e", comment: "6.01e - Cesarean Section Assist"
+    t.bigint "q601e_practiced", comment: "Currently part of your practice? - 6.01e - Cesarean Section Assist"
+    t.bigint "q602a", comment: "6.02a - Ambulatory care"
+    t.bigint "q602a_practiced", comment: "Currently part of your practice? - 6.02a - Ambulatory care"
+    t.bigint "q602b", comment: "6.02b - Newborn resuscitation"
+    t.bigint "q602b_practiced", comment: "Currently part of your practice? - 6.02b - Newborn resuscitation"
+    t.bigint "q602c", comment: "6.02c - Newborn care in hospital"
+    t.bigint "q602c_practiced", comment: "Currently part of your practice? - 6.02c - Newborn care in hospital"
+    t.bigint "q602d", comment: "6.02d - Other hospital care"
+    t.bigint "q602d_practiced", comment: "Currently part of your practice? - 6.02d - Other hospital care"
+    t.bigint "q602e", comment: "6.02e - Teen care"
+    t.bigint "q602e_practiced", comment: "Currently part of your practice? - 6.02e - Teen care"
+    t.bigint "q603a", comment: "6.03a - Ambulatory care"
+    t.bigint "q603a_practiced", comment: "Currently part of your practice? - 6.03a - Ambulatory care"
+    t.bigint "q603b", comment: "6.03b - Inpatient care"
+    t.bigint "q603b_practiced", comment: "Currently part of your practice? - 6.03b - Inpatient care"
+    t.bigint "q603c", comment: "6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603c_practiced", comment: "Currently part of your practice? - 6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603d", comment: "6.03d - Nursing home care"
+    t.bigint "q603d_practiced", comment: "Currently part of your practice? - 6.03d - Nursing home care"
+    t.bigint "q603e", comment: "6.03e - Surgical assist"
+    t.bigint "q603e_practiced", comment: "Currently part of your practice? - 6.03e - Surgical assist"
+    t.bigint "q603f", comment: "6.03f - EKG interpretation"
+    t.bigint "q603f_practiced", comment: "Currently part of your practice? - 6.03f - EKG interpretation"
+    t.bigint "q604a", comment: "6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604a_practiced", comment: "Currently part of your practice? - 6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604b", comment: "6.04b - Ophthalmology"
+    t.bigint "q604b_practiced", comment: "Currently part of your practice? - 6.04b - Ophthalmology"
+    t.bigint "q604c", comment: "6.04c - Otolaryngology"
+    t.bigint "q604c_practiced", comment: "Currently part of your practice? - 6.04c - Otolaryngology"
+    t.bigint "q604d", comment: "6.04d - Urology"
+    t.bigint "q604d_practiced", comment: "Currently part of your practice? - 6.04d - Urology"
+    t.bigint "q605a", comment: "6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605a_practiced", comment: "Currently part of your practice? - 6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605b", comment: "6.05b - Counseling Individual / Family"
+    t.bigint "q605b_practiced", comment: "Currently part of your practice? - 6.05b - Counseling Individual / Family"
+    t.bigint "q606a", comment: "6.07a - Women's Health"
+    t.bigint "q606a_practiced", comment: "Currently part of your practice? - 6.07a - Women's Health"
+    t.bigint "q606b", comment: "6.07b - Gynecology"
+    t.bigint "q606b_practiced", comment: "Currently part of your practice? - 6.07b - Gynecology"
+    t.bigint "q606c", comment: "6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606c_practiced", comment: "Currently part of your practice? - 6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606d", comment: "6.07d - Sports Medicine"
+    t.bigint "q606d_practiced", comment: "Currently part of your practice? - 6.07d - Sports Medicine"
+    t.bigint "q606e", comment: "6.07e - Emergency Medicine"
+    t.bigint "q606e_practiced", comment: "Currently part of your practice? - 6.07e - Emergency Medicine"
+    t.bigint "q606f", comment: "6.07f - Dermatology"
+    t.bigint "q606f_practiced", comment: "Currently part of your practice? - 6.07f - Dermatology"
+    t.bigint "q606g", comment: "6.07g - Diagnostic Imaging"
+    t.bigint "q606g_practiced", comment: "Currently part of your practice? - 6.07g - Diagnostic Imaging"
+    t.bigint "q606h", comment: "6.07h - Geriatrics"
+    t.bigint "q606h_practiced", comment: "Currently part of your practice? - 6.07h - Geriatrics"
+    t.bigint "q606i", comment: "6.07i - End of Life Care"
+    t.bigint "q606i_practiced", comment: "Currently part of your practice? - 6.07i - End of Life Care"
+    t.string "q701", comment: "Do you have any additional comments to add?"
+    t.string "updated_at", comment: "Date updated"
+  end
+
+  create_table "source.y7_graduate_responses", id: :serial, force: :cascade do |t|
+    t.bigint "abfm_last_four", comment: "Last four of ABFM ID"
+    t.string "created_at", comment: "Date created"
+    t.bigint "finished", comment: "Web survey finished?"
+    t.bigint "grad_year", comment: "Graduation Year"
+    t.bigint "graduateid", comment: "Survey Login"
+    t.bigint "max_slide", comment: "Max slide reached"
+    t.string "p4_program_id", comment: "P4 ID"
+    t.integer "p4_resident_id"
+    t.bigint "paper", comment: "Paper survey?"
+    t.bigint "q101a", comment: "1.01a - Are you board certified in Family Medicine (ABFM)?"
+    t.bigint "q101b", comment: "1.01b - In what year were you initially certified by the ABFM?"
+    t.bigint "q101c", comment: "1.01c - Are you planning on being certified by the ABFM?"
+    t.bigint "q101d", comment: "1.01d - In what year are you planning to be certified by the ABFM?"
+    t.bigint "q102a", comment: "1.02a - CAQ in adolescent medicine?"
+    t.bigint "q102b", comment: "1.02b - CAQ in geriatrics?"
+    t.bigint "q102c", comment: "1.02c - CAQ in sports medicine?"
+    t.bigint "q102d", comment: "1.02d - Board certification in other specialty or other CAQ?"
+    t.string "q102d_other", comment: "1.02e - For what other specialty / CAQ do you have a board certification?"
+    t.bigint "q103a", comment: "1.04 - Are you currently enrolled in or did you complete a fellowship after residency training?"
+    t.bigint "q103b_1", comment: "Obstetrics / Maternity Care - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_10", comment: "Other - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_2", comment: "Geriatrics - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_3", comment: "Sports Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_4", comment: "Research - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_5", comment: "Faculty Development - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_6", comment: "Pain Management - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_7", comment: "Hospitalist - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_8", comment: "Emergency Medicine - 1.04a - What type of fellowship(s)?"
+    t.bigint "q103b_9", comment: "Rural Medicine - 1.04a - What type of fellowship(s)?"
+    t.string "q103b_other", comment: "Other Text - 1.04a - What type of fellowship(s)?"
+    t.string "q104", comment: "1.03 - In what state(s) are you currently practicing?"
+    t.decimal "q105", comment: "1.05 - What is your age?"
+    t.bigint "q106", comment: "1.06 - What is your gender?"
+    t.bigint "q107_1", comment: "White - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_2", comment: "Black - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_3", comment: "Hispanic - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_4", comment: "Asian / Pacific Islander - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_5", comment: "American Indian or Alaska Native - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_6", comment: "Middle Eastern - 1.07 - What is your race? (Check all that apply)"
+    t.bigint "q107_7", comment: "Other - 1.07 - What is your race? (Check all that apply)"
+    t.string "q107_other", comment: "1.07 - What is your race? (Check all that apply)"
+    t.bigint "q108", comment: "1.08 - What is your marital status? (Choose only one)"
+    t.bigint "q201", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.string "q201_other", comment: "2.01 - Which of the following best describes your current professional setting?"
+    t.bigint "q202_a", comment: "HPSA: Federally designated health professional shortage area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_b", comment: "MUA: Federally designated medically underserved area - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_c", comment: "MHC: Federally designated migrant health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_d", comment: "CHC: Federally designated community health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_e", comment: "RHC: Federally designated rural health clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_f", comment: "NHSC: National Health Service Corps - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_g", comment: "IHS: Indian Health Service site - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_h", comment: "Other state or federally qualified health center / clinic - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q202_none", comment: "None of the above - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.string "q202_other", comment: "Other state or federally qualified health center / clinic - Text - 2.02 - Are you currently practicing in any of the following designated areas/practices?"
+    t.bigint "q203", comment: "2.03 - Which of the following best describes the community in which you practice?"
+    t.decimal "q204", comment: "2.04 - How long in months have you been at your current practice location?"
+    t.bigint "q205", comment: "2.05 - Number of office visits in an average full day. If you only work in half-day increments, multiply by 2 to get the full-day number."
+    t.decimal "q206", comment: "2.06 - Total hours per week worked (in all your professional activities) exclusive of on-call time out of the office."
+    t.decimal "q207a", comment: "Private Insurance - 2.07 - Payor Mix"
+    t.decimal "q207b", comment: "Medicaid - 2.07 - Payor Mix"
+    t.decimal "q207c", comment: "Medicare - 2.07 - Payor Mix"
+    t.decimal "q207d", comment: "HMO / Managed Care - 2.07 - Payor Mix"
+    t.decimal "q207e", comment: "Self-Pay - 2.07 - Payor Mix"
+    t.decimal "q207f", comment: "Other - 2.07 - Payor Mix"
+    t.string "q207f_other", comment: "Other - Text Description - 2.07 - Payor Mix"
+    t.bigint "q207f_other_present", comment: "Other - Is Checked? - 2.07 - Payor Mix"
+    t.bigint "q208", comment: "2.08 - What is your pre-tax yearly income, excluding benefits?"
+    t.bigint "q301a", comment: "3.01a - Family Medicine no longer has the appeal it used to have."
+    t.bigint "q301b", comment: "3.01b - If I were to start my career over again, I would choose to be a family physician."
+    t.bigint "q301c", comment: "3.01c - I would recommend family medicine to a student seeking advice."
+    t.bigint "q301d", comment: "3.01d - Overall, my residency prepared me well for my current clinical practice"
+    t.bigint "q401", comment: "4.01 - EMR (Electronic Medical Record) in your practice"
+    t.bigint "q402", comment: "4.02 - Paperless Practice (all interfaces and scanning work - no paper charts)"
+    t.bigint "q403", comment: "4.03 - Full secured remote access"
+    t.bigint "q404", comment: "4.04 - Electronic Transcription (notes entered directly via templates or speech recognition)"
+    t.bigint "q405", comment: "4.05 - Electronic scheduling system Integrated with EMR"
+    t.bigint "q406", comment: "4.06 - Electronic billing system Integrated with EMR"
+    t.bigint "q407", comment: "4.07 - Electronic orders (e.g., lab, x-ray) Integrated with EMR"
+    t.bigint "q408", comment: "4.08 - Hospital EMR with full-computerized physician order entry"
+    t.bigint "q409", comment: "4.09 - Secure HIPAA-compliant asynchronous communication (e.g. e-mail or text messaging) with patients"
+    t.bigint "q410", comment: "4.10 - Asynchronous communication with other providers"
+    t.bigint "q411", comment: "4.11 - Ongoing population-based Quality Assurance using an EMR / registry"
+    t.bigint "q412", comment: "4.12 - Chronic disease management registries"
+    t.bigint "q413", comment: "4.13 - EMR-based preventive services registries"
+    t.bigint "q414", comment: "4.14 - Practice-based research using an EMR"
+    t.bigint "q415", comment: "4.15 - Advanced or open-access scheduling"
+    t.bigint "q416", comment: "4.16 - Expanded hours (e.g., clinic hours after 6 pm on weekdays/weekend clinic)"
+    t.bigint "q417", comment: "4.17 - Functional quality monitoring telephone system (system to monitor call abandonment / time to answer)"
+    t.bigint "q418", comment: "4.18 - Full asynchronous patient-accessible scheduling (e.g., Internet-based)"
+    t.bigint "q419", comment: "4.19 - Credible, reliable patient satisfaction survey (to at least the practice level)"
+    t.bigint "q420", comment: "4.20 - Sufficient and adequate physical space"
+    t.bigint "q421", comment: "4.21 - Adequate, free parking"
+    t.bigint "q422", comment: "4.22 - Convenient public transportation access"
+    t.bigint "q423", comment: "4.23 - Using teams to manage patient care"
+    t.bigint "q424", comment: "4.24 - Integrated behavioral health"
+    t.bigint "q425", comment: "4.25 - Integrated "
+    t.bigint "q426", comment: "4.26 - Clinical pharmacy support"
+    t.bigint "q427", comment: "4.27 - Group visits"
+    t.bigint "q428", comment: "4.28 - Your practice as patient-centered versus physician-centered"
+    t.bigint "q429", comment: "4.29 - Using the scale below, please indicate what role you have played in office practice redesign toward the Patient-Centered Medical Home."
+    t.bigint "q430", comment: "4.30 - Did you play a role during your residency training in Patient-Centered Medical Home design/implementation?"
+    t.bigint "q501a", comment: "5.02a - Adult inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501b", comment: "5.02b - Adult ICU / CCU care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501c", comment: "5.02c - Nursing home care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501d", comment: "5.02d - Newborn nursery care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501e", comment: "5.02e - Pediatric inpatient care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501f", comment: "5.02f - Surgical inpatient procedures - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q501g", comment: "5.02g - Emergency Room care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q502", comment: "5.02h - Prenatal care - Do you any of your family physician practice partners provide the following services?"
+    t.bigint "q503", comment: "5.01 - Do you currently practice maternity care, including deliveries?"
+    t.bigint "q503_group", comment: "5.01c - Do other members of your practice group deliver babies?"
+    t.bigint "q503a", comment: "5.01a - Vaginal Deliveries"
+    t.bigint "q503b", comment: "5.01b - C-section deliveries - as primary surgeon"
+    t.bigint "q504", comment: "5.03 - Have you experienced any difficulty getting hospital privileges?"
+    t.string "q504_describe", comment: "5.03a - Please describe the difficulties you've experienced:"
+    t.bigint "q505_1", comment: "Medical students - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_2", comment: "Residents - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_3", comment: "Fellows - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_4", comment: "Other health care professionals - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q505_none", comment: "None of the above - 5.04 - What kind of teaching activities do you participate in?"
+    t.string "q505_other", comment: "Other health care professionals - Other Text - 5.04 - What kind of teaching activities do you participate in?"
+    t.bigint "q506a", comment: "7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506a_practiced", comment: "Currently part of your practice? - 7.01a - Biopsies-punch, shave, excisional"
+    t.bigint "q506b", comment: "7.01b - Cryosurgery"
+    t.bigint "q506b_practiced", comment: "Currently part of your practice? - 7.01b - Cryosurgery"
+    t.bigint "q506c", comment: "7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506c_practiced", comment: "Currently part of your practice? - 7.01c - Remove warts, toenail, foreign body"
+    t.bigint "q506d", comment: "7.01d - Incision & drainage of abscess"
+    t.bigint "q506d_practiced", comment: "Currently part of your practice? - 7.01d - Incision & drainage of abscess"
+    t.bigint "q506e", comment: "7.01e - Simple laceration repair"
+    t.bigint "q506e_practiced", comment: "Currently part of your practice? - 7.01e - Simple laceration repair"
+    t.bigint "q507a", comment: "7.02a - IUD insertion / removal"
+    t.bigint "q507a_practiced", comment: "Currently part of your practice? - 7.02a - IUD insertion / removal"
+    t.bigint "q507b", comment: "7.02b - Endometrial biopsy"
+    t.bigint "q507b_practiced", comment: "Currently part of your practice? - 7.02b - Endometrial biopsy"
+    t.bigint "q507c", comment: "7.02c - Remove cervical polyp"
+    t.bigint "q507c_practiced", comment: "Currently part of your practice? - 7.02c - Remove cervical polyp"
+    t.bigint "q507d", comment: "7.02d - Bartholin's cyst management"
+    t.bigint "q507d_practiced", comment: "Currently part of your practice? - 7.02d - Bartholin's cyst management"
+    t.bigint "q507e", comment: "7.02e - Colposcopy"
+    t.bigint "q507e_practiced", comment: "Currently part of your practice? - 7.02e - Colposcopy"
+    t.bigint "q507f", comment: "7.02f - Cervical cryotherapy"
+    t.bigint "q507f_practiced", comment: "Currently part of your practice? - 7.02f - Cervical cryotherapy"
+    t.bigint "q507g", comment: "7.02g - LEEP"
+    t.bigint "q507g_practiced", comment: "Currently part of your practice? - 7.02g - LEEP"
+    t.bigint "q507h", comment: "7.02h - Paracervical block"
+    t.bigint "q507h_practiced", comment: "Currently part of your practice? - 7.02h - Paracervical block"
+    t.bigint "q507i", comment: "7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507i_practiced", comment: "Currently part of your practice? - 7.02i - Uterine aspiration / dilation / evacuation"
+    t.bigint "q507j", comment: "7.02j - Tubal ligation"
+    t.bigint "q507j_practiced", comment: "Currently part of your practice? - 7.02j - Tubal ligation"
+    t.bigint "q508a", comment: "7.03a - OB ultrasound"
+    t.bigint "q508a_practiced", comment: "Currently part of your practice? - 7.03a - OB ultrasound"
+    t.bigint "q508b", comment: "7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508b_practiced", comment: "Currently part of your practice? - 7.03b - Spontaneous vaginal delivery"
+    t.bigint "q508c", comment: "7.03c - Labor induction / augmentation"
+    t.bigint "q508c_practiced", comment: "Currently part of your practice? - 7.03c - Labor induction / augmentation"
+    t.bigint "q508d", comment: "7.03d - Vacuum assisted delivery"
+    t.bigint "q508d_practiced", comment: "Currently part of your practice? - 7.03d - Vacuum assisted delivery"
+    t.bigint "q508e", comment: "7.03e - 3 rd & 4 th degree laceration repair"
+    t.bigint "q508e_practiced", comment: "Currently part of your practice? - 7.03e - 3rd & 4th degree laceration repair"
+    t.bigint "q508f", comment: "7.03f - C-section assist"
+    t.bigint "q508f_practiced", comment: "Currently part of your practice? - 7.03f - C-section assist"
+    t.bigint "q508g", comment: "7.03g - C-section primary surgeon"
+    t.bigint "q508g_practiced", comment: "Currently part of your practice? - 7.03g - C-section primary surgeon"
+    t.bigint "q509a", comment: "7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509a_practiced", comment: "Currently part of your practice? - 7.04a - Flexible sigmoidoscopy"
+    t.bigint "q509b", comment: "7.04b - Colonoscopy"
+    t.bigint "q509b_practiced", comment: "Currently part of your practice? - 7.04b - Colonoscopy"
+    t.bigint "q509c", comment: "7.04c - Upper endoscopy"
+    t.bigint "q509c_practiced", comment: "Currently part of your practice? - 7.04c - Upper endoscopy"
+    t.bigint "q510a", comment: "7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510a_practiced", comment: "Currently part of your practice? - 7.05a - Anterior nasal packing for epistaxis"
+    t.bigint "q510b", comment: "7.05b - Lumbar puncture"
+    t.bigint "q510b_practiced", comment: "Currently part of your practice? - 7.05b - Lumbar puncture"
+    t.bigint "q510c", comment: "7.05c - Thoracentesis"
+    t.bigint "q510c_practiced", comment: "Currently part of your practice? - 7.05c - Thoracentesis"
+    t.bigint "q510d", comment: "7.05d - Paracentesis"
+    t.bigint "q510d_practiced", comment: "Currently part of your practice? - 7.05d - Paracentesis"
+    t.bigint "q510e", comment: "7.05e - Central line"
+    t.bigint "q510e_practiced", comment: "Currently part of your practice? - 7.05e - Central line"
+    t.bigint "q510f", comment: "7.05f - Endotracheal intubation"
+    t.bigint "q510f_practiced", comment: "Currently part of your practice? - 7.05f - Endotracheal intubation"
+    t.bigint "q510g", comment: "7.05g - Ventilator management"
+    t.bigint "q510g_practiced", comment: "Currently part of your practice? - 7.05g - Ventilator management"
+    t.bigint "q510h", comment: "7.05h - Chest tube placement"
+    t.bigint "q510h_practiced", comment: "Currently part of your practice? - 7.05h - Chest tube placement"
+    t.bigint "q511a", comment: "7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511a_practiced", comment: "Currently part of your practice? - 7.06a - Initial management of simple FXs, including closed reduction"
+    t.bigint "q511b", comment: "7.06b - Splinting & casting"
+    t.bigint "q511b_practiced", comment: "Currently part of your practice? - 7.06b - Splinting & casting"
+    t.bigint "q511c", comment: "7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q511c_practiced", comment: "Currently part of your practice? - 7.06c - Injection/aspiration - joint, bursa, ganglion cyst, trigger point"
+    t.bigint "q512a", comment: "7.07a - Circumcision"
+    t.bigint "q512a_practiced", comment: "Currently part of your practice? - 7.07a - Circumcision"
+    t.bigint "q512b", comment: "7.07b - Vasectomy"
+    t.bigint "q512b_practiced", comment: "Currently part of your practice? - 7.07b - Vasectomy"
+    t.bigint "q513a", comment: "7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513a_practiced", comment: "Currently part of your practice? - 7.08a - Local Anesthesia / Field Block"
+    t.bigint "q513b", comment: "7.08b - Peripheral nerve block"
+    t.bigint "q513b_practiced", comment: "Currently part of your practice? - 7.08b - Peripheral nerve block"
+    t.bigint "q513c", comment: "7.08c - Conscious sedation"
+    t.bigint "q513c_practiced", comment: "Currently part of your practice? - 7.08c - Conscious sedation"
+    t.bigint "q513d", comment: "7.08d - Exercise Treadmill Testing"
+    t.bigint "q513d_practiced", comment: "Currently part of your practice? - 7.08d - Exercise Treadmill Testing"
+    t.bigint "q513e", comment: "7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q513e_practiced", comment: "Currently part of your practice? - 7.08e - Flexible nasopharyngoscopy"
+    t.bigint "q514a", comment: "6.06a - Assess community health needs"
+    t.bigint "q514a_practiced", comment: "Currently part of your practice? - 6.06a - Assess community health needs"
+    t.bigint "q514b", comment: "6.06b - Use community resources"
+    t.bigint "q514b_practiced", comment: "Currently part of your practice? - 6.06b - Use community resources"
+    t.bigint "q514c", comment: "6.06c - Develop community intervention"
+    t.bigint "q514c_practiced", comment: "Currently part of your practice? - 6.06c - Develop community intervention"
+    t.bigint "q514d", comment: "6.06d - Use of information technology"
+    t.bigint "q514d_practiced", comment: "Currently part of your practice? - 6.06d - Use of information technology"
+    t.bigint "q514e", comment: "6.06e - Quality improvement"
+    t.bigint "q514e_practiced", comment: "Currently part of your practice? - 6.06e - Quality improvement"
+    t.bigint "q514f", comment: "6.06f - Team-based care"
+    t.bigint "q514f_practiced", comment: "Currently part of your practice? - 6.06f - Team-based care"
+    t.bigint "q514g", comment: "6.06g - Integration of evidence-based medicine"
+    t.bigint "q514g_practiced", comment: "Currently part of your practice? - 6.06g - Integration of evidence-based medicine"
+    t.bigint "q514h", comment: "6.06h - Health behavior change counseling"
+    t.bigint "q514h_practiced", comment: "Currently part of your practice? - 6.06h - Health behavior change counseling"
+    t.bigint "q514i", comment: "6.06i - Pain Management"
+    t.bigint "q514i_practiced", comment: "Currently part of your practice? - 6.06i - Pain Management"
+    t.bigint "q514j", comment: "6.06j - Alcohol / Substance Abuse"
+    t.bigint "q514j_practiced", comment: "Currently part of your practice? - 6.06j - Alcohol / Substance Abuse"
+    t.bigint "q601a", comment: "6.01a - Prenatal care"
+    t.bigint "q601a_practiced", comment: "Currently part of your practice? - 6.01a - Prenatal care"
+    t.bigint "q601b", comment: "6.01b - Labor Management"
+    t.bigint "q601b_practiced", comment: "Currently part of your practice? - 6.01b - Labor Management"
+    t.bigint "q601c", comment: "6.01c - Vaginal Deliveries"
+    t.bigint "q601c_practiced", comment: "Currently part of your practice? - 6.01c - Vaginal Deliveries"
+    t.bigint "q601d", comment: "6.01d - Post-partum care"
+    t.bigint "q601d_practiced", comment: "Currently part of your practice? - 6.01d - Post-partum care"
+    t.bigint "q601e", comment: "6.01e - Cesarean Section Assist"
+    t.bigint "q601e_practiced", comment: "Currently part of your practice? - 6.01e - Cesarean Section Assist"
+    t.bigint "q602a", comment: "6.02a - Ambulatory care"
+    t.bigint "q602a_practiced", comment: "Currently part of your practice? - 6.02a - Ambulatory care"
+    t.bigint "q602b", comment: "6.02b - Newborn resuscitation"
+    t.bigint "q602b_practiced", comment: "Currently part of your practice? - 6.02b - Newborn resuscitation"
+    t.bigint "q602c", comment: "6.02c - Newborn care in hospital"
+    t.bigint "q602c_practiced", comment: "Currently part of your practice? - 6.02c - Newborn care in hospital"
+    t.bigint "q602d", comment: "6.02d - Other hospital care"
+    t.bigint "q602d_practiced", comment: "Currently part of your practice? - 6.02d - Other hospital care"
+    t.bigint "q602e", comment: "6.02e - Teen care"
+    t.bigint "q602e_practiced", comment: "Currently part of your practice? - 6.02e - Teen care"
+    t.bigint "q603a", comment: "6.03a - Ambulatory care"
+    t.bigint "q603a_practiced", comment: "Currently part of your practice? - 6.03a - Ambulatory care"
+    t.bigint "q603b", comment: "6.03b - Inpatient care"
+    t.bigint "q603b_practiced", comment: "Currently part of your practice? - 6.03b - Inpatient care"
+    t.bigint "q603c", comment: "6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603c_practiced", comment: "Currently part of your practice? - 6.03c - Intensive care / ICU-CCU"
+    t.bigint "q603d", comment: "6.03d - Nursing home care"
+    t.bigint "q603d_practiced", comment: "Currently part of your practice? - 6.03d - Nursing home care"
+    t.bigint "q603e", comment: "6.03e - Surgical assist"
+    t.bigint "q603e_practiced", comment: "Currently part of your practice? - 6.03e - Surgical assist"
+    t.bigint "q603f", comment: "6.03f - EKG interpretation"
+    t.bigint "q603f_practiced", comment: "Currently part of your practice? - 6.03f - EKG interpretation"
+    t.bigint "q604a", comment: "6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604a_practiced", comment: "Currently part of your practice? - 6.04a - Pre-Op and Post-Op Care"
+    t.bigint "q604b", comment: "6.04b - Ophthalmology"
+    t.bigint "q604b_practiced", comment: "Currently part of your practice? - 6.04b - Ophthalmology"
+    t.bigint "q604c", comment: "6.04c - Otolaryngology"
+    t.bigint "q604c_practiced", comment: "Currently part of your practice? - 6.04c - Otolaryngology"
+    t.bigint "q604d", comment: "6.04d - Urology"
+    t.bigint "q604d_practiced", comment: "Currently part of your practice? - 6.04d - Urology"
+    t.bigint "q605a", comment: "6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605a_practiced", comment: "Currently part of your practice? - 6.05a - Major Psychiatric Disorders / Psychiatry"
+    t.bigint "q605b", comment: "6.05b - Counseling Individual / Family"
+    t.bigint "q605b_practiced", comment: "Currently part of your practice? - 6.05b - Counseling Individual / Family"
+    t.bigint "q606a", comment: "6.07a - Women's Health"
+    t.bigint "q606a_practiced", comment: "Currently part of your practice? - 6.07a - Women's Health"
+    t.bigint "q606b", comment: "6.07b - Gynecology"
+    t.bigint "q606b_practiced", comment: "Currently part of your practice? - 6.07b - Gynecology"
+    t.bigint "q606c", comment: "6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606c_practiced", comment: "Currently part of your practice? - 6.07c - Orthopedics / Musculoskeletal Medicine"
+    t.bigint "q606d", comment: "6.07d - Sports Medicine"
+    t.bigint "q606d_practiced", comment: "Currently part of your practice? - 6.07d - Sports Medicine"
+    t.bigint "q606e", comment: "6.07e - Emergency Medicine"
+    t.bigint "q606e_practiced", comment: "Currently part of your practice? - 6.07e - Emergency Medicine"
+    t.bigint "q606f", comment: "6.07f - Dermatology"
+    t.bigint "q606f_practiced", comment: "Currently part of your practice? - 6.07f - Dermatology"
+    t.bigint "q606g", comment: "6.07g - Diagnostic Imaging"
+    t.bigint "q606g_practiced", comment: "Currently part of your practice? - 6.07g - Diagnostic Imaging"
+    t.bigint "q606h", comment: "6.07h - Geriatrics"
+    t.bigint "q606h_practiced", comment: "Currently part of your practice? - 6.07h - Geriatrics"
+    t.bigint "q606i", comment: "6.07i - End of Life Care"
+    t.bigint "q606i_practiced", comment: "Currently part of your practice? - 6.07i - End of Life Care"
+    t.string "q701", comment: "Do you have any additional comments to add?"
+    t.string "updated_at", comment: "Date updated"
+  end
+
+  add_foreign_key "source.p4_resident_clinics", "source.p4_clinics", primary_key: "p4_clinic_id", name: "clinic_exists"
+  add_foreign_key "source.p4_resident_clinics", "source.p4_residents", name: "resident_exists"
+  add_foreign_key "source.y1_continuity_clinics", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y1_continuity_clinics_p4_program_id_fkey"
+  add_foreign_key "source.y1_graduate_responses", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y1_graduate_responses_p4_program_id_fkey"
+  add_foreign_key "source.y1_resident_responses", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y1_resident_responses_p4_program_id_fkey"
+  add_foreign_key "source.y2_continuity_clinics", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y2_continuity_clinics_p4_program_id_fkey"
+  add_foreign_key "source.y2_resident_responses", "source.y2_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y2_resident_responses_p4_program_id_fkey"
+  add_foreign_key "source.y3_continuity_clinics", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y3_continuity_clinics_p4_program_id_fkey"
+  add_foreign_key "source.y3_resident_responses", "source.y3_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y3_resident_responses_p4_program_id_fkey"
+  add_foreign_key "source.y4_continuity_clinics", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y4_continuity_clinics_p4_program_id_fkey"
+  add_foreign_key "source.y4_resident_responses", "source.y4_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y4_resident_responses_p4_program_id_fkey"
+  add_foreign_key "source.y5_continuity_clinics", "source.y1_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y5_continuity_clinics_p4_program_id_fkey"
+  add_foreign_key "source.y5_resident_responses", "source.y5_residency_programs", column: "p4_program_id", primary_key: "p4_program_id", name: "y5_resident_responses_p4_program_id_fkey"
 end
