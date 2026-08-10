@@ -1,10 +1,10 @@
 <%# 1. Configuration Logic: Determine what to show based on advisor_type %>
 <div class="container mt-2">
   <%
-    is_wellness = (advisor_type.name == 'Wellness')
-    is_deib = (advisor_type.name == 'DEIB')
-    is_academic = ['Academic', 'Academic/Student Affairs', 'Academic: Step 1 Advising'].include?(advisor_type.name)
-    is_career = advisor_type.name.to_s.include?('Career') || advisor_type == 'Assist Dean'
+    is_wellness = (advisor_type == 'Wellness')
+    is_deib = (advisor_type == 'DEIB')
+    is_academic = ['Academic', 'Academic/Student Affairs', 'Academic: Step 1 Advising'].include?(advisor_type)
+    is_career = advisor_type.to_s.include?('Career') || advisor_type == 'Assist Dean'
     # Determine which helper methods to call for checkboxes
     advisor_subjects = case
       when is_career then hf_career_advisor_discussed_for_select

@@ -20,11 +20,10 @@ class SearchesController < ApplicationController
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
     elsif params[:search].include? "ohsu.edu"
       @user = User.find_by(email: params[:search])
-    elsif params[:search] == 'PhD' or params[:search] == 'MPH' or params[:search] == 'MCR' #current_user.spec_program == "PhD"
-      @results = User.where(permission_group_id: 7 ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
-                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :uuid, :new_competency, :is_ldap, :former_name, :career_interest).order(:full_name)
+    elsif params[:search] == 'PhD' or params[:search] == 'MPH' or params[:search] == 'MCR'
+      @users = User.where(permission_group_id: 7 ).order(:full_name)
       params[:search] = 'PhD'  ##use this test in index page or file
-      @file_name = hf_create_download_file(@results, params[:search])
+      @file_name = hf_create_download_file(@users, params[:search])
     elsif params[:search] == "Wy'east"  #current_user.spec_program == "Wy'east"
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type='student' and spec_program like 'MD/Wy%'")
