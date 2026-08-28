@@ -23,7 +23,6 @@ class PermissionGroupDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
-    pinned_survey_group_titles
     title
     users
   ].freeze
@@ -32,9 +31,7 @@ class PermissionGroupDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
-    pinned_survey_group_titles
     title
-    users
     created_at
     updated_at
   ].freeze
@@ -43,9 +40,8 @@ class PermissionGroupDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    pinned_survey_group_titles
+    id
     title
-    users
   ].freeze
 
   # COLLECTION_FILTERS
@@ -66,4 +62,8 @@ class PermissionGroupDashboard < Administrate::BaseDashboard
   # def display_resource(permission_group)
   #   "PermissionGroup ##{permission_group.id}"
   # end
+
+  def display_resource(permission_group)
+    permission_group.title
+  end
 end

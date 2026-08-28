@@ -27,8 +27,6 @@ class CompetenciesController < ApplicationController
     @competency.final_grade = tempComp.final_grade
 
     @users = User.where(permission_group_id: tempComp.permission_group_id).select(:id, :full_name).order(:full_name)
-
-
   end
 
   def create
@@ -100,16 +98,6 @@ class CompetenciesController < ApplicationController
     #@release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
     ## getting WPAs
      @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
-
-     # if !@epas.blank?
-     #   gon.epa_adhoc = @epa_hash #@epa_adhoc
-     #   gon.epa_adhoc_dates = @epa_hash_dates
-     #   gon.epa_evaluators = @epa_evaluators
-     #   gon.unique_evaluators = @unique_evaluators
-     #   gon.selected_dates = @selected_dates
-     #   gon.selected_student = @selected_student
-     #   gon.total_wba_count = @total_wba_count
-     # end
 
      @preceptorship_data = hf_get_clinical_dataset(@selected_user, 'Preceptorship')
      preceptor_assesses = PreceptorAssess.where(user_id: @selected_user).load_async.map(&:attributes)

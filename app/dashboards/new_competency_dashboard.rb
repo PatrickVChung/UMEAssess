@@ -9,43 +9,43 @@ class NewCompetencyDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    add_comm_on_perform: Field::Text,
-    clinic_exp_comment: Field::Text,
-    comm_prof_concerns: Field::Text,
+    user: Field::BelongsTo,
+    email: Field::String,
+    student_uid: Field::String,
+    permission_group_id: Field::Number,
+    medhub_id: Field::String,
     course_id: Field::String,
     course_name: Field::String,
-    email: Field::String,
+    start_date: Field::Date,
     end_date: Field::Date,
-    environment: Field::String,
-    evaluator: Field::String,
-    feedback: Field::Text,
+    submit_date: Field::Date,
     final_grade: Field::String,
+    evaluator: Field::String,
     ics1: Field::Number,
     ics2: Field::Number,
     ics3: Field::Number,
     ics4: Field::Number,
     ics5: Field::Number,
-    medhub_id: Field::String,
     mk1: Field::Number,
     mk2: Field::Number,
     mk3: Field::Number,
-    mspe: Field::Text,
-    overall_summ_comm_perf: Field::Text,
     pbli1: Field::Number,
     pbli2: Field::Number,
     pbli3: Field::Number,
     pcp1: Field::Number,
     pcp2: Field::Number,
     pcp3: Field::Number,
-    permission_group_id: Field::Number,
     pppd1: Field::Number,
     pppd2: Field::Number,
-    prof_concerns: Field::Text,
     sbp1: Field::Number,
-    start_date: Field::Date,
-    student_uid: Field::String,
-    submit_date: Field::Date,
-    user: Field::BelongsTo,
+    mspe: Field::Text,
+    feedback: Field::Text,
+    overall_summ_comm_perf: Field::Text,
+    prof_concerns: Field::Text,
+    add_comm_on_perform: Field::Text,
+    clinic_exp_comment: Field::Text,
+    comm_prof_concerns: Field::Text,
+    environment: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -57,9 +57,13 @@ class NewCompetencyDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
-    add_comm_on_perform
-    clinic_exp_comment
-    comm_prof_concerns
+    user
+    permission_group_id
+    email
+    student_uid
+    medhub_id
+    course_id
+    course_name
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -111,43 +115,43 @@ class NewCompetencyDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    add_comm_on_perform
-    clinic_exp_comment
-    comm_prof_concerns
+    user
+    permission_group_id
+    email
+    student_uid
+    medhub_id
     course_id
     course_name
-    email
+    start_date
     end_date
-    environment
+    submit_date
     evaluator
-    feedback
     final_grade
     ics1
     ics2
     ics3
     ics4
     ics5
-    medhub_id
     mk1
     mk2
     mk3
-    mspe
-    overall_summ_comm_perf
     pbli1
     pbli2
     pbli3
     pcp1
     pcp2
     pcp3
-    permission_group_id
     pppd1
     pppd2
-    prof_concerns
     sbp1
-    start_date
-    student_uid
-    submit_date
-    user
+    prof_concerns
+    mspe
+    feedback
+    overall_summ_comm_perf
+    add_comm_on_perform
+    clinic_exp_comment
+    comm_prof_concerns
+    environment
   ].freeze
 
   # COLLECTION_FILTERS

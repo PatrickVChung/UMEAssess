@@ -18,6 +18,8 @@ class UserDashboard < Administrate::BaseDashboard
     former_name: Field::String,
     full_name: Field::String,
     is_ldap: Field::Boolean,
+    password: Field::Password,
+    password_confirmation: Field::Password,
     last_sign_in_at: Field::DateTime,
     last_sign_in_ip: Field::String,
     locked_at: Field::DateTime,
@@ -31,7 +33,7 @@ class UserDashboard < Administrate::BaseDashboard
     remember_created_at: Field::DateTime,
     reset_password_sent_at: Field::DateTime,
     reset_password_token: Field::String,
-    roles: Field::Text,
+    roles: RolesField,
     sid: Field::String,
     sign_in_count: Field::Number,
     spec_program: Field::String,
@@ -65,6 +67,8 @@ class UserDashboard < Administrate::BaseDashboard
     full_name
     former_name
     email
+    password
+    password_confirmation
     is_ldap
     permission_group
     roles
@@ -80,7 +84,6 @@ class UserDashboard < Administrate::BaseDashboard
     locked_at
     ls_list_state
     matriculated_date
-    password_digest
     career_interest
     remember_created_at
     reset_password_sent_at
@@ -96,34 +99,34 @@ class UserDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    career_interest
+    id
+    username
+    full_name
+    former_name
+    email
+    sid
+    password
+    password_confirmation
+    is_ldap
+    permission_group
+    roles
+    prev_permission_group_id
     coaching_type
     cohort_id
+    spec_program
+    subscribed
     current_sign_in_at
     current_sign_in_ip
-    email
-    former_name
-    full_name
-    is_ldap
     last_sign_in_at
     last_sign_in_ip
     locked_at
     ls_list_state
     matriculated_date
-    p4_program_id
-    password_digest
-    permission_group
-    prev_permission_group_id
-    remember_created_at
-    reset_password_sent_at
-    reset_password_token
-    roles
-    sid
+    career_interest
     sign_in_count
-    spec_program
-    subscribed
-    username
     uuid
+    created_at
+    updated_at
   ].freeze
 
   # COLLECTION_FILTERS
@@ -144,4 +147,11 @@ class UserDashboard < Administrate::BaseDashboard
   # def display_resource(user)
   #   "User ##{user.id}"
   # end
+  # Permit array parameter for roles
+  def permitted_attributes
+    super + [roles: []]
+  end
+  def display_resource(user)
+    user.full_name
+  end
 end

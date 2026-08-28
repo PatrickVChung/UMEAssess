@@ -63,4 +63,8 @@ class AdvisorTypeDashboard < Administrate::BaseDashboard
   # def display_resource(advisor_type)
   #   "AdvisorType ##{advisor_type.id}"
   # end
+  def display_resource(advisor_type)
+    advisor_type.name
+  end
+
 end

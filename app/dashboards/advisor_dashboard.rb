@@ -9,8 +9,7 @@ class AdvisorDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    advisor_type: Field::String,
-    advisor_type: Field::String,
+    advisor_type: Field::BelongsTo.with_options(searchable: true),
     brief_cv: Field::Text,
     email: Field::String,
     events: Field::HasMany,
@@ -32,9 +31,9 @@ class AdvisorDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
+    name
     advisor_type
-    advisor_type
-    brief_cv
+    specialty
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -42,17 +41,13 @@ class AdvisorDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     advisor_type
-    advisor_type
-    brief_cv
     email
-    events
     formal_name
-    meetings
     name
     specialty
     status
     title
-    user
+    brief_cv
     created_at
     updated_at
   ].freeze
@@ -61,18 +56,17 @@ class AdvisorDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+    id
     advisor_type
-    advisor_type
-    brief_cv
     email
-    events
     formal_name
-    meetings
     name
     specialty
     status
     title
-    user
+    brief_cv
+    created_at
+    updated_at
   ].freeze
 
   # COLLECTION_FILTERS
@@ -93,4 +87,7 @@ class AdvisorDashboard < Administrate::BaseDashboard
   # def display_resource(advisor)
   #   "Advisor ##{advisor.id}"
   # end
+  def display_resource(advisor_type)
+    advisor_type.name
+  end
 end

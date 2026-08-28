@@ -32,8 +32,9 @@ class NewCompetenciesController < ApplicationController
       @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
       if ["20", "21", "22"].include? @user.permission_group_id.to_s   # only Med26, Med27, Med28
-        @wbas = Epa.where(user_id: @user.id)
-      else
+      # Commented out on 8/19/2026 to exclude EPA12 & EPA13 WBA graphs
+      #   @wbas = Epa.where(user_id: @user.id)
+      # else
         @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", @user.id)
       end
       @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
@@ -41,8 +42,8 @@ class NewCompetenciesController < ApplicationController
 
       if ["20", "21", "22"].include? @user.permission_group_id.to_s  # only Med26, Med27, Med28
         @epa_hash = Epa.where(user_id: @user.id).group(:epa).order(:epa).count
-        #re-arranging the EPAs on the graph by using Slice.
-        @epa_hash = @epa_hash.slice("EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13")
+        #re-arranging the EPAs on the graph by using Slice & removed EPA12 & EPA13 from sliced (8/19/2026)
+        @epa_hash = @epa_hash.slice("EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11")
         # merge with a epa hash with zero count so that we can show it on graph.
         @epa_hash = epa_hash_merge(@epa_hash, @user.permission_group_id)
       else

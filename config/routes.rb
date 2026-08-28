@@ -34,6 +34,13 @@ Rails.application.routes.draw do
   # get "artifacts/new"
   # get "artifacts/edit"
 
+  namespace :api do
+    namespace :v1 do
+      post 'microsoft_bookings', to: 'bookings_webhook#create'
+    end
+  end
+
+
   # root "sessions#new"
   root "homes#index"
 
@@ -95,7 +102,7 @@ Rails.application.routes.draw do
   resources :users do
     resources :competencies, param: :user_id, only: [:index, :new]
     resources :overall_progresses, param: :user_id, only: [:index]
-    resources :new_competencies, param: :user_id, only: [:index, :new]    
+    resources :new_competencies, param: :user_id, only: [:index, :new]
     collection do
         get "update_loa", action: :update_loa, to: "users#update_loa#"
         get "save_update_loa", action: :save_update_loa, to: "users#save_update_loa"
@@ -225,6 +232,14 @@ Rails.application.routes.draw do
       get 'contact_form'
     end
   end
+
+  resources :create_pdfs do
+    collection do
+      get "create_and_move_pdf", to: 'create_pdfs#create_and_move_pdf'
+      get "move_pdf", to: 'create_pdfs#move_pdf'
+    end
+  end
+  resources :usmle_exams
 
   # Error pages routing
     match "/404", to: "errors#show", via: :all

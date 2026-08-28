@@ -1,0 +1,26 @@
+<%# app/views/fields/roles_field/_form.html.erb %>
+<%# Temporary debug line at top of app/views/fields/roles_field/_form.html.erb %>
+<div style="background: #fef3c7; padding: 8px; margin-bottom: 12px; font-family: monospace;">
+  <strong>DEBUG current roles:</strong> <%= field.data.inspect %> (Class: <%= field.data.class %>)
+</div>
+
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+
+<div class="field-unit__field">
+  <% User::ROLES.keys.each do |role_name| %>
+    <div style="margin-bottom: 0.5rem;">
+      <label for="<%= "#{f.object_name}_roles_#{role_name}" %>">
+        <%= check_box_tag "#{f.object_name}[roles][]",
+                          role_name,
+                          field.role_selected?(role_name),
+                          id: "#{f.object_name}_roles_#{role_name}" %>
+        <%= role_name.to_s.humanize %>
+      </label>
+    </div>
+  <% end %>
+
+  <%# Include an empty hidden tag so that deselecting all checkboxes submits an empty array %>
+  <%= hidden_field_tag "#{f.object_name}[roles][]", "" %>
+</div>

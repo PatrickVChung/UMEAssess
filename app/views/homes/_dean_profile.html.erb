@@ -79,10 +79,12 @@
                     <ul classs="list-group">
                       <li><%= link_to 'Process FoM', process_fom_fom_exams_path(uuid: Current.user.uuid), target: '_blank',
                               class: 'list-group-item list-group-item-action text-primary' %></li>
-                      <li><%= link_to 'Bulk Delete', bulk_remove_artifacts_path, target: '_blank',
-                              class: 'list-group-item list-group-item-action text-primary' %></li>
                       <li><%= link_to 'Send out Alerts', send_alerts_fom_exams_path(), method: 'post',
                               class: 'list-group-item list-group-item-action text-primary', target: :_blank %></li>
+                      <li><%= link_to 'Bulk Delete PDFs', bulk_remove_artifacts_path, target: '_blank',
+                              class: 'list-group-item list-group-item-action text-primary' %></li>
+                      <li><%= link_to 'Create Informatics Feedback (Q-PDF)', create_and_move_pdf_create_pdfs_path, target: '_blank',
+                              class: 'list-group-item list-group-item-action text-primary' %></li>
 
                     </ul>
                   <% end %>

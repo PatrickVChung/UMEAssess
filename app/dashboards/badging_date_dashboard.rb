@@ -24,9 +24,11 @@ class BadgingDateDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
+    permission_group_id
     last_review_end_date
     next_review_end_date
-    permission_group_id
+    release_date
+
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

@@ -42,5 +42,14 @@ module Admin
 
     # See https://administrate-demo.herokuapp.com/customizing_controller_actions
     # for more information
+    private
+
+    # Override standard parameter permitting for roles array
+    def resource_params
+      params.require(:user).permit(
+        *dashboard.permitted_attributes,
+        roles: []
+      )
+    end
   end
 end

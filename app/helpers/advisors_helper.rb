@@ -42,6 +42,11 @@ OUTLOOK_MOBERLY = '<div id="calendlyAppts">' +
                           '<a href="https://outlook.office.com/bookwithme/user/648b0a37b17c4623992d7fd96b3beace%40ohsu.edu?anonymous&ismsaljsauthenabled"' +
                           'onclick="calendlyClick(event)" target="_blank">Outlook Appointments</a> </div>'
 
+ OUTLOOK_RAVEN = '<div id="outlookAppt">' +
+                    '<i><b>This Faculty Advisor uses Outlook for booking appointments. ' +
+                    'Click below to schedule your advising appointment through Outlook, which will redirect you outside the REDEI system. </b></i><br/>' +
+                    '<a href="https://bookings.cloud.microsoft/bookwithme/user/829646401a9b4c9d820697d635fe9c5e%40ohsu.edu?anonymous&ismsaljsauthenabled"' +
+                    'onclick="calendlyClick(event)" target="_blank">Outlook Appointments</a> </div>';
 
   def hf_other_availabilities(advisor)
     if advisor.present?
@@ -60,8 +65,9 @@ OUTLOOK_MOBERLY = '<div id="calendlyAppts">' +
        when advisor.name.include?("Moberly")
          OUTLOOK_MOBERLY
        when advisor.name.include?("Solotskaya")
-         OUTLOOK_MOBERLY
-
+         OUTLOOK_SOLOTSKAYA
+       when advisor.name.include?("Raven")
+         OUTLOOK_RAVEN
        else
          '<div id="warningAdvisor" class="alert alert-warning"' +
          '<i>No Available Appointment Found! Please contact advisor directly, ' + advisor.email + '. <i></div>'
@@ -74,8 +80,5 @@ OUTLOOK_MOBERLY = '<div id="calendlyAppts">' +
     advisor_type = Advisor.find_by(email: in_user+'@ohsu.edu').advisor_type
     return advisor_type
   end
-
-
-
 
 end

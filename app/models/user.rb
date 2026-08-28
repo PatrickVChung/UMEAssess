@@ -1,5 +1,18 @@
 class User < ApplicationRecord
-  has_secure_password
+  #serialize :roles, type: Array, coder: YAML
+  has_secure_password validations: false
+  # Automatically converts "" to nil before saving/validating
+  normalizes :sid, with: ->(sid) { sid.presence }
+
+    # Conditional validations for Non-LDAP users
+  validates :password, presence: true,
+                         confirmation: true,
+                         length: { minimum: 8 },
+                         if: :password_required?
+
+  validates :password_confirmation, presence: true,
+                                     if: :password_required?
+
   has_many :sessions, dependent: :destroy
   belongs_to :permission_group, inverse_of: :users
 
@@ -17,12 +30,12 @@ class User < ApplicationRecord
   has_many :epas, dependent: :destroy
   has_many :competencies, dependent: :destroy, inverse_of: :user
   has_many :new_competencies, dependent: :destroy, inverse_of: :user
-
+  has_many :usmle_exams, dependent: :destroy
   has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
   has_one :med24_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
   has_one :med26_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
   has_one :med27_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
-  
+
   has_many :preceptor_evals, dependent: :destroy
   has_many :preceptor_assesses, dependent: :destroy
 
@@ -44,6 +57,7 @@ class User < ApplicationRecord
     #can_create_assignment_group: 1,
     can_process_course_catalog: 1,
     can_process_fom: 1,
+    can_add_step1_exam: 1,
     can_process_eg_assignment: 1,
 
     # Role permissions
@@ -96,4 +110,13 @@ class User < ApplicationRecord
     last, first = full_name.split(", ").map(&:strip)
     return "#{first} #{last}"
   end
+
+  private
+
+  def password_required?
+    # Required on create if not LDAP, or whenever a password is actively being typed/updated
+    return false if is_ldap?
+    new_record? || password.present?
+  end
+
 end

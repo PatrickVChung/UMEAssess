@@ -19,6 +19,7 @@ COMPONENT_DESC2 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Q
                   'comp6_mb'   => 'Component 6: Formative Mid-Block Assessment',
                   'summary_comp' => 'Summary Data'
                 }
+
 COMPONENT_DESC_MED21 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
                   'comp2b_bss' => 'Component 2: Basic Science Skills Assessments',
                   'comp3_final' => 'Component 3: Final Block Exam',
@@ -79,26 +80,27 @@ LABELS3 = {
   "q8" => "Attachment File"
 }
 
+#
+# def hf_component_desc(in_code)
+#   if !COMPONENT_DESC[in_code].nil?
+#     return COMPONENT_DESC[in_code]
+#   end
+# end
+#
+# def hf_component_desc2(in_code)
+#   if !COMPONENT_DESC2[in_code].nil?
+#     return COMPONENT_DESC2[in_code]
+#   end
+# end
+#
+# def hf_component_desc3(in_code)
+#   if !COMPONENT_DESC_MED21[in_code].nil?
+#     return COMPONENT_DESC_MED21[in_code]
+#   end
+# end
+
 def hf_get_block_desc(in_code)
   return BLOCKS[in_code]
-end
-
-def hf_component_desc(in_code)
-  if !COMPONENT_DESC[in_code].nil?
-    return COMPONENT_DESC[in_code]
-  end
-end
-
-def hf_component_desc2(in_code)
-  if !COMPONENT_DESC2[in_code].nil?
-    return COMPONENT_DESC2[in_code]
-  end
-end
-
-def hf_component_desc3(in_code)
-  if !COMPONENT_DESC_MED21[in_code].nil?
-    return COMPONENT_DESC_MED21[in_code]
-  end
 end
 
 def get_label (permission_group_id, course_code, component)
@@ -509,13 +511,13 @@ end
     class_mean_series = check_pass_fail2(class_mean_series)
 
     if component == 'comp1_wk' and permission_group >= 20
-      title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'
+      title =  COMPONENT_DESC[component] + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'
     elsif permission_group >= 24
-      title =  hf_component_desc2(component) + '<br ><b>' + student_name + '</b>'
-    elsif permission_group < 20
-      title =  hf_component_desc3(component) + '<br ><b>' + student_name + '</b>'
+      title =  COMPONENT_DESC2[component] + '<br ><b>' + student_name + '</b>'
+    elsif permission_group <= 15
+      title =  COMPONENT_DESC_MED21[component] + '<br ><b>' + student_name + '</b>'
     else
-      title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
+      title =  COMPONENT_DESC[component] + '<br ><b>' + student_name + '</b>'
     end
 
     series_data = [{name: 'Student', color: "#7EFF5E", data: student_series },

@@ -1,0 +1,5 @@
+<% Array(field.data).reject(&:blank?).each do |role| %>
+  <span class="badge" style="background: #e2e8f0; padding: 2px 8px; border-radius: 4px; margin-right: 4px;">
+    <%= role.to_s.humanize %>
+  </span>
+<% end %>
