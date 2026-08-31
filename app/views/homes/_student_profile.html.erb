@@ -75,21 +75,6 @@
                 <span class="text-secondary">New Competency?</span>
                 <span class="fw-bold"><%= user.new_competency ? 'Yes' : 'No' %></span>
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                <% bls_record = user.ume_bls %>
-                <% if !bls_record.nil? %>
-                   <% if bls_record.expiration_date.after? (Date.today) %>
-                      <span class="text-secondary">BLS ExpDate</span>
-                      <span class="fw-bold" style="color:green"><%= bls_record.expiration_date.strftime("%F") %></span>
-                   <% else %>
-                      <span class="text-secondary">BLS ExpDate</span>
-                      <span class="fw-bold" style="color:red"><%= bls_record.expiration_date.strftime("%F") %></span>
-                   <% end %>
-                <% else %>
-                    <span class="text-secondary">BLS ExpDate</span>
-                    <span class="fw-bold" style="color:red"><b>No BLS Data</b></span>
-                <% end %>
-                </li>
 
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                 <span class="text-secondary">Specialties Interest</span>
