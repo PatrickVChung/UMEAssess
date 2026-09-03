@@ -239,6 +239,29 @@ Rails.application.routes.draw do
       get "move_pdf", to: 'create_pdfs#move_pdf'
     end
   end
+
+  resources :medhub_apis do
+    collection do
+      get "final_evals", controller: 'medhub_apis', to: 'medhub_apis#final_evals'
+      get "all_courses", controller: 'medhub_apis', to: 'medhub_apis#all_courses'
+      get "get_courses", controller: 'medhub_apis', to: 'medhub_apis#get_courses'
+      get "enrollment", controller: 'medhub_apis', to: 'medhub_apis#enrollment'
+
+    end
+  end
+  get 'reports/index'
+  resources :reports do
+    collection do
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports', to: "reports#download_file"
+      get 'competency', action: :competency, controller: 'reports', to: 'reports#competency'
+      get 'competency_detail', action: :competency_detail, controller: 'reports', to: 'reports#competency_detail'
+      get 'mspe', action: :mspe, controller: 'reports', to: "reports#mspe"
+      get 'famp_core_mspe_analysis', action: :famp_core_mspe_analysis, to: "reports#famp_core_mspe_analysis"
+    end
+  end
+  get 'wba_graphs/index', to: 'wba_graphs#index'
+  get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
+  
   resources :usmle_exams
 
   # Error pages routing

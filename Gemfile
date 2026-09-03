@@ -78,3 +78,4 @@ end
 
 gem "rails_icons", "~> 1.8"
 gem "foreman"
+gem "httparty"

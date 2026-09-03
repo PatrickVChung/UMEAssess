@@ -20,9 +20,77 @@ module WbaGraphsHelper
   }
 
   COLORS = ['Salmon', 'AquaMarine', 'Plum', '#4d88ff', 'LawnGreen', '#7cb5ec', '#f7a35c', '#90ee7e', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee', '#55BF3B']
+  OLD_EPA_KEYS    = ["EPA1", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13"]
+  MED26_EPA_KEYS  = ["EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13"]
+  MED27_EPA_KEYS  = ["EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11"]
+  NEW_EPA_KEYS    = ["EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11"]
+
 
 
   class LimeTable < ActiveRecord::Base
+  end
+
+  def hf_special_sort(in_hash)
+    #epa_count = {"EPA10" => 2, "EPA11" => 4, "EPA12" => 2, "EPA13" => 3, "EPA1A" => 6, "EPA1A&1B" => 7, "EPA1B" => 4, "EPA2" => 13, "EPA3" => 11, "EPA4" => 2, "EPA5" => 15, "EPA6" => 18, "EPA7" => 6, "EPA8" => 2, "EPA9" => 8}
+
+    epa_count_sorted = in_hash.sort_by { |key, _value|
+      # Extract the digits following 'EPA' and whatever text follows them
+      match = key.match(/^EPA(\d+)(.*)$/)
+
+      number = match[1].to_i     # e.g., 1, 2, 10
+      suffix = match[2]          # e.g., "A&1B", "A", ""
+
+      # Sort priority:
+      # 1. By the base number ascending (1 comes before 2)
+      # 2. By suffix length descending (places "A&1B" before "A")
+      # 3. By suffix string alphabetically (places "A" before "B")
+      [number, -suffix.length, suffix]
+    }.to_h
+  end
+
+  def hf_epa_header (permission_group_id)
+    case
+    when permission_group_id.to_i == 20
+      return MED26_EPA_KEYS
+    when permission_group_id.to_i == 21
+      return MED27_EPA_KEYS
+    when permission_group_id.to_i > 21
+      return NEW_EPA_KEYS
+    else
+      return OLD_EPA_KEYS
+    end
+  end
+
+  def hf_epa_re_order(in_hash, permission_group_id)
+
+    init_hash = {}
+    case
+    when permission_group_id.to_i == 20
+      MED26_EPA_KEYS.each do |epa|
+        init_hash["#{epa}"] = 0
+      end
+    when permission_group_id.to_i == 21
+      in_hash.delete("EPA12")
+      in_hash.delete("EPA13")
+      MED27_EPA_KEYS.each do |epa|
+        init_hash["#{epa}"] = 0
+      end
+    when permission_group_id.to_i > 21
+      in_hash.delete("EPA12")
+      in_hash.delete("EPA13")
+      NEW_EPA_KEYS.each do |epa|
+        init_hash["#{epa}"] = 0
+      end
+    else
+      OLD_EPA_KEYS.each do |epa|
+        init_hash["#{epa}"] = 0
+      end
+    end
+
+    in_hash.each do |key, val|
+       init_hash[key] = val
+    end
+    return init_hash
   end
 
   def hf_final_grade json_str
@@ -469,16 +537,21 @@ module WbaGraphsHelper
       epa = get_epa_involvement
       categories = epa.keys
       data_series = epa.values.transpose
+      total_wbas = data_series.flatten.sum
+      max_value = data_series.flatten.max
     elsif in_category == 'EPA >= Med26'
       epa = get_epa_involvement_new
       categories = epa.keys
       data_series = epa.values.transpose
-
+      total_wbas = data_series.flatten.sum
+      max_value = data_series.flatten.max
     elsif in_category == "Clinical Discipline"
           clinical_discipline = Epa.distinct.pluck(:clinical_discipline).sort
           clinical_discipline_hash = get_involvement(clinical_discipline, 'clinical_discipline')
           categories = clinical_discipline_hash.keys
           data_series = clinical_discipline_hash.values.transpose
+          total_wbas = data_series.flatten.sum
+          max_value = data_series.flatten.max
     elsif in_category == "Clinical Setting"
           # temp_data =  Epa.select("involvement, clinical_setting, count(*)").group("involvement, clinical_setting").order("involvement, clinical_setting")
           # categories = temp_data.select{|t| t.involvement==4}.map{|t| t.clinical_setting}
@@ -486,12 +559,15 @@ module WbaGraphsHelper
           clinical_setting_hash = get_involvement(clinical_setting, 'clinical_setting')
           categories = clinical_setting_hash.keys
           data_series = clinical_setting_hash.values.transpose
-
+          total_wbas = data_series.flatten.sum
+          max_value = data_series.flatten.max
     elsif in_category == "Clinical Assessor"
           clinical_assessor = Epa.distinct.pluck(:clinical_assessor).sort
           clinical_assessor_hash = get_involvement(clinical_assessor, 'clinical_assessor')
           categories = clinical_assessor_hash.keys
           data_series = clinical_assessor_hash.values.transpose
+          total_wbas = data_series.flatten.sum
+          max_value = data_series.flatten.max
           #User.find_by(username: 'graulty').epas.group(:clinical_assessor).count
           # => {"Attending Faculty"=>12, "Resident or Fellow"=>29, "Other/Not listed"=>16}
     elsif in_category == "Top 10 Assessors"
@@ -504,6 +580,8 @@ module WbaGraphsHelper
           top_10_assessors = get_involvement(assessor_name, 'assessor_name')
           categories = top_10_assessors.keys
           data_series = top_10_assessors.values.transpose
+          total_wbas = data_series.flatten.sum
+          max_value = data_series.flatten.max
       elsif in_category == "Top 10 Student Assessed"
           array_hash ||= Epa.select(:involvement).group(:student_assessed).count
           sorted = array_hash.sort_by{|k,v| v}.reverse
@@ -514,19 +592,15 @@ module WbaGraphsHelper
           top_10_student_assessed = get_involvement(student_assessed, 'student_assessed')
           categories = top_10_student_assessed.keys
           data_series = top_10_student_assessed.values.transpose
-
+          total_wbas = data_series.flatten.sum
+          max_value = data_series.flatten.max
           # temp_data =  Epa.select("involvement, assessor_name, count(*)").group("involvement, assessor_name").order("involvement, assessor_name")
           # categories = temp_data.select{|t| t.involvement==4}.map{|t| t.assessor_name}
     end
 
-    # [
-    #       {name: categories[0], y: 486, color: '#63BBFF'},
-    #       {name: categories[1], y: 281, color: '#96EB79'},
-    #       {name: categories[2], y: 638, color: '#E363FF'}
-    #     ]
+    return categories, data_series, in_category, total_wbas, max_value
 
-    create_chart(data_series, in_category, categories)
-
+    #create_chart(data_series, in_category, categories)
 
   end
 

@@ -1,0 +1,30 @@
+<div class="card p-3 w-25 shadow-sm">
+  <%= form_with(url: get_courses_medhub_apis_path, method: :get) do |form| %>
+    <div class="input-group">
+      <span class="input-group-text fw-bold">Course Code</span>
+
+      <%= form.text_field :course_code,
+            class: "form-control",
+            placeholder: "ANST, FAMP, NEUR, etc..",
+            list: "course_codes_list",
+            autocomplete: "off" %>
+
+      <datalist id="course_codes_list">
+        <% @course_codes.each do |code| %>
+          <option value="<%= code %>"></option>
+        <% end %>
+      </datalist>
+
+      <%= form.submit "Get Courses", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="card">
+    <div id="course_data">
+      <% if !@courses.nil? %>
+        <%= render partial: "course_data", locals: { courses: @courses} %>
+      <% end %>
+    </div>
+</div>

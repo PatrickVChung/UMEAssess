@@ -59,6 +59,9 @@ class User < ApplicationRecord
     can_process_fom: 1,
     can_add_step1_exam: 1,
     can_process_eg_assignment: 1,
+    can_access_medhub: 1,
+    can_access_mspe: 1,
+    can_access_special_report: 1,
 
     # Role permissions
     admin: 25,

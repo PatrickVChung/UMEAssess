@@ -54,7 +54,6 @@ class CourseSchedulesController < ApplicationController
     @course_schedule.start_date = params[:start_date]
     @course_schedule.end_date   = params[:end_date]
 
-
     respond_to do |format|
       if @course_schedule.save
         session[:course_id] = @course_schedule.course_id

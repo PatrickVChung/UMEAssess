@@ -105,11 +105,11 @@
           <div class="card-body">
 
             <ul classs="list-group">
-              <%= link_to '<i style="color:#31a34f;" class="bi bi-book"></i> Course Catalog'.html_safe, courses_path(), target: '_blank',
-                  class: 'list-group-item list-group-item-action text-primary' %>
-             <%= link_to '<i class="bi bi-person" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path(student_id: user.uuid), target: "_blank",
+              <%= link_to '<i style="color:#31a34f;" class="bi bi-book fs-5"></i> Course Catalog'.html_safe, courses_path(), target: '_blank',
+                  class: 'list-group-item list-group-item-action text-primary ' %>
+             <%= link_to '<i class="bi bi-person fs-5" style="color:#E1191C"></i> OASIS Advising Meeting'.html_safe, meetings_path(student_id: user.uuid), target: "_blank",
                           class: 'list-group-item list-group-item-action text-primary' %>
-             <%= link_to '<i class="bi bi-file-pdf" style="color:purple"></i> View Artifacts/Upload Documents'.html_safe,
+             <%= link_to '<i class="bi bi-file-pdf fs-5" style="color:purple"></i> View Artifacts/Upload Documents'.html_safe,
                           artifacts_path(user_id: user.id),
                           data: { turbo: true },
                           class: 'list-group-item list-group-item-action text-primary',

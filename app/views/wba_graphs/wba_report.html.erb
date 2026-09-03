@@ -1,0 +1,23 @@
+<div class="container" >
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+      <%= form_with url: wba_graphs_wba_report_path, method: :get, id: "wba_report_form", data: { controller: "auto-submit" } do |f| %>
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <%= f.label :permission_group_id, "Cohort", class: "col-form-label fw-bold" %>
+          </div>
+          <div class="col-auto">
+            <%= f.select :permission_group_id,
+                  options_from_collection_for_select(@permission_groups, :id, :title, params[:permission_group_id]),
+                  { prompt: "Please Select Cohort" },
+                  class: "form-select",
+                  data: { action: "change->auto-submit#submit" } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% if !@wba_report.blank? %>
+      <%= render partial: 'detail_wba_report' %>
+    <% end %>
+</div>
