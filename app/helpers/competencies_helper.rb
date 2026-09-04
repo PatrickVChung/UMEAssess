@@ -429,10 +429,14 @@ NEW_EPA_DESC={
 
   def hf_get_non_clinical_courses2
     non_clinical_courses_arry = []
-    pathFile = File.join(Rails.root, 'public','non_clinical_courses.txt')
-    non_clinical_courses_arry = IO.readlines(pathFile)
-    non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
-    return non_clinical_courses_arry
+    pathFile = Rails.public_path.join('non_clinical_courses.txt')
+    if pathFile.exist?
+      non_clinical_courses_arry = IO.readlines(pathFile)
+      non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
+      return non_clinical_courses_arry
+    else
+      return []
+    end
    end
 
     def hf_load_all_comp2(rs_data, level)
