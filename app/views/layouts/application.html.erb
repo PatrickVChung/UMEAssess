@@ -56,41 +56,38 @@
                     </div>
               <% end %>
             <% end %>
-
             <div class="dropdown">
-              <button
-                class="btn btn-outline-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <%= button_tag type: "button",
+                             class: "btn btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-2",
+                             data: { bs_toggle: "dropdown" },
+                             aria: { expanded: false } do %>
+                <i class="bi bi-person-circle fs-5" aria-hidden="true"></i>
+                <span><%= Current.user.display_name %></span>
+              <% end %>
 
-
-              <i class="bi bi-person-circle me-1"></i>
-              <%= Current.user.display_name %>
-
-              </button>
-
-              <ul class="dropdown-menu dropdown-menu-end">
-                <%# Admin link (admins only) %>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm list-unstyled p-0 py-2 m-0">
                 <% if Current.user.superadmin? %>
-                  <li>
-                    <%= link_to "Admin Dashboard",
-                        admin_root_path,
-                        class: "dropdown-item",
-                        data: { turbo: false },
-                        target: :_blank   %>
+                  <li class="px-0">
+                    <%= link_to admin_root_path,
+                                class: "dropdown-item d-flex align-items-center gap-2 py-2 px-3",
+                                target: "_blank",
+                                rel: "noopener",
+                                data: { turbo: false } do %>
+                      <i class="bi bi-speedometer2 text-muted" aria-hidden="true"></i>
+                      <span>Admin Dashboard</span>
+                    <% end %>
                   </li>
-                  <li><hr class="dropdown-divider"></li>
+                  <li><hr class="dropdown-divider my-2"></li>
                 <% end %>
 
-                <%# Logout %>
-                <li>
-                  <%= button_to "Logout",
-                      session_path,
-                      method: :delete,
-                      class: "dropdown-item",
-                      form: { data: { turbo: false } } %>
+                <li class="px-0">
+                  <%= button_to session_path,
+                                method: :delete,
+                                class: "dropdown-item d-flex align-items-center gap-2 py-2 px-3 text-danger w-100 text-start border-0 bg-transparent",
+                                form: { class: "m-0 p-0 w-100" } do %>
+                    <i class="bi bi-box-arrow-right text-danger" aria-hidden="true"></i>
+                    <span>Logout</span>
+                  <% end %>
                 </li>
               </ul>
             </div>
