@@ -1,15 +1,15 @@
 
-<% if !comp_class_means.empty? %>
+<% if !@comp_class_means.nil? %>
   <table id="CompetencyCompareTable" class="table table-hover table-striped table-responsive" data-sort="true" >
     <thead>
       <tr class="filters">
         <th style="text-align:center">Cohort</th>
-        <% comp_class_means.first.last.keys.each do |key| %>
+        <% @comp_class_means.first.last.keys.each do |key| %>
           <th style="text-align:center"><%= key %></th>
         <% end %>
       </tr>
     </thead>
-      <% comp_class_means.each do |key, data| %>
+      <% @comp_class_means.each do |key, data| %>
         <tr>
           <td style="text-align:center"> <%= key %> </td>
           <% data.each do |key, val| %>
@@ -20,7 +20,26 @@
   </table>
   <hr>
     <div class="d-flex flex-auto justify-content-center align-items-center">
-       <% cohorts_comp_graph ||= hf_cohorts_comp_graph(comp_class_means) %>
-       <%= high_chart("cohorts_comp_graph", cohorts_comp_graph) %>
+
+      <% categories = @comp_class_means.first.last.keys %>
+      <% series_data = []
+        @comp_class_means.keys.each do |key|
+          series_data.push(name: key, yAxis: 0, data: @comp_class_means["#{key}"].values)
+         end
+      %>
+
+      <% title = "Competency By Cohort(s) Graph" %>
+
+      <div data-controller="highcharts"
+           data-highcharts-series-value="<%= series_data.to_json %>"
+           data-highcharts-categories-value="<%= categories.to_json %>"
+           data-highcharts-title-value="<%= title %>"
+           data-highcharts-y-title-value="Competency (%)"
+           data-highcharts-y-max-value=100
+           data-highcharts-y-tick-interval-value=25
+           data-highcharts-chart-type-value="column"
+           style="width:100%; height:600px;">
+      </div>
+
     </div>
 <% end %>
