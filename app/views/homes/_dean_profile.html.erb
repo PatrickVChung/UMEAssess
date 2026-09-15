@@ -59,6 +59,10 @@
                 <span class="fw-bold"><%= Current.user.coaching_type ? Current.user.coaching_type : 'None' %></span>
               </li>
 
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <span class="text-primary fw-bold">Roles</span>
+                  <p class="fst-italic"><%= Current.user.roles.humanize || "No roles assigned" %> </p>
+              </li>
             </ul>
           </div>
         </div>

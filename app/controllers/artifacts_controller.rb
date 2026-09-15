@@ -18,16 +18,13 @@ class ArtifactsController < ApplicationController
         end
       end
     end
-
   end
 
   def show
-
   end
 
   def new
     @artifact = Artifact.new
-
   end
 
   def create
@@ -79,7 +76,6 @@ class ArtifactsController < ApplicationController
       format.turbo_stream { render turbo_stream: turbo_stream.remove(helpers.dom_id(@doc)) }
       format.html { redirect_to artifact_path(@artifact), notice: "Document deleted." }
     end
-
   end
 
   def move_files
@@ -158,7 +154,6 @@ class ArtifactsController < ApplicationController
           data_array.push sid + " - Not Found in User Table!"
           @moved_files.push data_array
         end
-
       end
   end
   def bulk_remove

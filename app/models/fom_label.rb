@@ -1,3 +1,3 @@
 class FomLabel < ApplicationRecord
-    belongs_to :fom_exam, optional: true
+    #belongs_to :fom_exam, optional: true
 end

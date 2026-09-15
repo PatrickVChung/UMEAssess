@@ -16,7 +16,7 @@ class EventMailer < ApplicationMailer
       full_name = meeting.user.full_name
       first_name = full_name.split(", ").last
       advisor = Advisor.find_by(id: meeting.advisor_id) # advisor email
-      advisor_type = advisor.advisor_type
+      advisor_type = advisor.advisor_type.name
       advisor_name = advisor.name
       cc_email = advisor.email
       username = cc_email.split('@').first

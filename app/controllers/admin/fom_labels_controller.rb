@@ -1,5 +1,8 @@
 module Admin
   class FomLabelsController < Admin::ApplicationController
+    def order
+      @_order ||= Administrate::Order.new(params[:order] || "id", params[:direction] || "desc")
+    end
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #

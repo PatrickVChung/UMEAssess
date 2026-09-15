@@ -11,7 +11,6 @@ class FomLabelDashboard < Administrate::BaseDashboard
     id: Field::Number,
     block_enabled: Field::Boolean,
     course_code: Field::String,
-    fom_exam: Field::BelongsTo,
     labels: Field::String.with_options(searchable: false),
     permission_group_id: Field::Number,
   }.freeze
@@ -23,20 +22,20 @@ class FomLabelDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
-    block_enabled
+    permission_group_id
     course_code
-    fom_exam
+    block_enabled
+    labels
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
-    block_enabled
-    course_code
-    fom_exam
-    labels
     permission_group_id
+    course_code
+    block_enabled
+    labels
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -45,7 +44,6 @@ class FomLabelDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     block_enabled
     course_code
-    fom_exam
     labels
     permission_group_id
   ].freeze

@@ -40,7 +40,7 @@ class MeetingsController < ApplicationController
         @student = User.find_by(id: params[:user_id])
 
       else
-        
+
       end
 
       @meeting = Meeting.new
@@ -64,7 +64,7 @@ class MeetingsController < ApplicationController
       if @meeting.advisor_type.blank? || @meeting.advisor_id.present?
         advisor = Advisor.find_by(email: Current.user.email)
         if advisor.present?
-          @meeting.advisor_type = advisor.advisor_type
+          @meeting.advisor_type = advisor.advisor_type.name
           @meeting.advisor_id = advisor.id
         else
           advisor_type = AdvisorType.find_by(id: advisor_type_id)
@@ -163,6 +163,7 @@ class MeetingsController < ApplicationController
         if @meeting.event_id.present?
           if send_email_flag["OASIS"]["send_email"] ==  true
             EventMailer.notify_student(@meeting, "Cancel").deliver_later #notify_student_advisor_appt_cancel(@meeting).deliver_later
+            sleep(3)
           end
           Event.where(id: @meeting.event_id).update_all(user_id: nil)
         end
@@ -171,7 +172,6 @@ class MeetingsController < ApplicationController
           event_id: nil,
           m_status: 'Cancelled' # Matching your status column name
         )
-
       end
 
       flash.now[:notice] = "Appointment cancelled and time slot released.!"
