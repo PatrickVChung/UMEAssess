@@ -1,0 +1,49 @@
+# db/seeds/categories.yml
+
+FoM:
+  - FUND
+  - BLHD
+  - SBM
+  - CPR
+  - HODI
+  - NSF
+  - DEVH
+
+Clinical:
+  - Shelf Exams
+  - Mock Step 1
+  - TTCE Packet
+  - CPX
+
+Progress Board:
+  - Progress Board Letter
+  - Other
+
+INTS Sample Schedules:
+  - Cancer INTS 771
+  - INTS 771CV
+  - INTS 771DA
+  - INTS 772
+  - INTS 773
+  - INTS 774
+
+FoM Grades:
+  - FoM (Tab Delimited File)
+  - 1-FUND Mid-Block Exam (Tab Delimited File)
+  - 2-BLHD Mid-Block Exam (Tab Delimited File)
+  - 3-SBM Mid-Block Exam (Tab Delimited File)
+  - 4-CPR Mid-Block Exam (Tab Delimited File)
+  - 5-HODI Mid-Block Exam (Tab Delimited File)
+  - 6-NSF Mid-Block Exam (Tab Delimited File)
+  - 7-DEVH Mid-Block Exam (Tab Delimited File)
+
+Formative Feedback:
+  - Formative Feedback (Tab Delimited File)
+  - Informatics Feedback (Tab Delimited File)
+  - Q-Informatics Feedback (Tab Delimited File)
+
+EG Cohort:
+  - EG Cohort (Tab Delimited File)
+
+Preceptorship Evaluation:
+    - Preceptorship Evaluation (Tab Delimited File)

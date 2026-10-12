@@ -29,23 +29,32 @@
                           data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
             <% end %>
 
-            <% if current_user.coaching_type == 'admin' || (['nmai', 'fruhwirt'].include? current_user.username) %>
+            <% if artifact.title == "FoM" && (current_user.coaching_type == 'admin' || (['nmai', 'fruhwirt'].include? current_user.username)) %>
               /
               <%= link_to 'Move files', move_files_artifact_path(artifact) %>
               /
               <%= link_to 'Ultimate Method', ultimate_method_artifact_path(artifact) %>
             <% end %>
 
-            <% if artifact.content.to_s.include?("Preceptor") && %w[dean admin].include?(current_user.coaching_type) %>
-              / <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact) %>
+            <%= turbo_frame_tag "upload_preceptor_eval" do %>
+              <% if artifact.content.to_s.include?("Preceptor") && %w[dean admin].include?(current_user.coaching_type) %>
+                / <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact) %>
+              <% end %>
             <% end %>
 
-            <% if artifact.content.to_s.include?("Formative Feedback") && %w[dean admin].include?(current_user.coaching_type) %>
-              / <%= link_to 'Process FormativeFeedback', process_formative_feedback_artifact_path(artifact) %>
+            <%= turbo_frame_tag "upload_data_frame" do %>
+              <% if artifact.content.to_s.include?("Formative Feedback") && %w[dean admin].include?(current_user.coaching_type) %>
+                / <%= link_to 'Process FormativeFeedback', process_formative_feedback_artifact_path(artifact) %>
+              <% end %>
+            <% end %>
+            <%= turbo_frame_tag "upload_InformaticsFeedback" do %>
+              <% if artifact.content.to_s == "Informatics Feedback (Tab Delimited File)" && %w[dean admin].include?(current_user.coaching_type) %>
+                /  <%= link_to 'Process Informatics Feedback', process_informatics_feedback_artifact_path(artifact) %>
+              <% end %>
             <% end %>
 
-            <% if artifact.content.to_s.include?("Informatics Feedback") && %w[dean admin].include?(current_user.coaching_type) %>
-              / <%= link_to 'Process InformaticsFeedback', process_informatics_feedback_artifact_path(artifact) %>
+            <% if artifact.content.to_s.include?("Q-Informatics") && %w[dean admin].include?(current_user.coaching_type) %>
+              / Please CLICK on FoM Exams Menu to process Qualtrics Survey File
             <% end %>
 
             <% if artifact.content.to_s.include?("Mock Step 1") && %w[dean admin].include?(current_user.coaching_type) %>

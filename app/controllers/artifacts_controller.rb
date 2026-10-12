@@ -1,5 +1,7 @@
 class ArtifactsController < ApplicationController
   before_action :load_resources
+  include ArtifactsHelper
+  include FomExamsHelper
 
   def index
     if params[:user_id].present?
@@ -96,6 +98,9 @@ class ArtifactsController < ApplicationController
   def process_formative_feedback
     @artifact = Artifact.find(params[:id])
     @log_results = Artifact.process_upload_data(@artifact, "FormativeFeedback")
+    # # Temporary debug line - check your server log terminal
+    # Rails.logger.debug "=== LOG RESULTS CLASS: #{@log_results.class} ==="
+    # Rails.logger.debug "=== LOG RESULTS CONTENT: #{@log_results.inspect} ==="
   end
 
   def process_informatics_feedback

@@ -16,6 +16,30 @@ class Artifact < ApplicationRecord
                     "pppd1", "pppd2", "pppd3", "pppd4", "pppd5", "pppd6", "pppd7", "pppd8", "pppd9", "pppd10", "pppd11",
                     "sbpic1", "sbpic2", "sbpic3", "sbpic4", "sbpic5"]
 
+      PROCESSORS = {
+        'PreceptorEval' => {
+          valid: ->(row) { row['email'].present? },
+          action: :update_preceptor_eval,
+          failed_log: ->(row) { [row['full_name'], ' --> NOT Updated'] }
+        },
+        'InformaticsFeedback' => {
+          valid: ->(row) { row['email'].present? },
+          action: :update_informatics_feedback,
+          failed_log: ->(row) { [row['full_name'], "#{row['email']} --> NOT Updated"] }
+        },
+        'FormativeFeedback' => {
+          valid: ->(row) { row['q1'].present? },
+          action: :update_formative_feedback,
+          failed_log: ->(row) { [row['q1'], ' --> NOT Updated'] }
+        },
+        'UsmleExam' => {
+          valid: ->(row) { row['sid'].present? },
+          action: :update_usmle_exam,
+          failed_log: ->(row) { [row['full_name'], "#{row['sid']} --> NOT Updated"] }
+        }
+      }.freeze
+
+
     def self.format_date(in_date)
       temp_date = in_date.split("/")
       return temp_date[2] + "/" + temp_date[0] + "/" + temp_date[1]
@@ -78,59 +102,56 @@ class Artifact < ApplicationRecord
       end
     end
 
-    def self.process_upload_data (artifact, code)
-      log_results = []
-      row_to_hash = {}
-      no_updated = 0
-      no_not_updated = 0
-      total_count = 0
 
-      CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true, col_sep: "\t", encoding: 'cp1252') do |row|
-        #yes_updated = true
-        total_count += 1
-
-          yes_updated = false
-          if code == 'PreceptorEval' && !row["email"].blank?
-            yes_updated = update_preceptor_eval(row)
-          elsif code == 'InformaticsFeedback' && !row["email"].blank?
-              full_name = row["full_name"]
-              email = row["email"]
-              yes_updated = update_informatics_feedback(row)
-          elsif code == 'FormativeFeedback' && !row["q1"].blank?
-            yes_updated = update_formative_feedback(row)
-          elsif code == 'UsmleExam' && !row["sid"].blank?
-            yes_updated = update_usmle_exam(row)
-          end
-
-          if yes_updated
-            no_updated += 1
-          else
-            if code == 'PreceptorEval'
-              row_to_hash.store(row["full_name"], " --> NOT Updated")
-            elsif code == 'FormativeFeedback'
-              row_to_hash.store(row["q1"], " --> NOT Updated")
-            elsif code == "InformaticsFeedback"
-              row_to_hash.store(full_name, email + " --> NOT Updated")
-            elsif code == "UsmleExam"
-                row_to_hash.store(full_name, row["sid"] + " --> NOT Updated")
-            end
-            no_not_updated += 1
-            log_results.push row_to_hash
-          end
-      end
-      # attachment = ActiveStorage::Attachment.find(artifact.documents.first.id)
-      # filename = attachment.blob.filename.to_s
-      # if !filename.include? 'processed'
-      #   attachment.blob.update!(filename: rename_file(filename))
-      # end
-      row_to_hash = {}
-      row_to_hash.store("no_updated", no_updated)
-      row_to_hash.store("no_not_updated", no_not_updated)
-      row_to_hash.store("total_count", total_count)
-      log_results.push row_to_hash
-
-      return log_results
-    end
+    #
+    # def self.process_upload_data (artifact, code)
+    #   log_results = []
+    #   row_to_hash = {}
+    #   no_updated = 0
+    #   no_not_updated = 0
+    #   total_count = 0
+    #
+    #   CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true, col_sep: "\t", encoding: 'cp1252') do |row|
+    #     #yes_updated = true
+    #     total_count += 1
+    #
+    #       yes_updated = false
+    #       if code == 'PreceptorEval' && !row["email"].blank?
+    #         yes_updated = update_preceptor_eval(row)
+    #       elsif code == 'InformaticsFeedback' && !row["email"].blank?
+    #           full_name = row["full_name"]
+    #           email = row["email"]
+    #           yes_updated = update_informatics_feedback(row)
+    #       elsif code == 'FormativeFeedback' && !row["q1"].blank?
+    #         yes_updated = update_formative_feedback(row)
+    #       elsif code == 'UsmleExam' && !row["sid"].blank?
+    #         yes_updated = update_usmle_exam(row)
+    #       end
+    #
+    #       if yes_updated
+    #         no_updated += 1
+    #       else
+    #         if code == 'PreceptorEval'
+    #           row_to_hash.store(row["full_name"], " --> NOT Updated")
+    #         elsif code == 'FormativeFeedback'
+    #           row_to_hash.store(row["q1"], " --> NOT Updated")
+    #         elsif code == "InformaticsFeedback"
+    #           row_to_hash.store(full_name, email + " --> NOT Updated")
+    #         elsif code == "UsmleExam"
+    #             row_to_hash.store(full_name, row["sid"] + " --> NOT Updated")
+    #         end
+    #         no_not_updated += 1
+    #         log_results.push row_to_hash
+    #       end
+    #   end
+    #   row_to_hash = {}
+    #   row_to_hash.store("no_updated", no_updated)
+    #   row_to_hash.store("no_not_updated", no_not_updated)
+    #   row_to_hash.store("total_count", total_count)
+    #   log_results.push row_to_hash
+    #
+    #   return log_results
+    # end
 
     def self.fix_str(in_str)
       if in_str.rstrip == "" or in_str.rstrip == "." or in_str.rstrip == "*"
@@ -165,9 +186,8 @@ class Artifact < ApplicationRecord
         row_hash.delete("question_set2")
         row_hash.delete("sid")
         FormativeFeedback.where(response_id: row["response_id"]).first_or_create.update(row_hash)
-
+        return true
       end
-      return true
     end
 
     def self.process_formative_feedback_data (artifact)
@@ -329,7 +349,6 @@ class Artifact < ApplicationRecord
   				@log_data.push( row_hash.keys.inspect)
           return
   			end
-
   	end
 
     def self.read_competency_excel(artifact)
@@ -464,5 +483,39 @@ class Artifact < ApplicationRecord
       return bulk_remove_files
     end
 
+    def self.process_upload_data(artifact, code)
+      processor = PROCESSORS[code]
+      raise ArgumentError, "Unsupported upload code: #{code}" unless processor
 
+      document = artifact.documents.first
+      # return [] unless document&.attached?
+
+      failed_logs = []
+      updated_count = 0
+      not_updated_count = 0
+      total_count = 0
+
+      # Modern ActiveStorage stream processing (avoids high RAM usage)
+      document.open do |file|
+        CSV.foreach(file.path, headers: true, col_sep: "\t", encoding: 'cp1252:utf-8') do |row|
+          total_count += 1
+
+          if processor[:valid].call(row) && send(processor[:action], row)
+            updated_count += 1
+          else
+            not_updated_count += 1
+            key, message = processor[:failed_log].call(row)
+            failed_logs << { key => message }
+          end
+        end
+      end
+
+      summary = {
+        'no_updated' => updated_count,
+        'no_not_updated' => not_updated_count,
+        'total_count' => total_count
+      }
+
+      failed_logs << summary
+    end
 end
