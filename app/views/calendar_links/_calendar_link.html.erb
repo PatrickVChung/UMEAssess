@@ -1,0 +1,17 @@
+<div id="<%= dom_id calendar_link %>">
+  <div>
+    <strong>Title:</strong>
+    <%= calendar_link.title %>
+  </div>
+
+  <div>
+    <strong>Advisor Name:</strong>
+    <%= Advisor.find_by(id: calendar_link.advisor_id).name %>
+  </div>
+
+  <div>
+    <strong>Url:</strong>
+    <%= calendar_link.url %>
+  </div>
+
+</div>

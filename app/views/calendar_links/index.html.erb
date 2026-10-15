@@ -1,0 +1,77 @@
+<% content_for :title, "Calendar Links" %>
+
+<%# Flash Notice Banner %>
+<% if notice.present? %>
+  <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i> <%= notice %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+
+<%# Header & New Action Bar %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold text-dark mb-1">Calendar Links</h2>
+    <p class="text-muted mb-0">Manage scheduling links and descriptions assigned to advisors.</p>
+  </div>
+  <div>
+    <%= link_to new_calendar_link_path, class: "btn btn-primary d-flex align-items-center gap-2 shadow-sm" do %>
+      <i class="bi bi-plus-lg"></i> New Calendar Link
+    <% end %>
+  </div>
+</div>
+
+<%# Table Container Card %>
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light text-secondary text-uppercase fs-7">
+          <tr>
+            <th class="ps-4">Advisor Name</th>
+            <th>Title</th>
+            <th>URL</th>
+            <th>Description</th>
+            <th class="text-end pe-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @calendar_links.any? %>
+            <% @calendar_links.each do |calendar_link| %>
+              <tr>
+                <td class="ps-4 fw-semibold text-dark">
+                  <%= calendar_link.advisor&.name || "Unassigned" %>
+                </td>
+                <td>
+                  <%= link_to calendar_link.title, calendar_link, class: "text-decoration-none fw-medium text-primary" %>
+                </td>
+                <td>
+                  <%= link_to truncate(calendar_link.url, length: 30), calendar_link.url, target: "_blank", class: "text-muted small text-decoration-underline" %>
+                </td>
+                <td class="text-muted small">
+                  <%= calendar_link.description %>
+                </td>
+                <td class="text-end pe-4">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to "Show", calendar_link, class: "btn btn-outline-secondary" %>
+                    <%= link_to "Edit", edit_calendar_link_path(calendar_link), class: "btn btn-outline-primary" %>
+                    <%= button_to "Delete", calendar_link, method: :delete,
+                          data: { turbo_confirm: "Are you sure you want to delete this calendar link?" },
+                          class: "btn btn-outline-danger" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="5" class="text-center py-5 text-muted">
+                <i class="bi bi-calendar-x fs-2 d-block mb-2"></i>
+                No calendar links found. Get started by creating one above!
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

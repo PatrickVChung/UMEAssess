@@ -31,13 +31,15 @@ class NewCompetenciesController < ApplicationController
       preceptor_assesses = PreceptorAssess.where(user_id: @user.id).load_async.map(&:attributes)
       @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
-      if ["20", "21", "22"].include? @user.permission_group_id.to_s   # only Med26, Med27, Med28
-      # Commented out on 8/19/2026 to exclude EPA12 & EPA13 WBA graphs
-      #   @wbas = Epa.where(user_id: @user.id)
-      # else
-        @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", @user.id)
+      if @user.permission_group_id.to_i >= 20
+        # If excluding EPA12 & EPA13 for ALL permission levels:
+        @wbas = Epa.where(user_id: @user.id)
+                   .where.not(epa: ["EPA12", "EPA13"])
       end
-      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
+
+      if @wbas.present?
+        @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
+      end
       @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
 
       if ["20", "21", "22"].include? @user.permission_group_id.to_s  # only Med26, Med27, Med28

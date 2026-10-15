@@ -55,7 +55,8 @@ OUTLOOK_MOBERLY = '<div id="calendlyAppts">' +
        when advisor.name.include?("Bailey")
          CALENDLY_BAILEY
        when advisor.name.include?("Lauren")
-         CALENDLY_SIGMAN
+        CalendarLink.find_by(advisor_id: advisor.id)&.description.body
+         # CALENDLY_SIGMAN
        when advisor.name.include?("Domingo")
          CALENDLY_DOMINGO
        when advisor.name.include?("Gause")
@@ -65,7 +66,8 @@ OUTLOOK_MOBERLY = '<div id="calendlyAppts">' +
        when advisor.name.include?("Moberly")
          OUTLOOK_MOBERLY
        when advisor.name.include?("Solotskaya")
-         OUTLOOK_SOLOTSKAYA
+         CalendarLink.find_by(advisor_id: advisor.id)&.description.body
+         # OUTLOOK_SOLOTSKAYA
        when advisor.name.include?("Raven")
          OUTLOOK_RAVEN
        else

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :calendar_links
   namespace :admin do
       resources :advisors
       resources :advisor_types
@@ -261,7 +262,9 @@ Rails.application.routes.draw do
   end
   get 'wba_graphs/index', to: 'wba_graphs#index'
   get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
-  
+
+  resources :epas
+
   resources :usmle_exams
 
   # Error pages routing

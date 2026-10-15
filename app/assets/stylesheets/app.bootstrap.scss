@@ -3,7 +3,8 @@
 @use "datatables.net-bs5/css/dataTables.bootstrap5.css";
 @use "jquery-contextmenu/dist/jquery.contextMenu.css";
 @use "tom-select/dist/css/tom-select.bootstrap5.css";
-@import "course_schedules.css";
+@import "./course_schedules";
+@import "./actiontext";
 
 .navbar {
   transition: box-shadow 0.25s ease-in-out, background-color 0.25s ease-in-out;

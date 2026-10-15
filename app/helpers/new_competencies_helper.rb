@@ -507,7 +507,7 @@ module NewCompetenciesHelper
 
   def hf_clinical_assessors_graph(wba, user, total_wba_count)
 
-    if wba.empty?
+    if wba.present?
       return nil
     end
 

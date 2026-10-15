@@ -1,0 +1,53 @@
+<div data-controller="datatable">
+  <h5>Detail WBAs</h5>
+  <hr>
+  <% if !@epas.nil? %>
+    <table data-datatable-target="table" id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true">
+      <thead>
+        <tr>
+          <% @epa_headers.each do |header| %>
+            <% if !header.include? "no_of_times" and !header.include? "meta_" %>
+              <% if header == 'id' %>
+                <th scope='col' style="width: 8%;"><%= header.titleize %></th>
+              <% else %>
+                <th><%= header.titleize %></th>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+      </thead>
+     <tbody>
+       <% @epas.each do |epa| %>
+          <tr>
+            <% epa.each do |key, val| %>
+              <% if !key.include? "no_of_times" and !key.include? "meta_" %>
+                <% if key == 'id' %>
+                    <% if ['chungp', 'budd'].include? Current.user.username %>
+                      <td>
+                        <%= link_to ("<i class='bi bi-pencil'></i>" + val.to_s).html_safe, edit_epa_path(id: val), target: :_blank %> /
+                        <% response_id = epa["response_id"] %>
+                        <%= link_to "<i class='bi bi-trash-fill'></i>".html_safe,
+                                    epa_path(id: val),
+                                    class: "text-danger",
+                                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this record?" },
+                                    title: "Delete #{response_id}" %>
+
+                      </td>
+                    <% else %>
+                      <td><%= val %></td>
+                    <% end %>
+                <% else %>
+                  <td><%= val %></td>
+                <% end %>
+
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+  <hr>
+    <h5> No WBAs Found! </h5>
+  <% end %>
+</div>

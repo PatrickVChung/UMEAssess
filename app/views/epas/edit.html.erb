@@ -1,0 +1,17 @@
+<div class="container py-5">
+  <div class="card shadow-sm mx-auto" style="max-width: 900px;">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Edit WBA</h4>
+
+      <div>
+        <%= link_to "View", @epa, class: "btn btn-outline-primary btn-sm" %>
+        <%= link_to "Back", epas_path(uuid: @epa.user.uuid),
+            class: "btn btn-outline-secondary btn-sm" %>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <%= render "form", epa: @epa %>
+    </div>
+  </div>
+</div>

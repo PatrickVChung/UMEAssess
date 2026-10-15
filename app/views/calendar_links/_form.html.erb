@@ -1,0 +1,86 @@
+<%= form_with(model: calendar_link, class: "needs-validation", data: { turbo: false }) do |form| %>
+
+  <%# Error Alert Callout %>
+  <% if calendar_link.errors.any? %>
+    <div class="alert alert-danger alert-dismissible fade show mb-4 role="alert"">
+      <div class="d-flex align-items-center mb-2">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+        <h5 class="alert-heading mb-0">
+          <%= pluralize(calendar_link.errors.count, "error") %> prohibited this link from being saved:
+        </h5>
+      </div>
+      <hr class="my-2">
+      <ul class="mb-0 ps-3">
+        <% calendar_link.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+
+      <%# Advisor Field %>
+      <div class="mb-3">
+        <%= form.label :advisor_id, "Advisor", class: "form-label fw-semibold text-secondary" %>
+        <%= form.collection_select :advisor_id, Advisor.order(:name), :id, :name,
+              { prompt: "Choose an advisor..." },
+              { class: "form-select #{'is-invalid' if calendar_link.errors[:advisor_id].any?}" } %>
+        <% if calendar_link.errors[:advisor_id].any? %>
+          <div class="invalid-feedback d-block">
+            <%= calendar_link.errors[:advisor_id].first %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Title Field %>
+      <div class="mb-3">
+        <%= form.label :title, "Title", class: "form-label fw-semibold text-secondary" %>
+        <%= form.text_field :title,
+              class: "form-control #{'is-invalid' if calendar_link.errors[:title].any?}",
+              placeholder: "e.g., Spring 2026 Academic Calendar" %>
+        <% if calendar_link.errors[:title].any? %>
+          <div class="invalid-feedback d-block">
+            <%= calendar_link.errors[:title].first %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Standard URL Field %>
+      <div class="mb-3">
+        <%= form.label :url, "Calendar URL", class: "form-label fw-semibold text-secondary" %>
+        <div class="input-group">
+          <span class="input-group-text bg-light text-muted">https://</span>
+          <%= form.url_field :url,
+                class: "form-control #{'is-invalid' if calendar_link.errors[:url].any?}",
+                placeholder: "example.com/calendar" %>
+        </div>
+        <% if calendar_link.errors[:url].any? %>
+          <div class="invalid-feedback d-block">
+            <%= calendar_link.errors[:url].first %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Optional Action Text Rich Text Field (e.g., Description) %>
+      <div class="mb-3">
+        <%= form.label :description, "Notes / Description", class: "form-label fw-semibold text-secondary" %>
+        <%= form.rich_text_area :description,
+              class: "form-control #{'is-invalid' if calendar_link.errors[:description].any?}" %>
+        <div class="form-text text-muted">Include any special instructions or details about this calendar link.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <%# Action Buttons %>
+  <div class="d-flex align-items-center justify-content-between">
+    <%= form.submit calendar_link.persisted? ? "Update Calendar Link" : "Create Calendar Link",
+          class: "btn btn-primary px-4 fw-semibold" %>
+
+    <%= link_to "Cancel", calendar_links_path, class: "btn btn-outline-secondary px-3" %>
+  </div>
+
+<% end %>

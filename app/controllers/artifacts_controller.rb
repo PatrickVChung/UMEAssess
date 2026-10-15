@@ -4,11 +4,14 @@ class ArtifactsController < ApplicationController
   include FomExamsHelper
 
   def index
-    if params[:user_id].present?
-      @artifacts = Artifact.where(user_id: params[:user_id])
-    else
-      @artifacts = Artifact.where(user_id: Current.user.id)
-    end
+    # if params[:uuid].present?
+    #   @artifacts = Artifact.where(uuid: params[:uuid])
+    # else
+    #   @artifacts = Artifact.where(uuuid: Current.user.uuid)
+    # end
+    if params[:uuid].present?
+      @artifacts = Current.user.artifacts
+    end 
     @cohort_students = User.where(permission_group_id: params[:permission_group_id]).order(:full_name)
 
     respond_to do |format|

@@ -3,4 +3,5 @@ class Advisor < ApplicationRecord
   has_many :meetings, class_name: 'Meeting'
   has_many :events
   belongs_to :advisor_type
+  has_one :calendar_link
 end
