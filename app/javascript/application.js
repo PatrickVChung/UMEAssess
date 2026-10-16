@@ -6,6 +6,7 @@ import * as bootstrap from "bootstrap"
 import "bootstrap-icons/font/bootstrap-icons.css"
 import "trix"
 import "@rails/actiontext"
+Trix.config.textAttributes.href.attributes.target = "_blank"
 
 window.bootstrap = bootstrap
 // 2. Import your legacy CoffeeScript files

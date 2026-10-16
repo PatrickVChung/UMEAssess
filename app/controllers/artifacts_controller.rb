@@ -4,14 +4,11 @@ class ArtifactsController < ApplicationController
   include FomExamsHelper
 
   def index
-    # if params[:uuid].present?
-    #   @artifacts = Artifact.where(uuid: params[:uuid])
-    # else
-    #   @artifacts = Artifact.where(uuuid: Current.user.uuid)
-    # end
     if params[:uuid].present?
+      @artifacts = User.find_by(uuid: params[:uuid]).artifacts
+    else
       @artifacts = Current.user.artifacts
-    end 
+    end
     @cohort_students = User.where(permission_group_id: params[:permission_group_id]).order(:full_name)
 
     respond_to do |format|
@@ -206,13 +203,7 @@ class ArtifactsController < ApplicationController
       @cohort_students = User.where(permission_group_id: params[:permission_group_id]).order(:full_name)
     end
 
-    # def debug_current_user
-    #   Rails.logger.warn "!!! ARTIFACTS DEBUG: Current.user is #{Current.user.inspect} !!!"
-    #   Rails.logger.warn "!!! COOKIE PRESENT: #{cookies[:ume_session_id].present?} !!!"
-    # end
-
     def move_file_to_user(artifact)
-
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
         if !document.filename.to_s.include? "image00"  ## check to see if it is an image file from informatics feedback so that we can move to it
@@ -274,7 +265,5 @@ class ArtifactsController < ApplicationController
           document.destroy # remove it from the artifact
         end
       end
-
     end
-
 end
