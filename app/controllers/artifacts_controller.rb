@@ -173,7 +173,10 @@ class ArtifactsController < ApplicationController
 
   def purge_all_documents
     if params[:content].present?
-      file_path = Rails.root.join("public", "FoM_#{params[:content]}_#{params[:file_type]}.txt")
+      content = File.basename(params[:content].to_s)
+      file_type = File.basename(params[:file_type].to_s)
+      file_path = Rails.root.join("public", "FoM_#{content}_#{file_type}.txt")
+
       CSV.foreach(file_path, col_sep: "\t", headers: true) do |row|
         artifact_id = row["artifact_id"]
         user_id = row["user_id"]

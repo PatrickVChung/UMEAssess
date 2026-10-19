@@ -13,7 +13,7 @@ module Admin
       # Check if the user has the correct role
       # Adjust the comparison based on whether your role is a string or enum
       unless Current.user&.superadmin?
-        redirect_to root_path, alert: "Access denied: Superadmin privileges required."
+        redirect_to root_path, alert: "Access denied: Admin privileges required."
       end
     end
   end

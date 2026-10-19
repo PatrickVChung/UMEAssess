@@ -124,7 +124,7 @@
                     </li>
 
                     <li>
-                      <%= link_to send_alerts_fom_exams_path, data: { turbo_method: :post, turbo_confirm: "Are you sure you want to send out alerts?" }, class: "dropdown-item d-flex align-items-center gap-2 py-2" do %>
+                      <%= link_to send_alerts_fom_exams_path, class: "dropdown-item d-flex align-items-center gap-2 py-2", target: "_blank" do %>
                         <i class="bi bi-bell-fill text-warning"></i>
                         <span>Send out Alerts</span>
                       <% end %>

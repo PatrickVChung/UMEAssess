@@ -20,6 +20,22 @@ class ApplicationController < ActionController::Base
   #   puts "=== COOKIE DEBUG END ==="
   # end
 
+  # Catch CanCanCan't authorization failure exception
+  rescue_from CanCan::AccessDenied do |exception|
+    respond_to do |format|
+      # For JSON/API requests, return a clean 403 status
+      format.json { head :forbidden }
+
+      # For standard HTML requests, redirect with an alert
+      format.html { redirect_to root_path, alert: exception.message }
+
+      # For Rails 8 Turbo Streams (if applicable)
+      # format.turbo_stream do
+      #   render turbo_stream: turbo_stream.append("flashes", partial: "shared/flashes", locals: { alert: exception.message }), status: :forbidden
+      # end
+    end
+  end
+
   private
 
     def require_authentication

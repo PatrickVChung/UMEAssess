@@ -368,13 +368,15 @@ class EventsController < ApplicationController
 
   def get_ics_files
     if params[:ics_file].present?
-      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]
+      filename = File.basename(params[:ics_file].to_s)
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{filename}.ics" ]
     end
   end
 
   def download_file
     if params[:file_name].present?
-      send_file  params[:file_name], type: 'text/calendar', disposition: 'download'
+      filename = File.basename(params[:file_name].to_s)
+      send_file  filename, type: 'text/calendar', disposition: 'download'
     end
   end
 
@@ -382,7 +384,8 @@ class EventsController < ApplicationController
     if params[:ics_file].present?
       @deleted_ics_files = []
       today_date = Date.today.strftime("%Y_%m_%d")
-      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]
+      filename = File.basename(params[:ics_file].to_s)
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{filename}" ]
       @ics_files.each do |file|
         file_date = File.basename(file).split("-").first
         if file_date < today_date

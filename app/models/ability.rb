@@ -11,7 +11,8 @@ class Ability
     alias_action :create, :update, :destroy, to: :alter
     alias_action :read, :update, to: :modify
 
-    all_users_permissions user
+    #all_users_permissions user  # not being used
+    
     # Normal admin function
     if user.admin_or_higher?
       admin_users_permissions user

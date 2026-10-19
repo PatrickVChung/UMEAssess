@@ -10,8 +10,8 @@ application.register("accordion-checker", AccordionCheckerController)
 import ArtifactFormController from "./artifact_form_controller"
 application.register("artifact-form", ArtifactFormController)
 
-import AutoSubmitController from "./auto_submit_controller"
-application.register("auto-submit", AutoSubmitController)
+import AutoSubmitController from "./autosubmit_controller"
+application.register("autosubmit", AutoSubmitController)
 
 import CalendarController from "./calendar_controller"
 application.register("calendar", CalendarController)
