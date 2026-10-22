@@ -104,6 +104,12 @@ class User < ApplicationRecord
    end
  end
 
+ def admin_or_higher?
+    role == 'admin' 
+    # Or if you use an enum or boolean flags:
+    # admin? || moderator?
+  end
+
 
  def current_user
    return Current.user

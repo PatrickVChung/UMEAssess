@@ -1,21 +1,38 @@
-<ul id="MainFormativeTabs" class="nav nav-tabs" role="tablist">
+<ul id="MainFormativeTabs" class="nav nav-tabs list-unstyled" role="tablist">
+  <li class="nav-item" role="presentation" style="list-style: none !important;">
+    <button class="nav-link fw-bold fst-italic active"
+            id="informatics-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#informatics"
+            type="button"
+            role="tab"
+            aria-controls="informatics"
+            aria-selected="true"
+            style="background-color: #f4cccc;">
+      Informatics Feedback
+    </button>
+  </li>
+  <li class="nav-item" role="presentation" style="list-style: none !important;">
+    <button class="nav-link fw-bold fst-italic"
+            id="csa-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#CSAFeedback"
+            type="button"
+            role="tab"
+            aria-controls="CSAFeedback"
+            aria-selected="false"
+            style="background-color: #fce5cd;">
+      CSA Formative Feedback
+    </button>
+  </li>
+</ul>
 
-    <li class="bold-italic nav-item waves-effect waves-light">
-      <a class="nav-link" id="informatics-tab" data-bs-toggle="tab" href="#informatics" style="background-color:#f4cccc" role="tab" aria-controls="informatics" aria-selected="true">Informatics Feedback
-      </a>
-    </li>
-    <li class="bold-italic nav-item waves-effect waves-light">
-      <a class="nav-link" id="csa-tab" data-bs-toggle="tab" href="#CSAFeedback" style="background-color:#fce5cd" role="tab" aria-controls="CSAFeedback" aria-selected="false">
-        CSA Formative Feedback
-      </a>
-    </li>
-  </ul>
-  <div class="tab-content">
-    <div id="informatics" class="tab-pane fade active show" role="tabpanel"  aria-labelledby="informatics-tab">
-      <%= render partial: "informatics_feedback" %>
-    </div>
-
-    <div id="CSAFeedback" class="tab-pane fade" role="tabpanel"  aria-labelledby="csa-tab">
-      <%= render partial: "formative_feedbacks" %>
-    </div>
+<div class="tab-content pt-3">
+  <div id="informatics" class="tab-pane fade show active" role="tabpanel" aria-labelledby="informatics-tab" tabindex="0">
+    <%= render partial: "informatics_feedback" %>
   </div>
+
+  <div id="CSAFeedback" class="tab-pane fade" role="tabpanel" aria-labelledby="csa-tab" tabindex="0">
+    <%= render partial: "formative_feedbacks" %>
+  </div>
+</div>

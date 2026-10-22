@@ -201,9 +201,13 @@ class ArtifactsController < ApplicationController
     end
 
     def load_resources
-      @categories = Category.all.order(:name)
-      @student_groups = PermissionGroup.where ("id >= 19")
-      @cohort_students = User.where(permission_group_id: params[:permission_group_id]).order(:full_name)
+      if Current.user.coaching_type == 'student'
+        @categories = Category.where(name: 'Clinical')
+      else
+        @categories = Category.all.order(:name)
+        @student_groups = PermissionGroup.where ("id >= 19")
+        @cohort_students = User.where(permission_group_id: params[:permission_group_id]).order(:full_name)
+      end
     end
 
     def move_file_to_user(artifact)
