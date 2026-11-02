@@ -207,7 +207,7 @@ Rails.application.routes.draw do
       get 'resend_calendar_invite', action: :resend_calendar_invite, controller: 'events', to: 'events#resend_calendar_invite'
       get 'resend_invite', action: :resend_invite, controller: 'events', to: 'events#resend_invite'
       get 'batch_delete', action: :batch_delete, controller: 'events', to: 'events#batch_delete'
-      get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
+      post 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
       get 'get_events_by_advisor', action: :get_events_by_advisor, controller: 'events', to: 'events#get_events_by_advisor'
       post 'calendly_click', action: :calendly_click, controller: 'events', to: 'events#calendly_click'
       get 'download_file', param: :file_name, action: :download_file,  controller: 'events', to: 'events#download_file'

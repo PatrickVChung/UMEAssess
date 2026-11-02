@@ -413,7 +413,7 @@ class EventsController < ApplicationController
 
   def resend_invite
     if params[:id].present?
-       @meeting = Coaching::Meeting.find_by(event_id: params[:id])
+       @meeting = Meeting.find_by(event_id: params[:id])
        EventMailer.notify_student(@meeting, "Resend").deliver_later
        @student_name = @meeting.user.full_name
        @student_email = @meeting.user.email
@@ -429,7 +429,7 @@ class EventsController < ApplicationController
 
   def list_past_valid_appointments
     if params[:start_date].present? and params[:end_date].present?
-      @advisor = Advisor.find_by(email: current_user.email)
+      @advisor = Advisor.find_by(email: Current.user.email)
       start_date = params[:start_date]   #.to_datetime.strftime("%Y/%m/%d")
       end_date = params[:end_date]
       if @advisor.nil?
@@ -437,16 +437,15 @@ class EventsController < ApplicationController
       else
         @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL and advisor_id=?", start_date, end_date, @advisor.id).order(:user_id, :start_date)
       end
-
     end
     respond_to do |format|
       format.html
-      format.js { render action: 'display_past_valid_appointments', status: 200 }
+      # format.js { render action: 'display_past_valid_appointments', status: 200 }
     end
-
   end
 
   def batch_delete
+    @advisors ||= Advisor.all.order(:name)
     @events = nil
     if params[:advisor_id].present?
       if params[:purge].present? and params[:purge] == 'purgeEvent'
@@ -462,15 +461,17 @@ class EventsController < ApplicationController
   end
 
   def delete_all
-    events = JSON.parse(params[:events])
+    # Supports either params[:event_ids] (recommended) or your previous params[:events]
+    event_ids = params[:event_ids] || params[:events]
 
-    if !events.empty?
-      events.each do |event_id|
-        Event.destroy(event_id.to_i)
-      end
-      notice_msg = 'Apppointments were successfully deleted!'
+    if event_ids.present?
+
+      # Batch-destroys the records efficiently while still running any model callbacks
+      Event.where(id: event_ids).destroy_all
+      redirect_to events_path, notice: 'Appointments were successfully deleted.'
+    else
+      redirect_to events_path, alert: 'Please select at least one appointment to delete.'
     end
-    flash.alert = notice_msg
   end
 
   def get_events_by_advisor

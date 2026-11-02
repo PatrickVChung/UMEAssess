@@ -1,17 +1,55 @@
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h2 class="card-title fs-5 fw-bold mb-4">Edit Appointment</h2>
 
-<%= simple_form_for(@event, html: { class: 'form-horizontal' },wrapper: :horizontal_form) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+        <%= form_with(model: @event, class: "needs-validation", novalidate: true) do |f| %>
+          <% if @event.errors.any? %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <h4 class="alert-heading fs-6 fw-bold">Please correct the following errors:</h4>
+              <ul class="mb-0 ps-3">
+                <% @event.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% end %>
 
-  <div class="form-inputs">
-    <%= f.input :title %>
-    <%= f.input :description %>
-    <%= f.input :start_date %>
-    <%= f.input :end_date %>
-    <%= f.input :advisor_id %>
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <%= f.label :title, class: "form-label fw-semibold" %>
+              <%= f.text_field :title, class: "form-control", placeholder: "Enter title" %>
+            </div>
+
+            <div class="col-12">
+              <%= f.label :description, class: "form-label fw-semibold" %>
+              <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Enter description" %>
+            </div>
+
+            <div class="col-md-6">
+              <%= f.label :start_date, class: "form-label fw-semibold" %>
+              <%= f.datetime_field :start_date, class: "form-control" %>
+            </div>
+
+            <div class="col-md-6">
+              <%= f.label :end_date, class: "form-label fw-semibold" %>
+              <%= f.datetime_field :end_date, class: "form-control" %>
+            </div>
+
+            <div class="col-12">
+              <%= f.label :advisor_id, "Advisor", class: "form-label fw-semibold" %>
+              <%= f.collection_select :advisor_id, Advisor.all, :id, :name, { prompt: "Select an advisor" }, { class: "form-select" } %>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <%= link_to "Cancel", events_path, class: "btn btn-outline-secondary" %>
+            <%= f.submit "Update Appointment", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Update Appointment" %>
-  </div>
-<% end %>
+</div>

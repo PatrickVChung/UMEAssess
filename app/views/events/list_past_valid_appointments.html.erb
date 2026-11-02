@@ -1,17 +1,49 @@
-<br />
-<h5>List Past Valid Appointments</h5>
-<hr>
-<div class="card">
-  <div class="card-body card-body-color">
-    <%= form_tag(list_past_valid_appointments_events_path, param: [:start_date, :end_date], method: 'get', remote: true) do %>
-      <div class="form-group">
-        <label class="control-label" for="date">Start Date</label>
-        <input id="start_date" name="start_date" placeholder="YYYY/MM/DD" type="text" required/>
-        <label class="control-label" for="date">End Date</label>
-        <input id="end_date" name="end_date" placeholder="YYYY/MM/DD" type="text" required/>
-          <%= submit_tag "Go" %>
+<div class="card border-0 shadow-sm w-50">
+  <div class="card-header bg-body-tertiary py-3">
+    <h5 class="card-title mb-0 fw-semibold">List Past Valid Appointments</h5>
+  </div>
+  <div class="card-body p-4">
+    <%= form_with(url: list_past_valid_appointments_events_path, method: :get, class: "row g-3 align-items-end") do |f| %>
+      <div class="col-md-5">
+        <%= f.label :start_date, "Start Date", class: "form-label fw-semibold" %>
+        <%= f.date_field :start_date, value: params[:start_date], class: "form-control", required: true %>
+      </div>
+
+      <div class="col-md-5">
+        <%= f.label :end_date, "End Date", class: "form-label fw-semibold" %>
+        <%= f.date_field :end_date, value: params[:end_date], class: "form-control", required: true %>
+      </div>
+
+      <div class="col-md-2 d-grid">
+        <%= f.submit "Submit", class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
 </div>
-<div id="display_past_valid_appointments"></div>
+<br />
+<% if !@appointments.nil? %>
+  <div data-controller="datatable">
+    <table data-datatable-target="table" id="past_events_table" class="responsive nowrap table table-hover " data-toggle="table" data-sort="true" data-url="<%= url_for(format: :json) %>">
+      <thead class="filters">
+        <tr>
+          <th data-data="user_id">Student</th>
+          <th data-data="description">Description</th>
+          <th data-data="start_date">Start date</th>
+          <th data-data="end_date">End date</th>
+        </tr>
+      </thead>
+
+      <% @appointments.each do |appointment| %>
+          <tr>
+            <% student = appointment.user %>
+            <td><%= link_to(student.full_name, meetings_path(student_id: student.uuid), target: '_blank') %></td>
+            <td><%= appointment.description %> </td>
+            <td><%= appointment.start_date  %></td>
+            <td><%= appointment.end_date %></td>
+          </tr>
+      <% end %>
+
+    </table>
+  </div>
+
+<% end %>

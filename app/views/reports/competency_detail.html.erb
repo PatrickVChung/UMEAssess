@@ -1,11 +1,10 @@
 <% if Current.user.coaching_type != 'student' %>
-  <br />
   <div id="container-fluid">
     <div class="card">
       <div class="card-body card-body-color">
         <div class="d-flex">
 
-          <%= form_with url: mspe_reports_path, method: :get, class: "row row-cols-lg-auto g-2 align-items-center", data: { controller: "auto-submit" } do |f| %>
+          <%= form_with url: competency_detail_reports_path, method: :get, class: "row row-cols-lg-auto g-2 align-items-center", data: { controller: "auto-submit" } do |f| %>
             <div class="col-12">
               <div class="input-group">
                 <label for="cohort" class="input-group-text fw-bold">Cohort</label>
@@ -20,6 +19,23 @@
             <% if params[:cohort].present? %>
               <div class="col-12">
                 <div class="input-group">
+                  <label for="start_date" class="input-group-text fw-bold">Start Date</label>
+                  <%= f.date_field :start_date,
+                                   class: "form-control",
+                                   data: { action: "change->date-range#updateMinEnd" } %>
+                </div>
+              </div>
+              <div class="col-12">
+                <!-- End Date -->
+                <div class="input-group">
+                  <label for="end__date" class="input-group-text fw-bold">End Date</label>
+                  <%= f.date_field :end_date,
+                                   class: "form-control",
+                                   max: Date.current %>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="input-group">
                   <label for="email" class="input-group-text fw-bold">Student</label>
                   <%= f.select :email,
                         options_for_select(hf_student_list(params[:cohort]), params[:email]),
@@ -27,6 +43,7 @@
                         class: "form-select",
                         data: { action: "change->auto-submit#submit" } %>
                 </div>
+
               </div>
             <% end %>
           <% end %>

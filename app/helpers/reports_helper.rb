@@ -234,12 +234,16 @@ module ReportsHelper
 
   end
 
-  def hf_competency_new_data(users, file_name)
+  def hf_competency_new_data(users, start_date, end_date, file_name)
     file_name = "#{Rails.root}/tmp/#{file_name}"
     CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
       csvfile << ["StudentName"] + NewCompetency.attribute_names
       users.each do |user|
-        competencies = user.new_competencies
+        if start_date != '' && end_date != ''
+          competencies = user.new_competencies.where({submit_date: start_date..end_date})
+        else
+          competencies = user.new_competencies
+        end
         competencies.each do |comp|
           csvfile << [user.full_name] + comp.attributes.values
         end

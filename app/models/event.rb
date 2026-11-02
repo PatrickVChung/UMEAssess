@@ -112,7 +112,7 @@ class Event < ApplicationRecord
   def self.fix_event_records
     events = Event.where("user_id is not null and advisor_id is null")
     events.each do |event|
-      meeting = Coaching::Meeting.find_by(event_id: event.id, user_id: event.user_id)
+      meeting = Meeting.find_by(event_id: event.id, user_id: event.user_id)
       if !meeting.nil?
         event.update(advisor_id: meeting.advisor_id)
       end

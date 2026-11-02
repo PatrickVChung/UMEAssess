@@ -23,7 +23,13 @@
     </thead>
 
     <% @users.each do |user| %>
-      <% competencies = user.new_competencies %>
+      <%
+        if @start_date != '' && @end_date != ''
+          competencies = user.new_competencies.where({submit_date: @start_date..@end_date})
+        else
+          competencies = user.new_competencies
+        end
+      %>
       <% competencies.each do |comp| %>
       <tr>
         <td> <%= user.full_name  %> </td>

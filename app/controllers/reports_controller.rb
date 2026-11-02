@@ -56,17 +56,28 @@ class ReportsController < ApplicationController
 
   def competency_detail
     @users = []
+    @start_date = ''
+    @end_date = ''
     if params[:cohort].present? && params[:email].present? && params[:email] == 'All'
-      @users = User.where(permission_group_id: params[:cohort]).order(:full_name).includes(:new_competencies)
-      @cohort_title = PermissionGroup.find(params[:cohort]).title.scan(/\((.*)\)/).first.first
-      @competency_file_name = "#{@cohort_title}_competency_data.txt"
-      @competency_data  = hf_competency_new_data(@users, @competency_file_name)
+      @start_date = params[:start_date]
+      @end_date = params[:end_date]
+      if @start_date.present? && @end_date.present?
+        @users = User.where(permission_group_id: params[:cohort]).order(:full_name).includes(:new_competencies)
+        @cohort_title = PermissionGroup.find(params[:cohort]).title.scan(/\((.*)\)/).first.first
+        @competency_file_name = "#{@cohort_title}_competency_data.txt"
+        @competency_data  = hf_competency_new_data(@users, @start_date, @end_date,  @competency_file_name)
+      else
+        @users = User.where(permission_group_id: params[:cohort]).order(:full_name).includes(:new_competencies)
+        @cohort_title = PermissionGroup.find(params[:cohort]).title.scan(/\((.*)\)/).first.first
+        @competency_file_name = "#{@cohort_title}_competency_data.txt"
+        @competency_data  = hf_competency_new_data(@users, @start_date, @end_date,  @competency_file_name)
+      end
 
     elsif params[:cohort].present? && params[:email].present? && params[:email] != 'All'
       @users = User.where(permission_group_id: params[:cohort], email: params[:email]).includes(:new_competencies)
       @cohort_title = PermissionGroup.find(params[:cohort]).title.scan(/\((.*)\)/).first.first
       @competency_file_name = "#{@cohort_title}_#{@users.first.sid}_competency_data.txt"
-      @competency_data  = hf_competency_new_data(@users, @competency_file_name)
+      @competency_data  = hf_competency_new_data(@users, @start_date, @end_date,  @competency_file_name)
 
     end
 
