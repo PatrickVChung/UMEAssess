@@ -89,8 +89,10 @@
                 <span class="fw-bold"><%= user.epa_masters.where(status: 'Badge').count %> out of 11</span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-
-                <span class="fw-bold">** For students who matriculated to medical school prior to 2019, please see Medical Student Handbook for your WBA graduation requirements!</span>
+                <a href="https://brightspace.ohsu.edu/d2l/le/news/12778/40006/view?ou=12778" class="btn btn-outline-secondary d-flex align-items-center justify-content-between" target="_blank" rel="noopener">
+                  View UME Handbook <i class="bi bi-chevron-right"></i>
+                </a>
+                <hr>
               </li>
             </ul>
           </div>
@@ -171,9 +173,9 @@
             <ul class="fw-bold">
               <%= link_to '<i class="bi-solid bi-clipboard-data"></i> Detail WBA Listing'.html_safe, epas_path(uuid: user.uuid), target: '_blank', class: "nav-link text-primary"  %>
             </ul>
-            <button class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
-              View Requirements <i class="bi bi-chevron-right"></i>
-            </button>
+            <a href="https://www.ohsu.edu/sites/default/files/2026-08/med-student-handbook-2026-27.pdf" class="btn btn-outline-secondary d-flex align-items-center justify-content-between" target="_blank" rel="noopener">
+              View UME Handbook <i class="bi bi-chevron-right"></i>
+            </a>
             <hr>
             <strong>Quick Actions (<font color="purple">Scheduled Appointment(s)</font>)</strong>
             <% if event_schedules&.present? %>

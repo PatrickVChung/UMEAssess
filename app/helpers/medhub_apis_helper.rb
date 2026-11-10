@@ -112,7 +112,6 @@ module MedhubApisHelper
       end
 
       #return various_comments
-
   end
 
   def question_text(question_hash, questionID, answer_optionID)
@@ -273,7 +272,6 @@ module MedhubApisHelper
       end
 
       prof_concerns_hash = load_prof_concerns(question_hash, "any areas of student's professionalism")
-
       return question_hash, prof_concerns_hash
 
   end
@@ -314,7 +312,7 @@ module MedhubApisHelper
       response = get_data(call_path_str, req_str)
 
       response_hash = JSON.parse(response.body)
-      reponse_hash = response_hash.select{|r| r if r["response_title"].include? "(V-17.1) (FINAL)"}
+      reponse_hash = response_hash.select{|r| r if r["response_title"].include? "(V-17.1) (FINAL)" or r["response_title"].include? "(V-17.2) (FINAL)"}
 
       # MedhubLog.info "******************* Eval Response Hash ****************************"
       # response_hash.first.each do |key, value|
@@ -368,7 +366,6 @@ module MedhubApisHelper
            row_hash = row_hash.merge(final_competency).merge(various_comments)
            update_or_insert_new_competencies(row_hash, user.full_name)
           end
-
       end
      end
   end

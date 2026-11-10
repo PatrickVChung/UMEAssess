@@ -1,5 +1,18 @@
 module HomesHelper
 
+  def hf_format_roles(roles)
+    return "" if roles.blank?
+
+    # Clean up and split the roles string
+    formatted_roles = roles.to_s.gsub(/[\[\]\\]/, "").gsub("\"", "").split(",").sort_by(&:length).compact
+
+    html_str = "".dup
+    formatted_roles.each do |role|
+        html_str << '<span class="fw-bold text-center d-block">' + role.titleize + '<br></span' if role.present?
+    end
+    return html_str
+  end
+
   def hf_get_past_events(advisor)
     if Current.user.coaching_type == 'dean'
       meetings = Meeting.where("advisor_id=? and date > ?", advisor.id, 2.weeks.ago.to_date)

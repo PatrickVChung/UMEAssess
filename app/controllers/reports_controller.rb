@@ -74,6 +74,8 @@ class ReportsController < ApplicationController
       end
 
     elsif params[:cohort].present? && params[:email].present? && params[:email] != 'All'
+      @start_date = params[:start_date]
+      @end_date = params[:end_date]
       @users = User.where(permission_group_id: params[:cohort], email: params[:email]).includes(:new_competencies)
       @cohort_title = PermissionGroup.find(params[:cohort]).title.scan(/\((.*)\)/).first.first
       @competency_file_name = "#{@cohort_title}_#{@users.first.sid}_competency_data.txt"

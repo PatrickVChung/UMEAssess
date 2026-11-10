@@ -46,13 +46,13 @@ class User < ApplicationRecord
   ROLES = {
     # can view assignments that they belong to
     participant: 0,
-    can_dashboard: 1,
+    # can_dashboard: 1,
     # can_stats: 1,
     # can_reports: 1,
     # can_chart: 1,
-    can_lime: 1,
-    can_lime_all: 1,
-    can_view_spreadsheet: 1,
+    # can_lime: 1,
+    # can_lime_all: 1,
+    # can_view_spreadsheet: 1,
     # Commented these roles out on 11/18/2024
     #can_create_assignment_group: 1,
     can_process_course_catalog: 1,
@@ -105,7 +105,7 @@ class User < ApplicationRecord
  end
 
  def admin_or_higher?
-    role == 'admin' 
+    role = 'admin'
     # Or if you use an enum or boolean flags:
     # admin? || moderator?
   end
