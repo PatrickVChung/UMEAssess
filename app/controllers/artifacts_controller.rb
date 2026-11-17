@@ -97,7 +97,7 @@ class ArtifactsController < ApplicationController
 
   def process_formative_feedback
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_upload_data(@artifact, "FormativeFeedback")
+    @log_results = Artifact.process_formative_data(@artifact)
     # # Temporary debug line - check your server log terminal
     # Rails.logger.debug "=== LOG RESULTS CLASS: #{@log_results.class} ==="
     # Rails.logger.debug "=== LOG RESULTS CONTENT: #{@log_results.inspect} ==="
@@ -105,7 +105,7 @@ class ArtifactsController < ApplicationController
 
   def process_informatics_feedback
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_upload_data(@artifact, "InformaticsFeedback")
+    @log_results = Artifact.process_informatics_data(@artifact)
   end
 
   def process_usmle_exam

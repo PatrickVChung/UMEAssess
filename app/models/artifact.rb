@@ -27,11 +27,11 @@ class Artifact < ApplicationRecord
           action: :update_informatics_feedback,
           failed_log: ->(row) { [row['full_name'], "#{row['email']} --> NOT Updated"] }
         },
-        'FormativeFeedback' => {
-          valid: ->(row) { row['q1'].present? },
-          action: :update_formative_feedback,
-          failed_log: ->(row) { [row['q1'], ' --> NOT Updated'] }
-        },
+        # 'FormativeFeedback' => {
+        #   valid: ->(row) { row['q1'].present? },
+        #   action: :update_formative_feedback,
+        #   failed_log: ->(row) { [row['q1'], ' --> NOT Updated'] }
+        # },
         'UsmleExam' => {
           valid: ->(row) { row['sid'].present? },
           action: :update_usmle_exam,
@@ -154,70 +154,136 @@ class Artifact < ApplicationRecord
     # end
 
     def self.fix_str(in_str)
+      return "N/A" if in_str.nil?
       if in_str.rstrip == "" or in_str.rstrip == "." or in_str.rstrip == "*"
         return "N/A"
       else
         return in_str
       end
-
     end
 
-    def self.update_formative_feedback(row)
-      if row["sid"].nil?
-        email = row["q1"].split(" - ").last
-        user = User.find_by(email: email)
-      else
-        user = User.find_by(sid: row["sid"])
-      end
-      if user.nil?
-        return false
-      else
-        row["user_id"] = user.id
-        row["submit_date"] = format_date(row["submit_date"])
-        row["response_id"] = row["response_id"] + row["question_set2"]
-        # row["q3"] = row["q3"].to_s.gsub("'-", "-")
-        # row["q4"] = row["q4"].to_s.gsub("'-", "-")
-        # row["q5"] = row["q5"].to_s.gsub("'-", "-")
-        row["q6"] = Artifact.fix_str(row["q6"])
+    def self.process_informatics_data(artifact)
+      return unless artifact.documents.attached?
+      filename = artifact.documents.first&.filename&.to_s
 
-        #puts row.to_hash
-        row_hash = {}
-        row_hash = row.to_hash
-        row_hash.delete("question_set2")
-        row_hash.delete("sid")
-        FormativeFeedback.where(response_id: row["response_id"]).first_or_create.update(row_hash)
-        return true
-      end
-    end
-
-    def self.process_formative_feedback_data (artifact)
+      total_count = 0
+      updated_count = 0
+      not_updated_count = 0
       log_results = []
       row_to_hash = {}
-      no_updated = 0
-      no_not_updated = 0
-      total_count = 0
 
-      CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true, col_sep: "\t", encoding: 'cp1252') do |row|
+      # response_id_csa_code =  File.basename(filename, ".txt").split(" ").last
+      # block_code = filename.split(" ").second
+      cohort, block_code, comp, comp_no, isa, feedback, raw_date =  File.basename(filename, ".txt").split(" ")
+      submit_date = Date.strptime(raw_date, "%m%d%y").strftime("%m/%d/%Y")
 
-        yes_updated = true
-        total_count += 1
-        if !row["q1"].blank?  # make sure this column is not blank
-          yes_updated = false
-          yes_updated = update_formative_feedback(row)
+      csa_code = "#{comp}#{comp_no} #{isa} Informatics"
 
-          if yes_updated
-            no_updated += 1
+      artifact.documents.first.open do |file|
+        CSV.foreach(file, headers: true, col_sep: "\t", encoding: 'cp1252', header_converters: ->(h) { h.downcase }) do |row|
+
+          return unless row.headers.include?("email")
+          total_count += 1
+
+          email = row["email"].to_s
+          user = User.find_by(email: email)
+          if user.nil?
+            not_updated_count += 1
+            # Fix: Create a new hash object for each failure log
+            log_results << { row["email"] => " --> NOT Updated" }
           else
-            row_to_hash.store(row["full_name"], " --> NOT Updated")
-            no_not_updated += 1
-            log_results.push row_to_hash
+            username = user.email&.split('@')&.first
+            response_id = "#{cohort}_#{block_code}-#{comp}#{comp_no}_#{isa}_#{username}_q3"
+
+            q7 = row["feedback"]
+            feedback = FormativeFeedback.find_or_initialize_by(user_id: user.id, response_id: response_id)
+            feedback.update( block_code: block_code,
+                             csa_code: csa_code,
+                             response_id: response_id,
+                             submit_date: submit_date,
+                             q2: "Scholl, Gretchen",
+                             q7: q7 )
+            updated_count += 1
           end
 
         end
       end
+
+      row_to_hash.store("no_updated", updated_count)
+      row_to_hash.store("no_not_updated", not_updated_count )
+      row_to_hash.store("total_count", total_count)
+      log_results.push row_to_hash
+
+      return log_results
+
+    end
+
+    def self.find_scenario_at_bottom(artifact, target_word = "Scenario")
+      # Open the file and read lines in reverse order to find the target quickly
+      csa_code = nil
+      attachment = artifact.documents.first
+      return unless attachment.present?
+      # Scan from the bottom up
+      content = attachment.download.force_encoding('CP1252').encode('UTF-8', invalid: :replace, undef: :replace)
+      content.lines.each_with_index.reverse_each do |line, index|
+        if line.include?(target_word)
+          csa_code = line.chomp.split("\t").second
+          break
+        end
+      end
+      csa_code
+    end
+
+    def self.process_formative_data(artifact)
+      return unless artifact.documents.attached?
+      filename = artifact.documents.first&.filename&.to_s
+
+      total_count = 0
+      updated_count = 0
+      not_updated_count = 0
+      log_results = []
       row_to_hash = {}
-      row_to_hash.store("no_updated", no_updated)
-      row_to_hash.store("no_not_updated", no_not_updated)
+
+      response_id_csa_code =  File.basename(filename, ".txt").split("_").last
+      block_code = filename.split("_").second
+
+      csa_code = find_scenario_at_bottom(artifact, target_word = "Scenario")
+      if csa_code.nil?
+        row_to_hash.store("csa_code", "Can't find csa_code in file! Need to inspect the file name.. ")
+        log_results.push row_to_hash
+        return
+      end
+
+      artifact.documents.first.open do |file|
+        CSV.foreach(file, headers: true, col_sep: "\t", encoding: 'cp1252') do |row|
+          total_count += 1
+
+          sid = row["Evaluatee Number"].to_s
+          if sid != "" && sid.match?(/\AU.{8}\z/)  #student id starting with 'U' and length = 9
+            user = User.find_by(sid: sid)
+            if user.nil?
+              not_updated_count += 1
+              # Fix: Create a new hash object for each failure log
+              log_results << { row["Evaluatee Name"] => " --> NOT Updated" }
+            else
+              response_id = "SimCap_#{sid}_#{block_code}_#{response_id_csa_code}_q2"
+              q6 = fix_str(row["Comments - please provide specific positive and constructive comments:"])
+              feedback = FormativeFeedback.find_or_initialize_by(user_id: user.id, response_id: response_id)
+              feedback.update( block_code: block_code,
+                               csa_code: csa_code,
+                               response_id: response_id,
+                               submit_date: row["Exam Date/Time"],
+                               q1: row["Evaluatee Name"],
+                               q2: row["Evaluator Name"],
+                               q6: q6 )
+              updated_count += 1
+            end
+          end
+        end
+      end
+
+      row_to_hash.store("no_updated", updated_count)
+      row_to_hash.store("no_not_updated", not_updated_count )
       row_to_hash.store("total_count", total_count)
       log_results.push row_to_hash
 

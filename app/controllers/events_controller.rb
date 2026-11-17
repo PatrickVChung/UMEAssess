@@ -356,7 +356,8 @@ class EventsController < ApplicationController
        advisor_name = advisor.name.gsub(", ", "_")
        flash.alert = @notice_msg
     end
-    filename  = "#{Rails.root}/public/oasis/ics/#{today_date}-#{advisor_name}_calendar.ics"
+    dir_path = Rails.root.join("public", "oasis", "ics")
+    filename  = "#{dir_path}#{today_date}-#{advisor_name}_calendar.ics"
 
     File.open(filename, 'w'){|f| f << cal.to_ical}
 

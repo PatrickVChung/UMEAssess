@@ -53,6 +53,11 @@
               <% end %>
             <% end %>
 
+            <% if artifact.content.to_s.include? "EG-Cohorts" and (current_user.can_process_eg_assignment?) %>
+              /
+              <%= link_to 'Process EG Cohorts File', process_eg_file_fix_eg_members_path(artifact_id: artifact), target: :_blank  %>
+            <% end %>            
+
             <% if artifact.content.to_s.include?("Q-Informatics") && %w[dean admin].include?(current_user.coaching_type) %>
               / Please CLICK on FoM Exams Menu to process Qualtrics Survey File
             <% end %>
@@ -72,7 +77,7 @@
             <% if current_user.can_process_fom? and current_user.coaching_type != 'student'%>
             <% if artifact.content.to_s.include? "Excel" %>
               <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank %>
-            <% elsif artifact.content == "FoM (Tab Deilimited File)" %>
+            <% elsif artifact.content == "FoM (Tab Delimited File)"%>
               / <%= link_to 'Process FoM File', process_csv_fom_exams_path(attach_id: artifact.documents.first),
                             class: 'text-danger',
                             data: { turbo_frame: "_top" } %>

@@ -302,14 +302,20 @@ end
     end
     xlsx.close
 
-    directory_name = "#{Rails.root}/log/fom_exams"
-    Dir.mkdir(directory_name) unless File.exist?(directory_name)
+    permission_group = PermissionGroup.find(permission_group_id)
 
-    cohort_title = PermissionGroup.find(permission_group_id).title.split("(").last.gsub(")", "")
-    file_name = cohort_title + "_" + course_code + "_" + component
+    raw_title_part = permission_group.title.split("(").last.gsub(")", "")
+    safe_title     = File.basename(raw_title_part)
+    safe_course    = File.basename(course_code.to_s)
+    safe_component = File.basename(component.to_s)
 
-    file_name = "#{Rails.root}/log/fom_exams/#{file_name}.log"
-    File.open(file_name, 'w') {
+    file_name = "#{safe_title}_#{safe_course}_#{safe_component}.log"
+    dir_path = Rails.root.join("log", "fom_exams")
+    file_path = dir_path.join(file_name)
+
+    Dir.mkdir(dir_path) unless File.exist?(dir_path)
+
+    File.open(file_path, 'w') {
       |f| @log_data.each { |line| f << "\r\n" + line }
     }
 
